@@ -1,0 +1,19 @@
+{
+    "name": "jesusagudo/fablab_project",
+    "description": "Project for the fablab cidete veraguas",
+	"type": "project",
+    "license": "proprietary",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Jesús Agudo",
+            "email": "jagudo2514@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+	    "php": "^8.0",
+        "monolog/monolog": "^2.3",
+        "dompdf/dompdf": "^1.0"
+    }
+}

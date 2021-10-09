@@ -27,18 +27,18 @@
 
             $visits = new Visit();
             $total = $visits->getTotal();
+            $visitasFree = $visits->getVisitsFree();
 
             $fecha = new DateTime();
             $nombreArchivo = $fecha->getTimestamp().'_'.'reporte_'.$day_actual_month;
 
             #Total de horas entre todos los visitantes
-            $areasTimeTotal = $visits->getTimeDifTotalAreas();
+            $timeTotal = $visits->getTimeDifTotal();
 
             #Tabla 1 - Uso por áreas de trabajo
             $areasTime = $visits->getTimeDifAreas();
 
             #Tabla 2 - Uso por razon de visita
-            $razonesTimeTotal = $visits->getTimeDifTotalRazones();
             $razonesTime = $visits->getTimeDifRazones();
 
             #Observaciones generales...
@@ -52,7 +52,7 @@
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-            <title>Reporte Mensual</title>
+            <title>Informe mensual de '.$currentDate.'</title>
         
             <!-- Invoice styling -->
             <style>
@@ -169,7 +169,7 @@
                                         <img src="http://jagudodeveloper.educationhost.cloud/img/fab.png" alt="Company logo" style="width: 100%; max-width: 300px" />
                                     </td>
         
-                                    <td>Informe mensual de: '.ucfirst($currentDate).'</td>
+                                    <td>Informe mensual de '.$currentDate.'</td>
                                 </tr>
                             </table>
                         </td>
@@ -181,7 +181,8 @@
                                 <tr>
                                     <td>
                                         Total de visitantes: '.$total['total'].'<br />
-                                        Total de horas entre todos los visitantes: '.explode(":", $areasTimeTotal['total'])[0].'
+                                        Total de horas entre todos los visitantes: '.explode(":", $timeTotal['total'])[0].'<br />
+                                        Total de visitantes por razones sociales: '.$visitasFree.'
                                     </td>
         
                                     <td>
@@ -202,14 +203,11 @@
                         <td style="text-align: center;" width="30%">% del total de horas</td>
                     </tr>';
             foreach ($areasTime as $datos => $valor){
-                $parte = explode(":", $valor['diferencia'])[0];
-                $diferencia = $parte == '' ? '0' : $parte;
-
                 $html.='
                     <tr class="item">
                         <td style="text-align: center;">'.$valor['name'].'</td>
-                        <td style="text-align: center;">'.$diferencia.'</td>
-                        <td style="text-align: center;">'.((int)explode(":", $valor['diferencia'])[0]/ (int)explode(":", $areasTimeTotal['total'])[0]) * 100 .'</td>
+                        <td style="text-align: center;">'.$valor['diferencia'].'</td>
+                        <td style="text-align: center;">'.number_format(((int)$valor['diferencia']/ (int)$timeTotal['total']) * 100 ,0).'</td>
                     </tr>';
             }
                 $html.='</table>
@@ -219,21 +217,16 @@
                         <td style="text-align: center; " width="50%">Razón de visita</td>
                         <td style="text-align: center;" width="20%">Horas</td>
                         <td style="text-align: center;" width="30%">% del total de horas</td>
-                    </tr>
-        
-        
-                    <tr class="item">
-                        <td style="text-align: center;">Prueba</td>
-                        <td style="text-align: center;">Prueba</td>
-                        <td style="text-align: center;">Prueba%</td>
-                    </tr>
-        
-                    <tr class="item">
-                        <td style="text-align: center;">Prueba</td>
-                        <td style="text-align: center;">Prueba</td>
-                        <td style="text-align: center;">Prueba%</td>
-                    </tr>
-                </table>
+                    </tr>';
+
+                foreach ($razonesTime as $datos => $valor){
+                    $html.='   <tr class="item">
+                        <td style="text-align: center;">'.$valor['name'].'</td>
+                        <td style="text-align: center;">'.$valor['diferencia'].'</td>
+                        <td style="text-align: center;">'.number_format(((int)$valor['diferencia']/ (int)$timeTotal['total']) * 100 ,0).'</td>
+                    </tr>';
+                }
+                    $html.='</table>
                 
                 <div style="
                 text-align: left; margin-top: 30px; font-size: 16px">
@@ -331,12 +324,11 @@
 </div>
 <!--/container-->
 
-<?php require_once 'templates/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="../assets/js/fetchtables.js"
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="../assets/js/basetemplate.js"></script>
 
 </body>
 </html>

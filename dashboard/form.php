@@ -9,7 +9,6 @@
     $area = new Area();
     $areaAll = $area->getAll();
 
-
 ?>
 
 <html lang="es">
@@ -46,7 +45,6 @@
                         <h5 class="font-bold uppercase text-gray-600">Datos del visitante</h5>
                     </div>
                     <div class="p-5 flex justify-between flex-wrap items-center">
-
                             <label class="text-sm w-1/2">
                                 <span class="text-gray-800">Tipo de documento</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
@@ -59,7 +57,7 @@
                             <label class="text-sm w-5/12">
                                 <span class="text-gray-800" id="tituloDocumento">RUC</span>
                                 <div class="relative">
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="30394-0002-238626" name="documento" required type="text" id="autoComplete">
+                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="30394-0002-238626" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                     <input type="hidden" name="id_customer">
                                     <button id="action" class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
                                         <i class="fas fa-user-plus"></i>
@@ -70,14 +68,25 @@
 
                         <div class="w-full flex justify-between flex-wrap items-center hidden" id="containerregister">
                             <label class="text-sm w-1/2 mt-5">
+                                <span class="text-gray-800">Codigo de usuario</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="362843" type="number" name="codigo" min="0" required autocomplete="off">
+
+                            </label>
+                            <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Nombre</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Avicola Grecia" type="text" name="name">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Avicola Grecia" type="text" name="name" required autocomplete="off">
+
+                            </label>
+
+                            <label class="text-sm w-1/2 mt-5">
+                                <span class="text-gray-800">Correo</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="ejemplo@ejemplo.com" type="email" name="email" required autocomplete="off">
 
                             </label>
 
                             <label class="text-sm w-5/12 mt-5">
-                                <span class="text-gray-800">Correo</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="cliente@gmail.com" type="email" name="email" required>
+                                <span class="text-gray-800">Telefono</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="800-5000" type="tel" name="telefono" required autocomplete="off">
 
                             </label>
 
@@ -99,17 +108,17 @@
 
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Ciudad</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Santiago" type="text" name="ciudad" required>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Santiago" type="text" name="ciudad" required autocomplete="off">
 
                             </label>
 
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800">Corregimiento</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Nuevo Santiago" type="text" name="corregimiento" required>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Nuevo Santiago" type="text" name="corregimiento" required autocomplete="off">
 
                             </label>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
                 <!--/Graph Card-->
@@ -121,8 +130,7 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos de la visita</h5>
                     </div>
-                    <div class="p-5">
-
+                    <form class="p-5">
                             <label class="block text-sm">
                                 <span class="text-gray-800">Razón de visita</span>
                                 <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
@@ -139,7 +147,7 @@
                                     <input type="checkbox" value="<?= $valor['area_id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
                                     <span class="ml-2"> <?= $valor['name'] ?></span>
                                 </label>
-                                <div class="p-2 hidden area<?= $valor['area_id'] ?>">
+                                <div class="p-2 hidden" id="area<?= $valor['area_id'] ?>">
                                     <label for="arrival_time" class="mr-6">Hora de llegada:
                                         <input type="time" id="arrival_time_area<?= $valor['area_id'] ?>" name="arrival_time_area<?= $valor['area_id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
@@ -150,20 +158,24 @@
 
                                 </div>
                                 <?php endforeach; ?>
-                            <span id="feedbackareas" class="text-xs text-red-600 hidden">Por favor, seleccione las areas deseadas </span>
+                            <span id="feedbackareas" class="text-xs text-red-600 hidden">Por favor, seleccione las areas deseadas</span>
                         </div>
+
+                        <label class="block text-sm mt-5">
+                            <span class="text-gray-800">Fecha</span>
+                            <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
+                        </label>
 
                             <label class="block text-sm mt-5">
                                 <span class="text-gray-800">Observación complementaría</span>
-                                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation" required></textarea>
+                                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation" ></textarea>
                             </label>
 
                             <hr class="my-8">
                         <div class="flex justify-center items-center">
                             <input type="submit" value="Registrar" class="w-2/5 px-4 py-2 text-m font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
                         </div>
-
-                    </div>
+                    </form>
                 </div>
                 <!--/Graph Card-->
             </div>
@@ -178,12 +190,12 @@
 </div>
 <!--/container-->
 
-<?php require_once 'templates/footer.php'; ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/basetemplate.js"></script>
 
 
 </body>

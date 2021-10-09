@@ -10,8 +10,9 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     idHidden = document.querySelector('input[type="hidden"]')
     accion = document.querySelector('#action'),
     containerRegister = document.querySelector('#containerregister'),
-        registrar = document.querySelector('input[type="submit"]')
+        registrar = document.querySelector('input[type="submit"]'),
     observacion = document.querySelector('textarea[name="observation"]');
+    fecha = document.querySelector('input[name="fecha"]');
 
 //Tipo de documento -> RUC/CEDULA/PASAPORTE
 
@@ -91,13 +92,14 @@ razonVisita.addEventListener('change', evt => {
 
 areasTrabajo.forEach(evt =>{
     evt.addEventListener('click', item =>{
+        const areaCheck = document.querySelector('#area'+item.target.value);
             if(item.target.checked){
-                item.target.parentNode.nextElementSibling.classList.remove('hidden');
-                if(item.target.parentNode.nextElementSibling.nextElementSibling){item.target.parentNode.nextElementSibling.nextElementSibling.classList.remove('mt-4');}
+                areaCheck.classList.remove('hidden');
+                if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.remove('mt-4');}
             }
             else{
-                item.target.parentNode.nextElementSibling.classList.add('hidden');
-                if(item.target.parentNode.nextElementSibling.nextElementSibling){item.target.parentNode.nextElementSibling.nextElementSibling.classList.add('mt-4');}
+                areaCheck.classList.add('hidden');
+                if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.add('mt-4');}
             }
     });
 });
@@ -110,6 +112,12 @@ accion.addEventListener('click',evt => {
         evt.currentTarget.innerHTML = '<i class="fas fa-user-times"></i>';
         evt.currentTarget.classList.remove('bg-green-600', 'active:bg-green-600', 'hover:bg-green-700');
         evt.currentTarget.classList.add('bg-red-600', 'active:bg-red-600', 'hover:bg-red-700');
+
+        Toastify({
+            text: "Se registrará un nuevo usuario",
+            duration: 3000,
+            backgroundColor: "linear-gradient(to right, #00b09b, #059669)",
+        }).showToast();
     }
     else{
         containerRegister.classList.add('hidden');
@@ -121,77 +129,89 @@ accion.addEventListener('click',evt => {
 
 //###########Form validation##########
 registrar.addEventListener('click',evt => {
-    let valorTipoDocumento = inputDocumento.value;
-    let valorDocumento = inputDocumento.value;
-    let valorIdHidden = idHidden.value;
-    let valorRazonVisita = razonVisita.value;
-    let arrival_time = [];
-    let departure_time = [];
-    let areasChecked = [];
-    let valorObservacion = observacion.value;
+    evt.preventDefault();
+    let areas = [];
 
-    if(!optionSelected.classList.contains('free')){
+    let datos = {
+        id_razonvisita: razonVisita.value,
+        fecha: fecha.value,
+    };
+
+    if(optionSelected.classList.contains('notfree')){
         areasTrabajo.forEach(evt =>{
             if(evt.checked){
-                areasChecked.push(evt.value);
-                arrival_time.push(document.querySelector('#arrival_time_area'+evt.value).value);
-                departure_time.push(document.querySelector('#departure_time_area'+evt.value).value);
+                let area = {
+                    id: evt.value,
+                    arrival_time: document.querySelector('#arrival_time_area'+evt.value).value,
+                    departure_time: document.querySelector('#departure_time_area'+evt.value).value
+                }
+                areas.push(area);
             }
         });
 
-        if(areasChecked.length == 0){
+        if(areas.length == 0){
             containerArea.lastElementChild.classList.remove('hidden');
         }
 
+        datos["areasChecked"] = areas;
     }
 
-    if(valorIdHidden.trim().length == 0 || valorDocumento.trim().length == 0){
+    if(observacion.value.trim().length != 0){
+        datos["observacion"] = observacion.value;
+    }
+
+    /*if(idHidden.value.trim().length == 0 || inputDocumento.value.trim().length == 0){
         inputDocumento.classList.remove('border-gray-300','focus:border-blue-300','focus:ring-blue-200');
         inputDocumento.classList.add('border-red-600','focus:border-red-400','focus:ring-red-200');
-        inputDocumento.parentNode.nextElementSibling.classList.remove('hidden');
-    }
-
-
+        console.log('entre')
+        inputDocumento.parentNode.nextElementSibling.classList.remove('hidden');//<---
+    }*/
 
     if(containerRegister.classList.contains('hidden')){
-
-        fetch('./saveform.php',{
-            method: "POST",
-            mode: "same-origin",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({datos: {
-                id_cliente: valorIdHidden,
-                    tipo_documento: valorTipoDocumento,
-                    id_razonvisita: valorRazonVisita,
-                    areaschecked: areasChecked,
-                    arrival_time: arrival_time,
-                    departure_time: departure_time,
-                    observacion: valorObservacion
-
-                }})
-        })
-        .then(data =>{
-            Swal.fire({
-                title: 'La visita se ha guardado!',
-                allowOutsideClick: false,
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                }
-            });
-        });
+        datos['id_cliente'] = idHidden.value;
     }
     else{
-        const email = document.querySelector('input[name="email"]'),
-            provincia = document.querySelector('select[name="provincia"]'),
-            ciudad = document.querySelector('input[name="ciudad"]'),
-            corregimiento = document.querySelector('input[name="corregimiento"]');
+
+        const  codigo = document.querySelector('input[name="codigo"]').value,
+            email = document.querySelector('input[name="email"]').value,
+            telefono = document.querySelector('input[name="telefono"]').value,
+            provincia = document.querySelector('select[name="provincia"]').value,
+            ciudad = document.querySelector('input[name="ciudad"]').value,
+            corregimiento = document.querySelector('input[name="corregimiento"]').value;
+
+        datos['newCustomer'] = {
+            tipo_documento: tipoDocumento.value,
+            documento: inputDocumento.value,
+            codigo: codigo,
+            nombre: nombreUsuario.value,
+            email: email,
+            telefono: telefono,
+            provincia: provincia,
+            ciudad: ciudad,
+            corregimiento: corregimiento
+        }
     }
 
+    fetch('./saveform.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: datos})
+    })
+    .then(data =>{
+        Swal.fire({
+            title: 'La visita se ha guardado!',
+            allowOutsideClick: false,
+            icon: 'success',
+            confirmButtonColor: '#3085d6'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        });
+    });
 
 });

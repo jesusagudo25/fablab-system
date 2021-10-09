@@ -4,25 +4,25 @@
         <div class="w-full mx-auto flex flex-wrap">
             <div class="flex w-full md:w-1/2 ">
                 <div class="px-8">
-                    <h3 class="font-bold font-bold text-gray-900">About</h3>
+                    <h3 class="font-bold font-bold text-gray-900">Sobre nosotros</h3>
                     <p class="py-4 text-gray-600 text-sm">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia.
+                        Un Fab lab es un taller de fabricación digital de uso personal, es decir, un espacio de producción de objetos físicos a escala personal o local que agrupa máquinas controladas por ordenadores.
                     </p>
                 </div>
             </div>
 
             <div class="flex w-full md:w-1/2">
                 <div class="px-8">
-                    <h3 class="font-bold font-bold text-gray-900">Social</h3>
+                    <h3 class="font-bold font-bold text-gray-900">Redes sociales</h3>
                     <ul class="list-reset items-center text-sm pt-3">
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Add social link</a>
+                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Instagram</a>
                         </li>
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Add social link</a>
+                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Facebook</a>
                         </li>
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Add social link</a>
+                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Twitter</a>
                         </li>
                     </ul>
                 </div>

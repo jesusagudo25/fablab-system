@@ -3,3 +3,4 @@ vendor/
 assets/img
 .idea
 *.log
+*.pdf

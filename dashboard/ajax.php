@@ -14,7 +14,7 @@
         echo json_encode($customerAjax);
 
     }else {
-        header("Location: index.php");
+        header("Location: logout.php");
     }
 
 

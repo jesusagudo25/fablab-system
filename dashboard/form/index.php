@@ -1,7 +1,11 @@
-<!DOCTYPE html>
 <?php
+    session_start();
+    if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
+        header('Location: ../../index.php');
+        die;
+    }
 
-    require_once '../app.php';
+    require_once '../../app.php';
 
     $reason = new ReasonVisit();
     $reasonAll = $reason->getAll();
@@ -10,6 +14,7 @@
     $areaAll = $area->getAll();
 
 ?>
+<!DOCTYPE html>
 
 <html lang="es">
 <head>
@@ -21,7 +26,7 @@
     <meta name="keywords" content="keywords,here">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="../assets/css/tailwind.output.css" rel="stylesheet">
+    <link href="../../assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -29,7 +34,7 @@
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-<?php require_once 'templates/header.php'; ?>
+<?php require_once '../templates/header.php'; ?>
 
 <!--Container-->
 <div class="container w-10/12 mx-auto pt-20">
@@ -45,26 +50,26 @@
                         <h5 class="font-bold uppercase text-gray-600">Datos del visitante</h5>
                     </div>
                     <div class="p-5 flex justify-between flex-wrap items-center">
-                            <label class="text-sm w-1/2">
-                                <span class="text-gray-800">Tipo de documento</span>
-                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
-                                    <option value="R">RUC</option>
-                                    <option value="C">Cédula</option>
-                                    <option value="P">Pasaporte</option>
-                                </select>
-                            </label>
+                        <label class="text-sm w-1/2">
+                            <span class="text-gray-800">Tipo de documento</span>
+                            <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
+                                <option value="R">RUC</option>
+                                <option value="C">Cédula</option>
+                                <option value="P">Pasaporte</option>
+                            </select>
+                        </label>
 
-                            <label class="text-sm w-5/12">
-                                <span class="text-gray-800" id="tituloDocumento">RUC</span>
-                                <div class="relative">
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="30394-0002-238626" name="documento" required type="text" id="autoComplete" autocomplete="false">
-                                    <input type="hidden" name="id_customer">
-                                    <button id="action" class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
-                                        <i class="fas fa-user-plus"></i>
-                                    </button>
-                                </div>
-                                <span id="feedbackdocumento" class="text-xs text-red-600 hidden">Por favor, proporcione un RUC</span>
-                                </label>
+                        <label class="text-sm w-5/12">
+                            <span class="text-gray-800" id="tituloDocumento">RUC</span>
+                            <div class="relative">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="30394-0002-238626" name="documento" required type="text" id="autoComplete" autocomplete="false">
+                                <input type="hidden" name="id_customer">
+                                <button id="action" class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
+                                    <i class="fas fa-user-plus"></i>
+                                </button>
+                            </div>
+                            <span id="feedbackdocumento" class="text-xs text-red-600 hidden">Por favor, proporcione un RUC</span>
+                        </label>
 
                         <div class="w-full flex justify-between flex-wrap items-center hidden" id="containerregister">
                             <label class="text-sm w-1/2 mt-5">
@@ -131,18 +136,18 @@
                         <h5 class="font-bold uppercase text-gray-600">Datos de la visita</h5>
                     </div>
                     <form class="p-5">
-                            <label class="block text-sm">
-                                <span class="text-gray-800">Razón de visita</span>
-                                <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    <?php foreach ($reasonAll as $datos => $valor): ?>
+                        <label class="block text-sm">
+                            <span class="text-gray-800">Razón de visita</span>
+                            <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                <?php foreach ($reasonAll as $datos => $valor): ?>
                                     <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?>"><?= $valor['name'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </label>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
 
                         <div class="text-sm mt-5" id="containerarea">
                             <span class="text-gray-800">Área de trabajo</span>
-                                <?php foreach ($areaAll as $datos => $valor): ?>
+                            <?php foreach ($areaAll as $datos => $valor): ?>
                                 <label class="flex items-center mt-4">
                                     <input type="checkbox" value="<?= $valor['area_id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
                                     <span class="ml-2"> <?= $valor['name'] ?></span>
@@ -157,7 +162,7 @@
                                     </label>
 
                                 </div>
-                                <?php endforeach; ?>
+                            <?php endforeach; ?>
                             <span id="feedbackareas" class="text-xs text-red-600 hidden">Por favor, seleccione las areas deseadas</span>
                         </div>
 
@@ -166,12 +171,12 @@
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
                         </label>
 
-                            <label class="block text-sm mt-5">
-                                <span class="text-gray-800">Observación complementaría</span>
-                                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation" ></textarea>
-                            </label>
+                        <label class="block text-sm mt-5">
+                            <span class="text-gray-800">Observación complementaría</span>
+                            <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation" ></textarea>
+                        </label>
 
-                            <hr class="my-8">
+                        <hr class="my-8">
                         <div class="flex justify-center items-center">
                             <input type="submit" value="Registrar" class="w-2/5 px-4 py-2 text-m font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
                         </div>
@@ -194,9 +199,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="../assets/js/main.js"></script>
-<script src="../assets/js/basetemplate.js"></script>
-
+<script src="<?= constant('URL')?>assets/js/main.js"></script>
+<script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
 
 </body>
 

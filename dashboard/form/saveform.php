@@ -1,6 +1,6 @@
 <?php
 
-    require_once '../app.php';
+    require_once '../../app.php';
 
     $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 
@@ -16,6 +16,6 @@
             $visit->saveAll($decoded);
 
         } else {
-            header("Location: index.php");
+            header("Location: logout.php");
         }
     }

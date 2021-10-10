@@ -6,19 +6,22 @@
 
         $error = false;
 
-        //Aqui se podria utilizar metodos set... para los objetos
         $email = isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
         $pass = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
 
         $user = new User();
-        $resultEmail = $user->validateEmail($email);
+        $user->setEmail($email);
+        $user->setPassword($pass);
+
+        $resultEmail = $user->validateEmail();
 
         if(!empty($resultEmail)){
 
             if(password_verify($pass, $resultEmail['password']) && $resultEmail['status']==1){
 
                 session_start();
-                $_SESSION['id'] = $resultEmail['id_usuario'];
+                $_SESSION['user_id'] = $resultEmail['user_id'];
+                $_SESSION['role_id'] = $resultEmail['role_id'];
 
                 header("Location: ./dashboard/index.php");
             }

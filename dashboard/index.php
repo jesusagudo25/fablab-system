@@ -1,3 +1,25 @@
+<?php
+
+    require_once '../app.php';
+    session_start();
+
+    //Para validar que exista el id_user y el rol_id -> sin embargo, no se valida que tipo de role es...
+    if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
+        header('Location: ../index.php');
+      die;
+    }
+
+    /*Para validar el tipo de rol
+     *     $allowedRoles = ['Admin'];
+
+    if (!in_array($_SESSION['rol'], $allowedRoles)) {
+      header('Location: ./logout.php');
+      die;
+    }
+     */
+
+    ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -15,7 +37,7 @@
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-    <?php require_once 'templates/header.php'; ?>
+    <?php require_once './templates/header.php'; ?>
 
     <!--Container-->
     <div class="container w-10/12 mx-auto pt-20">
@@ -202,7 +224,7 @@
     </div>
     <!--/container-->
 
-    <?php require_once 'templates/footer.php'; ?>
+    <?php require_once './templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script src="../assets/js/line.js"></script>

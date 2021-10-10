@@ -24,6 +24,6 @@ if ($contentType === "application/json") {
 
 
     } else {
-        header("Location: index.php");
+        header("Location: logout.php");
     }
 }

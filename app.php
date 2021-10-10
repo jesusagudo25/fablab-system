@@ -17,6 +17,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 
+$pagina = [];
 // Crear servicio de registro
 $logger = new Logger('my_logger');
 

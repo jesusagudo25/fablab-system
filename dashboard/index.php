@@ -18,6 +18,8 @@
     }
      */
 
+    $pagina[] = "dashboard";
+
     ?>
 
 <!DOCTYPE html>

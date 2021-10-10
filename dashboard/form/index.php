@@ -13,6 +13,7 @@
     $area = new Area();
     $areaAll = $area->getAll();
 
+    $pagina[] = "form";
 ?>
 <!DOCTYPE html>
 

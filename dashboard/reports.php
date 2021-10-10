@@ -26,7 +26,7 @@
             $day_actual_month = date('Y-m-d');
 
             $visits = new Visit();
-            $total = $visits->getTotal();
+            $visitasNoFree = $visits->getVisitsNotFree();
             $visitasFree = $visits->getVisitsFree();
 
             $fecha = new DateTime();
@@ -180,9 +180,9 @@
                             <table>
                                 <tr>
                                     <td>
-                                        Total de visitantes: '.$total['total'].'<br />
-                                        Total de horas entre todos los visitantes: '.explode(":", $timeTotal['total'])[0].'<br />
+                                        Total de visitantes por razones economicas: '.$visitasNoFree['total'].'<br />
                                         Total de visitantes por razones sociales: '.$visitasFree.'
+                                        Total de horas entre todos los visitantes por razones economicas: '.explode(":", $timeTotal['total'])[0].'<br />
                                     </td>
         
                                     <td>

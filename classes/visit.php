@@ -101,14 +101,20 @@ class Visit extends Model implements IModel
         // TODO: Implement getAll() method.
     }
 
-    public function getTotal(){
+    public function getVisitsNotFree(){
 
         //SELECT COUNT(*) as total FROM visits WHERE (date BETWEEN :initial AND :final)
-        $visits = $this->query("SELECT COUNT(*) AS total FROM visits WHERE (date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE())");
+        $visits = $this->query("SELECT COUNT(*) AS total FROM visits v INNER JOIN reason_visits r ON v.reason_id = r.reason_id WHERE r.time = 1 AND (v.date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE())");
 
         $total = $visits->fetch();
 
         return $total;
+    }
+
+    public function getVisitsFree(){
+        $consultarTotalVisitasFree = $this->query("SELECT COUNT(*) AS total FROM visits v INNER JOIN reason_visits r ON v.reason_id = r.reason_id WHERE r.time = 0 AND (v.date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE())");
+        $visitasFree = $consultarTotalVisitasFree->fetch();
+        return $visitasFree['total'];
     }
 
     public function getTimeDifAreas(){
@@ -157,11 +163,6 @@ GROUP BY r.reason_id");
         $this->visit_id = $visitaResultado['visit_id'];
     }
 
-    public function getVisitsFree(){
-        $consultarTotalVisitasFree = $this->query('SELECT COUNT(*) AS total FROM visits v INNER JOIN reason_visits r ON v.reason_id = r.reason_id WHERE r.time = 0');
-        $visitasFree = $consultarTotalVisitasFree->fetch();
-        return $visitasFree['total'];
-    }
 
     public function get($id)
     {

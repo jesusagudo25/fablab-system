@@ -1,15 +1,15 @@
 
 new Chart(document.getElementById("doughnut"), {
-    "type": "line",
+    "type": "doughnut",
     "data": {
-        "labels": ["January", "February", "March", "April", "May", "June", "July"],
+        "labels": ["P1", "P2", "P3"],
         "datasets": [{
-            "label": "Views",
-            "data": [65, 59, 80, 81, 56, 55, 40],
-            "fill": false,
-            "borderColor": "rgb(75, 192, 192)",
-            "lineTension": 0.1
+            "label": "Issues",
+            "data": [300, 50, 100],
+            "backgroundColor": ["rgb(255,132,154)", "rgb(28,162,234)", "rgba(52,185,150,0.7)"]
         }]
     },
-    "options": {}
+    "options": {
+        "responsive": true
+    }
 });

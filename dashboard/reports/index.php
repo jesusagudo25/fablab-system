@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
     session_start();
+
     if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
         header('Location: ../../index.php');
         die;
@@ -10,6 +11,8 @@
 
     use Dompdf\Dompdf;
     use Dompdf\Options;
+
+    $pagina[] = "reports";
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -266,7 +269,6 @@
 
         header("Location: index.php");
 
-        $pagina[] = "reports";
     }
 ?>
 

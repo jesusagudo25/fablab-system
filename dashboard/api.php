@@ -23,6 +23,12 @@ if ($contentType === "application/json") {
             $observations = $observation->getAll();
             echo json_encode($observations);
         }
+        else if($decoded['datos']['solicitud'] == 'l'){
+            $customer = new Customer();
+            $customers = $customer->getLabo();
+            echo json_encode($customers);
+        }
+
 
 
     } else {

@@ -35,6 +35,7 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="../assets/css/tailwind.output.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -179,35 +180,12 @@
                         <div class="border-b p-3">
                             <h5 class="font-bold uppercase text-gray-600">Tabla - Clientes en laboratorio</h5>
                         </div>
-                        <div class="p-5">
-                            <table class="w-full p-5 text-gray-700">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left text-blue-900">Nombre</th>
-                                        <th class="text-left text-blue-900">Hora de salida</th>
-                                        <th class="text-left text-blue-900">Acción</th>
-                                    </tr>
-                                </thead>
+                        <div>
+                            <div class="text-sm mt-5 w-full overflow-x-auto">
+                                <table class="w-full whitespace-no-wrap table">
 
-                                <tbody class="bg-gray-100 divide-y">
-                                    <tr>
-                                        <td class="p-3">Maria Muñoz</td>
-                                        <td class="p-3"><input type="time" id="departure_time_area" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></td>
-                                        <td class="p-3"><form method="post" class="flex items-center space-x-4">
-
-                                                <button value="49" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="far fa-calendar-check"></i></button>
-                                            </form></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-3">Yoytec SA</td>
-                                    <td class="p-3"><input type="time" id="departure_time_area" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></td>
-                                        <td class="p-3"><form method="post" class="flex items-center space-x-4">
-
-                                                <button value="49" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="far fa-calendar-check"></i></button>
-                                            </form></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                </table>
+                            </div>
 
                         </div>
                     </div>
@@ -228,8 +206,10 @@
     <?php require_once './templates/footer.php'; ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script src="../assets/js/line.js"></script>
     <script src="../assets/js/doughnut.js"></script>
+    <script src="../assets/js/fetchlabo.js"></script>
 
 </body>
 

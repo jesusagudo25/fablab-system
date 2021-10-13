@@ -58,6 +58,16 @@ class Customer extends Model implements IModel
         return $this->customer_id['customer_id'];
     }
 
+    public function getLabo(){
+        $query = $this->query('SELECT c.name AS Nombre, va.departure_time AS "Fecha de salida", v.visit_id AS Acción, va.area_id FROM visits v
+                                        INNER JOIN visits_areas va ON v.visit_id = va.visit_id
+                                        INNER JOIN customers c ON v.customer_id = c.customer_id
+                                        WHERE (va.departure_time IS NULL)');
+        $customers = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $customers;
+    }
+
     public function getAll()
     {
         // TODO: Implement getAll() method.

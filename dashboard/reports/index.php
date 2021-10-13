@@ -317,7 +317,6 @@
                         <h5 class="font-bold uppercase text-gray-600">Reportes</h5>
                     </div>
                     <div>
-
                         <div class="text-sm mt-5 w-full overflow-x-auto">
                             <table class="w-full whitespace-no-wrap table">
 

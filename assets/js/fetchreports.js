@@ -20,7 +20,7 @@ fetch('../api.php',{
         return `
             <form method="post" class="flex items-center space-x-4">
                 <a href="../documents/${row.lastElementChild.textContent}.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a>
-            <input type="hidden" name="direccion" value="./documents/${row.lastElementChild.textContent}.pdf">
+            <input type="hidden" name="direccion" value="../documents/${row.lastElementChild.textContent}.pdf">
                 <button value="${data}" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-trash-alt"></i></button>
             </form>`;
     }

@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                 $_SESSION['user_id'] = $resultEmail['user_id'];
                 $_SESSION['role_id'] = $resultEmail['role_id'];
 
-                header("Location: ./dashboard/index.php");
+                header("Location: ./dashboard/");
             }
             else{
                 $error = true;
@@ -64,7 +64,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             <div class="mt-10">
               <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>
               <p class="mt-3 text-gray-800">
-                ¿Nuevo usuario? <a href="./signup/index" class="text-blue-400">Regístrate ahora</a>
+                ¿Nuevo usuario? <a href="./signup/" class="text-blue-400">Regístrate ahora</a>
               </p>
             </div>
             <div class="mt-12">

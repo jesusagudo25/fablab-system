@@ -16,6 +16,6 @@
             $visit->saveAll($decoded);
 
         } else {
-            header("Location: logout.php");
+            //echo json_encode($errores);
         }
     }

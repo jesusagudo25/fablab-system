@@ -18,12 +18,14 @@ if ($contentType === "application/json") {
             echo json_encode($reports);
 
         }
-        else if($decoded['datos']['solicitud'] == 'c'){
-
+        else if($decoded['datos']['solicitud'] == 'o'){
+            $observation = new Observation();
+            $observations = $observation->getAll();
+            echo json_encode($observations);
         }
 
 
     } else {
-        header("Location: logout.php");
+        header("Location: ../index.php");
     }
 }

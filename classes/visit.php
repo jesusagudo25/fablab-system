@@ -19,6 +19,8 @@ class Visit extends Model implements IModel
 
         if (!empty($newCustomer)) {
             $customer = new Customer();
+
+            //Validaciones
             $customer->setDocumentType($newCustomer['tipo_documento']);
             $customer->setDocument($newCustomer['documento']);
             $customer->setCode($newCustomer['codigo']);
@@ -41,35 +43,6 @@ class Visit extends Model implements IModel
         $this->date = isset($decoded['datos']['fecha']) ? $decoded['datos']['fecha'] : '';
         $this->observation = isset($decoded['datos']['observacion']) ? $decoded['datos']['observacion'] : '';
 
-        /*
-        if (empty($newUser)) {
-            //Aqui insertar una visita
-
-            if (!empty($areasChecked)) {
-
-                //Aqui metodo para obtener el ultimo id de visita
-
-                //Aqui ejecutar metodo save de visits_areas
-
-            }
-        }
-        else{
-            //Aqui registrar el nuevo usuario
-
-            //Aqui metodo para obtener el ultimo id de visita
-
-            //Aqui insertar una visita
-
-            if (!empty($areasChecked)) {
-                //Aqui metodo para obtener el ultimo id de visita
-
-                //Aqui ejecutar metodo save de visits_areas
-            }
-        }*/
-
-        ##--------------------->Nueva version
-
-
         $this->save();
         $this->getLastID();
 
@@ -77,10 +50,6 @@ class Visit extends Model implements IModel
             $visits_areas = new VisitArea();
             $visits_areas->save($this->visit_id, $areasChecked);
         }
-
-        #Verificar si hay un nuevo cliente (Si hay, se crea) -> y se obtiene el ultimo id
-        #Insertar una nueva visita -> se obtiene el ultimo id
-        #Verificar si hay areas...
 
     }
 

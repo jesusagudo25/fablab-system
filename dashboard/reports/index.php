@@ -51,7 +51,7 @@
 
             #Observaciones generales...
             $observations = new Observation();
-            $observationsAll = $observations->getAll();
+            $observationsAll = $observations->getObsMonth();
 
             session_start();
             $user = new User();
@@ -242,8 +242,11 @@
                     <div style="
                     text-align: left; margin-top: 30px; font-size: 16px">
                     <span>Observaciones:</span>
-                        <p>Observacion</p>
-                    </div>
+                    <ul>';
+                    foreach ($observationsAll as $datos => $valor) {
+                        $html .= '   <li>'.$valor['description']. ' - '.$valor['name'].' , '.$valor['date'].'</li>';
+                    }
+                     $html.='</ul></div>
                 </div>
             </body>
             </html>';
@@ -302,7 +305,7 @@
             <div class="w-full p-3">
                 <!--Graph Card-->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                    <button value="reporte" type="submit" name="generar" class="w-1/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte</button>
+                    <button value="reporte" type="submit" name="generar" class="w-1/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte</button>
                 </form>
                 <!--/Graph Card-->
             </div>
@@ -337,9 +340,7 @@
 <!--/container-->
 
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="<?= constant('URL')?>assets/js/fetchtables.js"
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= constant('URL')?>assets/js/fetchreports.js"></script>
 <script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
 
 </body>

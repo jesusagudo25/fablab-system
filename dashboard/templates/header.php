@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="mr-6 my-2 md:my-0 relative">
-                        <button id="gestButton" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-blue-500">
+                        <button id="gestButton" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-blue-500 <?= in_array( 'gestionar',$pagina) ? 'border-blue-500 text-gray-900' : '' ?>">
                             <i class="fas fa-cogs fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Gestionar <svg class="pl-2 h-2 inline-block" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
                                 <g>
                                     <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
@@ -76,9 +76,9 @@
                             <ul class="list-reset text-sm">
                                 <li><a href="#" class="border-b px-4 py-2 b- block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Usuarios</a></li>
                                 <li><a href="#" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Clientes</a></li>
-                                <li><a href="../index" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>
+                                <li><a href="#" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>
 
-                                <li><a href="../index" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Observaciones</a></li>
+                                <li><a href="<?= constant('URL')?>dashboard/observations/" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Observaciones</a></li>
                             </ul>
                         </div>
 

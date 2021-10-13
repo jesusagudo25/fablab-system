@@ -32,7 +32,7 @@ class Report extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT r.month AS Mes, CONCAT(u.name," ",u.lastname) AS Nombre ,r.start_date AS "Fecha de inicio" ,r.end_date AS "Fecha final", r.report_id AS Acciones, r.document AS documento FROM reports r
+        $query = $this->query('SELECT r.month AS Mes, CONCAT(u.name," ",u.lastname) AS Autor ,r.start_date AS "Fecha de inicio" ,r.end_date AS "Fecha final", r.report_id AS Acciones, r.document AS documento FROM reports r
 INNER JOIN users u ON r.user_id = u.user_id ');
         $reports = $query->fetchAll(PDO::FETCH_ASSOC);
 

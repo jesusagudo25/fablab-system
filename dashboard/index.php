@@ -34,7 +34,7 @@
     <meta name="keywords" content="keywords,here">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="../assets/css/tailwind.output.css" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">

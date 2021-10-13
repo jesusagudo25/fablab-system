@@ -5,5 +5,5 @@
     // Destruye cualquier sesión del usuario
     session_destroy();
     // Redirecciona a login.php
-    header('Location: ../index.php');
+    header('Location: ../');
 

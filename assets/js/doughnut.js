@@ -6,7 +6,7 @@ new Chart(document.getElementById("doughnut"), {
         "datasets": [{
             "label": "Issues",
             "data": [300, 50, 100],
-            "backgroundColor": ["rgb(255,132,154)", "rgb(28,162,234)", "rgba(52,185,150,0.7)"]
+            "backgroundColor": ["rgb(255,112,140)", "rgb(49,186,255)", "rgba(25,185,143,0.7)"]
         }]
     },
     "options": {

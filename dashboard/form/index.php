@@ -153,7 +153,7 @@
                                     <input type="checkbox" value="<?= $valor['area_id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
                                     <span class="ml-2"> <?= $valor['name'] ?></span>
                                 </label>
-                                <div class="p-2 hidden" id="area<?= $valor['area_id'] ?>">
+                                <div class="p-3 hidden" id="area<?= $valor['area_id'] ?>">
                                     <label for="arrival_time" class="mr-6">Hora de llegada:
                                         <input type="time" id="arrival_time_area<?= $valor['area_id'] ?>" name="arrival_time_area<?= $valor['area_id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
@@ -170,6 +170,7 @@
                         <label class="block text-sm mt-5">
                             <span class="text-gray-800">Fecha</span>
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
+                            <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
                         </label>
 
                         <label class="block text-sm mt-5">

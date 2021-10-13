@@ -44,14 +44,14 @@ fetch('../api.php',{
         input = document.querySelector('.dataTable-input'),
     trtable = document.querySelector('.dataTable-table tr');
     bodytable = document.querySelector('.dataTable-table tbody');
-    table = document.querySelector('.dataTable-container table');
+    tableContainer = document.querySelector('.dataTable-container table');
 
     selector.classList.add('text-sm','w-2/12' ,'p-4' ,'m-1', 'rounded-md', 'border-gray-300', 'shadow-sm' ,'focus:border-blue-300', 'focus:ring', 'focus:ring-blue-200' ,'focus:ring-opacity-50');
     dropdown.classList.add('w-1/4');
     input.classList.add("mt-1", "text-sm" ,"w-full" ,"rounded-md", "border-gray-300", "shadow-sm" ,"focus:border-blue-300" ,"focus:ring","focus:ring-blue-200","focus:ring-opacity-50")
         trtable.classList.add('text-xs','font-semibold' ,'tracking-wide' ,'text-left', 'uppercase' ,'border-b')
     bodytable.classList.add('bg-gray-100', 'divide-y');
-    table.classList.add('h-full');
+    tableContainer.classList.add('h-full');
     });
 
 

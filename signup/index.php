@@ -12,7 +12,7 @@
         <div class="w-full flex justify-between item-center py-6">
             <div class="h-10 w-40"><img src="../assets/img/fab.png" class="h-full w-full"></div>
             
-            <a href="../index" class="no-underline font-medium text-blue-400">Regresar</a></div>
+            <a href="../" class="no-underline font-medium text-blue-400">Regresar</a></div>
         <div class="mt-8">
             <div class=" w-full px-4 sm:px-8">
                 <div class="h-2px w-full bg-gray-300 relative">

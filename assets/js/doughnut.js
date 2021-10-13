@@ -2,7 +2,7 @@
 new Chart(document.getElementById("doughnut"), {
     "type": "doughnut",
     "data": {
-        "labels": ["P1", "P2", "P3"],
+        "labels": ["Electrónica", "Láser", "Diseño en computadora"],
         "datasets": [{
             "label": "Issues",
             "data": [300, 50, 100],

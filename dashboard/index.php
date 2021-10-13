@@ -34,7 +34,7 @@
     <meta name="keywords" content="keywords,here">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="https://unpkg.com/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link href="../assets/css/tailwind.output.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -183,32 +183,31 @@
                             <table class="w-full p-5 text-gray-700">
                                 <thead>
                                     <tr>
-                                        <th class="text-left text-blue-900">Name</th>
-                                        <th class="text-left text-blue-900">Side</th>
-                                        <th class="text-left text-blue-900">Role</th>
+                                        <th class="text-left text-blue-900">Nombre</th>
+                                        <th class="text-left text-blue-900">Hora de salida</th>
+                                        <th class="text-left text-blue-900">Acción</th>
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody class="bg-gray-100 divide-y">
                                     <tr>
-                                        <td>Obi Wan Kenobi</td>
-                                        <td>Light</td>
-                                        <td>Jedi</td>
+                                        <td class="p-3">Maria Muñoz</td>
+                                        <td class="p-3"><input type="time" id="departure_time_area" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></td>
+                                        <td class="p-3"><form method="post" class="flex items-center space-x-4">
+
+                                                <button value="49" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="far fa-calendar-check"></i></button>
+                                            </form></td>
                                     </tr>
                                     <tr>
-                                        <td>Greedo</td>
-                                        <td>South</td>
-                                        <td>Scumbag</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Darth Vader</td>
-                                        <td>Dark</td>
-                                        <td>Sith</td>
+                                        <td class="p-3">Yoytec SA</td>
+                                    <td class="p-3"><input type="time" id="departure_time_area" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></td>
+                                        <td class="p-3"><form method="post" class="flex items-center space-x-4">
+
+                                                <button value="49" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="far fa-calendar-check"></i></button>
+                                            </form></td>
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <p class="py-2"><a href="#">See More issues...</a></p>
 
                         </div>
                     </div>

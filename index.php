@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
           <form class="w-5/6 sm:w-1/2 mx-auto text-center" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <img
               src="./assets/img/fab.png"
-              class="h-2/4 w-1/4 block mx-auto"
+              class="h-2/4 w-1/3 block mx-auto"
             />
             <div class="mt-10">
               <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>

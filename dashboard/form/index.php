@@ -161,7 +161,6 @@
                                     <label for="departure_time">Hora de salida:
                                         <input type="time" id="departure_time_area<?= $valor['area_id'] ?>" name="departure_time_area<?= $valor['area_id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
-
                                 </div>
                             <?php endforeach; ?>
                             <span id="feedbackareas" class="text-xs text-red-600 hidden">Por favor, seleccione las areas deseadas</span>

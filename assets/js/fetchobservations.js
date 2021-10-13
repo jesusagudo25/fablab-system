@@ -92,6 +92,20 @@ newObs.addEventListener('click', evt => {
 
     guardar.addEventListener('click', crear);
 
+    closeModal.forEach( e =>{
+        e.addEventListener('click', cerrarCrear);
+    });
+
+    function cerrarCrear(e){
+        modal.classList.toggle('hidden');
+        guardar.removeEventListener('click', crear);
+        description.value = '';
+        fecha.value = '';
+        closeModal.forEach( e =>{
+            e.removeEventListener('click', cerrarCrear);
+        });
+    }
+
     function crear(e) {
         modal.classList.toggle('hidden');
 
@@ -112,15 +126,6 @@ newObs.addEventListener('click', evt => {
         });
     }
 
-
-});
-
-closeModal.forEach( e =>{
-    e.addEventListener('click', evt => {
-        modal.classList.toggle('hidden');
-        description.value = '';
-        fecha.value = '';
-    });
 });
 
 function editar(e){
@@ -156,6 +161,20 @@ function editar(e){
 
         guardar.addEventListener('click', actualizar);
 
+        closeModal.forEach( e =>{
+            e.addEventListener('click', cerrarActualizar);
+        });
+
+        function cerrarActualizar(e){
+            modal.classList.toggle('hidden');
+            guardar.removeEventListener('click', actualizar);
+            description.value = '';
+            fecha.value = '';
+            closeModal.forEach( e =>{
+                e.removeEventListener('click', cerrarActualizar);
+            });
+        }
+
         function actualizar(evt) {
             modal.classList.toggle('hidden');
 
@@ -178,8 +197,6 @@ function editar(e){
                 location.reload();
             });
         }
-
-
 
     });
 }

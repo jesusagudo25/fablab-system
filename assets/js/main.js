@@ -58,7 +58,7 @@ $( function() {
                     document_type: tipoDocumento.value
                 },
                 success: function (data) {
-                    response(data);
+                    response(data.slice(0, 3));
                 }
             });
         },

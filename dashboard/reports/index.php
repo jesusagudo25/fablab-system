@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <?php
-    session_start();
+session_start();
 
-    if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
-        header('Location: ../../index.php');
-        die;
-    }
+if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
+    header('Location: ../../index.php');
+    die;
+}
 
-    require_once '../../app.php';
+require_once '../../app.php';
 
-    use Dompdf\Dompdf;
-    use Dompdf\Options;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
-    $pagina[] = "reports";
+$pagina[] = "reports";
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $report = new Report();
+    $report = new Report();
 
-        if(isset($_REQUEST['generar'])){
-
-            $options = new Options();
-            $options->set('isRemoteEnabled', TRUE);
-
-            $dompdf = new Dompdf($options);
-
-            #Mes del reporte o fecha
-            setlocale(LC_TIME, "spanish");
-            $currentDate = strftime("%B");
-
-            #Total  de visitantes
-            $first_day_this_month = date('Y-m-01');
-            $day_actual_month = date('Y-m-d');
-
-            $visits = new Visit();
-            $visitasNoFree = $visits->getVisitsNotFree();
-            $visitasFree = $visits->getVisitsFree();
-
-            $fecha = new DateTime();
-            $nombreArchivo = $fecha->getTimestamp().'_'.'reporte_'.$day_actual_month;
-
-            #Total de horas entre todos los visitantes
-            $timeTotal = $visits->getTimeDifTotal();
-
-            #Tabla 1 - Uso por áreas de trabajo
-            $areasTime = $visits->getTimeDifAreas();
-
-            #Tabla 2 - Uso por razon de visita
-            $razonesTime = $visits->getTimeDifRazones();
-
-            #Observaciones generales...
-            $observations = new Observation();
-            $observationsAll = $observations->getObsMonth();
-
-            session_start();
-            $user = new User();
-            $resultUser = $user->get($_SESSION['user_id']);
+    if(isset($_REQUEST['generar'])){
 
 
-            $html = '<!DOCTYPE html> <html lang="es">
+
+        #Mes del reporte o fecha
+        setlocale(LC_TIME, "spanish");
+        $currentDate = strftime("%B");
+
+        #Total  de visitantes
+        $first_day_this_month = date('Y-m-01');
+        $day_actual_month = date('Y-m-d');
+
+        $visits = new Visit();
+        $visitasNoFree = $visits->getVisitsNotFree();
+        $visitasFree = $visits->getVisitsFree();
+
+        $fecha = new DateTime();
+        $nombreArchivo = $fecha->getTimestamp().'_'.'reporte_'.$day_actual_month;
+
+        #Total de horas entre todos los visitantes
+        $timeTotal = $visits->getTimeDifTotal();
+
+        #Tabla 1 - Uso por áreas de trabajo
+        $areasTime = $visits->getTimeDifAreas();
+
+        #Tabla 2 - Uso por razon de visita
+        $razonesTime = $visits->getTimeDifRazones();
+
+        #Observaciones generales...
+        $observations = new Observation();
+        $observationsAll = $observations->getObsMonth();
+
+        session_start();
+        $user = new User();
+        $resultUser = $user->get($_SESSION['user_id']);
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf($options);
+
+        $html = '<!DOCTYPE html> <html lang="es">
             <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -177,7 +179,7 @@
                                 <table>
                                     <tr>
                                         <td class="title">
-                                            <img src="https://fablab-system.herokuapp.com/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px" />
+                                            <img src="https://fablab-system.herokuapp.com/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
                                         </td>
             
                                         <td>Informe mensual de '.$currentDate.'</td>
@@ -213,15 +215,15 @@
                             <td style="text-align: center;" width="20%">Horas</td>
                             <td style="text-align: center;" width="30%">% del total de horas</td>
                         </tr>';
-            foreach ($areasTime as $datos => $valor){
-                $html.='
+        foreach ($areasTime as $datos => $valor){
+            $html.='
                         <tr class="item">
                             <td style="text-align: center;">'.$valor['name'].'</td>
                             <td style="text-align: center;">'.$valor['diferencia'].'</td>
                             <td style="text-align: center;">'.number_format(((int)$valor['diferencia']/ (int)$timeTotal['total']) * 100 ,0).'</td>
                         </tr>';
-            }
-            $html.='</table>
+        }
+        $html.='</table>
             
                     <table style="margin-top: 30px; border: 1px solid rgb(141, 141, 141);">
                         <tr class="heading">
@@ -230,49 +232,49 @@
                             <td style="text-align: center;" width="30%">% del total de horas</td>
                         </tr>';
 
-            foreach ($razonesTime as $datos => $valor){
-                $html.='   <tr class="item">
+        foreach ($razonesTime as $datos => $valor){
+            $html.='   <tr class="item">
                             <td style="text-align: center;">'.$valor['name'].'</td>
                             <td style="text-align: center;">'.$valor['diferencia'].'</td>
                             <td style="text-align: center;">'.number_format(((int)$valor['diferencia']/ (int)$timeTotal['total']) * 100 ,0).'</td>
                         </tr>';
-            }
-            $html.='</table>
+        }
+        $html.='</table>
                     
                     <div style="
                     text-align: left; margin-top: 30px; font-size: 16px">
                     <span>Observaciones:</span>
                     <ul>';
-                    foreach ($observationsAll as $datos => $valor) {
-                        $html .= '   <li>'.$valor['description']. ' - '.$valor['name'].' , '.$valor['date'].'</li>';
-                    }
-                     $html.='</ul></div>
+        foreach ($observationsAll as $datos => $valor) {
+            $html .= '   <li>'.$valor['description']. ' - '.$valor['name'].' , '.$valor['date'].'</li>';
+        }
+        $html.='</ul></div>
                 </div>
             </body>
             </html>';
 
-            $dompdf->loadHtml($html);
+        $dompdf->loadHtml($html);
 
-            $dompdf->setPaper('A3', 'portrait');
+        $dompdf->setPaper('A3', 'portrait');
 
-            $dompdf->render();
+        $dompdf->render();
 
-            $output = $dompdf->output();
-            file_put_contents('../documents/'.$nombreArchivo.'.pdf', $output);
+        $output = $dompdf->output();
+        file_put_contents('../documents/'.$nombreArchivo.'.pdf', $output);
 
-            $report->save(ucfirst($currentDate),$resultUser['user_id'],$nombreArchivo);
+        $report->save(ucfirst($currentDate),$resultUser['user_id'],$nombreArchivo);
 
-        } else if(isset($_REQUEST['borrar'])){
-            if(file_exists($_REQUEST['direccion'])){
-                unlink($_REQUEST['direccion']);
-            }
-
-            $report->delete($_REQUEST['borrar']);
+    } else if(isset($_REQUEST['borrar'])){
+        if(file_exists($_REQUEST['direccion'])){
+            unlink($_REQUEST['direccion']);
         }
 
-        header("Location: index.php");
-
+        $report->delete($_REQUEST['borrar']);
     }
+
+    header("Location: index.php");
+
+}
 ?>
 
 <html lang="es">

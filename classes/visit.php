@@ -88,14 +88,13 @@ class Visit extends Model implements IModel
 
     public function getTimeDifAreas(){
 
-        $areastime = $this->query("SELECT a.name, HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(v.departure_time,v.arrival_time))))) AS diferencia FROM visits_areas v 
+        $areastime = $this->query("SELECT a.name, SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))) AS diferencia FROM visits_areas v 
 INNER JOIN visits s ON v.visit_id = s.visit_id 
 RIGHT JOIN areas a ON v.area_id = a.area_id
 WHERE (s.date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE())
 OR (TIMEDIFF(v.departure_time,v.arrival_time) IS NULL)
 OR (TIMEDIFF(v.departure_time,v.arrival_time) IS NOT NULL)
-GROUP BY a.area_id
-        ");
+GROUP BY a.area_id");
 
         $total = $areastime->fetchAll(PDO::FETCH_ASSOC);
 
@@ -114,7 +113,7 @@ WHERE (s.date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE()
 
     public function getTimeDifRazones(){
 
-        $razonestime = $this->query("SELECT r.name, HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(va.departure_time,va.arrival_time))))) AS diferencia FROM visits v 
+        $razonestime = $this->query("SELECT r.name, SUM(HOUR(TIMEDIFF(va.departure_time,va.arrival_time))) AS diferencia FROM visits v 
 INNER JOIN visits_areas va ON v.visit_id = va.visit_id 
 RIGHT JOIN reason_visits r ON v.reason_id = r.reason_id
 WHERE (v.date BETWEEN CAST(DATE_FORMAT(NOW() ,'%Y-%m-01') as DATE) AND CURDATE())

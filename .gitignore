@@ -1,6 +1,4 @@
 vendor/
 .env
-assets/img
 .idea
 *.log
-*.pdf

@@ -177,7 +177,7 @@
                                 <table>
                                     <tr>
                                         <td class="title">
-                                            <img src="http://jagudodeveloper.educationhost.cloud/img/fab.png" alt="Company logo" style="width: 100%; max-width: 300px" />
+                                            <img src="https://fablab-system.herokuapp.com/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px" />
                                         </td>
             
                                         <td>Informe mensual de '.$currentDate.'</td>

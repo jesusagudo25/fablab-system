@@ -69,6 +69,8 @@ registrar.addEventListener('click',evt => {
             errores.corregimiento = "Por favor, proporcione un corregimiento";
         }
 
+        console.log(provincia.value,distrito.value,corregimiento.value);
+
         datos['newCustomer'] = {
             tipo_documento: tipoDocumento.value,
             documento: inputDocumento.value,

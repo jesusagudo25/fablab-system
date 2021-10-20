@@ -24,7 +24,7 @@ fetch('./api.php',{
 
         function renderInput(data, cell, row) {
             return `
-                <input type="time" id="visit${row.children[2].textContent}area${row.children[3].textContent}" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">`;
+                <input type="time" id="visit${row.children[3].textContent}area${row.children[4].textContent}" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">`;
         }
 
         let table = new simpleDatatables.DataTable(".table", {
@@ -36,9 +36,9 @@ fetch('./api.php',{
             scrollY: true,
             scrollX: true,
             columns: [
-                { select: 1, render: renderInput },
-                { select: 2, render: renderButton },
-                { select: 3, hidden: true },
+                { select: 2, render: renderInput },
+                { select: 3, render: renderButton },
+                { select: 4, hidden: true },
 
             ]
         });

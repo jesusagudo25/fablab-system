@@ -37,7 +37,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
 
     public function save(...$args)
     {
-        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,province,city,township) VALUES (:document_type, :document ,:code ,:name, :email, :telephone, :province, :city, :township)');
+        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,province_id,district_id,township_id) VALUES (:document_type, :document ,:code ,:name, :email, :telephone, :province, :city, :township)');
 
         $nuevoCliente->execute([
             'document_type'=>$this->document_type,
@@ -60,9 +60,10 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
     }
 
     public function getLabo(){
-        $query = $this->query('SELECT c.name AS Nombre, va.departure_time AS "Fecha de salida", v.visit_id AS Acción, va.area_id FROM visits v
+        $query = $this->query('SELECT c.name AS Nombre,a.name AS Area,va.departure_time AS "Hora de salida", v.visit_id AS Acción, va.area_id FROM visits v
                                         INNER JOIN visits_areas va ON v.visit_id = va.visit_id
                                         INNER JOIN customers c ON v.customer_id = c.customer_id
+INNER JOIN areas a ON va.area_id = a.area_id
                                         WHERE (va.departure_time = "00:00:00")');
         $customers = $query->fetchAll(PDO::FETCH_ASSOC);
 

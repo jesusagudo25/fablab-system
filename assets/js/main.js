@@ -24,6 +24,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
 //Informacion inicial
 
 function cargarDistritoCorregimiento() {
+    distrito.innerHTML = '';
     fetch('./functions.php',{
         method: "POST",
         mode: "same-origin",
@@ -48,7 +49,7 @@ function cargarDistritoCorregimiento() {
 
 
             })
-
+            corregimiento.innerHTML = '';
             fetch('./functions.php',{
                 method: "POST",
                 mode: "same-origin",

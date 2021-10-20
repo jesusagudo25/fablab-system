@@ -5,7 +5,7 @@
             <div class="flex w-full md:w-1/3 ">
                 <div class="px-8">
                     <h3 class="font-bold font-bold text-gray-900">Sobre nosotros</h3>
-                    <p class="py-4 text-gray-600 text-sm">
+                    <p class="py-4 text-gray-600 text-sm text-justify">
                         Somos un taller de fabricación digital de uso personal, es decir, un espacio de producción de objetos físicos a escala personal o local que agrupa máquinas controladas por ordenadores.
                     </p>
                 </div>
@@ -19,8 +19,6 @@
 
                             <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Politica de privacidad</a> |
 
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Politica de cookies</a>
-
                     </div>
                 </div>
             </div>
@@ -30,9 +28,9 @@
                     <h3 class="font-bold font-bold text-gray-900">Soporte</h3>
                     <div class="items-center text-sm pt-3">
                         <label class="text-sm">
-                            <span class="text-gray-800">Contacta a un administrador</span>
+                            <span class="text-gray-800 text-justify">Contacta a un administrador</span>
                             <textarea class="text-sm mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation"></textarea>
-                            <button value="reporte" type="submit" name="generar" class="mt-2 w-1/2 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Enviar</button>
+                            <button value="reporte" type="submit" name="generar" class="mt-2 w-5/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Enviar</button>
                         </label>
 
                     </div>

@@ -21,8 +21,8 @@ let table;
             function renderButton(data, cell, row) {
                 return `
                 <div class="flex items-center space-x-4">
-                    <button value="${data}" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>
-                    <button value="${data}" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-600 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button>
+                    <button value="${data}" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>
+                    <button value="${data}" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button>
                 </div>`;
             }
 
@@ -65,7 +65,7 @@ let table;
             tableContainer = document.querySelector('.dataTable-container table');
 
 
-            selector.classList.add('text-sm','w-2/12' ,'p-4' ,'m-1', 'rounded-md', 'border-gray-300', 'shadow-sm' ,'focus:border-blue-300', 'focus:ring', 'focus:ring-blue-200' ,'focus:ring-opacity-50');
+            selector.classList.add('text-sm','w-2/6' ,'p-4' ,'m-1', 'rounded-md', 'border-gray-300', 'shadow-sm' ,'focus:border-blue-300', 'focus:ring', 'focus:ring-blue-200' ,'focus:ring-opacity-50');
             dropdown.classList.add('w-1/4');
             input.classList.add("mt-1", "text-sm" ,"w-full" ,"rounded-md", "border-gray-300", "shadow-sm" ,"focus:border-blue-300" ,"focus:ring","focus:ring-blue-200","focus:ring-opacity-50")
             trtable.classList.add('text-xs','font-semibold' ,'tracking-wide' ,'text-left', 'uppercase' ,'border-b')

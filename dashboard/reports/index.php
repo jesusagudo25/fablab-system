@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="w-full p-3">
                 <!--Graph Card-->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                    <button value="reporte" type="submit" name="generar" class="w-1/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte</button>
+                    <button value="reporte" type="submit" name="generar" class="w-2/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte</button>
                 </form>
                 <!--/Graph Card-->
             </div>

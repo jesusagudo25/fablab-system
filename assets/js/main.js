@@ -178,6 +178,9 @@ $( function() {
         select: function (event, ui) {
             $('#autoComplete').val(ui.item.label); // display the selected text
             idHidden.value = ui.item.id;
+            if(ui.item.code == ''){
+                codigo.placeholder = 'Sin código asignado';
+            }
             codigo.value = ui.item.code;
             codigo.disabled = true;
             codigo.classList.add('bg-gray-300');
@@ -389,6 +392,7 @@ function restore() {
 
     codigo.disabled = false;
     codigo.value = '';
+    codigo.placeholder= 'Ingrese el codigo de cliente CIDETE';
     codigo.classList.remove('bg-gray-300');
     codigo.classList.remove('cursor-not-allowed');
     nombreUsuario.disabled = false;

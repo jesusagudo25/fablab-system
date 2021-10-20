@@ -64,7 +64,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             <div class="mt-10">
               <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>
               <p class="mt-3 text-gray-800">
-                ¿Nuevo usuario? <a href="./signup/" class="text-blue-400">Regístrate ahora</a>
+                ¿Nuevo usuario? <a href="./signup/" class="text-blue-500">Regístrate ahora</a>
               </p>
             </div>
             <div class="mt-12">
@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                     <input
                       type="email"
                       name="email"
-                      class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400 focus:ring-0"
+                      class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-500 focus:ring-0"
                       placeholder="Correo electrónico"
                       required
                     />
@@ -87,7 +87,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                     <input
                       type="password"
                       name="password"
-                      class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400 focus:ring-0"
+                      class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-500 focus:ring-0"
                       placeholder="Contraseña"
                       required
                     />
@@ -106,14 +106,14 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                 </div>
               <div class="my-6">
                 <button
-                  class="inline-block rounded-sm font-medium border border-solid cursor-pointer text-center text-base py-3 px-6 text-white bg-blue-400 border-blue-400 hover:bg-blue-600 hover:border-blue-600 w-full"
+                  class="inline-block rounded-sm font-medium border border-solid cursor-pointer text-center text-base py-3 px-6 text-white bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 w-full"
                   type="submit"
                 >
                 Iniciar sesión
                 </button>
               </div>
               <div class="text-right">
-                <a href="#" class="text-blue-400">¿Olvidaste tu contraseña?</a>
+                <a href="#" class="text-blue-500">¿Olvidaste tu contraseña?</a>
               </div>
               <div class="mt-6 border-t border-b border-gray-300">
                 <div class="my-6">
@@ -121,7 +121,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                     <input
                       type="checkbox"
                       name="rememberMe"
-                      class="w-6 h-6 border border-gray-300 rounded-sm outline-none cursor-pointer text-blue-400 shadow-sm focus:border-blue-400 focus:ring focus:ring-offset-0 focus:ring-blue-400 focus:ring-opacity-50"
+                      class="w-6 h-6 border border-gray-300 rounded-sm outline-none cursor-pointer text-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-offset-0 focus:ring-blue-500 focus:ring-opacity-50"
                       checked=""
                     /><label class="ml-2 text-sm" for="rememberMe"
                       >Recuerda este dispositivo
@@ -131,8 +131,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
               </div>
               <p class="text-sm mt-6 text-left">
                 Al continuar, acepta nuestros
-                <a href="#" class="text-blue-400">Términos de uso</a> y
-                <a href="#" class="text-blue-400">Política de privacidad</a>.
+                <a href="#" class="text-blue-500">Términos de uso</a> y
+                <a href="#" class="text-blue-500">Política de privacidad</a>.
               </p>
             </div>
           </form>

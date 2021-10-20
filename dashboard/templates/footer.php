@@ -17,7 +17,7 @@
                     <div class="items-center text-sm pt-3">
                             <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Términos de uso</a> |
 
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Politica de privacidad</a> |
+                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Politica de privacidad</a>
 
                     </div>
                 </div>

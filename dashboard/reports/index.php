@@ -193,8 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <table>
                                     <tr>
                                         <td>
-                                            Total de visitantes por razones economicas: '.$visitasNoFree['total'].'<br />
                                             Total de visitantes por razones sociales: '.$visitasFree.'<br />
+                                            Total de visitantes por razones economicas: '.$visitasNoFree['total'].'<br />
                                             Total de horas entre todos los visitantes por razones economicas: '.$timeTotal['total'].'
                                         </td>
             

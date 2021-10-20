@@ -18,12 +18,13 @@ fetch('./api.php',{
         // Price column cell manipulation
         function renderButton(data, cell, row) {
             return `
-                <button value="${data}" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="far fa-calendar-check"></button>`;
+                <button value="${data}" type="button" name="actualizar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="actualizar(this,${row.lastElementChild.textContent})"><i class="far fa-calendar-check"></i></button>
+`;
         }
 
         function renderInput(data, cell, row) {
             return `
-                <input type="time" id="departure_time_area" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">`;
+                <input type="time" id="visit${row.children[2].textContent}area${row.children[3].textContent}" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">`;
         }
 
         let table = new simpleDatatables.DataTable(".table", {
@@ -56,3 +57,26 @@ fetch('./api.php',{
         bodytable.classList.add('bg-gray-100', 'divide-y');
         tableContainer.classList.add('h-full');
     });
+
+function actualizar(e,h) {
+
+    const hora = document.querySelector('#visit'+e.value+'area'+h);
+
+    fetch('./api.php',{
+      method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: "u",
+                visit_id: e.value,
+                area_id: h,
+                departure_time: hora.value
+            }})
+    })
+        .then(data =>{
+            location.reload();
+        });
+}

@@ -28,7 +28,14 @@ if ($contentType === "application/json") {
             $customers = $customer->getLabo();
             echo json_encode($customers);
         }
+        else if($decoded['datos']['solicitud'] == 'u'){
+            $visit = new VisitArea();
+            $visit->setVisitId($decoded['datos']['visit_id']);
+            $visit->setAreaId($decoded['datos']['area_id']);
+            $visit->setDepartureTime($decoded['datos']['departure_time']);
+            $visit->setLabo();
 
+        }
 
 
     } else {

@@ -21,14 +21,15 @@ class Customer extends Model implements IModel
 
     public function getAjax($documento,$tipo){
 
-        $query = $this->prepare("SELECT * FROM customers WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type = :tipo");
+        $query = $this->prepare("SELECT document, customer_id, code, name, email, telephone, province_id, district_id, township_id  FROM customers c
+WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type = :tipo");
         $query->execute([
             'documento' => $documento,
             'tipo'=>$tipo
         ]);
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $datos[] = array("label" => $row['document'], "id" => $row['customer_id']);
+            $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "code" => $row['code'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'], "province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
         }
 
         return $datos;

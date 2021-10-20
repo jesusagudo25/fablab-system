@@ -13,6 +13,9 @@
     $area = new Area();
     $areaAll = $area->getAll();
 
+    $province = new Province();
+    $provinceAll = $province->getAll();
+
     $pagina[] = "form";
 ?>
 <!DOCTYPE html>
@@ -52,7 +55,7 @@
                     </div>
                     <div class="p-5 flex justify-between flex-wrap items-center">
                         <label class="text-sm w-1/2">
-                            <span class="text-gray-800">Tipo de documento</span>
+                            <span class="text-gray-800">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
                                 <option value="R">RUC</option>
                                 <option value="C">Cédula</option>
@@ -61,11 +64,11 @@
                         </label>
 
                         <label class="text-sm w-5/12">
-                            <span class="text-gray-800" id="tituloDocumento">RUC</span>
+                            <span class="text-gray-800" id="tituloDocumento">Numero de RUC</span>
                             <div class="relative">
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="30394-0002-238626" name="documento" required type="text" id="autoComplete" autocomplete="false">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                 <input type="hidden" name="id_customer">
-                                <button id="action" class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
+                                <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
                                     <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
@@ -74,54 +77,47 @@
 
                         <div class="w-full flex justify-between flex-wrap items-center hidden" id="containerregister">
                             <label class="text-sm w-1/2 mt-5">
-                                <span class="text-gray-800">Codigo de usuario</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="362843" type="number" name="codigo" min="0" required autocomplete="off">
+                                <span class="text-gray-800">Codigo de cliente CIDETE</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="0" required autocomplete="off">
 
                             </label>
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Nombre</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Avicola Grecia" type="text" name="name" required autocomplete="off">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
 
                             </label>
 
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800">Correo</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="ejemplo@ejemplo.com" type="email" name="email" required autocomplete="off">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
 
                             </label>
 
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Telefono</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="800-5000" type="tel" name="telefono" required autocomplete="off">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
 
                             </label>
 
                             <label class="text-sm w-1/2 mt-5">
-                                <span class="text-gray-800">Provincia</span>
+                                <span class="text-gray-800">Selecciona la provincia</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
-                                    <option value="Bocas del toro">Bocas del Toro</option>
-                                    <option value="Coclé">Coclé</option>
-                                    <option value="Colón">Colón</option>
-                                    <option value="Chiriquí">Chiriquí</option>
-                                    <option value="Darién">Darién</option>
-                                    <option value="Herrera">Herrera</option>
-                                    <option value="Los Santos">Los Santos</option>
-                                    <option value="Panamá">Panamá</option>
-                                    <option value="Veraguas">Veraguas</option>
-                                    <option value="Panamá Oeste">Panamá Oeste</option>
+                                    <?php foreach ($provinceAll as $datos => $valor): ?>
+                                        <option value="<?= $valor['province_id'] ?>" <?= $valor['name'] == 'Veraguas'  ? 'selected' : '' ?>><?= $valor['name'] ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </label>
 
                             <label class="text-sm w-5/12 mt-5">
-                                <span class="text-gray-800">Ciudad</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Santiago" type="text" name="ciudad" required autocomplete="off">
-
+                                <span class="text-gray-800">Selecciona el distrito</span>
+                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
+                                </select>
                             </label>
 
                             <label class="text-sm w-1/2 mt-5">
-                                <span class="text-gray-800">Corregimiento</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Nuevo Santiago" type="text" name="corregimiento" required autocomplete="off">
-
+                                <span class="text-gray-800">Selecciona el corregimiento</span>
+                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
+                                </select>
                             </label>
 
                         </div>
@@ -138,7 +134,7 @@
                     </div>
                     <form class="p-5">
                         <label class="block text-sm">
-                            <span class="text-gray-800">Razón de visita</span>
+                            <span class="text-gray-800">Seleccione la razón de visita</span>
                             <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <?php foreach ($reasonAll as $datos => $valor): ?>
                                     <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?>"><?= $valor['name'] ?></option>
@@ -147,7 +143,7 @@
                         </label>
 
                         <div class="text-sm mt-5" id="containerarea">
-                            <span class="text-gray-800">Área de trabajo</span>
+                            <span class="text-gray-800">Seleccione las áreas de trabajo</span>
                             <?php foreach ($areaAll as $datos => $valor): ?>
                                 <label class="flex items-center mt-4">
                                     <input type="checkbox" value="<?= $valor['area_id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
@@ -167,19 +163,19 @@
                         </div>
 
                         <label class="block text-sm mt-5">
-                            <span class="text-gray-800">Fecha</span>
+                            <span class="text-gray-800">Seleccione la fecha de la visita</span>
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
                             <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
                         </label>
 
                         <label class="block text-sm mt-5">
-                            <span class="text-gray-800">Observación complementaría</span>
-                            <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="observation" ></textarea>
+                            <span class="text-gray-800">Observación complementaria</span>
+                            <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observation" ></textarea>
                         </label>
 
                         <hr class="my-8">
                         <div class="flex justify-center items-center">
-                            <input type="submit" value="Registrar" class="w-2/5 px-4 py-2 text-m font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                            <input type="submit" value="Registrar" class="w-3/5 px-4 py-2 text-m font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
                         </div>
                     </form>
                 </div>
@@ -201,6 +197,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= constant('URL')?>assets/js/main.js"></script>
+<script src="<?= constant('URL')?>assets/js/saveform.js"></script>
 <script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
 
 </body>

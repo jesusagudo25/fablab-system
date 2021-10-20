@@ -28,7 +28,7 @@ class Visit extends Model implements IModel
             $customer->setEmail($newCustomer['email']);
             $customer->setTelephone($newCustomer['telefono']);
             $customer->setProvince($newCustomer['provincia']);
-            $customer->setCity($newCustomer['ciudad']);
+            $customer->setCity($newCustomer['distrito']);
             $customer->setTownship($newCustomer['corregimiento']);
             $customer->save();
             $this->customer_id = $customer->getLastID();

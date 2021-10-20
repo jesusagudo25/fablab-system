@@ -6,40 +6,152 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     nombreUsuario = document.querySelector('input[name="name"]'),
     areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
     razonVisita = document.querySelector('select[name="razonvisita"]'),
-    containerArea = document.querySelector('#containerarea')
-    idHidden = document.querySelector('input[type="hidden"]')
+    containerArea = document.querySelector('#containerarea'),
+    idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     containerRegister = document.querySelector('#containerregister'),
         registrar = document.querySelector('input[type="submit"]'),
-    observacion = document.querySelector('textarea[name="observation"]')
+    observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
-    feedbackdocumento = document.querySelector('#feedbackdocumento');
+    feedbackdocumento = document.querySelector('#feedbackdocumento'),
+        codigo = document.querySelector('input[name="codigo"]'),
+    email = document.querySelector('input[name="email"]'),
+    telefono = document.querySelector('input[name="telefono"]'),
+    provincia = document.querySelector('select[name="provincia"]'),
+    distrito = document.querySelector('select[name="distrito"]'),
+    corregimiento = document.querySelector('select[name="corregimiento"]');
+
+//Informacion inicial
+
+function cargarDistritoCorregimiento() {
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: "d",
+                id: provincia.value
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            data.forEach(e=>{
+                if(e.name == 'Santiago'){
+                    distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
+                }
+                else{
+                    distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
+                }
+
+
+            })
+
+            fetch('./functions.php',{
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({datos: {
+                        solicitud: "c",
+                        id: distrito.value
+                    }})
+            })
+                .then(res => res.json())
+                .then(data =>{
+                    data.forEach(e=>{
+                        if(e.name == 'Santiago'){
+                            corregimiento.innerHTML += `<option value="${e.township_id}" selected >${e.name}</option>`;
+                        }
+                        else{
+                            corregimiento.innerHTML += `<option value="${e.township_id}" >${e.name}</option>`;
+                        }
+
+                    })
+                });
+        });
+
+}
+
+cargarDistritoCorregimiento();
+
+
+//Algoritmo Provincia-Distrito-Corregimiento
+
+provincia.addEventListener('change', evt => {
+
+    distrito.innerHTML = '';
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: "d",
+                id: evt.target.value
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            data.forEach(e=>{
+                distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
+            })
+            triggerChange(distrito);
+        });
+
+});
+
+distrito.addEventListener('change', evt => {
+
+    corregimiento.innerHTML = '';
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: "c",
+                id: evt.target.value
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            data.forEach(e=>{
+                corregimiento.innerHTML += `<option value="${e.township_id}" >${e.name}</option>`;
+            })
+        });
+});
+
 
 //Tipo de documento -> RUC/CEDULA/PASAPORTE
-
 const TIPOS_DOCUMENTOS = {
     C: () => {
-        tituloDocumento.textContent = 'Cédula';
-        inputDocumento.placeholder = "9-725-2312";
-        nombreUsuario.placeholder = "Carla Batista";
-        feedbackdocumento.textContent = 'Por favor, proporcione una cédula';
+        tituloDocumento.textContent = 'Número de cédula';
+        inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
     },
     R: () => {
-        tituloDocumento.textContent = 'RUC';
-        inputDocumento.placeholder = "30394-0002-238626";
-        nombreUsuario.placeholder = "Yoytec SA";
-        feedbackdocumento.textContent = 'Por favor, proporcione un RUC';
+        tituloDocumento.textContent = 'Número de RUC';
+        inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
     },
     P: () => {
-        tituloDocumento.textContent = 'Pasaporte';
-        inputDocumento.placeholder = "O300004";
-        nombreUsuario.placeholder = "Carla Batista";
-        feedbackdocumento.textContent = 'Por favor, proporcione un pasaporte'
+        tituloDocumento.textContent = 'Número de Pasaporte';
+        inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
     }
 }
 
 tipoDocumento.addEventListener('change', evt => {
     TIPOS_DOCUMENTOS[evt.target.value]();
+    inputDocumento.value = '';
+    triggerKeyup(inputDocumento)
+
 });
 
 //Se realiza un autocomplete buscando el cliente, en caso de no encontrase aparecera un signo de (+) para agregarlo
@@ -65,12 +177,106 @@ $( function() {
         select: function (event, ui) {
             $('#autoComplete').val(ui.item.label); // display the selected text
             idHidden.value = ui.item.id;
+            codigo.value = ui.item.code;
+            codigo.disabled = true;
+            codigo.classList.add('bg-gray-300');
+            codigo.classList.add('cursor-not-allowed');
+            nombreUsuario.value = ui.item.name;
+            nombreUsuario.disabled = true;
+            nombreUsuario.classList.add('bg-gray-300');
+            nombreUsuario.classList.add('cursor-not-allowed');
+            email.value = ui.item.email;
+            email.disabled = true;
+            email.classList.add('bg-gray-300');
+            email.classList.add('cursor-not-allowed');
+            telefono.value = ui.item.telephone;
+            telefono.disabled = true;
+            telefono.classList.add('bg-gray-300');
+            telefono.classList.add('cursor-not-allowed');
+            //provincia
+            Array.from(provincia.options).forEach( (opt) =>{
+                if(opt.value == ui.item.province){
+                    opt.selected = true;
+                }
+            });
+
+            provincia.disabled = true;
+            provincia.classList.add('bg-gray-300');
+            provincia.classList.add('cursor-not-allowed');
+            //distrito
+            //distrito.innerHTML= `<option value="${ui.item.district}" >${e.name}</option>`;
+            distrito.innerHTML = '';
+            fetch('./functions.php',{
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({datos: {
+                        solicitud: "d",
+                        id: provincia.value
+                    }})
+            })
+                .then(res => res.json())
+                .then(data =>{
+                    data.forEach(e=>{
+                        distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
+                    })
+                    Array.from(distrito.options).forEach( (opt) =>{
+                        if(opt.value == ui.item.district){
+                            opt.selected = true;
+                        }
+                    });
+//---------------------------------
+                    corregimiento.innerHTML = '';
+                    fetch('./functions.php',{
+                        method: "POST",
+                        mode: "same-origin",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({datos: {
+                                solicitud: "c",
+                                id: distrito.value
+                            }})
+                    })
+                        .then(res => res.json())
+                        .then(data =>{
+                            data.forEach(e=>{
+                                corregimiento.innerHTML += `<option value="${e.township_id}" >${e.name}</option>`;
+                            })
+                            Array.from(corregimiento.options).forEach( (opt) =>{
+                                if(opt.value == ui.item.township){
+                                    opt.selected = true;
+                                }
+                            });
+                        });
+                });
+
+            distrito.disabled = true;
+            distrito.classList.add('bg-gray-300');
+            distrito.classList.add('cursor-not-allowed');
+
+            //corregimiento
+            //corregimiento.innerHTML= `<option value="${ui.item.township}" >${e.name}</option>`;
+            corregimiento.disabled = true;
+            corregimiento.classList.add('bg-gray-300');
+            corregimiento.classList.add('cursor-not-allowed');
+
             Toastify({
                 text: "Visitante seleccionado",
                 duration: 3000,
-                backgroundColor: "linear-gradient(to right, #00b09b, #059669)",
+                backgroundColor: "#10B981",
             }).showToast();
+
+            accion.innerHTML = '<i class="fas fa-eye"></i>';
+            accion.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+            accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
+
             return false;
+
         }
 
     });
@@ -78,8 +284,17 @@ $( function() {
 
 });
 
+function triggerChange(element){
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+}
 
-//Dependiendo la razon social (NOTFREE, FREE) aparecera la seccion de area de trabajo
+function triggerKeyup(element){
+    let changeEvent = new Event('keyup');
+    element.dispatchEvent(changeEvent);
+}
+
+//Dependiendo la razon social (NOTFREE, FREE) aparecera la seccion de area de trabajo9-122-3923
 let optionSelected = razonVisita.options[razonVisita.selectedIndex];
 
 razonVisita.addEventListener('change', evt => {
@@ -105,154 +320,104 @@ areasTrabajo.forEach(evt =>{
 //Button action
 
 accion.addEventListener('click',evt => {
-    if(evt.currentTarget.classList.contains('bg-green-600')){
+
+   //Se puede aplicar paradigma de objetos...
+
+    if(evt.currentTarget.children[0].classList.contains('fa-user-plus')){
         containerRegister.classList.remove('hidden');
         evt.currentTarget.innerHTML = '<i class="fas fa-user-times"></i>';
-        evt.currentTarget.classList.remove('bg-green-600', 'active:bg-green-600', 'hover:bg-green-700');
-        evt.currentTarget.classList.add('bg-red-600', 'active:bg-red-600', 'hover:bg-red-700');
+        evt.currentTarget.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+        evt.currentTarget.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
 
         Toastify({
-            text: "Se registrará un nuevo usuario",
+            text: "Se registrará un nuevo cliente",
             duration: 3000,
-            backgroundColor: "linear-gradient(to right, #00b09b, #059669)",
+            backgroundColor: "#10B981",
         }).showToast();
+
     }
-    else{
+    else if(evt.currentTarget.children[0].classList.contains('fa-user-times')){
         containerRegister.classList.add('hidden');
         evt.currentTarget.innerHTML = '<i class="fas fa-user-plus"></i>';
-        evt.currentTarget.classList.remove('bg-red-600', 'active:bg-red-600', 'hover:bg-red-700');
-        evt.currentTarget.classList.add('bg-green-600', 'active:bg-green-600', 'hover:bg-green-700');
+        evt.currentTarget.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+        evt.currentTarget.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+    }
+    else if(evt.currentTarget.children[0].classList.contains('fa-eye')){
+        containerRegister.classList.remove('hidden');
+        evt.currentTarget.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        evt.currentTarget.classList.remove('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
+        evt.currentTarget.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+        Toastify({
+            text: "Datos del cliente",
+            duration: 3000,
+            backgroundColor: "#10B981",
+        }).showToast();
+    }
+    else if(evt.currentTarget.children[0].classList.contains('fa-eye-slash')){
+        containerRegister.classList.add('hidden');
+        evt.currentTarget.innerHTML = '<i class="fas fa-eye"></i>';
+        evt.currentTarget.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+        evt.currentTarget.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
     }
 });
 
-//###########Form validation##########
-registrar.addEventListener('click',evt => {
-    evt.preventDefault();
-    let areas = [];
-    let errores = {};
-    let datos = {
-        id_razonvisita: razonVisita.value,
-        fecha: fecha.value,
-    };
+inputDocumento.addEventListener('keyup', evt => {
 
-    if(optionSelected.classList.contains('notfree')){
-        areasTrabajo.forEach(evt =>{
-            if(evt.checked){
-                let area = {
-                    id: evt.value,
-                    arrival_time: document.querySelector('#arrival_time_area'+evt.value).value,
-                    departure_time: document.querySelector('#departure_time_area'+evt.value).value
-                }
-
-                if(area.arrival_time.trim().length == 0){
-                    errores.areallegada = "Por favor, proporcione una hora de llegada";
-                }
-                areas.push(area);
-            }
-        });
-
-        if(areas.length == 0){
-            errores.areas = "Por favor, seleccione las areas deseadas";
-        }
-
-        datos["areasChecked"] = areas;
+    if(evt.target.value.length == 1){
+        restore();
     }
 
-    if(observacion.value.trim().length != 0){
-        datos["observacion"] = observacion.value;
-    }
-
-    if(fecha.value.trim().length == 0){
-        errores.fecha = "Por favor, seleccione una fecha";
-    }
-
-    if(inputDocumento.value.trim().length == 0){
-        errores.documento = feedbackdocumento.value;
-    }
-
-    if(containerRegister.classList.contains('hidden')){
-        if(idHidden.value.trim().length != 0){
-            datos['id_cliente'] = idHidden.value;
-        }
-        else{
-            errores.id = "Por favor, seleccione un cliente";
-        }
+    if(evt.target.value != ''){
+        accion.classList.remove('hidden');
     }
     else{
-        const  codigo = document.querySelector('input[name="codigo"]').value,
-            email = document.querySelector('input[name="email"]').value,
-            telefono = document.querySelector('input[name="telefono"]').value,
-            provincia = document.querySelector('select[name="provincia"]').value,
-            ciudad = document.querySelector('input[name="ciudad"]').value,
-            corregimiento = document.querySelector('input[name="corregimiento"]').value;
+        accion.classList.add('hidden');
+        restore();
 
-        if(nombreUsuario.value.trim().length == 0){
-            errores.correo = "Por favor, proporcione un nombre";
-        }
-
-        if(email.trim().length == 0){
-            errores.correo = "Por favor, proporcione un correo";
-        }
-
-        if(telefono.trim().length == 0){
-            errores.telefono = "Por favor, proporcione un telefono";
-        }
-
-        if(provincia.trim().length == 0){
-            errores.provincia = "Por favor, proporcione una provincia";
-        }
-
-        if(ciudad.length == 0){
-            errores.ciudad = "Por favor, proporcione una ciudad";
-        }
-
-        if(corregimiento.length == 0){
-            errores.corregimiento = "Por favor, proporcione un corregimiento";
-        }
-
-        datos['newCustomer'] = {
-            tipo_documento: tipoDocumento.value,
-            documento: inputDocumento.value,
-            codigo: codigo,
-            nombre: nombreUsuario.value,
-            email: email,
-            telefono: telefono,
-            provincia: provincia,
-            ciudad: ciudad,
-            corregimiento: corregimiento
-        }
     }
-
-    if(Object.keys(errores).length > 0){
-        Swal.fire({
-            title: 'Error!',
-            text: 'Existen campos incompletos.',
-            icon: 'error',
-            confirmButtonColor: '#d95252'
-        });
-    }
-    else{
-        fetch('./saveform.php',{
-            method: "POST",
-            mode: "same-origin",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({datos: datos})
-        })
-            .then(data =>{
-                Swal.fire({
-                    title: 'La visita se ha guardado!',
-                    allowOutsideClick: false,
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    }
-                });
-            });
-    }
-
 });
+
+function restore() {
+    containerRegister.classList.add('hidden');
+    idHidden.value = '';
+    accion.innerHTML = '<i class="fas fa-user-plus"></i>';
+    accion.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+    accion.classList.remove('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
+    accion.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+
+
+    codigo.disabled = false;
+    codigo.value = '';
+    codigo.classList.remove('bg-gray-300');
+    codigo.classList.remove('cursor-not-allowed');
+    nombreUsuario.disabled = false;
+    nombreUsuario.value = '';
+    nombreUsuario.classList.remove('bg-gray-300');
+    nombreUsuario.classList.remove('cursor-not-allowed');
+    email.disabled = false;
+    email.value = '';
+    email.classList.remove('bg-gray-300');
+    email.classList.remove('cursor-not-allowed');
+    telefono.disabled = false;
+    telefono.value = '';
+    telefono.classList.remove('bg-gray-300');
+    telefono.classList.remove('cursor-not-allowed');
+    provincia.classList.remove('bg-gray-300');
+    provincia.classList.remove('cursor-not-allowed');
+    provincia.disabled = false;
+    distrito.classList.remove('bg-gray-300');
+    distrito.classList.remove('cursor-not-allowed');
+    distrito.disabled = false;
+    corregimiento.classList.remove('bg-gray-300');
+    corregimiento.classList.remove('cursor-not-allowed');
+    corregimiento.disabled = false;
+
+    //provincia.value = ui.item.province;
+    Array.from(provincia.options).forEach( (opt) =>{
+        if(opt.text == 'Veraguas'){
+            opt.selected = true;
+        }
+    });
+
+    cargarDistritoCorregimiento();
+}

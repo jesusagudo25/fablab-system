@@ -18,7 +18,10 @@ class Township extends Model implements IModel
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $query = $this->query('SELECT * FROM townships');
+        $townships = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $townships;
     }
 
     public function get($id)
@@ -34,16 +37,6 @@ class Township extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
-    }
-
-    public function getForDistrict(){
-        $township = $this->prepare('SELECT * FROM townships WHERE district_id = :id');
-        $township->execute([
-            'id'=>$this->district_id
-        ]);
-        $townships = $township->fetchAll(PDO::FETCH_ASSOC);
-
-        return $townships;
     }
 
     /**

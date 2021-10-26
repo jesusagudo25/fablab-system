@@ -34,7 +34,16 @@ if ($contentType === "application/json") {
             $visit->setAreaId($decoded['datos']['area_id']);
             $visit->setDepartureTime($decoded['datos']['departure_time']);
             $visit->setLabo();
-
+        }
+        else if($decoded['datos']['solicitud'] == 'd'){
+            $district = new District();
+            $districts = $district->getAll();
+            echo json_encode($districts);
+        }
+        else if($decoded['datos']['solicitud'] == 'c'){
+            $township = new Township();
+            $townships = $township->getAll();
+            echo json_encode($townships);
         }
 
 

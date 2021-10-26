@@ -45,43 +45,72 @@ registrar.addEventListener('click',evt => {
 
     if(accion.children[0].classList.contains('fa-user-times')){
 
+        newCustomer = {
+            codigo: codigo.value,
+            tipo_documento: tipoDocumento.value,
+            documento: inputDocumento.value,
+        };
+
         if(nombreUsuario.value.trim().length == 0){
             errores.correo = "Por favor, proporcione un nombre";
+        }
+        else{
+            newCustomer.nombre = nombreUsuario.value;
         }
 
         if(email.value.trim().length == 0){
             errores.correo = "Por favor, proporcione un correo";
         }
+        else{
+            newCustomer.email = email.value;
+        }
 
         if(telefono.value.trim().length == 0){
             errores.telefono = "Por favor, proporcione un telefono";
         }
+        else{
+            newCustomer.telefono = telefono.value;
+        }
 
         if(provincia.value.trim().length == 0){
-            errores.provincia = "Por favor, proporcione una provincia";
+            errores.provincia = "Por favor, seleccione una provincia";
+        }
+        else{
+            newCustomer.provincia = provincia.value;
         }
 
         if(distrito.value.length == 0){
-            errores.distrito = "Por favor, proporcione una distrito";
+            errores.distrito = "Por favor, seleccione una distrito";
+        }
+        else{
+            newCustomer.distrito =distrito.value;
         }
 
         if(corregimiento.value.length == 0){
-            errores.corregimiento = "Por favor, proporcione un corregimiento";
+            errores.corregimiento = "Por favor, seleccione un corregimiento";
+        }
+        else{
+            newCustomer.corregimiento =corregimiento.value;
         }
 
-        console.log(provincia.value,distrito.value,corregimiento.value);
+        const edadChecked = Array.from(edad).find(x => x.checked);
+        const sexoChecked = Array.from(sexo).find(x => x.checked);
 
-        datos['newCustomer'] = {
-            tipo_documento: tipoDocumento.value,
-            documento: inputDocumento.value,
-            codigo: codigo.value,
-            nombre: nombreUsuario.value,
-            email: email.value,
-            telefono: telefono.value,
-            provincia: provincia.value,
-            distrito: distrito.value,
-            corregimiento: corregimiento.value
+        if(edadChecked){
+            newCustomer.edad = edadChecked.value;
         }
+        else{
+            errores.edad = "Por favor, seleccione un rango de edad";
+        }
+
+        if(sexoChecked){
+            newCustomer.sexo = sexoChecked.value;
+        }
+        else{
+            errores.sexo = "Por favor, seleccione un tipo de sexo";
+        }
+
+        datos['newCustomer'] = newCustomer;
 
     }
     else{
@@ -94,6 +123,7 @@ registrar.addEventListener('click',evt => {
         }
     }
 
+
     if(Object.keys(errores).length > 0){
         Swal.fire({
             title: 'Error!',
@@ -102,7 +132,7 @@ registrar.addEventListener('click',evt => {
             confirmButtonColor: '#ef4444'
         });
     }
-    else{
+    else{/*
         fetch('./saveform.php',{
             method: "POST",
             mode: "same-origin",
@@ -124,6 +154,7 @@ registrar.addEventListener('click',evt => {
                     }
                 });
             });
+            */
     }
 
 });

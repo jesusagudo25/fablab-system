@@ -27,6 +27,8 @@ class Visit extends Model implements IModel
             $customer->setName($newCustomer['nombre']);
             $customer->setEmail($newCustomer['email']);
             $customer->setTelephone($newCustomer['telefono']);
+            $customer->setAgeRange($newCustomer['edad']);
+            $customer->setSexo($newCustomer['sexo']);
             $customer->setProvince($newCustomer['provincia']);
             $customer->setCity($newCustomer['distrito']);
             $customer->setTownship($newCustomer['corregimiento']);

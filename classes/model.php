@@ -15,4 +15,6 @@ class Model
     {
         return $this->db->connect()->prepare($query);
     }
+
+
 }

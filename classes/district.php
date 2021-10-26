@@ -19,22 +19,15 @@ class District extends Model implements IModel
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $query = $this->query('SELECT * FROM districts');
+        $provinces = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $provinces;
     }
 
     public function get($id)
     {
         //
-    }
-
-    public function getForProvince(){
-        $province = $this->prepare('SELECT * FROM districts WHERE province_id = :id');
-        $province->execute([
-            'id'=>$this->province_id
-        ]);
-        $provinces = $province->fetchAll(PDO::FETCH_ASSOC);
-
-        return $provinces;
     }
 
     public function delete($id)

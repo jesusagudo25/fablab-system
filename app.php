@@ -16,17 +16,5 @@ require_once __DIR__.'/classes/district.php';
 require_once __DIR__.'/classes/township.php';
 require_once __DIR__.'/vendor/autoload.php';
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
-
 $pagina = [];
-// Crear servicio de registro
-$logger = new Logger('my_logger');
-
-// agrega algunos procesadores
-$logger->pushHandler(new StreamHandler(__DIR__.'/my_app.log', Logger::DEBUG));
-$logger->pushHandler(new FirePHPHandler());
-
-
 

@@ -19,8 +19,7 @@ fetch('../api.php',{
     function renderButton(data, cell, row) {
         return `
             <form method="post" class="flex items-center space-x-4">
-                <a href="../documents/${row.lastElementChild.textContent}.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a>
-            <input type="hidden" name="direccion" value="../documents/${row.lastElementChild.textContent}.pdf">
+                <a href="./download.php?reporte=${data}.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a>
                 <button value="${data}" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-trash-alt"></i></button>
             </form>`;
     }
@@ -35,7 +34,6 @@ fetch('../api.php',{
         scrollX: true,
         columns: [
             { select: 4, render: renderButton },
-            { select: 5, hidden: true },
         ]
     });
 
@@ -54,4 +52,33 @@ fetch('../api.php',{
     tableContainer.classList.add('h-full');
     });
 
+let formulario = document.querySelector('form');
 
+formulario.addEventListener('submit', e =>{
+    e.preventDefault();
+
+    let datos = new FormData(formulario);
+
+    fetch('./savereports.php',{
+        method : 'POST',
+        body: datos
+    })
+        .then(res => res.json())
+        .then(data => {
+            Swal.fire({
+                title: 'El reporte se ha generado!',
+                allowOutsideClick: false,
+                icon: 'success',
+                confirmButtonColor: '#3b82f6',
+                footer: `<a class="flex items-center justify-between swal2-deny swal2-styled" target="_blank" href="./download.php?reporte=${data}" id="pdf">
+        </svg>
+        <i class="fas fa-file-pdf mr-3"></i>
+                  <span>Descargar PDF</span>
+                </a>`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
+        });
+});

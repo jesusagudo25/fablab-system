@@ -164,7 +164,7 @@
 
                         <label class="block text-sm mt-5">
                             <span class="text-gray-800">Seleccione la fecha de la visita</span>
-                            <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
+                            <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
                             <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
                         </label>
 

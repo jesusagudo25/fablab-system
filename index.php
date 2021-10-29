@@ -46,6 +46,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión - Fablab System</title>
     <link rel="stylesheet" href="./assets/css/tailwind.output.css">
+    <link rel="icon" href="../assets/img/fab.ico" type="image/x-icon">
 </head>
 <body>
     <div class="absolute w-screen h-screen flex">
@@ -56,7 +57,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
           />
         </div>
         <div class="w-full lg:w-7/12 overflow-scroll py-24 relative">
-          <form class="w-5/6 sm:w-1/2 mx-auto text-center" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+          <form class="w-5/6 sm:w-2/3 mx-auto text-center" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <img
               src="./assets/img/fab.png"
               class="h-2/4 w-1/3 block mx-auto"

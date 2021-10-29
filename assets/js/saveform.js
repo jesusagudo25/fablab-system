@@ -132,7 +132,7 @@ registrar.addEventListener('click',evt => {
             confirmButtonColor: '#ef4444'
         });
     }
-    else{/*
+    else{
         fetch('./saveform.php',{
             method: "POST",
             mode: "same-origin",
@@ -154,7 +154,6 @@ registrar.addEventListener('click',evt => {
                     }
                 });
             });
-            */
     }
 
 });

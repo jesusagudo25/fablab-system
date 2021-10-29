@@ -428,6 +428,7 @@ function restore() {
         }
     });
 
+    distrito.innerHTML = '';
     let item = distritos.filter(x => x.province_id == provincia.value);
     item.forEach(e => {
         if (e.name == 'Santiago') {
@@ -437,6 +438,7 @@ function restore() {
         }
     });
 
+    corregimiento.innerHTML = '';
     item = corregimientos.filter(x => x.district_id == distrito.value);
     item.forEach(e => {
         if(e.name == 'Santiago'){

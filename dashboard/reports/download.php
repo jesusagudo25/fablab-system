@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <head>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                
+                        <link rel="icon" href="../../assets/img/fab.ico" type="image/x-icon">
                     <title>Informe mensual de ' . strtolower($report->getMonth()) . '</title>
                 
                     <!-- Invoice styling -->
@@ -199,11 +199,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <td style="text-align: center;" width="30%">% del total de horas</td>
                             </tr>';
     foreach ($areasTime as $datos => $valor) {
+
+        try {
+            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0);
+        }catch(DivisionByZeroError $e){
+            $porcentaje = 0;
+        }
+
         $html .= '
                             <tr class="item">
                                 <td style="text-align: center;">' . $valor['name'] . '</td>
-                                <td style="text-align: center;">' . $valor['diferencia'] . '</td>
-                                <td style="text-align: center;">' . number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0) . '</td>
+                                <td style="text-align: center;">' . $valor['diferencia']. '</td>
+                                <td style="text-align: center;">' .$porcentaje. '</td>
                             </tr>';
     }
     $html .= '</table>
@@ -216,11 +223,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             </tr>';
 
     foreach ($razonesTime as $datos => $valor) {
-        $html .= '   <tr class="item">
+
+        try {
+            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0);
+        }catch(DivisionByZeroError $e){
+            $porcentaje = 0;
+        }
+
+        if($valor['time'] == 1){
+            $html .= '   <tr class="item">
                                 <td style="text-align: center;">' . $valor['name'] . '</td>
                                 <td style="text-align: center;">' . $valor['diferencia'] . '</td>
-                                <td style="text-align: center;">' . number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0) . '</td>
+                                <td style="text-align: center;">' . $porcentaje . '</td>
                             </tr>';
+        }
+
     }
     $html .= '</table>
                         
@@ -228,13 +245,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         text-align: left; margin-top: 30px; font-size: 16px">
                         <span>Observaciones:</span>
                         <ul>';
-    foreach ($observationsAll as $datos => $valor) {
-        $html .= '   <li>' . $valor['description'] . ' - ' . $valor['name'] . ' , ' . $valor['date'] . '</li>';
+    if(count($observationsAll)){
+        foreach ($observationsAll as $datos => $valor) {
+                $html .= '   <li>' . $valor['description'] . ' - ' . $valor['name'] . ' , ' . $valor['date'] . '</li>';
+            }
+            $html .= '</ul></div>
+                        </body>
+                        </html>';
     }
-    $html .= '</ul></div>
-                    </div>
-                </body>
-                </html>';
+    else{
+        $html .= '   <li>'.'Sin observaciones'.'</li>
+    </ul></div>
+                        </body>
+                        </html>';
+    }
 
     $dompdf->loadHtml($html);
 

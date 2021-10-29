@@ -17,11 +17,12 @@ class VisitArea extends Model implements IModel
         foreach ($args[1] as $datos => $valor) {
             $nuevaVisitaArea = $this->prepare('INSERT INTO visits_areas(visit_id,area_id,arrival_time,departure_time) VALUES (:id_visita, :id_area, :hora_llegada, :hora_salida)');
 
+            $hora_salida = empty($valor['departure_time']) ? NULL : $valor['departure_time'];
             $nuevaVisitaArea->execute([
                 'id_visita' => $args[0],
                 'id_area' => $valor['id'],
                 'hora_llegada' => $valor['arrival_time'],
-                'hora_salida' => $valor['departure_time']
+                'hora_salida' => $hora_salida
             ]);
         }
     }

@@ -6,7 +6,6 @@ class Observation extends Model implements IModel
     private $user_id;
     private $description;
     private $date;
-    private $status;
 
     public function __construct()
     {
@@ -26,7 +25,7 @@ class Observation extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT CONCAT(u.name," ",u.lastname) AS Autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS Descripción, o.date AS Fecha, o.status AS Estado, o.observation_id AS Acciones FROM observations o
+        $query = $this->query('SELECT CONCAT(u.name," ",u.lastname) AS Autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS Descripción, o.date AS Fecha, o.observation_id AS Acciones FROM observations o
 INNER JOIN users u ON o.user_id = u.user_id');
         $observations = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -35,7 +34,7 @@ INNER JOIN users u ON o.user_id = u.user_id');
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT description, date, status FROM observations WHERE observation_id = :id');
+        $query = $this->prepare('SELECT description, date FROM observations WHERE observation_id = :id');
         $query->execute([
             'id' => $id
         ]);
@@ -47,7 +46,7 @@ INNER JOIN users u ON o.user_id = u.user_id');
 
     public function delete($id)
     {
-        $actualizarDatos = $this->prepare("UPDATE observations SET status = 0 WHERE observation_id = :id;");
+        $actualizarDatos = $this->prepare("DELETE FROM observations WHERE observation_id = :id;");
         $actualizarDatos->execute([
             'id'=>$id
         ]);
@@ -55,11 +54,10 @@ INNER JOIN users u ON o.user_id = u.user_id');
 
     public function update()
     {
-        $actualizarDatos = $this->prepare("UPDATE observations SET description = :description, date = :date, status = :status WHERE observation_id = :id;");
+        $actualizarDatos = $this->prepare("UPDATE observations SET description = :description, date = :date WHERE observation_id = :id;");
         $actualizarDatos->execute([
             'description'=> $this->description,
             'date'=>$this->date,
-            'status'=>$this->status,
             'id'=>$this->observation_id
 
         ]);
@@ -104,14 +102,6 @@ AND (o.status = 1);");
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status): void
-    {
-        $this->status = $status;
     }
 
     /**

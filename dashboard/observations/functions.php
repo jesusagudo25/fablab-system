@@ -32,7 +32,6 @@ if ($contentType === "application/json") {
             $observation->setObservationId($decoded['datos']['id']);
             $observation->setDescription($decoded['datos']['description']);
             $observation->setDate($decoded['datos']['date']);
-            $observation->setStatus($decoded['datos']['status']);
 
             $observation->update();
         }

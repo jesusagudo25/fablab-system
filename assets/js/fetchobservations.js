@@ -26,22 +26,6 @@ let table;
                 </div>`;
             }
 
-            // Price column cell manipulation
-            function renderStatus(data, cell, row) {
-                if(data == 1){
-                    return `                            <span
-                              class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full"
-                            >
-                            Activo
-                            </span>`;
-                }
-                else{
-                    return `<span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-700">
-                              Inactivo
-                            </span>`;
-                }
-            }
-
             table = new simpleDatatables.DataTable(".table", {
                 data: {
                     headings: Object.keys(data[0]),
@@ -51,8 +35,7 @@ let table;
                 scrollY: true,
                 scrollX: true,
                 columns: [
-                    {select: 3, render: renderStatus},
-                    {select: 4, render: renderButton},
+                    {select: 3, render: renderButton},
                 ]
             });
 
@@ -79,16 +62,12 @@ let table;
 const newObs = document.querySelector('#observacion'),
     closeModal = document.querySelectorAll('.close'),
     modal = document.querySelector('#modal'),
-    containerEstado = document.querySelector('#containerestado'),
     guardar = document.querySelector('button[name="guardar"]'),
     description = document.querySelector('textarea[name="descripcion"]'),
-    fecha= document.querySelector('input[name="fecha"]'),
-    estado= document.querySelector('select[name="estado"]');
+    fecha= document.querySelector('input[name="fecha"]');
 
 newObs.addEventListener('click', evt => {
     modal.classList.toggle('hidden');
-
-    containerEstado.classList.add('hidden');
 
     guardar.addEventListener('click', crear);
 
@@ -108,7 +87,10 @@ newObs.addEventListener('click', evt => {
 
     function crear(e) {
         modal.classList.toggle('hidden');
-
+        guardar.removeEventListener('click', crear);
+        closeModal.forEach( e =>{
+            e.removeEventListener('click', cerrarCrear);
+        });
         fetch('./functions.php',{
             method: "POST",
             mode: "same-origin",
@@ -148,15 +130,6 @@ function editar(e){
         description.value = data['description'];
         fecha.value = data['date'];
 
-        containerEstado.classList.remove('hidden');
-
-        if(data['status']){
-            estado.options[0].selected = true;
-        }
-        else{
-            estado.options[1].selected = true;
-        }
-
         modal.classList.toggle('hidden');
 
         guardar.addEventListener('click', actualizar);
@@ -189,7 +162,6 @@ function editar(e){
                         solicitud: "u",
                         description: description.value,
                         date: fecha.value,
-                        status: estado.value,
                         id: e.value
                     }})
             })

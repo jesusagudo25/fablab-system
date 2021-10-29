@@ -145,14 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
                                 </label>
 
-                                <label id="containerestado" class="block text-sm hidden mt-5">
-                                    <span class="text-gray-800">Estado</span>
-                                    <select required name="estado" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
-                                    </select>
-                                </label>
-
                         </p>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-500 hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>

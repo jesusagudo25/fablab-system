@@ -74,11 +74,11 @@
                         </button>
                         <div id="dropdown" class="bg-white rounded shadow-md mt-2 absolute mt-12 top-1 right-0 min-w-full overflow-auto z-30 invisible">
                             <ul class="list-reset text-sm">
-                                <li><a href="#" class="border-b px-4 py-2 b- block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Usuarios</a></li>
-                                <li><a href="#" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Clientes</a></li>
-                                <li><a href="#" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>
+                                <li><a href="#" class=" px-4 py-2 b- block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Usuarios</a></li>
+                                <li><a href="#" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Clientes</a></li>
+                                <li><a href="#" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>
 
-                                <li><a href="<?= constant('URL')?>dashboard/observations/" class="border-b px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Observaciones</a></li>
+                                <li><a href="<?= constant('URL')?>dashboard/observations/" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Observaciones</a></li>
                             </ul>
                         </div>
 

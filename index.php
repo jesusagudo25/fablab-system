@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión - Fablab System</title>
     <link rel="stylesheet" href="./assets/css/tailwind.output.css">
-    <link rel="icon" href="../assets/img/fab.ico" type="image/x-icon">
+    <link rel="icon" href="./assets/img/fab.ico" type="image/x-icon">
 </head>
 <body>
     <div class="absolute w-screen h-screen flex">

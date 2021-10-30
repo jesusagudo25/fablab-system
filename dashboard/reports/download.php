@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <head>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
-                        <link rel="icon" href="../../assets/img/fab.ico" type="image/x-icon">
+                        <link rel="icon" href="https://explorando.xyz/FABLAB/assets/img/fab.ico" type="image/x-icon">
                     <title>Informe mensual de ' . strtolower($report->getMonth()) . '</title>
                 
                     <!-- Invoice styling -->
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <table>
                                         <tr>
                                             <td class="title">
-                                                <img src="https://fablab-system.herokuapp.com/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
+                                                <img src="https://explorando.xyz/FABLAB/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
                                             </td>
                 
                                             <td>Informe mensual de ' . strtolower($report->getMonth()) . '</td>

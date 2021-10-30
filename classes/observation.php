@@ -67,8 +67,7 @@ INNER JOIN users u ON o.user_id = u.user_id');
 
         $query = $this->prepare("SELECT CONCAT(u.name,' ',u.lastname) AS name,o.description, o.date  FROM observations o 
 INNER JOIN users u ON o.user_id = u.user_id 
-WHERE (o.date BETWEEN :start_date AND :end_date)
-AND (o.status = 1);");
+WHERE (o.date BETWEEN :start_date AND :end_date);");
 
         $query->execute([
             'start_date'=> $start_date,

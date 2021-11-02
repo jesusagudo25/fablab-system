@@ -111,11 +111,14 @@
                                     </label>
                                     <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
                                         <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="2">
-                                        <span class="ml-2">19 - 30</span>
+                                        <span class="ml-2">19 - 26</span>
                                     </label>
                                     <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
                                         <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="3">
-                                        <span class="ml-2">31 o más</span>
+                                        <span class="ml-2">27 - 35</span>
+                                    </label>                                    <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
+                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="4">
+                                        <span class="ml-2">36 o más</span>
                                     </label>
                                 </div>
                             </div>

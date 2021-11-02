@@ -8,7 +8,6 @@ class Visit extends Model implements IModel
     private $date;
     private $observation;
 
-
     public function __construct()
     {
         parent::__construct();
@@ -23,10 +22,10 @@ class Visit extends Model implements IModel
             //Validaciones
             $customer->setDocumentType($newCustomer['tipo_documento']);
             $customer->setDocument($newCustomer['documento']);
-            $customer->setCode($newCustomer['codigo']);
+            $customer->setCode(empty($newCustomer['codigo']) ? NULL : $newCustomer['codigo']);
             $customer->setName($newCustomer['nombre']);
-            $customer->setEmail($newCustomer['email']);
-            $customer->setTelephone($newCustomer['telefono']);
+            $customer->setEmail(empty($newCustomer['email']) ? NULL : $newCustomer['email']);
+            $customer->setTelephone(empty($newCustomer['telefono']) ? NULL : $newCustomer['telefono']);
             $customer->setAgeRange($newCustomer['edad']);
             $customer->setSexo($newCustomer['sexo']);
             $customer->setProvince($newCustomer['provincia']);

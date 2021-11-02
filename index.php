@@ -2,39 +2,47 @@
 
     require_once './app.php';
 
-if($_SERVER['REQUEST_METHOD']=='POST'){
+    session_start();
 
-        $error = false;
+    //Para validar que exista el id_user y el rol_id -> sin embargo, no se valida que tipo de role es...
+    if (array_key_exists('user_id', $_SESSION) || array_key_exists('role_id', $_SESSION)) {
+        header('Location: ./dashboard/');
+        die;
+    }
 
-        $email = isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
-        $pass = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
+    if($_SERVER['REQUEST_METHOD']=='POST'){
 
-        $user = new User();
-        $user->setEmail($email);
-        $user->setPassword($pass);
+            $error = false;
 
-        $resultEmail = $user->validateEmail();
+            $email = isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
+            $pass = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
 
-        if(!empty($resultEmail)){
+            $user = new User();
+            $user->setEmail($email);
+            $user->setPassword($pass);
 
-            if(password_verify($pass, $resultEmail['password']) && $resultEmail['status']==1){
+            $resultEmail = $user->validateEmail();
 
-                session_start();
-                $_SESSION['user_id'] = $resultEmail['user_id'];
-                $_SESSION['role_id'] = $resultEmail['role_id'];
+            if(!empty($resultEmail)){
 
-                header("Location: ./dashboard/");
+                if(password_verify($pass, $resultEmail['password']) && $resultEmail['status']==1){
+
+                    session_start();
+                    $_SESSION['user_id'] = $resultEmail['user_id'];
+                    $_SESSION['role_id'] = $resultEmail['role_id'];
+
+                    header("Location: ./dashboard/");
+                }
+                else{
+                    $error = true;
+                }
+
             }
             else{
                 $error = true;
             }
 
         }
-        else{
-            $error = true;
-        }
-
-    }
 
 ?>
 
@@ -65,7 +73,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             <div class="mt-10">
               <h2 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h2>
               <p class="mt-3 text-gray-800">
-                ¿Nuevo usuario? <a href="./signup/" class="text-blue-500">Regístrate ahora</a>
+                ¿Nuevo usuario? <a href="#" class="text-blue-500">Regístrate ahora</a>
               </p>
             </div>
             <div class="mt-12">

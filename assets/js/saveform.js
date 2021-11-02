@@ -49,6 +49,9 @@ registrar.addEventListener('click',evt => {
             codigo: codigo.value,
             tipo_documento: tipoDocumento.value,
             documento: inputDocumento.value,
+            email: email.value,
+            telefono: telefono.value
+
         };
 
         if(nombreUsuario.value.trim().length == 0){
@@ -56,20 +59,6 @@ registrar.addEventListener('click',evt => {
         }
         else{
             newCustomer.nombre = nombreUsuario.value;
-        }
-
-        if(email.value.trim().length == 0){
-            errores.correo = "Por favor, proporcione un correo";
-        }
-        else{
-            newCustomer.email = email.value;
-        }
-
-        if(telefono.value.trim().length == 0){
-            errores.telefono = "Por favor, proporcione un telefono";
-        }
-        else{
-            newCustomer.telefono = telefono.value;
         }
 
         if(provincia.value.trim().length == 0){

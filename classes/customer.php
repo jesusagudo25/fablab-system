@@ -31,7 +31,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
         ]);
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "code" => $row['code'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'],"age_range" => $row['age_range'],"sex" => $row['sex'],"province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
+            $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "code" => $row['code'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'],"age_range" => $row['range_id'],"sex" => $row['sex'],"province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
         }
 
         return $datos;

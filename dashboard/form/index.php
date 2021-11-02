@@ -16,6 +16,9 @@
     $province = new Province();
     $provinceAll = $province->getAll();
 
+    $range = new AgeRange();
+    $rangeAll = $range->getAll();
+
     $pagina[] = "form";
 ?>
 <!DOCTYPE html>
@@ -87,8 +90,6 @@
 
                             </label>
 
-
-
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800">Correo</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
@@ -101,30 +102,21 @@
 
                             </label>
                             <div class="mt-5 text-sm w-1/2">
-                <span class="text-gray-700 dark:text-gray-400">
+                <span class="text-gray-700">
                   Selecciona la edad
                 </span>
-                                <div class="mt-2">
+                                <div class="mt-2 flex flex-wrap justify-between items-center">
+                                    <?php foreach ($rangeAll as $datos => $valor): ?>
                                     <label class="inline-flex items-center text-gray-600">
-                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="1">
-                                        <span class="ml-2">18 o menos</span>
+                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="<?= $valor['range_id'] ?>">
+                                        <span class="ml-2"><?= $valor['name'] ?></span>
                                     </label>
-                                    <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
-                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="2">
-                                        <span class="ml-2">19 - 26</span>
-                                    </label>
-                                    <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
-                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="3">
-                                        <span class="ml-2">27 - 35</span>
-                                    </label>                                    <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
-                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="4">
-                                        <span class="ml-2">36 o más</span>
-                                    </label>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
 
                             <div class="mt-5 text-sm w-5/12">
-                <span class="text-gray-700 dark:text-gray-400">
+                <span class="text-gray-700">
                   Selecciona el sexo
                 </span>
                                 <div class="mt-2">
@@ -132,7 +124,7 @@
                                         <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="F">
                                         <span class="ml-2">F</span>
                                     </label>
-                                    <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
+                                    <label class="inline-flex items-center ml-6 text-gray-600">
                                         <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
                                         <span class="ml-2">M</span>
                                     </label>

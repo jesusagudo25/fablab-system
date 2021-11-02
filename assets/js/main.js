@@ -59,42 +59,41 @@ fetch('../api.php',{
                 distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
             }
         });
+
+        fetch('../api.php',{
+            method: "POST",
+            mode: "same-origin",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({datos: {
+                    solicitud: "c",
+                }})
+        })
+            .then(res => res.json())
+            .then(data =>{
+                data.forEach(e=>{
+                    let item = {
+                        township_id: e.township_id,
+                        district_id: e.district_id,
+                        name: e.name
+                    }
+
+                    corregimientos.push(item);
+                });
+
+                const resul = corregimientos.filter(x => x.district_id == distrito.value);
+                resul.forEach(e => {
+                    if(e.name == 'Santiago'){
+                        corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
+                    }
+                    else{
+                        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+                    }
+                });
+            });
     });
-
-fetch('../api.php',{
-    method: "POST",
-    mode: "same-origin",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({datos: {
-            solicitud: "c",
-        }})
-})
-    .then(res => res.json())
-    .then(data =>{
-        data.forEach(e=>{
-            let item = {
-                township_id: e.township_id,
-                district_id: e.district_id,
-                name: e.name
-            }
-
-            corregimientos.push(item);
-        });
-
-        const resul = corregimientos.filter(x => x.district_id == distrito.value);
-        resul.forEach(e => {
-            if(e.name == 'Santiago'){
-                corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
-            }
-            else{
-                corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-            }
-        });
-    });
-
 
 //Algoritmo Provincia-Distrito-Corregimiento
 
@@ -164,7 +163,13 @@ $( function() {
                     document_type: tipoDocumento.value
                 },
                 success: function (data) {
-                    response(data.slice(0, 3));
+                    try{
+                        response(data.slice(0, 3));
+                    }
+                    catch (e) {
+                        response(data);
+                    }
+
                 }
             });
         },
@@ -172,11 +177,13 @@ $( function() {
             $('#autoComplete').val(ui.item.label); // display the selected text
             idHidden.value = ui.item.id;
 
-            if(ui.item.code.length == 0){
+            if(ui.item.code){
+                codigo.value = ui.item.code;
+            }
+            else{
                 codigo.placeholder = 'Sin código asignado';
             }
 
-            codigo.value = ui.item.code;
             codigo.disabled = true;
             codigo.classList.add('bg-gray-300');
             codigo.classList.add('cursor-not-allowed');
@@ -184,11 +191,25 @@ $( function() {
             nombreUsuario.disabled = true;
             nombreUsuario.classList.add('bg-gray-300');
             nombreUsuario.classList.add('cursor-not-allowed');
-            email.value = ui.item.email;
+
+            if(ui.item.email){
+                email.value = ui.item.email;
+            }
+            else{
+                email.placeholder = 'Sin correo electrónico asignado';
+            }
+
             email.disabled = true;
             email.classList.add('bg-gray-300');
             email.classList.add('cursor-not-allowed');
-            telefono.value = ui.item.telephone;
+
+            if(ui.item.telephone){
+                telefono.value = ui.item.telephone;
+            }
+            else{
+                telefono.placeholder = 'Sin teléfono asignado';
+            }
+
             telefono.disabled = true;
             telefono.classList.add('bg-gray-300');
             telefono.classList.add('cursor-not-allowed');
@@ -382,10 +403,12 @@ function restore() {
     email.value = '';
     email.classList.remove('bg-gray-300');
     email.classList.remove('cursor-not-allowed');
+    email.placeholder= 'Ingrese el correo electrónico del cliente';
     telefono.disabled = false;
     telefono.value = '';
     telefono.classList.remove('bg-gray-300');
     telefono.classList.remove('cursor-not-allowed');
+    telefono.placeholder= 'Ingrese el número de telefono del cliente';
 
     //edad
     let resul = Array.from(edad).find( x => x.checked);

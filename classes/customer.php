@@ -68,7 +68,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
                                         INNER JOIN visits_areas va ON v.visit_id = va.visit_id
                                         INNER JOIN customers c ON v.customer_id = c.customer_id
 INNER JOIN areas a ON va.area_id = a.area_id
-                                        WHERE (va.departure_time = "00:00:00")');
+                                        WHERE (va.departure_time IS NULL );');
         $customers = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $customers;

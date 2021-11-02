@@ -74,10 +74,12 @@ class VisitArea extends Model implements IModel
     public function setLabo(){
         $query = $this->prepare('UPDATE visits_areas SET departure_time = :departure_time WHERE (visit_id = :visit_id AND area_id = :area_id)');
 
+        $hora_salida = empty($this->departure_time) ? NULL : $this->departure_time;
+
         $query->execute([
             'visit_id' => $this->visit_id,
             'area_id'=>$this->area_id,
-            'departure_time' => $this->departure_time
+            'departure_time' => $hora_salida
         ]);
     }
 }

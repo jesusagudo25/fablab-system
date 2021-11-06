@@ -116,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 <!--/container-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script src="<?= constant('URL')?>assets/js/fetchreports.js"></script>
 <script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
+<script src="<?= constant('URL')?>assets/js/datepicker.bundle.js"></script>
 
 </body>
 </html>

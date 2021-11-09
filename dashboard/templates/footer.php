@@ -43,4 +43,4 @@
     </div>
 </footer>
 
-<script src="../assets/js/basetemplate.js"></script>
+<script src="../assets/js/templates/basetemplate.js"></script>

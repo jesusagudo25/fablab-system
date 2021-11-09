@@ -2,6 +2,8 @@
 
 require_once '../app.php';
 
+header('Content-Type: application/json; charset=utf-8');
+
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 
 if ($contentType === "application/json") {
@@ -44,6 +46,18 @@ if ($contentType === "application/json") {
             $township = new Township();
             $townships = $township->getAll();
             echo json_encode($townships);
+        }
+        else if($decoded['datos']['solicitud'] == 's'){
+            $eventCategory = new EventCategory();
+            $membershipPlans = new MembershipPlans();
+            $rentalCategory = new RentalCategory();
+            $area = new Area();
+
+            $datos['eventos']= $eventCategory->getAll();
+            $datos['membresias']= $membershipPlans->getAll();
+            $datos['alquiler']= $rentalCategory->getAll();
+            $datos['areas']= $area->getAll();
+            echo json_encode($datos);
         }
 
 

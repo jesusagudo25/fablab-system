@@ -184,8 +184,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!--/container-->
 
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-<script src="<?= constant('URL')?>assets/js/fetchobservations.js"></script>
-<script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
+<script src="<?= constant('URL')?>assets/js/tables/fetchobservations.js"></script>
+<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>
 </html>

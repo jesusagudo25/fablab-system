@@ -39,7 +39,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
 
     public function save(...$args)
     {
-        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,age_range,sex,province_id,district_id,township_id) VALUES (:document_type, :document ,:code ,:name, :email, :telephone,:age_range, :sex,:province, :city, :township)');
+        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,range_id,sex,province_id,district_id,township_id) VALUES (:document_type, :document ,:code ,:name, :email, :telephone,:range_id, :sex,:province, :city, :township)');
 
         $nuevoCliente->execute([
             'document_type'=>$this->document_type,
@@ -48,7 +48,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
             'name'=>$this->name,
             'email'=>$this->email,
             'telephone'=> $this->telephone,
-            'age_range'=> $this->age_range,
+            'range_id'=> $this->age_range,
             'sex'=> $this->sexo,
             'province'=> $this->province,
             'city'=>$this->city,

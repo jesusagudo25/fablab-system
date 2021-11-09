@@ -65,9 +65,9 @@ class Area extends Model implements IModel
 
     public function getAll(){
 
-        $query = $this->query('SELECT * FROM areas');
+        $query = $this->query('SELECT area_id AS id, name, measure_id, status FROM areas');
 
-        $areas = $query->fetchAll();
+        $areas = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $areas;
     }

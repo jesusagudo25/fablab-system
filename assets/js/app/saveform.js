@@ -132,6 +132,7 @@ registrar.addEventListener('click',evt => {
             body: JSON.stringify({datos: datos})
         })
             .then(data =>{
+                console.log(data)
                 Swal.fire({
                     title: 'La visita se ha guardado!',
                     allowOutsideClick: false,

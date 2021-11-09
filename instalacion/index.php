@@ -5,34 +5,34 @@
     $model = new Model();
 
     $model->query("CREATE TABLE user_role(
-            role_id INT(3) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            role_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL
         );");
 
     $model->query("CREATE TABLE provinces(
-            province_id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            province_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL
         );");
 
     $model->query("CREATE TABLE districts(
-            district_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            province_id INT(5) UNSIGNED NOT NULL,
+            district_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            province_id INT UNSIGNED NOT NULL,
             name VARCHAR(60) NOT NULL,
 
             FOREIGN KEY (province_id) REFERENCES provinces(province_id)
         );");
 
     $model->query("CREATE TABLE townships(
-            township_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            district_id INT(11) UNSIGNED NOT NULL,
+            township_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            district_id INT UNSIGNED NOT NULL,
             name VARCHAR(60) NOT NULL,
 
             FOREIGN KEY (district_id) REFERENCES districts(district_id)
         );");
 
     $model->query("CREATE TABLE users(
-            user_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            role_id INT(2) UNSIGNED NOT NULL DEFAULT 1,
+            user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            role_id INT UNSIGNED NOT NULL DEFAULT 1,
             name VARCHAR(60) NOT NULL,
             lastname VARCHAR(60) NOT NULL,
             email VARCHAR(50) UNIQUE NOT NULL,
@@ -45,23 +45,23 @@
         );");
 
     $model->query("CREATE TABLE age_range(
-                range_id INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                range_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(30) NOT NULL
             );");
 
     $model->query("CREATE TABLE customers(
-            customer_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            customer_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             document_type CHAR NOT NULL,
             document VARCHAR(60) UNIQUE NOT NULL,
             code VARCHAR(50) UNIQUE NULL,
             name VARCHAR(90) NOT NULL,
-            range_id INT(4) UNSIGNED NOT NULL,
+            range_id INT UNSIGNED NOT NULL,
             sex CHAR NOT NULL,
             email VARCHAR(60) UNIQUE NULL,
             telephone VARCHAR(70) UNIQUE NULL,
-            province_id INT(5) UNSIGNED NOT NULL,
-            district_id INT(11) UNSIGNED NOT NULL,
-            township_id INT(11) UNSIGNED NOT NULL,
+            province_id INT UNSIGNED NOT NULL,
+            district_id INT UNSIGNED NOT NULL,
+            township_id INT UNSIGNED NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
             
             FOREIGN KEY (range_id) REFERENCES age_range(range_id),
@@ -70,32 +70,38 @@
             FOREIGN KEY (township_id) REFERENCES townships(township_id)
         );");
 
-    $model->query("CREATE TABLE areas(
-            area_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(60) NOT NULL,
-            status BOOLEAN NOT NULL DEFAULT TRUE
-        );");
-
     $model->query("CREATE TABLE reason_visits(
-            reason_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            reason_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
             time BOOLEAN NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
 
     $model->query("CREATE TABLE visits(
-            visit_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            customer_id INT(11) UNSIGNED NOT NULL,
-            reason_id INT(11) UNSIGNED NOT NULL,
+            visit_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            customer_id INT UNSIGNED NOT NULL,
+            reason_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL,
             observation TEXT NULL,
 
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
         );");
+$model->query("CREATE TABLE measures(
+            measure_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL
+        );");
+$model->query("CREATE TABLE areas(
+            area_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL,
+            measure_id INT UNSIGNED NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE,
+
+            FOREIGN KEY (measure_id) REFERENCES measures(measure_id)
+        );");
     $model->query("CREATE TABLE visits_areas(
-            visit_id INT(11) UNSIGNED NOT NULL,
-            area_id INT(11) UNSIGNED NOT NULL,
+            visit_id INT UNSIGNED NOT NULL,
+            area_id INT UNSIGNED NOT NULL,
             arrival_time TIME NOT NULL,
             departure_time TIME NULL,
 
@@ -103,8 +109,8 @@
             FOREIGN KEY (area_id) REFERENCES areas(area_id)
         );   ");
     $model->query("CREATE TABLE observations(
-            observation_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            user_id INT(11) UNSIGNED NOT NULL,
+            observation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
             description TEXT,
             date DATE NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
@@ -112,22 +118,159 @@
             FOREIGN KEY (user_id) REFERENCES users(user_id)
 );");
     $model->query("CREATE TABLE reports(
-            report_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            report_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             month VARCHAR(40) NOT NULL,
-            user_id INT(11) UNSIGNED NOT NULL,
+            user_id INT UNSIGNED NOT NULL,
             start_date DATE NOT NULL,
             end_date DATE NOT NULL,
 
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );");
 
+    $model->query("CREATE TABLE invoices(
+            invoice_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            customer_id INT UNSIGNED NOT NULL,
+            user_id INT UNSIGNED NOT NULL,
+            date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            
+            FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );");
+    $model->query("CREATE TABLE event_category(
+            category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE
+            
+        );");
+    $model->query("CREATE TABLE consumables(
+            consumable_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            area_id INT UNSIGNED NOT NULL,
+            name VARCHAR(80) NOT NULL,
+            unit_price DECIMAL(5,2) NOT NULL,
+            printing_price DECIMAL(5,2) NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE,
+            
+            FOREIGN KEY (area_id) REFERENCES areas(area_id)
+        );");
+
+    $model->query("CREATE TABLE discounts(
+            discount_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL,
+            percentage DECIMAL(5,2) NOT NULL
+        );");
+    $model->query("CREATE TABLE membership_plans(
+            membership_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE
+        );");
+    $model->query("CREATE TABLE rental_category(
+            category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(60) NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE
+        );");
+
+    $model->query("CREATE TABLE use_machines(
+            use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            area_id INT UNSIGNED NOT NULL,
+            consumable_id INT UNSIGNED NOT NULL,
+            discount_id INT UNSIGNED NOT NULL,
+            amount INT UNSIGNED NOT NULL,
+            unit_price DECIMAL(5,2) NOT NULL,
+            printing_time INT UNSIGNED NOT NULL,
+            printing_price DECIMAL(5,2) NOT NULL,
+            base_price DECIMAL(5,2) NOT NULL,
+            profit_percentage DECIMAL(5,2) NOT NULL,
+            total_price DECIMAL(5,2) NOT NULL,
+            
+            FOREIGN KEY (area_id) REFERENCES areas(area_id),
+            FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id),
+            FOREIGN KEY (discount_id) REFERENCES discounts(discount_id)
+        );");
+    $model->query("CREATE TABLE events(
+            event_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            category_id INT UNSIGNED NOT NULL,
+            name TEXT NOT NULL,
+            initial_date DATE NOT NULL,
+            final_date DATE NOT NULL,
+            number_hours INT UNSIGNED NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+            expenses DECIMAL(5,2) NOT NULL,
+            description_expenses TEXT NOT NULL,
+            estado BOOLEAN NOT NULL DEFAULT TRUE,
+            
+            FOREIGN KEY (category_id) REFERENCES event_category(category_id)
+        );");
+
+
+    $model->query("CREATE TABLE membership_invoices(
+            num_detail INT UNSIGNED NOT NULL,
+            invoice_id INT UNSIGNED NOT NULL,
+            membership_id INT UNSIGNED NOT NULL,
+            initial_date DATE NOT NULL,
+            final_date DATE NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+
+            PRIMARY KEY (num_detail, invoice_id),
+	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
+ 	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id)            
+            
+        );     ");
+    $model->query("CREATE TABLE invoices_events(
+            num_detail INT UNSIGNED NOT NULL,
+            invoice_id INT UNSIGNED NOT NULL,
+            event_id INT UNSIGNED NOT NULL,
+
+            PRIMARY KEY (num_detail, invoice_id),
+	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
+ 	        FOREIGN KEY (event_id) REFERENCES events (event_id)            
+            
+        );  ");
+    $model->query("CREATE TABLE invoices_use_machines(
+            num_detail INT UNSIGNED NOT NULL,
+            invoice_id INT UNSIGNED NOT NULL,
+            use_id INT UNSIGNED NOT NULL,
+
+            PRIMARY KEY (num_detail, invoice_id),
+	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
+ 	        FOREIGN KEY (use_id) REFERENCES use_machines (use_id)            
+            
+        );");
+    $model->query("CREATE TABLE rental_invoices(
+            num_detail INT UNSIGNED NOT NULL,
+            invoice_id INT UNSIGNED NOT NULL,
+            category_id INT UNSIGNED NOT NULL,
+            number_hours INT UNSIGNED NOT NULL,
+            price DECIMAL(5,2) NOT NULL,
+
+            PRIMARY KEY (num_detail, invoice_id),
+	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
+ 	        FOREIGN KEY (category_id) REFERENCES rental_category (category_id)            
+            
+        );");
+
     $model->query("INSERT INTO user_role(name) VALUES('User'),('Admin'),('Super Admin');");
+
+    $model->query("INSERT INTO membership_plans(name,price) VALUES('Membresía: Pase de un día',5.00),('Membresía: 15 días',25.00),('Membresía: mensual',50.00);");
+
+    $model->query("INSERT INTO event_category(name,price) VALUES('Capacitaciones: seminarios o talleres de 40 horas',50.00),('Workshop: talleres cortos de 4 horas',10.00),('Fab Lab Kids (verano - 10 días)',50.00);");
+
+
+    $model->query("INSERT INTO measures(name) VALUES('Pulgada'),('Gramos'),('Hora');");
+
+    $model->query("INSERT INTO discounts(name,percentage) VALUES('Público - 0%',0),('Docente - 10%',0.1),('Estudiante - 15%',0.15);");
+
+    $model->query("INSERT INTO rental_category(name,price) VALUES('Computadora + Software ',5.00);");
 
     $model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
 
-$model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto para el trabajo',1),('Proyecto escolar',1),('Tour',0),('Curso',1),('Visita general',0);");
+$model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
 
-$model->query("INSERT INTO areas(name) VALUES('Electrónica'),('Mini CNC'),('Láser'),('Corte vinyl'),('CNC grande'),('Impresión 3D'), ('Diseño en computadora');");
+$model->query("INSERT INTO areas(name,measure_id) VALUES('Electrónica',3),('Mini CNC',2),('Láser',1),('Corte vinyl',1),('CNC grande',2),('Impresión 3D',2), ('Diseño en computadora',3);");
+
+    $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) VALUES(4,'VINILO ADHESIVO MATE',0.11,0.06),(4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),(4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),(4,'VINILO GLITER',0.30,0.06);");
 
 $model->query("INSERT INTO provinces (name) 
 VALUES ('Bocas del Toro'),
@@ -787,7 +930,7 @@ VALUES (1,'Bocas del Toro'),
 (70,'Los Llanitos'),
 (70,'San José');");
 
-$passwordAdmin = password_hash('123456', PASSWORD_BCRYPT);
+$passwordAdmin = password_hash('abc123', PASSWORD_BCRYPT);
 
 $insertarDatos = $model->prepare("INSERT INTO users(role_id,name,lastname,email,password) VALUES(3,'Super','Admin','superadmin@fablabsystem.com',:password)");
 

@@ -178,16 +178,16 @@
                             <span class="text-gray-800">Seleccione las áreas de trabajo</span>
                             <?php foreach ($areaAll as $datos => $valor): ?>
                                 <label class="flex items-center mt-4">
-                                    <input type="checkbox" value="<?= $valor['area_id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
+                                    <input type="checkbox" value="<?= $valor['id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
                                     <span class="ml-2"> <?= $valor['name'] ?></span>
                                 </label>
-                                <div class="p-3 hidden" id="area<?= $valor['area_id'] ?>">
+                                <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
                                     <label for="arrival_time" class="mr-6">Hora de llegada:
-                                        <input type="time" id="arrival_time_area<?= $valor['area_id'] ?>" name="arrival_time_area<?= $valor['area_id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" id="arrival_time_area<?= $valor['id'] ?>" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
 
                                     <label for="departure_time">Hora de salida:
-                                        <input type="time" id="departure_time_area<?= $valor['area_id'] ?>" name="departure_time_area<?= $valor['area_id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" id="departure_time_area<?= $valor['id'] ?>" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
                                 </div>
                             <?php endforeach; ?>
@@ -228,9 +228,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= constant('URL')?>assets/js/main.js"></script>
-<script src="<?= constant('URL')?>assets/js/saveform.js"></script>
-<script src="<?= constant('URL')?>assets/js/basetemplate.js"></script>
+<script src="<?= constant('URL')?>assets/js/app/main.js"></script>
+<script src="<?= constant('URL')?>assets/js/app/saveform.js"></script>
+<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>
 

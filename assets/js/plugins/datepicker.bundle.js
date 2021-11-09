@@ -734,7 +734,7 @@ function processOptions(options, datepicker) {
     config.startView = newStartView;
   }
 
-  //*** template ***//
+  //*** templates ***//
   if (inOpts.prevArrow) {
     const prevArrow = parseHTML(inOpts.prevArrow);
     if (prevArrow.childNodes.length > 0) {

@@ -207,9 +207,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-    <script src="../assets/js/line.js"></script>
-    <script src="../assets/js/doughnut.js"></script>
-    <script src="../assets/js/fetchlabo.js"></script>
+    <script src="../assets/js/graphs/line.js"></script>
+    <script src="../assets/js/graphs/doughnut.js"></script>
+    <script src="../assets/js/tables/fetchlabo.js"></script>
 
 </body>
 

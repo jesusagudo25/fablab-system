@@ -369,17 +369,20 @@ accion.addEventListener('click',evt => {
 
 inputDocumento.addEventListener('keyup', evt => {
 
-    if(evt.target.value != ''){
-        accion.classList.remove('hidden');
-        if(!containerRegister.classList.contains('hidden') || accion.classList.contains('bg-yellow-500')){
+    if(evt.key != "Enter"){
+        if(evt.target.value != ''){
+            accion.classList.remove('hidden');
+            if(!containerRegister.classList.contains('hidden') || accion.classList.contains('bg-yellow-500')){
+                restore();
+            }
+        }
+        else{
+            accion.classList.add('hidden');
             restore();
+
         }
     }
-    else{
-        accion.classList.add('hidden');
-        restore();
 
-    }
 });
 
 function restore() {

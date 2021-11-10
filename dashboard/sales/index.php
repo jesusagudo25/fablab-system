@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="w-full p-3">
                 <!--Graph Card-->
-                <div class="bg-white border rounded shadow">
+                <div class="bg-white border rounded shadow overflow-auto">
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos de venta</h5>
                     </div>

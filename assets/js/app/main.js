@@ -40,15 +40,7 @@ fetch('../api.php',{
 })
     .then(res => res.json())
     .then(data =>{
-        data.forEach(e=>{
-            let item = {
-                district_id: e.district_id,
-                province_id: e.province_id,
-                name: e.name
-            }
-
-            distritos.push(item);
-        });
+        distritos = data;
 
         const resul = distritos.filter(x => x.province_id == provincia.value);
         resul.forEach(e => {
@@ -73,15 +65,7 @@ fetch('../api.php',{
         })
             .then(res => res.json())
             .then(data =>{
-                data.forEach(e=>{
-                    let item = {
-                        township_id: e.township_id,
-                        district_id: e.district_id,
-                        name: e.name
-                    }
-
-                    corregimientos.push(item);
-                });
+                corregimientos = data;
 
                 const resul = corregimientos.filter(x => x.district_id == distrito.value);
                 resul.forEach(e => {

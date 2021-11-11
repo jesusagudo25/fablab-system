@@ -6,25 +6,12 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     fecha = document.querySelector('input[name="fecha"]'),
     categoria_servicio = document.querySelector('select[name="categoria_servicio"]'),
     servicio = document.querySelector('select[name="servicio"]'),
-    nombreCliente = document.querySelector('input[name="name"]');
+    nombreCliente = document.querySelector('input[name="name"]'),
+    closeModal = document.querySelectorAll('.close'),
+    modal = document.querySelector('#modal'),
+    guardar = document.querySelector('button[name="guardar"]'),
+    moda_content = document.querySelector('#modal-content');
 
-
-let subtablas = [`<tr class="text-sm bg-gray-200 hidden">
-                <td colspan="6" class="px-4 py-3">
-                    <div class="flex justify-between flex-wrap items-center mb-5">
-                    <table class="w-full whitespace-no-wrap overflow-hidden">
-                    <tbody>
-                    <tr>
-                        <th>Company</th>
-                        <td>Contact</td>
-                        <th>Alfreds Futterkiste</th>
-                        <td>Germany</td>
-                    </tr>
-                    </tbody>
-                    </table>
-                    </div>
-                </td>
-                </tr>`];
 let servicios = [];
 
 //Informacion inicial
@@ -47,6 +34,24 @@ fetch('../api.php',{
                 servicio.innerHTML += `<option value="${e.id}" >${e.name}</option>`;
         });
 
+    });
+
+let consumibles = [];
+
+fetch('../api.php',{
+    method: "POST",
+    mode: "same-origin",
+    credentials: "same-origin",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({datos: {
+            solicitud: "cons",
+        }})
+})
+    .then(res => res.json())
+    .then(data =>{
+        consumibles = data;
     });
 
 //Cambio de categoria servicio
@@ -153,79 +158,248 @@ let sw= 0;
 
 function registrarServicio(categoria_servicio,id_servicio, descripcion, precio = 0.00) {
 
-    let codigo = categoria_servicio+id_servicio;
+    contandorF++;
 
-    if(!servicios_ag.find( (value) => value.codigo == codigo)){
+    let numeroItem = 'item'+contandorF;
 
-        if(sw === 0 ){
-            sw=1;
-            document.querySelector("#detalle_totales").classList.remove('hidden');
-            document.querySelector("#acciones").classList.remove('hidden');
-        }
+    servicios_ag.push({
+        categoria: categoria_servicio,
+        servicio: id_servicio,
+        numeroItem: numeroItem
+    });
 
-        contandorF++;
-        servicios_ag.push({
-            categoria: categoria_servicio,
-            servicio: id_servicio,
-            codigo: codigo
-        });
+    if(sw === 0 ){
+        sw=1;
+        document.querySelector("#detalle_totales").classList.remove('hidden');
+        document.querySelector("#acciones").classList.remove('hidden');
+    }
 
-        Toastify({
-            text: "Servicio ingresado!",
-            duration: 3000,
-            backgroundColor: "#10B981",
-        }).showToast();
+    Toastify({
+        text: "Servicio ingresado!",
+        duration: 3000,
+        backgroundColor: "#10B981",
+    }).showToast();
 
-        html =`
-            <tr class="text-gray-700" id="${codigo}">
-                <td class="px-4 py-3">
-                  <div class="flex items-center text-sm">
-                  <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700" aria-label="Edit">
+    html =`
+        <tr id="${numeroItem}">
+            <td class="px-4 py-4">
+              <div class="flex items-center text-sm">
+              <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700" onclick="editarItem('${categoria_servicio}',${id_servicio},${numeroItem})">
 <svg fill="currentColor" viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
+            </button>
+              </div>
+            </td>                    
+            <td class="px-4 py-4 w-1/4">
+              <div class="flex items-center text-sm">
+                  <p class="font-semibold">${descripcion}</p>
+              </div>
+            </td>
+            
+            <td class="px-4 py-4 w-1/6">
+                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="precio" value="${precio}" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" >
+            </td>
+            <td class="px-4 py-4 w-1/6">
+                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" name="cantidad" value="1" disabled>
+            </td>
+            
+            <td class="px-4 py-4 text-sm font-semibold" id="total_item${contandorF}">
+              ${precio}
+            </td>
+            <td class="px-4 py-4">
+              <div class="flex items-center space-x-4 text-sm">
+                <button
+                  class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                  aria-label="Delete"
+                  onclick="deleteServicio(${numeroItem})"
+                >
+                  <i class="fas fa-trash-alt"></i>
                 </button>
-                  </div>
-                </td>                    
-                <td class="px-4 py-3 w-1/4">
-                  <div class="flex items-center text-sm">
-                      <p class="font-semibold">${descripcion}</p>
-                  </div>
-                </td>
-                
-                <td class="px-4 py-3 w-1/6">
-                    <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="precio" value="${precio}" min="0.00" step="0.01" onchange="cambiarValue(this,item${contandorF})" >
-                </td>
-                <td class="px-4 py-3 w-1/6">
-                    <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="cantidad" value="1" min="1" max="4" onchange="cambiarValue(this,item${contandorF})">
-                </td>
-                
-                <td class="px-4 py-3 text-sm font-semibold" id="item${contandorF}">
-                  ${precio}
-                </td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center space-x-4 text-sm">
-                    <button
-                      class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"
-                      aria-label="Delete"
-                      onclick="deleteServicio(${codigo})"
-                    >
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `;
+              </div>
+            </td>
+          </tr>
+        `;
 
-        document.querySelector("#detalle_venta").innerHTML += html;
+    document.querySelector("#detalle_venta").innerHTML += html;
 
-        calcular();
+    calcular();
+
+}
+
+function editarItem(categoria_servicio,id_servicio,numeroItem){
+    TIPO_TABLAS[categoria_servicio](categoria_servicio,id_servicio,numeroItem.id);
+    modal.classList.toggle('hidden');
+
+    //guardar.addEventListener('click', actualizar);
+
+    closeModal.forEach( e =>{
+        e.addEventListener('click', cerrarActualizar);
+    });
+
+    function cerrarActualizar(e){
+        modal.classList.toggle('hidden');
+        //guardar.removeEventListener('click', actualizar);
+        closeModal.forEach( e =>{
+            e.removeEventListener('click', cerrarActualizar);
+        });
     }
-    else{
-        Toastify({
-            text: "Ya ha sido ingresado!",
-            duration: 3000,
-            backgroundColor: "#EF4444",
-        }).showToast();
+}
+
+const TIPO_TABLAS = {
+    "membresias" : (categoria,id_servicio,numeroItem_id) =>{
+        moda_content.innerHTML = `
+                    <main class="flex justify-between flex-wrap items-center mb-5">
+                    <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <spa></spa>
+                        <table class="w-full min-w-full divide-y divide-gray-200">
+                        <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                        </tr>
+                        <tr>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                            
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+</tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </main>
+               `;
+    },
+    "eventos": (categoria,id_servicio,numeroItem_id)=>{
+        moda_content.innerHTML = `<main class="flex justify-between flex-wrap items-center mb-5">
+                    <div class="w-full shadow overflow-auto border-b border-gray-200 sm:rounded-lg">
+                    <spa></spa>
+                        <table class="w-full min-w-full divide-y divide-gray-200">
+                        <tbody>
+                        <tr>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Nombre</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" name="" required=""></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
+
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                        </tr>
+                        <tr>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
+                        </tr>
+                        <tr>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea></td>
+                        </tr>                        
+                        </tbody>
+                        </table>
+                    </div>
+                    </main>`;
+    },
+    "areas": (categoria,id_servicio,numeroItem_id)=>{
+        let indice = servicios_ag.findIndex((value) => value.numeroItem == numeroItem_id);
+        let respuesta = servicios_ag[indice].hasOwnProperty('datos');
+
+        moda_content.innerHTML = `<main class="flex justify-center flex-wrap items-center mb-5">
+                    <div class="flex items-center mr-4 mb-2">
+                    <span class="inline-block w-3 h-3 mr-1 bg-red-100 rounded-full"></span>
+                    <span class="category">Costo del consumible</span>
+                  </div>
+                  <div class="flex items-center mb-2">
+                    <span class="inline-block w-3 h-3 mr-1 bg-green-100 rounded-full"></span>
+                    <span class="category">Costo de impresión</span>
+                  </div>
+                    <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <spa></spa>
+                    <table class="w-full min-w-full divide-y divide-gray-200">
+                        <tbody>
+                        <tr>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tipo de suplemento</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="px-2 py-2"><select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible">
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad (u de medida)</th>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio unitario (disab)</th>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tiempo impresión</th>
+                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio impresión</th>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Costo base</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje ganancia</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje descuento</th>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipodocumento">
+                                <option value="R">RUC</option>
+                                <option value="C">Cédula</option>
+                                <option value="P">Pasaporte</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left bg-gray-100">Costo total</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </main>`;
+    },
+    "alquiler": (categoria,id_servicio,numeroItem_id)=>{
+        moda_content.innerHTML = `
+                    <main class="flex justify-between flex-wrap items-center mb-5">
+                    <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <spa></spa>
+                        <table class="w-full min-w-full divide-y divide-gray-200">
+                        <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <th class="bg-gray-100 w-1/4 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </main>
+               `;
     }
+};
+
+function cerrarActualizar(e){
+    modal.classList.toggle('hidden');
+    guardar.removeEventListener('click', actualizar);
+    description.value = '';
+    fecha.value = '';
+    closeModal.forEach( e =>{
+        e.removeEventListener('click', cerrarActualizar);
+    });
 }
 
 function cambiarValue(elm,columna_total){
@@ -259,7 +433,7 @@ function deleteServicio(id_tr){
         backgroundColor: "#EF4444",
     }).showToast();
 
-    let indice = servicios_ag.findIndex((value) => value.codigo == id_tr.id) // obtenemos el indice
+    let indice = servicios_ag.findIndex((value) => value.numeroItem == id_tr.id) // obtenemos el indice
     servicios_ag.splice(indice, 1); // 1 es la cantidad de elemento a eliminar
     id_tr.remove();
 
@@ -269,6 +443,7 @@ function deleteServicio(id_tr){
         document.querySelector("#detalle_totales").classList.add('hidden');
         document.querySelector("#acciones").classList.add('hidden');
         sw=0;
+        contandorF = 0;
     }
     else{
         calcular();

@@ -85,9 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="fixed inset-0 transition-opacity">
                         <div class="absolute inset-0 bg-current opacity-75"> </div>
                     </div>
-                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600">Nueva observación</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Detalles del servicio</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -98,16 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </svg>
                             </button>
                         </div>
-                        <div class="p-5">
-                            <label class="block text-sm">
-                                <span class="text-gray-800">Observación</span>
-                                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion" ></textarea>
-                            </label>
-
-                            <label class="block text-sm mt-5">
-                                <span class="text-gray-800">Fecha</span>
-                                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
-                            </label>
+                        <div class="p-5" id="modal-content">
 
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
@@ -153,35 +144,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             <button type="button" class="self-end px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none w-1/12" id="agregar"><i class="fas fa-plus"></i></button>
                         </div>
-                        <table class="w-full whitespace-no-wrap overflow-hidden">
-                            <thead>
-                            <tr class="bg-gray-100 text-sm font-semibold tracking-wide text-left uppercase">
-                                <th class="px-4 py-3"></th>
-                                <th class="px-4 py-3">Descripción</th>
-                                <th class="px-4 py-3">Precio</th>
-                                <th class="px-4 py-3">Cantidad</th>
-                                <th class="px-4 py-3">Total</th>
-                                <th class="px-4 py-3">Acción</th>
-                            </tr>
-                            </thead>
-                            <tbody class="bg-white" id="detalle_venta">
 
-                            </tbody>
-                            <tfoot class="hidden text-sm bg-gray-100" id="detalle_totales">
-                            <tr class="border-t font-semibold">
-                                <td colspan="3" class="px-4 py-3">SUBTOT</td>
-                                <td class="px-4 py-3"></td>
-                            </tr>
-                            <tr class="border-t font-semibold">
-                                <td colspan="3" class="px-4 py-3">ITBMS 07.00%</td>
-                                <td class="px-4 py-3"></td>
-                            </tr>
-                            <tr class="border-t font-semibold">
-                                <td colspan="3" class="px-4 py-3">TOTAL</td>
-                                <td class="px-4 py-3"></td>
-                            </tr>
-                            </tfoot>
-                        </table>
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table class="w-full min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider"></th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Descripción</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Precio</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Cantidad</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="detalle_venta">
+
+                                </tbody>
+                                <tfoot class="hidden bg-gray-100 divide-y divide-gray-200" id="detalle_totales">
+                                <tr>
+                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">SUBTOT</td>
+                                    <td class="px-4 py-3 text-sm font-semibold"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">ITBMS 07.00%</td>
+                                    <td class="px-4 py-3 text-sm font-semibold"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>
+                                    <td class="px-4 py-3 text-sm font-semibold"></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
                         <div class="text-sm mt-8 hidden" id="acciones">
                   <span class="text-gray-800">
                   Acciones

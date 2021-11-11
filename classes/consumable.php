@@ -1,6 +1,6 @@
 <?php
 
-class AgeRange extends Model implements IModel
+class Consumable extends Model implements IModel
 {
 
     public function save(...$args)
@@ -10,7 +10,7 @@ class AgeRange extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT * FROM age_range');
+        $query = $this->query('SELECT * FROM consumables');
 
         $areas = $query->fetchAll(PDO::FETCH_ASSOC);
 

@@ -18,6 +18,7 @@ require_once __DIR__.'/classes/agerange.php';
 require_once __DIR__.'/classes/eventcategory.php';
 require_once __DIR__.'/classes/membershipplans.php';
 require_once __DIR__.'/classes/rentalcategory.php';
+require_once __DIR__.'/classes/consumable.php';
 require_once __DIR__.'/vendor/autoload.php';
 
 $pagina = [];

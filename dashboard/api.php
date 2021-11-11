@@ -59,6 +59,11 @@ if ($contentType === "application/json") {
             $datos['areas']= $area->getAll();
             echo json_encode($datos);
         }
+        else if($decoded['datos']['solicitud'] == 'cons'){
+            $consumable = new Consumable();
+            $consumables = $consumable->getAll();
+            echo json_encode($consumables);
+        }
 
 
     } else {

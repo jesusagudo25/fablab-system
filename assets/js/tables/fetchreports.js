@@ -81,4 +81,4 @@ formulario.addEventListener('submit', e =>{
                 }
             });
         });
-});
+}, { once: true });

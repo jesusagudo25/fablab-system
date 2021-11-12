@@ -263,7 +263,9 @@ $( function() {
             Toastify({
                 text: "Visitante seleccionado",
                 duration: 3000,
-                backgroundColor: "#10B981",
+                style: {
+                    background: '#10B981'
+                }
             }).showToast();
 
             accion.innerHTML = '<i class="fas fa-eye"></i>';
@@ -322,7 +324,9 @@ accion.addEventListener('click',evt => {
         Toastify({
             text: "Se registrará un nuevo cliente",
             duration: 3000,
-            backgroundColor: "#10B981",
+            style: {
+                background: '#10B981'
+            }
         }).showToast();
 
     }
@@ -340,7 +344,9 @@ accion.addEventListener('click',evt => {
         Toastify({
             text: "Datos del cliente",
             duration: 3000,
-            backgroundColor: "#10B981",
+            style: {
+                background: '#10B981'
+            }
         }).showToast();
     }
     else if(evt.currentTarget.children[0].classList.contains('fa-eye-slash')){

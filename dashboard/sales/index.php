@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-500 hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                            <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>
                 </div>
@@ -212,6 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 <script src="<?= constant('URL')?>assets/js/app/sales.js"></script>
+<script src="<?= constant('URL')?>assets/js/app/savesales.js"></script>
 
 </body>
 </html>

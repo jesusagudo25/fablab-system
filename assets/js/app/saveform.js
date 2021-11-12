@@ -49,7 +49,7 @@ registrar.addEventListener('click',evt => {
             codigo: codigo.value,
             tipo_documento: tipoDocumento.value,
             documento: inputDocumento.value,
-            email: email.value,
+            email: email.value.toLowerCase(),
             telefono: telefono.value
 
         };
@@ -146,4 +146,4 @@ registrar.addEventListener('click',evt => {
             });
     }
 
-});
+}, { once: true });

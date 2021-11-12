@@ -87,17 +87,13 @@
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
         );");
-$model->query("CREATE TABLE measures(
-            measure_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(60) NOT NULL
-        );");
+
 $model->query("CREATE TABLE areas(
             area_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
-            measure_id INT UNSIGNED NOT NULL,
-            status BOOLEAN NOT NULL DEFAULT TRUE,
-
-            FOREIGN KEY (measure_id) REFERENCES measures(measure_id)
+            measure VARCHAR(40) NOT NULL,
+            status BOOLEAN NOT NULL DEFAULT TRUE
+            
         );");
     $model->query("CREATE TABLE visits_areas(
             visit_id INT UNSIGNED NOT NULL,
@@ -154,11 +150,6 @@ $model->query("CREATE TABLE areas(
             FOREIGN KEY (area_id) REFERENCES areas(area_id)
         );");
 
-    $model->query("CREATE TABLE discounts(
-            discount_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(60) NOT NULL,
-            percentage DECIMAL(5,2) NOT NULL
-        );");
     $model->query("CREATE TABLE membership_plans(
             membership_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
@@ -176,18 +167,17 @@ $model->query("CREATE TABLE areas(
             use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             area_id INT UNSIGNED NOT NULL,
             consumable_id INT UNSIGNED NOT NULL,
-            discount_id INT UNSIGNED NOT NULL,
             amount INT UNSIGNED NOT NULL,
             unit_price DECIMAL(5,2) NOT NULL,
             printing_time INT UNSIGNED NOT NULL,
             printing_price DECIMAL(5,2) NOT NULL,
             base_price DECIMAL(5,2) NOT NULL,
             profit_percentage DECIMAL(5,2) NOT NULL,
+            discount_percentage DECIMAL(5,2) NOT NULL,
             total_price DECIMAL(5,2) NOT NULL,
             
             FOREIGN KEY (area_id) REFERENCES areas(area_id),
-            FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id),
-            FOREIGN KEY (discount_id) REFERENCES discounts(discount_id)
+            FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id)
         );");
     $model->query("CREATE TABLE events(
             event_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -257,18 +247,13 @@ $model->query("CREATE TABLE areas(
 
     $model->query("INSERT INTO event_category(name,price) VALUES('Capacitaciones: seminarios o talleres de 40 horas',50.00),('Workshop: talleres cortos de 4 horas',10.00),('Fab Lab Kids (verano - 10 días)',50.00);");
 
-
-    $model->query("INSERT INTO measures(name) VALUES('Pulgada'),('Gramos'),('Hora');");
-
-    $model->query("INSERT INTO discounts(name,percentage) VALUES('Público - 0%',0),('Docente - 10%',0.1),('Estudiante - 15%',0.15);");
-
     $model->query("INSERT INTO rental_category(name,price) VALUES('Computadora + Software ',5.00);");
 
     $model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
 
 $model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
 
-$model->query("INSERT INTO areas(name,measure_id) VALUES('Electrónica',3),('Mini CNC',2),('Láser',1),('Corte vinyl',1),('CNC grande',2),('Impresión 3D',2), ('Diseño en computadora',3);");
+$model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas');");
 
     $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) VALUES(4,'VINILO ADHESIVO MATE',0.11,0.06),(4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),(4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),(4,'VINILO GLITER',0.30,0.06);");
 

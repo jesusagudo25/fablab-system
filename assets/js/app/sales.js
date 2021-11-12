@@ -119,7 +119,9 @@ $( function() {
             Toastify({
                 text: "Visitante seleccionado",
                 duration: 3000,
-                backgroundColor: "#10B981",
+                style: {
+                    background: '#10B981'
+                }
             }).showToast();
 
             return false;
@@ -146,7 +148,7 @@ inputDocumento.addEventListener('keyup', evt => {
 
 agregar.addEventListener('click',evt => {
     let servicioAdd = servicios[categoria_servicio.value].find((value) => value.id == servicio.value);
-    registrarServicio(categoria_servicio.value,servicioAdd.id,servicioAdd.name,servicioAdd.price);
+    registrarServicio(categoria_servicio.value,servicioAdd.id,servicioAdd.name,servicioAdd.price,servicioAdd.measure);
 });
 
 let id_cliente = 0;
@@ -156,12 +158,11 @@ let contandorF = 0;
 let html = '';
 let sw= 0;
 
-function registrarServicio(categoria_servicio,id_servicio, descripcion, precio = 0.00) {
+function registrarServicio(categoria_servicio,id_servicio, descripcion, precio = '0.00',measure = 'S/U') {
 
     contandorF++;
 
     let numeroItem = 'item'+contandorF;
-
     servicios_ag.push({
         categoria: categoria_servicio,
         servicio: id_servicio,
@@ -174,17 +175,21 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
         document.querySelector("#acciones").classList.remove('hidden');
     }
 
+    let validar = (categoria_servicio == 'areas');
+
     Toastify({
         text: "Servicio ingresado!",
         duration: 3000,
-        backgroundColor: "#10B981",
+        style: {
+            background: '#10B981'
+        }
     }).showToast();
 
     html =`
         <tr id="${numeroItem}">
             <td class="px-4 py-4">
               <div class="flex items-center text-sm">
-              <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700" onclick="editarItem('${categoria_servicio}',${id_servicio},${numeroItem})">
+              <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700" onclick="editarItem('${categoria_servicio}',${id_servicio},${numeroItem},'${measure}')">
 <svg fill="currentColor" viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
             </button>
               </div>
@@ -196,7 +201,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
             </td>
             
             <td class="px-4 py-4 w-1/6">
-                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="precio" value="${precio}" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" >
+                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 precio ${ validar ? 'bg-gray-300 cursor-not-allowed' : ''}" value="${precio}" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" ${ validar ? 'disabled' : ''} >
             </td>
             <td class="px-4 py-4 w-1/6">
                 <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" name="cantidad" value="1" disabled>
@@ -225,27 +230,64 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
 
 }
 
-function editarItem(categoria_servicio,id_servicio,numeroItem){
-    TIPO_TABLAS[categoria_servicio](categoria_servicio,id_servicio,numeroItem.id);
+let respuesta;
+
+function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
+    indice = servicios_ag.findIndex((value) => value.numeroItem == numeroItem.id);
+
+    respuesta = servicios_ag[indice].hasOwnProperty('datos');
+
+    TIPO_TABLAS[categoria_servicio](categoria_servicio,id_servicio,numeroItem.id,unidad);
+
     modal.classList.toggle('hidden');
-
-    //guardar.addEventListener('click', actualizar);
-
+    guardar.addEventListener('click', actualizar);
     closeModal.forEach( e =>{
         e.addEventListener('click', cerrarActualizar);
     });
 
     function cerrarActualizar(e){
         modal.classList.toggle('hidden');
-        //guardar.removeEventListener('click', actualizar);
+        guardar.removeEventListener('click', actualizar);
+        closeModal.forEach( e =>{
+            e.removeEventListener('click', cerrarActualizar);
+        });
+    }
+
+    function actualizar(evt) {
+        modal.classList.toggle('hidden');
+
+        TIPO_ACTUALIZAR[categoria_servicio](numeroItem.id);
+
+        guardar.removeEventListener('click', actualizar);
         closeModal.forEach( e =>{
             e.removeEventListener('click', cerrarActualizar);
         });
     }
 }
 
+function triggerChange(element){
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+}
+
+let indice;
+let areaConsumibles = [];
+let selectorConsumible;
+let selectorDescuento;
+
+let inputPrecioUnitario;
+let inputPrecioImpresion;
+
+let inputCantidadUnidad;
+let inputCantidadTiempo;
+
+let inputCostoBase;
+let inputCostoTotal;
+
+let costoBase; //Calculo en linea
+
 const TIPO_TABLAS = {
-    "membresias" : (categoria,id_servicio,numeroItem_id) =>{
+    "membresias" : (categoria,id_servicio,numeroItem_id,unidad) =>{
         moda_content.innerHTML = `
                     <main class="flex justify-between flex-wrap items-center mb-5">
                     <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -257,9 +299,9 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
                         </tr>
                         <tr>
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].datos.fecha_inicial : ''}" </td>
                             
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].datos.fecha_final : ''}"></td>
 </tr>
                         </tbody>
                         </table>
@@ -267,7 +309,7 @@ const TIPO_TABLAS = {
                     </main>
                `;
     },
-    "eventos": (categoria,id_servicio,numeroItem_id)=>{
+    "eventos": (categoria,id_servicio,numeroItem_id,unidad)=>{
         moda_content.innerHTML = `<main class="flex justify-between flex-wrap items-center mb-5">
                     <div class="w-full shadow overflow-auto border-b border-gray-200 sm:rounded-lg">
                     <spa></spa>
@@ -278,8 +320,8 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" name="" required=""></td>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="${respuesta ? servicios_ag[indice].datos.nombre_evento : ''}"></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].datos.cantidad_horas : ''}"></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
@@ -287,26 +329,26 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
                         </tr>
                         <tr>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].datos.fecha_inicial : ''}"></td>
 
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="" required=""></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].datos.fecha_final : ''}"></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
                         </tr>
                         <tr>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
-                            <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value="${respuesta ? servicios_ag[indice].datos.gastos_evento : ''}"></td>
+                            <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos">${respuesta ? servicios_ag[indice].datos.desc_gastos : ''}</textarea></td>
                         </tr>                        
                         </tbody>
                         </table>
                     </div>
                     </main>`;
     },
-    "areas": (categoria,id_servicio,numeroItem_id)=>{
-        let indice = servicios_ag.findIndex((value) => value.numeroItem == numeroItem_id);
-        let respuesta = servicios_ag[indice].hasOwnProperty('datos');
+    "areas": (categoria,id_servicio,numeroItem_id,unidad)=>{
+
+        areaConsumibles = consumibles.filter(value => value.area_id == id_servicio);
 
         moda_content.innerHTML = `<main class="flex justify-center flex-wrap items-center mb-5">
                     <div class="flex items-center mr-4 mb-2">
@@ -317,63 +359,98 @@ const TIPO_TABLAS = {
                     <span class="inline-block w-3 h-3 mr-1 bg-green-100 rounded-full"></span>
                     <span class="category">Costo de impresión</span>
                   </div>
+                  
                     <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                     <spa></spa>
                     <table class="w-full min-w-full divide-y divide-gray-200">
                         <tbody>
                         <tr>
-                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tipo de suplemento</th>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tipo de consumible</th>
                         </tr>
                         <tr>
-                            <td colspan="2" class="px-2 py-2"><select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible">
+                            <td colspan="2" class="px-2 py-2"><select class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible" onchange="cambiarPrecioUnitario()">
                             </select></td>
                         </tr>
                         <tr>
-                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad (u de medida)</th>
-                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio unitario (disab)</th>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">${unidad}</th>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio unitario</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de ${unidad.toLowerCase()}" name="cantidad_unidad" value="${respuesta ? servicios_ag[indice].datos.cantidad_unidad : ''}" min="0" onchange="cambiarTotales()"></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_unitario" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
-                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tiempo impresión</th>
+                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tiempo impresión (minutos)</th>
                             <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio impresión</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de minutos" name="cantidad_tiempo" value="${respuesta ? servicios_ag[indice].datos.cantidad_tiempo : ''}" min="0" onchange="cambiarTotales()"></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_impresion" value="0.05" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
                             <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Costo base</th>
                         </tr>
                         <tr>
-                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_base" value="${respuesta ? servicios_ag[indice].datos.costo_base : '0.00'}" disabled></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje ganancia</th>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje descuento</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
-                            <td class="px-2 py-2"><select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipodocumento">
-                                <option value="R">RUC</option>
-                                <option value="C">Cédula</option>
-                                <option value="P">Pasaporte</option>
+                            <td class="px-2 py-2"><select class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" required="" name="tipo_ganancia" disabled>
+                            <option value="0.3" selected>30%</option>
+                            </select></td>
+                            <td class="px-2 py-2"><select class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="tipo_descuento" onchange="cambiarCostoTotal()">
+                            <option value="0" >Público - 0%</option>
+                            <option value="0.1" >Docente - 10%</option>
+                            <option value="0.15" >Estudiante - 15%</option>
                             </select></td>
                         </tr>
                         <tr>
                             <th colspan="2" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left bg-gray-100">Costo total</th>
                         </tr>
                         <tr>
-                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_total" value="${respuesta ? servicios_ag[indice].datos.costo_total : '0.00'}" disabled></td>
                         </tr>
                         </tbody>
                         </table>
                     </div>
                     </main>`;
+
+        selectorConsumible = document.querySelector('select[name="tipo_consumible"]'),
+        selectorDescuento = document.querySelector('select[name="tipo_descuento"]'),
+        inputPrecioUnitario = document.querySelector('input[name="precio_unitario"]'),
+        inputPrecioImpresion = document.querySelector('input[name="precio_impresion"]'),
+        inputCantidadUnidad = document.querySelector('input[name="cantidad_unidad"]'),
+        inputCantidadTiempo = document.querySelector('input[name="cantidad_tiempo"]'),
+            inputCostoBase = document.querySelector('input[name="costo_base"]'),
+            inputCostoTotal = document.querySelector('input[name="costo_total"]');
+
+        selectorConsumible.innerHTML = '';
+
+        if(areaConsumibles.length){
+            areaConsumibles.forEach( (value) =>{
+                selectorConsumible.innerHTML += `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].datos.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
+            } )
+
+            if(respuesta){
+                Array.from(selectorDescuento.options).forEach( (opt) =>{
+                    if(opt.value == servicios_ag[indice].datos.porcentaje_descuento){
+                        opt.selected = true;
+                    }
+                });
+            }
+
+            cambiarPrecioUnitario();
+        }
+        else{
+            selectorConsumible.innerHTML = `<option value="null" selected>No existen consumibles</option>`;
+            inputPrecioUnitario.value = '0.00';
+        }
+
     },
-    "alquiler": (categoria,id_servicio,numeroItem_id)=>{
+    "alquiler": (categoria,id_servicio,numeroItem_id,unidad)=>{
         moda_content.innerHTML = `
                     <main class="flex justify-between flex-wrap items-center mb-5">
                     <div class="w-full shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -382,7 +459,7 @@ const TIPO_TABLAS = {
                         <tbody class="divide-y divide-gray-200">
                         <tr>
                             <th class="bg-gray-100 w-1/4 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" name="" required=""></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del alquiler" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].datos.cantidad_horas : ''}"></td>
                         </tr>
                         </tbody>
                         </table>
@@ -392,37 +469,83 @@ const TIPO_TABLAS = {
     }
 };
 
-function cerrarActualizar(e){
-    modal.classList.toggle('hidden');
-    guardar.removeEventListener('click', actualizar);
-    description.value = '';
-    fecha.value = '';
-    closeModal.forEach( e =>{
-        e.removeEventListener('click', cerrarActualizar);
-    });
+function cambiarPrecioUnitario(){
+    let consumibleSeleccionado = areaConsumibles.find(value => value.consumable_id == selectorConsumible.value);
+
+    inputPrecioUnitario.value = consumibleSeleccionado.unit_price;
+
+    cambiarTotales();
+}
+
+function cambiarTotales(){
+
+    if(inputCantidadUnidad.value != 0 && inputCantidadTiempo.value != 0 && inputPrecioUnitario.value != 0){
+
+        costoBase = (inputCantidadUnidad.value * inputPrecioUnitario.value) + (inputCantidadTiempo.value * inputPrecioImpresion.value);
+        console.log(costoBase)
+        inputCostoBase.value = costoBase.toFixed(2);
+
+        inputCostoTotal.value = (costoBase * (1-selectorDescuento.value)).toFixed(2);
+
+    }
+}
+function cambiarCostoTotal(){
+
+    if(inputCostoTotal.value != 0){
+        inputCostoTotal.value = (costoBase* (1-selectorDescuento.value)).toFixed(2);
+    }
+}
+
+const TIPO_ACTUALIZAR = {
+    "membresias": (numeroItem)=>{
+        //Aqui iria la validacion de los elementos...
+
+        servicios_ag[indice].datos = {
+            fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
+            fecha_final: document.querySelector('input[name="fecha_final"]').value
+        }
+    },
+    "eventos": (numeroItem)=>{
+        servicios_ag[indice].datos = {
+            nombre_evento: document.querySelector('input[name="nombre_evento"]').value,
+            cantidad_horas: document.querySelector('input[name="cantidad_horas"]').value,
+            fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
+            fecha_final: document.querySelector('input[name="fecha_final"]').value,
+            gastos_evento: document.querySelector('input[name="gastos_evento"]').value,
+            desc_gastos: document.querySelector('textarea[name="desc_gastos"]').value
+        }
+    },
+    "areas": (numeroItem)=>{
+        servicios_ag[indice].datos = {
+            tipo_consumible: selectorConsumible.value,
+            cantidad_unidad: inputCantidadUnidad.value,
+            precio_unitario: inputPrecioUnitario.value,
+            cantidad_tiempo: inputCantidadTiempo.value,
+            precio_impresion: inputPrecioImpresion.value,
+            costo_base: inputCostoBase.value,
+            porcentaje_ganancia: document.querySelector('select[name="tipo_ganancia"]').value,
+            porcentaje_descuento: selectorDescuento.value,
+            costo_total: inputCostoTotal.value
+        }
+
+        const precio = document.querySelector('#'+numeroItem+' .precio');
+        precio.value = inputCostoTotal.value;
+
+        triggerChange(precio);
+    },
+    "alquiler": (numeroItem)=>{
+        servicios_ag[indice].datos = {
+            cantidad_horas: document.querySelector('input[name="cantidad_horas"]').value
+        }
+    },
 }
 
 function cambiarValue(elm,columna_total){
+
     elm.defaultValue = elm.value;
-    TIPOS_CAMBIOS[elm.name](elm,columna_total);
-}
-
-const TIPOS_CAMBIOS = {
-    precio: (elm,columna_total) => {
-        let cantidad = elm.parentElement.nextElementSibling.children[0];
-        columna_total.textContent = (elm.value * cantidad.value).toFixed(2);
-        calcular();
-    },
-    cantidad: (elm,columna_total) => {
-        let v = parseInt(elm.value);
-        if (v < 1) elm.value = 1;
-        if (v > 4) elm.value = 4;
-
-        let precio = elm.parentElement.previousElementSibling.children[0];
-
-        columna_total.textContent = (elm.value * precio.value).toFixed(2);
-        calcular();
-    }
+    let cantidad = elm.parentElement.nextElementSibling.children[0];
+    columna_total.textContent = (elm.value * cantidad.value).toFixed(2);
+    calcular();
 }
 
 function deleteServicio(id_tr){
@@ -430,10 +553,12 @@ function deleteServicio(id_tr){
     Toastify({
         text: "Servicio eliminado!",
         duration: 3000,
-        backgroundColor: "#EF4444",
+        style: {
+            background: '#EF4444'
+        }
     }).showToast();
 
-    let indice = servicios_ag.findIndex((value) => value.numeroItem == id_tr.id) // obtenemos el indice
+    indice = servicios_ag.findIndex((value) => value.numeroItem == id_tr.id) // obtenemos el indice
     servicios_ag.splice(indice, 1); // 1 es la cantidad de elemento a eliminar
     id_tr.remove();
 

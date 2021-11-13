@@ -166,7 +166,8 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
     servicios_ag.push({
         categoria: categoria_servicio,
         servicio: id_servicio,
-        numeroItem: numeroItem
+        numeroItem: numeroItem,
+        cantidad: 1
     });
 
     if(sw === 0 ){
@@ -235,7 +236,7 @@ let respuesta;
 function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
     indice = servicios_ag.findIndex((value) => value.numeroItem == numeroItem.id);
 
-    respuesta = servicios_ag[indice].hasOwnProperty('datos');
+    respuesta = servicios_ag[indice].hasOwnProperty('detalles');
 
     TIPO_TABLAS[categoria_servicio](categoria_servicio,id_servicio,numeroItem.id,unidad);
 
@@ -299,9 +300,9 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
                         </tr>
                         <tr>
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].datos.fecha_inicial : ''}" </td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" </td>
                             
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].datos.fecha_final : ''}"></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}"></td>
 </tr>
                         </tbody>
                         </table>
@@ -320,8 +321,8 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="${respuesta ? servicios_ag[indice].datos.nombre_evento : ''}"></td>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].datos.cantidad_horas : ''}"></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="${respuesta ? servicios_ag[indice].detalles.nombre_evento : ''}"></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].detalles.cantidad_horas : ''}"></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
@@ -329,17 +330,17 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
                         </tr>
                         <tr>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].datos.fecha_inicial : ''}"></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}"></td>
 
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].datos.fecha_final : ''}"></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}"></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
                         </tr>
                         <tr>
-                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value="${respuesta ? servicios_ag[indice].datos.gastos_evento : ''}"></td>
-                            <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos">${respuesta ? servicios_ag[indice].datos.desc_gastos : ''}</textarea></td>
+                          <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value="${respuesta ? servicios_ag[indice].detalles.gastos_evento : ''}"></td>
+                            <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos">${respuesta ? servicios_ag[indice].detalles.desc_gastos : ''}</textarea></td>
                         </tr>                        
                         </tbody>
                         </table>
@@ -376,7 +377,7 @@ const TIPO_TABLAS = {
                             <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio unitario</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de ${unidad.toLowerCase()}" name="cantidad_unidad" value="${respuesta ? servicios_ag[indice].datos.cantidad_unidad : ''}" min="0" onchange="cambiarTotales()"></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de ${unidad.toLowerCase()}" name="cantidad_unidad" value="${respuesta ? servicios_ag[indice].detalles.cantidad_unidad : ''}" min="0" onchange="cambiarTotales()"></td>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_unitario" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
@@ -384,14 +385,14 @@ const TIPO_TABLAS = {
                             <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio impresión</th>
                         </tr>
                         <tr>
-                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de minutos" name="cantidad_tiempo" value="${respuesta ? servicios_ag[indice].datos.cantidad_tiempo : ''}" min="0" onchange="cambiarTotales()"></td>
+                            <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de minutos" name="cantidad_tiempo" value="${respuesta ? servicios_ag[indice].detalles.cantidad_tiempo : ''}" min="0" onchange="cambiarTotales()"></td>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_impresion" value="0.05" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
                             <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Costo base</th>
                         </tr>
                         <tr>
-                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_base" value="${respuesta ? servicios_ag[indice].datos.costo_base : '0.00'}" disabled></td>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_base" value="${respuesta ? servicios_ag[indice].detalles.costo_base : '0.00'}" disabled></td>
                         </tr>
                         <tr>
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje ganancia</th>
@@ -411,7 +412,7 @@ const TIPO_TABLAS = {
                             <th colspan="2" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left bg-gray-100">Costo total</th>
                         </tr>
                         <tr>
-                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_total" value="${respuesta ? servicios_ag[indice].datos.costo_total : '0.00'}" disabled></td>
+                            <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_total" value="${respuesta ? servicios_ag[indice].detalles.costo_total : '0.00'}" disabled></td>
                         </tr>
                         </tbody>
                         </table>
@@ -431,12 +432,12 @@ const TIPO_TABLAS = {
 
         if(areaConsumibles.length){
             areaConsumibles.forEach( (value) =>{
-                selectorConsumible.innerHTML += `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].datos.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
+                selectorConsumible.innerHTML += `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].detalles.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
             } )
 
             if(respuesta){
                 Array.from(selectorDescuento.options).forEach( (opt) =>{
-                    if(opt.value == servicios_ag[indice].datos.porcentaje_descuento){
+                    if(opt.value == servicios_ag[indice].detalles.porcentaje_descuento){
                         opt.selected = true;
                     }
                 });
@@ -459,7 +460,7 @@ const TIPO_TABLAS = {
                         <tbody class="divide-y divide-gray-200">
                         <tr>
                             <th class="bg-gray-100 w-1/4 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del alquiler" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].datos.cantidad_horas : ''}"></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del alquiler" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].detalles.cantidad_horas : ''}"></td>
                         </tr>
                         </tbody>
                         </table>
@@ -482,7 +483,6 @@ function cambiarTotales(){
     if(inputCantidadUnidad.value != 0 && inputCantidadTiempo.value != 0 && inputPrecioUnitario.value != 0){
 
         costoBase = (inputCantidadUnidad.value * inputPrecioUnitario.value) + (inputCantidadTiempo.value * inputPrecioImpresion.value);
-        console.log(costoBase)
         inputCostoBase.value = costoBase.toFixed(2);
 
         inputCostoTotal.value = (costoBase * (1-selectorDescuento.value)).toFixed(2);
@@ -500,13 +500,13 @@ const TIPO_ACTUALIZAR = {
     "membresias": (numeroItem)=>{
         //Aqui iria la validacion de los elementos...
 
-        servicios_ag[indice].datos = {
+        servicios_ag[indice].detalles = {
             fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
             fecha_final: document.querySelector('input[name="fecha_final"]').value
         }
     },
     "eventos": (numeroItem)=>{
-        servicios_ag[indice].datos = {
+        servicios_ag[indice].detalles = {
             nombre_evento: document.querySelector('input[name="nombre_evento"]').value,
             cantidad_horas: document.querySelector('input[name="cantidad_horas"]').value,
             fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
@@ -516,7 +516,7 @@ const TIPO_ACTUALIZAR = {
         }
     },
     "areas": (numeroItem)=>{
-        servicios_ag[indice].datos = {
+        servicios_ag[indice].detalles = {
             tipo_consumible: selectorConsumible.value,
             cantidad_unidad: inputCantidadUnidad.value,
             precio_unitario: inputPrecioUnitario.value,
@@ -534,7 +534,7 @@ const TIPO_ACTUALIZAR = {
         triggerChange(precio);
     },
     "alquiler": (numeroItem)=>{
-        servicios_ag[indice].datos = {
+        servicios_ag[indice].detalles = {
             cantidad_horas: document.querySelector('input[name="cantidad_horas"]').value
         }
     },

@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos del cliente</h5>
                     </div>
-                    <div class="p-5 flex justify-between flex-wrap items-center">
+                    <div class="p-5 flex justify-between flex-wrap items-end">
                         <label class="text-sm w-1/4">
                             <span class="text-gray-800">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">

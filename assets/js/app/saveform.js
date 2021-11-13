@@ -1,11 +1,10 @@
 //###########Form validation##########
-registrar.addEventListener('click',evt => {
+registrar.addEventListener('submit',evt => {
     evt.preventDefault();
     let areas = [];
     let errores = {};
     let datos = {
         id_razonvisita: razonVisita.value,
-        fecha: fecha.value,
     };
 
     if(optionSelected.classList.contains('notfree')){
@@ -17,7 +16,7 @@ registrar.addEventListener('click',evt => {
                     departure_time: document.querySelector('#departure_time_area'+evt.value).value
                 }
 
-                if(area.arrival_time.trim().length == 0){
+                if(area.arrival_time.trim().length == 0){ //Equivocado
                     errores.areallegada = "Por favor, proporcione una hora de llegada";
                 }
                 areas.push(area);
@@ -37,6 +36,9 @@ registrar.addEventListener('click',evt => {
 
     if(fecha.value.trim().length == 0){
         errores.fecha = "Por favor, seleccione una fecha";
+    }
+    else{
+        datos["fecha"] = fecha.value
     }
 
     if(inputDocumento.value.trim().length == 0){
@@ -132,7 +134,6 @@ registrar.addEventListener('click',evt => {
             body: JSON.stringify({datos: datos})
         })
             .then(data =>{
-                console.log(data)
                 Swal.fire({
                     title: 'La visita se ha guardado!',
                     allowOutsideClick: false,

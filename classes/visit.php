@@ -14,7 +14,7 @@ class Visit extends Model implements IModel
     }
 
     public function saveAll($decoded){
-        $newCustomer = isset($decoded['datos']['newCustomer']) ? $decoded['datos']['newCustomer'] : '';
+        $newCustomer = isset($decoded['newCustomer']) ? $decoded['newCustomer'] : '';
 
         if (!empty($newCustomer)) {
             $customer = new Customer();
@@ -36,13 +36,13 @@ class Visit extends Model implements IModel
 
         }
         else{
-            $this->customer_id = isset($decoded['datos']['id_cliente']) ? $decoded['datos']['id_cliente'] : '';
+            $this->customer_id = isset($decoded['id_cliente']) ? $decoded['id_cliente'] : '';
         }
 
-        $this->reason_id = isset($decoded['datos']['id_razonvisita']) ? $decoded['datos']['id_razonvisita'] : '';
-        $areasChecked = isset($decoded['datos']['areasChecked']) ? $decoded['datos']['areasChecked'] : '';
-        $this->date = isset($decoded['datos']['fecha']) ? $decoded['datos']['fecha'] : '';
-        $this->observation = isset($decoded['datos']['observacion']) ? $decoded['datos']['observacion'] : '';
+        $this->reason_id = isset($decoded['id_razonvisita']) ? $decoded['id_razonvisita'] : '';
+        $areasChecked = isset($decoded['areasChecked']) ? $decoded['areasChecked'] : '';
+        $this->date = isset($decoded['fecha']) ? $decoded['fecha'] : '';
+        $this->observation = isset($decoded['observacion']) ? $decoded['observacion'] : '';
 
         $this->save();
         $this->getLastID();

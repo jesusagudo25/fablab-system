@@ -35,6 +35,10 @@ if ($contentType === "application/json") {
 
             $observation->update();
         }
+        else if($decoded['datos']['solicitud'] == 'o'){
+            $observations = $observation->getAll();
+            echo json_encode($observations);
+        }
         else if($decoded['datos']['solicitud'] == 'obs_id'){
             $observations = $observation->get($decoded['datos']['id']);
             echo json_encode($observations);

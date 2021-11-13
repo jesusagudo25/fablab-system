@@ -1,4 +1,4 @@
-fetch('../api.php',{
+fetch('./functions.php',{
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",

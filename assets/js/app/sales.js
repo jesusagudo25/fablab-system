@@ -15,7 +15,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
 let servicios = [];
 
 //Informacion inicial
-fetch('../api.php',{
+fetch('./functions.php',{
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",
@@ -38,7 +38,7 @@ fetch('../api.php',{
 
 let consumibles = [];
 
-fetch('../api.php',{
+fetch('./functions.php',{
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",

@@ -27,7 +27,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
 let distritos = [];
 let corregimientos = [];
 
-fetch('../api.php',{
+fetch('./functions.php',{
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",
@@ -52,7 +52,7 @@ fetch('../api.php',{
             }
         });
 
-        fetch('../api.php',{
+        fetch('./functions.php',{
             method: "POST",
             mode: "same-origin",
             credentials: "same-origin",

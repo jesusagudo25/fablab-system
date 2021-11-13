@@ -1,4 +1,4 @@
-fetch('./api.php',{
+fetch('./functions.php',{
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",
@@ -62,7 +62,7 @@ function actualizar(e,h) {
 
     const hora = document.querySelector('#visit'+e.value+'area'+h);
 
-    fetch('./api.php',{
+    fetch('./functions.php',{
       method: "POST",
         mode: "same-origin",
         credentials: "same-origin",

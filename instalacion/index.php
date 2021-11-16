@@ -127,7 +127,7 @@ $model->query("CREATE TABLE areas(
             invoice_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             customer_id INT UNSIGNED NOT NULL,
             user_id INT UNSIGNED NOT NULL,
-            date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date DATE NOT NULL,
             
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -187,8 +187,8 @@ $model->query("CREATE TABLE areas(
             final_date DATE NOT NULL,
             number_hours INT UNSIGNED NOT NULL,
             price DECIMAL(5,2) NOT NULL,
-            expenses DECIMAL(5,2) NOT NULL,
-            description_expenses TEXT NOT NULL,
+            expenses DECIMAL(5,2) NULL,
+            description_expenses TEXT NULL,
             estado BOOLEAN NOT NULL DEFAULT TRUE,
             
             FOREIGN KEY (category_id) REFERENCES event_category(category_id)

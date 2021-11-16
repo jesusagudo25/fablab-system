@@ -81,7 +81,25 @@ INNER JOIN areas a ON va.area_id = a.area_id
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare("SELECT c.document, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
+        INNER JOIN provinces p ON p.province_id = c.province_id
+        INNER JOIN districts d ON d.district_id = c.district_id
+        INNER JOIN townships t ON t.township_id = c.township_id
+        WHERE customer_id = :customer_id");
+
+        $query->execute([
+            'customer_id' => $id
+        ]);
+
+        $customer = $query->fetch();
+
+        $this->document = $customer['document'];
+        $this->telephone = $customer['telephone'];
+        $this->name = $customer['name'];
+        $this->email = $customer['email'];
+        $this->province = $customer['province'];
+        $this->city = $customer['city'];
+        $this->township = $customer['township'];
     }
 
     public function delete($id)
@@ -197,6 +215,63 @@ INNER JOIN areas a ON va.area_id = a.area_id
     {
         $this->sexo = $sexo;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvince()
+    {
+        return $this->province;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTownship()
+    {
+        return $this->township;
+    }
+
 
 
 

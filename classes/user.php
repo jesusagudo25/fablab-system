@@ -19,11 +19,13 @@ class User extends Model implements IModel
 
     public function get($id)
     {
-        $consulta = $this->prepare("SELECT * FROM users WHERE user_id = :id");
-        $consulta->execute(['id'=>$id]);
+        $consulta = $this->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $consulta->execute(['user_id'=>$id]);
         $usuario = $consulta->fetch();
 
-        return $usuario;
+        $this->name = $usuario['name'];
+        $this->lastname = $usuario['lastname'];
+        $this->email = $usuario['email'];
     }
 
     public function validateEmail(){
@@ -103,6 +105,31 @@ class User extends Model implements IModel
     {
         $this->password = $password;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
 
 
 

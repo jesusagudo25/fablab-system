@@ -1,7 +1,10 @@
 <?php
 
 require_once '../../app.php';
+
 session_start();
+
+header('Content-Type: application/json; charset=utf-8');
 
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 

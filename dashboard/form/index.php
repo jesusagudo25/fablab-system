@@ -164,7 +164,7 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos de la visita</h5>
                     </div>
-                    <form class="p-5">
+                    <form class="p-5" method="post">
                         <label class="block text-sm">
                             <span class="text-gray-800">Seleccione la razón de visita</span>
                             <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">

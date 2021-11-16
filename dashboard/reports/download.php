@@ -3,6 +3,7 @@
 require_once '../../app.php';
 
 session_start();
+
 if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
     header('Location: ../../index.php');
     die;
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $observationsAll = $observations->getObsMonth($report->getStartDate(), $report->getEndDate());
 
     $user = new User();
-    $resultUser = $user->get($report->getUserId());
+    $user->get($report->getUserId());
 
     $options = new Options();
     $options->set('isRemoteEnabled', TRUE);
@@ -182,8 +183,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             </td>
                 
                                             <td>
-                                                ' . $resultUser['name'] . ' ' . $resultUser['lastname'] . '<br />
-                                                ' . $resultUser['email'] . '
+                                                ' . $user->getName() . ' ' . $user->getLastname() . '<br />
+                                                ' . $user->getEmail() . '
                                             </td>
                                         </tr>
                                     </table>

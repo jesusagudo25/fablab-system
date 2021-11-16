@@ -6,7 +6,7 @@ function generarVenta(e){
     let errores = {};
     let datos = {}
 
-    btn_generar.removeEventListener('click',generarVenta)
+    btn_generar.removeEventListener('click',generarVenta);
 
     if(inputDocumento.value.trim().length == 0){
         errores.documento = "Por favor, seleccione un cliente";
@@ -70,7 +70,6 @@ function generarVenta(e){
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 Swal.fire({
                     title: 'La venta se ha generado!',
                     allowOutsideClick: false,

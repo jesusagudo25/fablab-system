@@ -2,6 +2,8 @@
 
 require_once '../../app.php';
 
+header('Content-Type: application/json; charset=utf-8');
+
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 
 if ($contentType === "application/json") {

@@ -21,7 +21,8 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     sexo = document.querySelectorAll('input[name="sexo"]'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
-    corregimiento = document.querySelector('select[name="corregimiento"]');
+    corregimiento = document.querySelector('select[name="corregimiento"]'),
+    formulario = document.querySelector('form');
 
 //Informacion inicial
 let distritos = [];

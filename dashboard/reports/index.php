@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!--/container-->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.js"></script>
+<script type="text/javascript" src="<?= constant('URL')?>assets/js/plugins/datatables.min.js"></script>
 <script src="<?= constant('URL')?>assets/js/plugins/datepicker.bundle.js"></script>
 <script src="<?= constant('URL')?>assets/js/tables/fetchreports.js"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>

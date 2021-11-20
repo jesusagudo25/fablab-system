@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 session_start();
 
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -102,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
-                            <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-500 hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
+                            <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
                             <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>

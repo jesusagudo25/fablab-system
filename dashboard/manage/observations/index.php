@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
     session_start();
 
@@ -7,12 +6,12 @@
         die;
     }
 
-    require_once '../../app.php';
+    require_once '../../../app.php';
 
     $pagina[] = "gestionar";
 
 ?>
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -21,17 +20,16 @@
     <title>Observaciones - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
-    <link rel="icon" href="../../assets/img/fab.ico" type="image/x-icon">
+    <link rel="icon" href="../../../assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="../../assets/css/tailwind.output.css" rel="stylesheet">
+    <link href="../../../assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-<?php require_once '../templates/header.php'; ?>
+<?php require_once '../../templates/header.php'; ?>
 
 <!--Container-->
 <div class="container w-10/12 mx-auto pt-20">
@@ -77,8 +75,8 @@
 
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
-                            <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-500 hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                            <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
+                            <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>
                 </div>
@@ -90,14 +88,19 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Observaciones</h5>
                     </div>
-                    <div>
-
-                        <div class="text-sm mt-5 w-full overflow-x-auto">
-                            <table class="w-full whitespace-no-wrap table">
-
-                            </table>
-                        </div>
-
+                    <div class="flex justify-center items-center w-full overflow-auto">
+                        <table id="datatable-json" class="min-w-full divide-y divide-white">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Autor</th>
+                                <th>Descripción</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <!-- Ajax Color Table Body -->
+                        </table>
                     </div>
                 </div>
                 <!--/Graph Card-->
@@ -112,8 +115,9 @@
 
 </div>
 <!--/container-->
-
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.js"></script>
 <script src="<?= constant('URL')?>assets/js/tables/fetchobservations.js"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 

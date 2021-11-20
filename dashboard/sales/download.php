@@ -15,7 +15,7 @@
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $invoice = new Invoice();
-    $invoice->get($_REQUEST['venta']);
+    $invoice->get($_REQUEST['factura']);
 
     $user = new User();
     $user->get($invoice->getUserId());

@@ -1,63 +1,31 @@
-let table;
-
-    fetch('./functions.php',{
-        method: "POST",
-        mode: "same-origin",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({datos: {
-                solicitud: "o",
-            }})
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.length) {
-                return
-            }
-
-            // Price column cell manipulation
-            function renderButton(data, cell, row) {
-                return `
-                <div class="flex items-center space-x-4">
-                    <button value="${data}" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>
-                    <button value="${data}" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button>
-                </div>`;
-            }
-
-            table = new simpleDatatables.DataTable(".table", {
-                data: {
-                    headings: Object.keys(data[0]),
-                    data: data.map(item => Object.values(item))
-                },
-                fixedHeight: true,
-                scrollY: true,
-                scrollX: true,
-                columns: [
-                    {select: 3, render: renderButton},
-                ]
-            });
-
-
-            const selector = document.querySelector('.dataTable-selector'),
-                dropdown = document.querySelector('.dataTable-dropdown'),
-                input = document.querySelector('.dataTable-input'),
-                trtable = document.querySelector('.dataTable-table tr'),
-            bodytable = document.querySelector('.dataTable-table tbody'),
-            tableContainer = document.querySelector('.dataTable-container table');
-
-
-            selector.classList.add('text-sm','w-2/6' ,'p-4' ,'m-1', 'rounded-md', 'border-gray-300', 'shadow-sm' ,'focus:border-blue-300', 'focus:ring', 'focus:ring-blue-200' ,'focus:ring-opacity-50');
-            dropdown.classList.add('w-1/4');
-            input.classList.add("mt-1", "text-sm" ,"w-full" ,"rounded-md", "border-gray-300", "shadow-sm" ,"focus:border-blue-300" ,"focus:ring","focus:ring-blue-200","focus:ring-opacity-50")
-            trtable.classList.add('text-xs','font-semibold' ,'tracking-wide' ,'text-left', 'uppercase' ,'border-b')
-            bodytable.classList.add('bg-gray-100', 'divide-y');
-            tableContainer.classList.add('h-full');
-
-        });
-
-
+tablaUsuarios = $('#datatable-json').DataTable({
+    "ajax":{
+        url: './functions.php',
+        type: 'POST',
+        data: {solicitud:'o'},
+        dataSrc:""
+    },
+    columns: [
+        { "data": "observation_id" },
+        { "data": "autor" },
+        { "data": "descripcion" },
+        { "data": "fecha" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                return '<div class="flex items-center space-x-4"> <button value="'+data['observation_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button><button value="'+data['observation_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+            },
+            "targets": -1
+        }
+    ],
+    responsive: true,
+    processing: true,
+    'columnDefs' : [
+        //hide the second & fourth column
+        { 'visible': false, 'targets': [0] }
+    ]
+});
 
 const newObs = document.querySelector('#observacion'),
     closeModal = document.querySelectorAll('.close'),
@@ -87,107 +55,137 @@ newObs.addEventListener('click', evt => {
 
     function crear(e) {
         modal.classList.toggle('hidden');
-        guardar.removeEventListener('click', crear);
-        closeModal.forEach( e =>{
-            e.removeEventListener('click', cerrarCrear);
-        });
-        fetch('./functions.php',{
-            method: "POST",
-            mode: "same-origin",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
+
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "c",
+                description: description.value,
+                date: fecha.value,
             },
-            body: JSON.stringify({datos: {
-                    solicitud: "c",
-                    description: description.value,
-                    date: fecha.value,
-                }})
-        }).then(data =>{
-            location.reload();
+            success: function(data) {
+                description.value = '';
+                fecha.value = '';
+                tablaUsuarios.ajax.reload();
+                guardar.removeEventListener('click', crear);
+                closeModal.forEach( e =>{
+                    e.removeEventListener('click', cerrarCrear);
+                });
+                Toastify({
+                    text: "Observación agregada",
+                    duration: 3000,
+                    style: {
+                        background: '#10B981'
+                    }
+                }).showToast();
+            }
         });
     }
 
 });
 
 function editar(e){
-    
-    fetch('./functions.php',{
-        method: "POST",
-        mode: "same-origin",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json"
+
+    $.ajax({
+        url: "./functions.php",
+        type: "POST",
+        datatype:"json",
+        data:  {
+            solicitud: "obs_id",
+            id: e.value,
         },
-        body: JSON.stringify({datos: {
-                solicitud: "obs_id",
-                id: e.value,
-            }})
-    })
-    .then(response => response.json())
-    .then(data =>{
-        
-        description.value = data['description'];
-        fecha.value = data['date'];
-
-        modal.classList.toggle('hidden');
-
-        guardar.addEventListener('click', actualizar);
-
-        closeModal.forEach( e =>{
-            e.addEventListener('click', cerrarActualizar);
-        });
-
-        function cerrarActualizar(e){
+        success: function(data) {
+            description.value = data['description'];
+            fecha.value = data['date'];
             modal.classList.toggle('hidden');
-            guardar.removeEventListener('click', actualizar);
-            description.value = '';
-            fecha.value = '';
+
+            guardar.addEventListener('click', actualizar);
+
             closeModal.forEach( e =>{
-                e.removeEventListener('click', cerrarActualizar);
+                e.addEventListener('click', cerrarActualizar);
             });
-        }
 
-        function actualizar(evt) {
-            modal.classList.toggle('hidden');
+            function cerrarActualizar(e){
+                modal.classList.toggle('hidden');
+                guardar.removeEventListener('click', actualizar);
+                description.value = '';
+                fecha.value = '';
+                closeModal.forEach( e =>{
+                    e.removeEventListener('click', cerrarActualizar);
+                });
+            }
 
-            fetch('./functions.php',{
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({datos: {
+            function actualizar(evt) {
+                modal.classList.toggle('hidden');
+
+                $.ajax({
+                    url: "./functions.php",
+                    type: "POST",
+                    datatype:"json",
+                    data:  {
                         solicitud: "u",
                         description: description.value,
                         date: fecha.value,
                         id: e.value
-                    }})
-            })
-            .then(data =>{
-                location.reload();
-            });
+                    },
+                    success: function(data) {
+                        description.value = '';
+                        fecha.value = '';
+                        tablaUsuarios.ajax.reload();
+                        guardar.removeEventListener('click', actualizar);
+                        closeModal.forEach( e =>{
+                            e.removeEventListener('click', cerrarActualizar);
+                        });
+                        Toastify({
+                            text: "Observación actualizada",
+                            duration: 3000,
+                            style: {
+                                background: '#10B981'
+                            }
+                        }).showToast();
+                    }
+                });
+            }
         }
-
     });
 }
 
 function borrar(e) {
-    fetch('./functions.php',{
-        method: "POST",
-        mode: "same-origin",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({datos: {
-                solicitud: "d",
-                id: e.value
-            }})
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "La observación será eliminada y no podrá ser recuperada.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#10B981',
+        cancelButtonColor: '#EF4444',
+        confirmButtonText: 'Si, borrar ahora!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "./functions.php",
+                type: "POST",
+                datatype:"json",
+                data:  {
+                    solicitud: "d",
+                    id: e.value
+                },
+                success: function(data) {
+                    tablaUsuarios.ajax.reload();
+                    Swal.fire({
+                        title: 'Eliminado!',
+                        text:  'La observación ha sido eliminada.',
+                        icon: 'success',
+                        confirmButtonColor: '#10B981'
+                        }
+                    )
+                }
+            });
+        }
     })
-    .then(data =>{
-      location.reload();
-    });
 
 }
+

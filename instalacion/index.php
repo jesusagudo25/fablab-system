@@ -109,7 +109,6 @@ $model->query("CREATE TABLE areas(
             user_id INT UNSIGNED NOT NULL,
             description TEXT,
             date DATE NOT NULL,
-            status BOOLEAN NOT NULL DEFAULT TRUE,
             
             FOREIGN KEY (user_id) REFERENCES users(user_id)
 );");

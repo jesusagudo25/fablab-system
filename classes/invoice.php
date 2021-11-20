@@ -122,7 +122,13 @@ class Invoice extends Model implements IModel
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $query = $this->query("SELECT i.invoice_id, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date FROM invoices i
+        INNER JOIN customers c ON c.customer_id = i.customer_id
+        INNER JOIN users u ON u.user_id = i.user_id");
+
+        $invoices = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $invoices;
     }
 
     public function get($id)

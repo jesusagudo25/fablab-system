@@ -75,7 +75,7 @@ function generarVenta(e){
                     allowOutsideClick: false,
                     icon: 'success',
                     confirmButtonColor: '#3b82f6',
-                    footer: `<a class="flex items-center justify-between swal2-deny swal2-styled" target="_blank" href="./download.php?venta=${data}" id="pdf">
+                    footer: `<a class="flex items-center justify-between swal2-deny swal2-styled" target="_blank" href="./download.php?factura=${data}" id="pdf">
         </svg>
         <i class="fas fa-file-pdf mr-3"></i>
                   <span>Descargar PDF</span>

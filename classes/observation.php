@@ -25,7 +25,7 @@ class Observation extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT CONCAT(u.name," ",u.lastname) AS Autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS Descripción, o.date AS Fecha, o.observation_id AS Acciones FROM observations o
+        $query = $this->query('SELECT o.observation_id, CONCAT(u.name," ",u.lastname) AS autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS descripcion, o.date AS fecha FROM observations o
 INNER JOIN users u ON o.user_id = u.user_id');
         $observations = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -39,9 +39,9 @@ INNER JOIN users u ON o.user_id = u.user_id');
             'id' => $id
         ]);
 
-                $observation = $query->fetch();
-        
-                return $observation;
+        $observation = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $observation;
     }
 
     public function delete($id)

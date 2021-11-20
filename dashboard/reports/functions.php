@@ -1,28 +1,37 @@
 <?php
 
-require_once '../../app.php';
+    require_once '../../app.php';
 
-header('Content-Type: application/json; charset=utf-8');
+    session_start();
 
-$contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+    header('Content-Type: application/json; charset=utf-8');
 
-if ($contentType === "application/json") {
+    $report = new Report();
 
-    $content = trim(file_get_contents("php://input"));
+    if($_POST['solicitud'] == 'c'){
 
-    $decoded = json_decode($content, true);
+        $report->setUserId($_SESSION['user_id']);
+        $report->setStartDate(isset($_POST['start_date']) ? $_REQUEST['start_date'] : '');
+        $report->setEndDate(isset($_POST['end_date']) ? $_POST['end_date'] : '');
 
-    if(is_array($decoded)) {
+        #Mes del reporte o fecha
+        setlocale(LC_TIME, "spanish");
+        $report->setMonth(ucfirst(strftime("%B",strtotime($report->getStartDate()))));
 
-        if($decoded['datos']['solicitud'] == 'r'){
-            $report = new Report();
-            $reports = $report->getAll();
-            echo json_encode($reports);
+        $report->save();
 
-        }
+        $report->getLastID();
 
-
-    } else {
-        header("Location: ../index.php");
+        echo json_encode($report->getReportId());
     }
-}
+    else if($_POST['solicitud'] == 'r'){
+
+        $reports = $report->getAll();
+        echo json_encode($reports);
+
+    }
+    else if($_POST['solicitud'] == 'd'){
+        $report->delete($_POST['id']);
+
+        echo json_encode('true');
+    }

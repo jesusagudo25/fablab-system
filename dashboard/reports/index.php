@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="icon" href="../../assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="../../assets/css/tailwind.output.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -93,13 +93,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Reportes</h5>
                     </div>
-                    <div>
-                        <div class="text-sm mt-5 w-full overflow-x-auto">
-                            <table class="w-full whitespace-no-wrap table">
-
-                            </table>
-                        </div>
-
+                    <div class="flex justify-center items-center w-full overflow-auto">
+                        <table id="datatable-json" class="min-w-full divide-y divide-white">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mes</th>
+                                <th>Autor</th>
+                                <th>Fecha de inicio</th>
+                                <th>Fecha de finalización</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <!-- Ajax Color Table Body -->
+                        </table>
                     </div>
                 </div>
                 <!--/Graph Card-->
@@ -114,11 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </div>
 <!--/container-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.js"></script>
+<script src="<?= constant('URL')?>assets/js/plugins/datepicker.bundle.js"></script>
 <script src="<?= constant('URL')?>assets/js/tables/fetchreports.js"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
-<script src="<?= constant('URL')?>assets/js/plugins/datepicker.bundle.js"></script>
 
 </body>
 </html>

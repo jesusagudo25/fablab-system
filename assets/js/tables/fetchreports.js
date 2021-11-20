@@ -1,70 +1,53 @@
-fetch('./functions.php',{
-    method: "POST",
-    mode: "same-origin",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json"
+tablaUsuarios = $('#datatable-json').DataTable({
+    "ajax":{
+        url: './functions.php',
+        type: 'POST',
+        data: {solicitud:'r'},
+        dataSrc:""
     },
-    body: JSON.stringify({datos: {
-            solicitud: "r",
-        }})
-    })
-    .then(response => response.json())
-    .then(data => {
-    if (!data.length) {
-        return
-    }
+    columns: [
+        { "data": "report_id" },
+        { "data": "month" },
+        { "data": "autor" },
+        { "data": "start_date" },
+        { "data": "end_date" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                return '<div class="flex items-center space-x-4"><a href="./download.php?reporte='+data['report_id']+'.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a><button value="'+data['report_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+            },
+            "targets": -1
+        }
+    ],
+    responsive: true,
+    processing: true,
+    'columnDefs' : [
+        //hide the second & fourth column
+        { 'visible': false, 'targets': [0] }
+    ]
+});
 
-    // Price column cell manipulation
-    function renderButton(data, cell, row) {
-        return `
-            <form method="post" class="flex items-center space-x-4">
-                <a href="./download.php?reporte=${data}.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a>
-                <button value="${data}" type="submit" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-trash-alt"></i></button>
-            </form>`;
-    }
-
-    let table = new simpleDatatables.DataTable(".table", {
-        data: {
-        headings: Object.keys(data[0]),
-        data: data.map(item => Object.values(item))
-    },
-        fixedHeight: true,
-        scrollY: true,
-        scrollX: true,
-        columns: [
-            { select: 4, render: renderButton },
-        ]
-    });
-
-    const selector = document.querySelector('.dataTable-selector'),
-        dropdown = document.querySelector('.dataTable-dropdown'),
-        input = document.querySelector('.dataTable-input'),
-    trtable = document.querySelector('.dataTable-table tr');
-    bodytable = document.querySelector('.dataTable-table tbody');
-    tableContainer = document.querySelector('.dataTable-container table');
-
-    selector.classList.add('text-sm','w-2/6' ,'p-4' ,'m-1', 'rounded-md', 'border-gray-300', 'shadow-sm' ,'focus:border-blue-300', 'focus:ring', 'focus:ring-blue-200' ,'focus:ring-opacity-50');
-    dropdown.classList.add('w-1/4');
-    input.classList.add("mt-1", "text-sm" ,"w-full" ,"rounded-md", "border-gray-300", "shadow-sm" ,"focus:border-blue-300" ,"focus:ring","focus:ring-blue-200","focus:ring-opacity-50")
-        trtable.classList.add('text-xs','font-semibold' ,'tracking-wide' ,'text-left', 'uppercase' ,'border-b')
-    bodytable.classList.add('bg-gray-100', 'divide-y');
-    tableContainer.classList.add('h-full');
-    });
-
-let formulario = document.querySelector('form');
+const formulario = document.querySelector('form'),
+        start_date = document.querySelector('input[name="start_date"]'),
+        end_date = document.querySelector('input[name="end_date"]');
 
 formulario.addEventListener('submit', e =>{
     e.preventDefault();
 
     let datos = new FormData(formulario);
 
-    fetch('./savereports.php',{
-        method : 'POST',
-        body: datos
-    })
-        .then(res => res.json())
-        .then(data => {
+    $.ajax({
+        url: "./functions.php",
+        type: "POST",
+        datatype:"json",
+        data:  {
+            solicitud: "c",
+            start_date: datos.get('start_date'),
+            end_date: datos.get('end_date')
+        },
+        success: function(data) {
+            tablaUsuarios.ajax.reload();
             Swal.fire({
                 title: 'El reporte se ha generado!',
                 allowOutsideClick: false,
@@ -75,10 +58,46 @@ formulario.addEventListener('submit', e =>{
         <i class="fas fa-file-pdf mr-3"></i>
                   <span>Descargar PDF</span>
                 </a>`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
+            });
+            start_date.value = '';
+            end_date.value = '';
+        }
+    });
+});
+
+function borrar(e) {
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "El reporte será eliminado y no podrá ser recuperado.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#10B981',
+        cancelButtonColor: '#EF4444',
+        confirmButtonText: 'Si, borrar ahora!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "./functions.php",
+                type: "POST",
+                datatype:"json",
+                data:  {
+                    solicitud: "d",
+                    id: e.value
+                },
+                success: function(data) {
+                    tablaUsuarios.ajax.reload();
+                    Swal.fire({
+                            title: 'Eliminado!',
+                            text:  'El reporte ha sido eliminado.',
+                            icon: 'success',
+                            confirmButtonColor: '#10B981'
+                        }
+                    )
                 }
             });
-        });
-}, { once: true });
+        }
+    })
+
+}

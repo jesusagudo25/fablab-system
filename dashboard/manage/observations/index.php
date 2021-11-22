@@ -20,9 +20,9 @@
     <title>Observaciones - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
-    <link rel="icon" href="../../../assets/img/fab.ico" type="image/x-icon">
+    <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="../../../assets/css/tailwind.output.css" rel="stylesheet">
+    <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
 </head>

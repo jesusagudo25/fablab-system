@@ -1,4 +1,4 @@
-tablaUsuarios = $('#datatable-json').DataTable({
+tablaReportes = $('#datatable-json').DataTable({
     "ajax":{
         url: './functions.php',
         type: 'POST',
@@ -47,7 +47,7 @@ formulario.addEventListener('submit', e =>{
             end_date: datos.get('end_date')
         },
         success: function(data) {
-            tablaUsuarios.ajax.reload();
+            tablaReportes.ajax.reload();
             Swal.fire({
                 title: 'El reporte se ha generado!',
                 allowOutsideClick: false,
@@ -87,7 +87,7 @@ function borrar(e) {
                     id: e.value
                 },
                 success: function(data) {
-                    tablaUsuarios.ajax.reload();
+                    tablaReportes.ajax.reload();
                     Swal.fire({
                             title: 'Eliminado!',
                             text:  'El reporte ha sido eliminado.',

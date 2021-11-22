@@ -32,10 +32,11 @@
     <title>Dashboard - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
-    <link rel="icon" href="../assets/img/fab.ico" type="image/x-icon">
+    <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link href="../assets/css/tailwind.output.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -180,13 +181,20 @@
                         <div class="border-b p-3">
                             <h5 class="font-bold uppercase text-gray-600">Tabla - Clientes en laboratorio</h5>
                         </div>
-                        <div>
-                            <div class="text-sm mt-5 w-full overflow-x-auto">
-                                <table class="w-full whitespace-no-wrap table">
-
-                                </table>
-                            </div>
-
+                        <div class="flex justify-center items-center w-full overflow-auto">
+                            <table id="datatable-json" class="min-w-full divide-y divide-white">
+                                <thead>
+                                <tr>
+                                    <th>ID_V</th>
+                                    <th>ID_A</th>
+                                    <th>Nombre</th>
+                                    <th>Area</th>
+                                    <th>Fecha de salida</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <!-- Ajax Color Table Body -->
+                            </table>
                         </div>
                     </div>
                     <!--/table Card-->
@@ -205,8 +213,9 @@
 
     <?php require_once './templates/footer.php'; ?>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="text/javascript" src="<?= constant('URL')?>assets/js/plugins/datatables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script src="../assets/js/graphs/line.js"></script>
     <script src="../assets/js/graphs/doughnut.js"></script>
     <script src="../assets/js/tables/fetchlabo.js"></script>

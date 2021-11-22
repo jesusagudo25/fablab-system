@@ -1,4 +1,4 @@
-tablaUsuarios = $('#datatable-json').DataTable({
+tablaObservaciones = $('#datatable-json').DataTable({
     "ajax":{
         url: './functions.php',
         type: 'POST',
@@ -68,7 +68,7 @@ newObs.addEventListener('click', evt => {
             success: function(data) {
                 description.value = '';
                 fecha.value = '';
-                tablaUsuarios.ajax.reload();
+                tablaObservaciones.ajax.reload();
                 guardar.removeEventListener('click', crear);
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarCrear);
@@ -133,7 +133,7 @@ function editar(e){
                     success: function(data) {
                         description.value = '';
                         fecha.value = '';
-                        tablaUsuarios.ajax.reload();
+                        tablaObservaciones.ajax.reload();
                         guardar.removeEventListener('click', actualizar);
                         closeModal.forEach( e =>{
                             e.removeEventListener('click', cerrarActualizar);
@@ -174,7 +174,7 @@ function borrar(e) {
                     id: e.value
                 },
                 success: function(data) {
-                    tablaUsuarios.ajax.reload();
+                    tablaObservaciones.ajax.reload();
                     Swal.fire({
                         title: 'Eliminado!',
                         text:  'La observación ha sido eliminada.',

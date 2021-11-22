@@ -9,11 +9,11 @@
 @layer components {
 
     .dataTables_wrapper{
-        @apply text-sm
+        @apply text-sm;
     }
     
     .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter{
-        @apply w-52;
+        @apply w-1/2 !important;
     }
 
     .dataTables_wrapper{
@@ -24,18 +24,27 @@
         @apply w-full !important;
     }
 
-    .dataTables_wrapper .dataTables_paginate, .dataTables_wrapper .dataTables_info,
-    .dataTables_wrapper #datatable-json_filter, .dataTables_wrapper .dataTables_length
-    {
+    #datatable-json_wrapper #datatable-json_paginate{
+        @apply p-2 !important;
+    }
+
+    #datatable-json_wrapper #datatable-json_info{
+        @apply p-2 !important;
+    }
+    #datatable-json_wrapper #datatable-json_filter{
+        @apply p-2 !important;
+    }
+
+    #datatable-json_wrapper #datatable-json_length{
         @apply p-2 !important;
     }
 
     .dataTables_wrapper .dataTables_length select{
-        @apply text-sm w-1/2 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
+        @apply text-sm w-1/5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
     }
 
     .dataTables_wrapper .dataTables_filter input {
-        @apply mt-1 text-sm w-4/6 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
+        @apply mt-1 text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
     }
 
     table.dataTable thead th{

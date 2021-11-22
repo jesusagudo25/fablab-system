@@ -64,7 +64,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
     }
 
     public function getLabo(){
-        $query = $this->query('SELECT c.name AS Nombre,a.name AS Area,va.departure_time AS "Hora de salida", v.visit_id AS Acción, va.area_id FROM visits v
+        $query = $this->query('SELECT v.visit_id , va.area_id, c.name AS nombre_cliente,a.name AS nombre_area,va.departure_time FROM visits v
                                         INNER JOIN visits_areas va ON v.visit_id = va.visit_id
                                         INNER JOIN customers c ON v.customer_id = c.customer_id
 INNER JOIN areas a ON va.area_id = a.area_id

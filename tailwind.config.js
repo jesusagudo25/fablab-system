@@ -1,6 +1,7 @@
 module.exports = {
-  purge: ['./assets/js/*/*.js',
-        './assets/css/*.css',
+  purge: ['./assets/js/tables/*.js',
+          './assets/js/app/*.js',
+        './assets/css/tailwind.css',
           './*.php',
           './*/*.php',
           './*/*/*.php',

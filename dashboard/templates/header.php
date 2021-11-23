@@ -33,7 +33,7 @@
                     </div>
 
 
-                    <div class="block lg:hidden pr-4">
+                    <div class="block xl:hidden pr-4">
                         <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
                             <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <title>Menu</title>
@@ -46,8 +46,8 @@
             </div>
 
 
-            <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
-                <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
+            <div class="w-full flex-grow xl:flex lg:items-center lg:w-auto hidden xl:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
+                <ul class="list-reset xl:flex flex-1 items-center px-4 md:px-0">
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/" class="block py-1 md:py-3 pl-1 align-middle no-underline text-gray-500 hover:text-gray-900 border-b-2 border-white <?= in_array( 'dashboard',$pagina) ? 'border-blue-500 text-gray-900' : 'hover:border-blue-500' ?>">
                             <i class="fas fa-home fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Inicio</span>
@@ -93,8 +93,8 @@
                     </li>
                 </ul>
 
-                <div class="relative pull-right pl-4 pr-4 md:pr-0">
-                    <input type="search" placeholder="En construcción..." class="w-full text-sm text-gray-800 transition focus:outline-none py-1 px-2 pl-10 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+                <div class="relative pull-right pl-4 pr-4 md:pr-0 hidden xl:block">
+                    <input type="search" placeholder="Buscar..." class="w-full text-sm text-gray-800 transition focus:outline-none py-1 px-2 pl-10 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
                     <div class="absolute search-icon" style="top: 0.375rem;left: 1.75rem;">
                         <svg class="fill-current pointer-events-none text-gray-800 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>

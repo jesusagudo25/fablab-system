@@ -5,6 +5,7 @@ $(document).ready(function () {
         data: {options:'s'},
         success: function (data) {
             var table = $('#datatable-json').DataTable({
+                language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
                 data: data,
                 columns: [
                     { "data": "invoice_id" },

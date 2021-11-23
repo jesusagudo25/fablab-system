@@ -1,5 +1,6 @@
 tablaReportes = $('#datatable-json').DataTable({
-    "ajax":{
+    language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
+    ajax:{
         url: './functions.php',
         type: 'POST',
         data: {solicitud:'r'},
@@ -68,7 +69,7 @@ formulario.addEventListener('submit', e =>{
 function borrar(e) {
 
     Swal.fire({
-        title: '¿Estás seguro?',
+        title: 'Advertencia',
         text: "El reporte será eliminado y no podrá ser recuperado.",
         icon: 'warning',
         showCancelButton: true,
@@ -88,16 +89,16 @@ function borrar(e) {
                 },
                 success: function(data) {
                     tablaReportes.ajax.reload();
-                    Swal.fire({
-                            title: 'Eliminado!',
-                            text:  'El reporte ha sido eliminado.',
-                            icon: 'success',
-                            confirmButtonColor: '#10B981'
+                    Toastify({
+                        text: "Reporte eliminado!",
+                        duration: 3000,
+                        style: {
+                            background: '#10B981'
                         }
-                    )
+                    }).showToast();
                 }
             });
         }
-    })
+    });
 
 }

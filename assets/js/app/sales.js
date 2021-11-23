@@ -248,9 +248,27 @@ function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
 
     function cerrarActualizar(e){
         modal.classList.toggle('hidden');
-        guardar.removeEventListener('click', actualizar);
-        closeModal.forEach( e =>{
-            e.removeEventListener('click', cerrarActualizar);
+        Swal.fire({
+            title: 'Advertencia',
+            text: "¿Seguro que quieres salir sin guardar?",
+            icon: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#10B981',
+            cancelButtonColor: '#EF4444',
+            confirmButtonText: 'Si, salir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                guardar.removeEventListener('click', actualizar);
+                closeModal.forEach( e =>{
+                    e.removeEventListener('click', cerrarActualizar);
+                });
+            }
+            else{
+                modal.classList.toggle('hidden');
+            }
+
         });
     }
 
@@ -263,6 +281,14 @@ function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
         closeModal.forEach( e =>{
             e.removeEventListener('click', cerrarActualizar);
         });
+
+        Toastify({
+            text: "Servicio actualizado!",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
     }
 }
 

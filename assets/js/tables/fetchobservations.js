@@ -1,5 +1,6 @@
 tablaObservaciones = $('#datatable-json').DataTable({
-    "ajax":{
+    language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
+    ajax:{
         url: './functions.php',
         type: 'POST',
         data: {solicitud:'o'},
@@ -175,13 +176,13 @@ function borrar(e) {
                 },
                 success: function(data) {
                     tablaObservaciones.ajax.reload();
-                    Swal.fire({
-                        title: 'Eliminado!',
-                        text:  'La observación ha sido eliminada.',
-                        icon: 'success',
-                        confirmButtonColor: '#10B981'
+                    Toastify({
+                        text: "Observación eliminada!",
+                        duration: 3000,
+                        style: {
+                            background: '#10B981'
                         }
-                    )
+                    }).showToast();
                 }
             });
         }

@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     },
                     {
                         groupId: '999',
-                        title: 'Evento que se repite',
+                        title: 'Fablab Kids',
                         start: '2021-11-09T16:00:00'
                     },
                     {
                         groupId: '999',
-                        title: 'Evento que se repite',
+                        title: 'Fablab Kids',
                         start: '2021-11-16T16:00:00'
                     },
                     {
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         start: '2021-11-13T07:00:00'
                     },
                     {
-                        title: 'Inauguración del Fablab',
+                        title: 'Fablab fest',
                         url: 'http://google.com/',
                         start: '2021-11-28'
                     }

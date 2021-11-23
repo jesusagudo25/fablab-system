@@ -152,7 +152,7 @@ $pagina[] = "gestionar";
 
 
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script type="text/javascript" src="<?= constant('URL')?>assets/js/plugins/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
 <script src="<?= constant('URL')?>assets/js/tables/fetchsales.js"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 <script>

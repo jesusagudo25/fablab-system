@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 <!--/Graph Card-->
-            </div>
+        </div>
 
             <div class="w-full p-3">
                 <!--Graph Card-->

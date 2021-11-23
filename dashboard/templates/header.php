@@ -68,6 +68,11 @@
                             <i class="fas fa-chart-area fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Reportes</span>
                         </a>
                     </li>
+                    <li class="mr-6 my-2 md:my-0">
+                        <a href="<?= constant('URL')?>dashboard/schedule/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white <?= in_array( 'schedule',$pagina) ? 'border-blue-500 text-gray-900' : '' ?> hover:border-blue-500">
+                            <i class="fas fa-calendar-alt fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Agenda</span>
+                        </a>
+                    </li>
                     <li class="mr-6 my-2 md:my-0 relative">
                         <button id="gestButton" class="w-full text-left py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white <?= in_array( 'gestionar',$pagina) ? 'border-blue-500 text-gray-900' : 'hover:border-blue-500' ?>">
                             <i class="fas fa-cogs fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Gestionar <svg class="pl-2 h-2 inline-block" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">

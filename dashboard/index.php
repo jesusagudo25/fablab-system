@@ -209,17 +209,14 @@
 
 
     </div>
-    <!--/container-->
-
-    <?php require_once './templates/footer.php'; ?>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="text/javascript" src="<?= constant('URL')?>assets/js/plugins/datatables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../assets/js/graphs/line.js"></script>
-    <script src="../assets/js/graphs/doughnut.js"></script>
-    <script src="../assets/js/tables/fetchlabo.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
+    <script src="<?= constant('URL')?>assets/js/graphs/line.js"></script>
+    <script src="<?= constant('URL')?>assets/js/graphs/doughnut.js"></script>
+    <script src="<?= constant('URL')?>assets/js/tables/fetchlabo.js"></script>
 </body>
 
 </html>

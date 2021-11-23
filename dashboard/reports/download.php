@@ -38,6 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $user = new User();
     $user->get($report->getUserId());
 
+    $customer = new Customer();
+    $cantidadPorRango= $customer->getAllAgeRange($report->getStartDate(), $report->getEndDate());
+    $cantidadPorSexo= $customer->getAllTypeSex($report->getStartDate(), $report->getEndDate());
+
     $options = new Options();
     $options->set('isRemoteEnabled', TRUE);
 
@@ -241,25 +245,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     }
     $html .= '</table>
+                        <table style="margin-top: 30px;" >
+                        <tr>
+                            <td width="40%">	<table style="border: 1px solid rgb(141, 141, 141);">
+	
+		<tr class="heading">
+			<td style="text-align: center; " width="70%">Rangos de edad</td>
+			<td style="text-align: center;" width="30%">Cantidad</td>
+		</tr>';
+
+    foreach ($cantidadPorRango as $datos => $valor) {
+
+        $html .= '<tr class="item" >
+			<td style = "text-align: center;" > ' . $valor['name'] . ' </td >
+			<td style = "text-align: center;" > ' . $valor['total']. ' </td >
+		</tr >';
+
+        }
+
+    $html .= '</table></td>
+                        	<td width="40%" >	<table style="border: 1px solid rgb(141, 141, 141);">
+	
+		<tr class="heading">
+			<td style="text-align: center; " width="70%">Tipo de sexo</td>
+			<td style="text-align: center;" width="30%">Cantidad</td>
+		</tr>';
+
+		$html .= '<tr class="item">
+			<td style = "text-align: center;" > F </td >
+			<td style = "text-align: center;" > ' . $cantidadPorSexo[0]['F']. ' </td >
+		</tr>
+		<tr class="item">
+				         <td style = "text-align: center;" > M </td >
+			<td style = "text-align: center;" > ' . $cantidadPorSexo[0]['M']. ' </td >
+	</tr>
+	</table></td>
+                        </tr>
+
+                        </table>
                         
                         <div style="
-                        text-align: left; margin-top: 30px; font-size: 16px">
+                        text-align: left; margin-top: 30px; font-size: 16px;">
                         <span>Observaciones:</span>
                         <ul>';
     if(count($observationsAll)){
         foreach ($observationsAll as $datos => $valor) {
                 $html .= '   <li>' . $valor['description'] . ' - ' . $valor['name'] . ' , ' . $valor['date'] . '</li>';
             }
-            $html .= '</ul></div>
-                        </body>
-                        </html>';
     }
     else{
-        $html .= '   <li>'.'Sin observaciones'.'</li>
-    </ul></div>
+        $html .= '   <li>'.'Sin observaciones'.'</li>';
+    }
+
+    $html .= '</ul></div>
+</div>
                         </body>
                         </html>';
-    }
 
     $dompdf->loadHtml($html);
 

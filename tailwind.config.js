@@ -1,6 +1,7 @@
 module.exports = {
   purge: ['./assets/js/tables/*.js',
           './assets/js/app/*.js',
+          './assets/js/plugins/datepicker.bundle.js',
         './assets/css/tailwind.css',
           './*.php',
           './*/*.php',

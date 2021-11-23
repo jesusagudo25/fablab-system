@@ -74,6 +74,46 @@ INNER JOIN areas a ON va.area_id = a.area_id
         return $customers;
     }
 
+    public function getAllAgeRange($start_date,$end_date){
+        $query = $this->prepare("SELECT ar.name, COALESCE(x.total,0) AS total FROM
+(
+    SELECT COUNT(v.visit_id) AS total, ar.range_id FROM visits v
+    INNER JOIN customers c ON v.customer_id = c.customer_id
+    RIGHT JOIN age_range ar ON c.range_id = ar.range_id
+    WHERE (v.date BETWEEN :start_date AND :end_date)
+    GROUP BY ar.range_id
+) as x
+RIGHT JOIN age_range ar ON x.range_id = ar.range_id
+GROUP BY ar.range_id;");
+
+        $query->execute([
+            'start_date'=> $start_date,
+            'end_date'=> $end_date,
+        ]);
+
+        $sexType = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $sexType;
+    }
+
+    public function getAllTypeSex($start_date,$end_date){
+        $query = $this->prepare("SELECT
+    COUNT(CASE WHEN c.sex = 'M' THEN c.customer_id END) AS M,
+    COUNT(CASE WHEN c.sex = 'F' THEN c.customer_id END) AS F 
+FROM visits v
+INNER JOIN customers c ON c.customer_id = v.customer_id
+WHERE (v.date BETWEEN :start_date AND :end_date);");
+
+        $query->execute([
+            'start_date'=> $start_date,
+            'end_date'=> $end_date,
+        ]);
+
+        $ageRanges = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $ageRanges;
+    }
+
     public function getAll()
     {
         // TODO: Implement getAll() method.

@@ -38,6 +38,16 @@ formulario.addEventListener('submit', e =>{
 
     let datos = new FormData(formulario);
 
+    Swal.fire({
+        title: 'Cargando...',
+        html: 'Espere por favor...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -49,6 +59,7 @@ formulario.addEventListener('submit', e =>{
         },
         success: function(data) {
             tablaReportes.ajax.reload();
+            Swal.close();
             Swal.fire({
                 title: 'El reporte se ha generado!',
                 allowOutsideClick: false,

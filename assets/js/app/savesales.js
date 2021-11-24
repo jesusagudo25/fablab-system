@@ -59,6 +59,16 @@ function generarVenta(e){
     else{
         datos["servicios_ag"] = servicios_ag;
 
+        Swal.fire({
+            title: 'Cargando...',
+            html: 'Espere por favor...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+
         fetch('./savesale.php',{
             method: "POST",
             mode: "same-origin",
@@ -70,6 +80,8 @@ function generarVenta(e){
         })
             .then(res => res.json())
             .then(data => {
+                Swal.close();
+
                 Swal.fire({
                     title: 'La venta se ha generado!',
                     allowOutsideClick: false,

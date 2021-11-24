@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 								<img src="https://explorando.xyz/FABLAB/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
 							</td>
 
-							<td>Factura: '.$invoice->getInvoice().'<br/>
+							<td>Factura: #'.$invoice->getInvoice().'<br/>
 							    Fecha: '.$invoice->getDate().'</td>
 						</tr>
 					</table>
@@ -247,7 +247,7 @@ $itbmstotal = 0;
 
     $dompdf->loadHtml($html);
 
-    $dompdf->setPaper('A3', 'portrait');
+    $dompdf->setPaper('A4', 'portrait');
 
     $dompdf->render();
 

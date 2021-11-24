@@ -29,7 +29,6 @@ fetch('./functions.php',{
     .then(res => res.json())
     .then(data =>{
         servicios = data;
-        console.log(servicios);
         servicios['areas'].forEach( (e) =>{
                 servicio.innerHTML += `<option value="${e.id}" >${e.name}</option>`;
         });
@@ -297,6 +296,11 @@ function triggerChange(element){
     element.dispatchEvent(changeEvent);
 }
 
+
+let inputFechaFinal;
+
+//---
+
 let indice;
 let areaConsumibles = [];
 let selectorConsumible;
@@ -326,7 +330,7 @@ const TIPO_TABLAS = {
                             <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
                         </tr>
                         <tr>
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" </td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})"> </td>
                             
                         <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}"></td>
 </tr>
@@ -335,6 +339,8 @@ const TIPO_TABLAS = {
                     </div>
                     </main>
                `;
+
+        inputFechaFinal = document.querySelector('input[name="fecha_final"]');
     },
     "eventos": (categoria,id_servicio,numeroItem_id,unidad)=>{
         moda_content.innerHTML = `<main class="flex justify-between flex-wrap items-center mb-5">
@@ -495,6 +501,29 @@ const TIPO_TABLAS = {
                `;
     }
 };
+
+function cambiarFechaFinal(e,id_servicio) {
+    /*console.log(e.value,inputFechaFinal.value)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let res = new Date(e.value);
+
+
+
+    let dia = res.toLocaleString("default",options)
+
+    console.log(dia)
+
+    if(dia == "Sat"){
+        res.setDate(res.getDate() + 4);
+    }
+    else if (dia == "Sun"){
+        res.setDate(res.getDate() + 2);
+    }
+
+    let fechaFinal = res.toISOString().split('T')[0];
+
+    console.log(fechaFinal);*/
+}
 
 function cambiarPrecioUnitario(){
     let consumibleSeleccionado = areaConsumibles.find(value => value.consumable_id == selectorConsumible.value);

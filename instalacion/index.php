@@ -255,6 +255,7 @@ $model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1
 
 $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas');");
 
+    $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) VALUES(4,'VINILO ADHESIVO MATE',0.11,0.06),(4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),(4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),(4,'VINILO GLITER',0.30,0.06);");
 
 $model->query("INSERT INTO provinces (name) 
 VALUES ('Bocas del Toro'),

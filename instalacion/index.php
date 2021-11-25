@@ -917,7 +917,7 @@ VALUES (1,'Bocas del Toro'),
 
 $passwordAdmin = password_hash('abc123', PASSWORD_BCRYPT);
 
-$insertarDatos = $model->prepare("INSERT INTO users(role_id,name,lastname,email,password) VALUES(3,'Super','Admin','superadmin@fablabsystem.com',:password)");
+$insertarDatos = $model->prepare("INSERT INTO users(role_id,name,lastname,email,password) VALUES(3,'Alicia','Mendoza','superadmin@fablabsystem.com',:password)");
 
 $insertarDatos->execute([
     ':password' => $passwordAdmin

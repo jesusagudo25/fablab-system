@@ -14,8 +14,32 @@ tablaReportes = $('#datatable-json').DataTable({
         { "data": "final_date" },
         { "data": "number_hours" },
         { "data": "price" },
-        { "data": "expenses" },
-        { "data": "description_expenses" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                if(data['expenses'] == null){
+                    return '0.00';
+                }
+                else{
+                    return data['observation'];
+                }
+            },
+            "targets": -1
+        },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                if(data['description_expenses'] == null){
+                    return 'Sin descripción';
+                }
+                else{
+                    return data['description_expenses'];
+                }
+            },
+            "targets": -1
+        }
 
     ],
     responsive: true,

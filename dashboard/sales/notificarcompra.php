@@ -168,8 +168,8 @@
 								<img src="https://explorando.xyz/FABLAB/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
 							</td>
 
-							<td>Factura: '.$invoice->getInvoice().'<br/>
-							    Fecha: #'.$invoice->getDate().'</td>
+							<td>Factura: #'.$invoice->getInvoice().'<br/>
+							    Fecha: '.$invoice->getDate().'</td>
 						</tr>
 					</table>
 				</td>

@@ -83,7 +83,7 @@
             reason_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL,
             observation TEXT NULL,
-            status BOOLEAN NOT NULL DEFAULT TRUE
+            status BOOLEAN NOT NULL DEFAULT TRUE,
     
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
@@ -189,7 +189,7 @@ $model->query("CREATE TABLE areas(
             price DECIMAL(5,2) NOT NULL,
             expenses DECIMAL(5,2) NULL,
             description_expenses TEXT NULL,
-            estado BOOLEAN NOT NULL DEFAULT TRUE,
+            status BOOLEAN NOT NULL DEFAULT TRUE,
             
             FOREIGN KEY (category_id) REFERENCES event_category(category_id)
         );");

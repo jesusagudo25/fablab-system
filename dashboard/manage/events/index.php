@@ -41,18 +41,21 @@ $pagina[] = "gestionar";
                 <!--Graph Card-->
                 <div class="bg-white border rounded shadow">
                     <div class="border-b p-3">
-                        <h5 class="font-bold uppercase text-gray-600">Visitas</h5>
+                        <h5 class="font-bold uppercase text-gray-600">Eventos</h5>
                     </div>
                     <div class="flex justify-center items-center w-full overflow-auto">
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Razón de visita</th>
-                                <th>Areas</th>
-                                <th>Fecha</th>
-                                <th>Observación</th>
+                                <th>Categoria</th>
+                                <th>Nombre</th>
+                                <th>Fecha inicial</th>
+                                <th>Fecha final</th>
+                                <th>Numero de horas</th>
+                                <th>Precio</th>
+                                <th>Gastos</th>
+                                <th>Descripción de gastos</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->
@@ -68,7 +71,7 @@ $pagina[] = "gestionar";
 </div>
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-<script src="<?= constant('URL')?>assets/js/tables/fetchvisits.js"></script>
+<script src="<?= constant('URL')?>assets/js/tables/fetchevents.js"></script>
 <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>

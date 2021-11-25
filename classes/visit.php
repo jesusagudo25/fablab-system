@@ -70,8 +70,7 @@ class Visit extends Model implements IModel
     {
         $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation FROM visits v
         INNER JOIN customers c ON c.customer_id = v.customer_id
-        INNER JOIN reason_visits r ON r.reason_id = v.reason_id
-        ORDER BY v.visit_id DESC');
+        INNER JOIN reason_visits r ON r.reason_id = v.reason_id');
 
         $visits = $query->fetchAll(PDO::FETCH_ASSOC);
 

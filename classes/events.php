@@ -35,7 +35,12 @@ class Events extends Model implements IModel
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $query = $this->query('SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses FROM events e
+        INNER JOIN event_category ec ON e.category_id = ec.category_id');
+
+        $events = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $events;
     }
 
     public function get($id)

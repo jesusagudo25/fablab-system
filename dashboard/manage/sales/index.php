@@ -72,7 +72,7 @@ $pagina[] = "gestionar";
                                         </div>
                                         <div>
                                             <p class="text-lg font-semibold text-gray-700">
-                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="/dashboard">Eventos</a>
+                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="../events/">Eventos</a>
                                             </p>
                                         </div>
                                     </div></div>

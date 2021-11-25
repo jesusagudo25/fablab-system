@@ -10,15 +10,6 @@ require_once '../../app.php';
 
 $pagina[] = "reports";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $report = new Report();
-
-    if (isset($_REQUEST['borrar'])) {
-        $report->delete($_REQUEST['borrar']);
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" href="https://explorando.xyz/FABLAB/assets/img/fab.ico" type="image/x-icon">
-	<title>Informe mensual de octrubre</title>
+	<title>Factura #'.$invoice->getInvoice().'</title>
 
 	<!-- Invoice styling -->
 	<style>

@@ -2,7 +2,7 @@ $(document).ready(function () {
     $.ajax({
         url: './functions.php',
         type: 'POST',
-        data: {options:'s'},
+        data: {solicitud:'s'},
         success: function (data) {
             var table = $('#datatable-json').DataTable({
                 language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },

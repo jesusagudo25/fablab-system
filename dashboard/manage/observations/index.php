@@ -64,7 +64,7 @@
                         </div>
                         <div class="p-5">
                                 <label class="block text-sm">
-                                    <span class="text-gray-800">Observación</span>
+                                    <span class="text-gray-800">Observación (max 170 caracteres)</span>
                                     <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion" ></textarea>
                                 </label>
 

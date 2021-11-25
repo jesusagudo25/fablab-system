@@ -83,7 +83,8 @@
             reason_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL,
             observation TEXT NULL,
-
+            status BOOLEAN NOT NULL DEFAULT TRUE
+    
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
         );");
@@ -107,7 +108,7 @@ $model->query("CREATE TABLE areas(
     $model->query("CREATE TABLE observations(
             observation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             user_id INT UNSIGNED NOT NULL,
-            description TEXT,
+            description TEXT NOT NULL,
             date DATE NOT NULL,
             
             FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -204,9 +205,9 @@ $model->query("CREATE TABLE areas(
 
             PRIMARY KEY (num_detail, invoice_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
- 	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id)            
-            
+ 	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id)      
         );     ");
+
     $model->query("CREATE TABLE invoices_events(
             num_detail INT UNSIGNED NOT NULL,
             invoice_id INT UNSIGNED NOT NULL,

@@ -42,7 +42,7 @@ class Visit extends Model implements IModel
         $this->reason_id = isset($decoded['id_razonvisita']) ? $decoded['id_razonvisita'] : '';
         $areasChecked = isset($decoded['areasChecked']) ? $decoded['areasChecked'] : '';
         $this->date = isset($decoded['fecha']) ? $decoded['fecha'] : '';
-        $this->observation = isset($decoded['observacion']) ? $decoded['observacion'] : '';
+        $this->observation = empty($decoded['observacion']) ? NULL : $decoded['observacion'];
 
         $this->save();
         $this->getLastID();
@@ -68,7 +68,14 @@ class Visit extends Model implements IModel
 
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation FROM visits v
+        INNER JOIN customers c ON c.customer_id = v.customer_id
+        INNER JOIN reason_visits r ON r.reason_id = v.reason_id
+        ORDER BY v.visit_id DESC');
+
+        $visits = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $visits;
     }
 
     public function getVisitsNotFree($start_date,$end_date){

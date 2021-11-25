@@ -4,7 +4,7 @@
 
     header('Content-Type: application/json; charset=utf-8');
 
-    if ($_POST['options'] == 's') {
+    if ($_POST['solicitud'] == 's') {
 
         $invoice = new Invoice();
         $invoices = $invoice->getAll();

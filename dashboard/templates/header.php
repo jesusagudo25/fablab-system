@@ -86,7 +86,7 @@
                             <ul class="list-reset text-sm">
                                 <li><a href="#" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Clientes</a></li>
                                 <li><a href="<?= constant('URL')?>dashboard/manage/observations/" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Observaciones</a></li>
-                                <li><a href="#" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>                                <li><a href="<?= constant('URL')?>dashboard/manage/sales/" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Ventas</a></li>
+                                <li><a href="<?= constant('URL')?>dashboard/manage/visits/" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Visitas</a></li>                                <li><a href="<?= constant('URL')?>dashboard/manage/sales/" class=" px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Ventas</a></li>
                             </ul>
                         </div>
 

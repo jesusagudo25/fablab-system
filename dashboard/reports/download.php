@@ -290,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         <ul>';
     if(count($observationsAll)){
         foreach ($observationsAll as $datos => $valor) {
-                $html .= '   <li>' . $valor['description'] . ' - ' . $valor['name'] . ' , ' . $valor['date'] . '</li>';
+                $html .= '   <li style="text-align: justify">' . $valor['description'] . ' - ' . $valor['name'] . ' , ' . $valor['date'] . '</li>';
             }
     }
     else{

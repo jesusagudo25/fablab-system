@@ -2,7 +2,6 @@
 
 class MembershipInvoices extends Model implements IModel
 {
-    private $num_detail;
     private $invoice_id;
     private $membership_id;
     private $initial_date;
@@ -16,10 +15,9 @@ class MembershipInvoices extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevoDetalle = $this->prepare('INSERT INTO membership_invoices(num_detail, invoice_id,membership_id,initial_date,final_date,price) VALUES (:num_detail, :invoice_id,:membership_id,:initial_date,:final_date,:price)');
+        $nuevoDetalle = $this->prepare('INSERT INTO membership_invoices( invoice_id,membership_id,initial_date,final_date,price) VALUES (:invoice_id,:membership_id,:initial_date,:final_date,:price)');
 
         $nuevoDetalle->execute([
-            'num_detail' => $this->num_detail,
             'invoice_id' => $this->invoice_id,
             'membership_id' => $this->membership_id,
             'initial_date' => $this->initial_date,
@@ -96,14 +94,6 @@ class MembershipInvoices extends Model implements IModel
     public function setPrice($price): void
     {
         $this->price = $price;
-    }
-
-    /**
-     * @param mixed $num_detail
-     */
-    public function setNumDetail($num_detail): void
-    {
-        $this->num_detail = $num_detail;
     }
 
 

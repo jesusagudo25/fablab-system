@@ -1,16 +1,67 @@
 <?php
 
-require_once '../../../app.php';
+    require_once '../../../app.php';
 
-header('Content-Type: application/json; charset=utf-8');
-
-if ($_POST['solicitud'] == 'v') {
+    header('Content-Type: application/json; charset=utf-8');
 
     $visit = new Visit();
-    $visits = $visit->getAll();
 
-    echo json_encode($visits);
+    if ($_POST['solicitud'] == 'v') {
 
-}else {
+        $visits = $visit->getAll();
 
-}
+        echo json_encode($visits);
+
+    }else if ($_POST['solicitud'] == 'ar') {
+
+        $area = new Area();
+        $areas = $area->getAll();
+
+        echo json_encode($areas);
+    }else if ($_POST['solicitud'] == 'raz') {
+
+        $reason = new ReasonVisit();
+        $reason_visits = $reason->getAll();
+
+        echo json_encode($reason_visits);
+    }else if ($_POST['solicitud'] == 'id_v') {
+
+        $visits= $visit->get($_POST['id']);
+
+        echo json_encode($visits);
+    }else if ($_POST['solicitud'] == 'd') {
+        $visit->setStatus(0);
+        $visits= $visit->delete($_POST['id']);
+
+        echo json_encode('true');
+    }else if ($_POST['solicitud'] == 'up_v') {
+
+        if($_POST['time']){
+            $visit_area = new VisitArea();
+            $visit_area->delete($_POST['visit_id']);
+        }
+
+        $visit->setCustomerId($_POST['customer_id']);
+        $visit->setReasonId($_POST['reason_id']);
+        $visit->setDate($_POST['date']);
+        $visit->setObservation($_POST['observation']);
+        $visit->setVisitId($_POST['visit_id']);
+
+        $visit->update();
+
+        echo json_encode('true');
+    }else if ($_POST['solicitud'] == 'id_va') {
+
+        $visit_area = new VisitArea();
+        $visits_areas= $visit_area->get($_POST['id']);
+
+        echo json_encode($visits_areas);
+    }else if ($_POST['solicitud'] == 'up_va') {
+
+        $visit_area = new VisitArea();
+
+        if (!empty($_POST['areas'])) {
+            $visit_area->deleteSave($_POST['visita'],$_POST['areas']);
+        }
+        echo json_encode('true');
+    }

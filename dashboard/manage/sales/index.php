@@ -13,7 +13,7 @@ $pagina[] = "gestionar";
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +26,11 @@ $pagina[] = "gestionar";
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
+
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/fetchsales.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -149,51 +154,5 @@ $pagina[] = "gestionar";
 
 </div>
 <!--/container-->
-
-
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-<script src="<?= constant('URL')?>assets/js/tables/fetchsales.js"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
-<script>
-    const swiper = new Swiper('.swiper', {
-        // Optional parameters
-        loop: true,
-        grabCursor: true,
-        spaceBetween: 48,
-        // If we need pagination
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-            dynamicBullets: true
-
-        },
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        // And if we need scrollbar
-        scrollbar: {
-            el: '.swiper-scrollbar',
-        },
-
-        breakpoints:{
-            568:{
-                slidesPerView: 2
-            },
-
-            868:{
-                slidesPerView: 3
-            },
-
-            968:{
-                slidesPerView: 4
-            }
-        }
-    });
-</script>
 </body>
 </html>

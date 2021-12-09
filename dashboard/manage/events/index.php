@@ -10,20 +10,29 @@ require_once '../../../app.php';
 
 $pagina[] = "gestionar";
 
+$category = new EventCategory();
+$categories = $category->getAll();
+
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Visitas - Fablab System</title>
+    <title>Eventos - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
     <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/fetchevents.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -37,25 +46,103 @@ $pagina[] = "gestionar";
 
         <div class="flex flex-row flex-wrap flex-grow mt-2">
 
+            <div class="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden min-height-100vh flex items-center justify-center h-screen" id="modal">
+                <div class="w-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 transition-opacity">
+                        <div class="absolute inset-0 bg-new-bg opacity-75"> </div>
+                    </div>
+                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                        <div class="border-b p-3 flex justify-between items-center">
+                            <h5 class="font-bold uppercase text-gray-600">Nuevo evento</h5>
+                            <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
+                                <svg
+                                        class="w-8 h-8 text-grey hover:text-grey-dark"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="p-5">
+                            <div class="w-full shadow overflow-auto border-b border-gray-200 sm:rounded-lg">
+                            <table class="w-full min-w-full divide-y divide-gray-200">
+                                <tbody>
+                                <tr>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Nombre</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Categoría</th>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value=""></td>
+                                    <td class="px-2 py-2">                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria">
+                                            <?php foreach ($categories as $datos => $valor): ?>
+                                                <option value="<?= $valor['id'] ?>"><?=$valor['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio</th>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value=""></td>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value=""></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value=""></td>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value=""></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value=""></td>
+                                    <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos"></textarea></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        <footer class="flex justify-end align-center border-t p-3">
+                            <button class="mr-3 p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
+                            <button class="p-3 text-sm font-semibold leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+
             <div class="w-full p-3">
                 <!--Graph Card-->
                 <div class="bg-white border rounded shadow">
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Eventos</h5>
                     </div>
-                    <div class="flex justify-center items-center w-full overflow-auto">
+                    <div class="flex justify-center items-center flex-col w-full overflow-auto">
+                        <div class="w-full flex pl-2 pt-2 pr-2">
+                            <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none">Nuevo evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
+
+                            <a href="#" class="w-1/4 ml-2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Gestionar categorias<i class="fas fa-cogs fa-fw ml-3"></i></a>
+                        </div>
+
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Categoria</th>
-                                <th>Nombre</th>
+                                <th class="select-disabled">ID</th>
+                                <th class="select-disabled">Categoria</th>
+                                <th class="select-disabled">Nombre</th>
                                 <th>Fecha inicial</th>
                                 <th>Fecha final</th>
-                                <th>Numero de horas</th>
+                                <th>Horas</th>
                                 <th>Precio</th>
                                 <th>Gastos</th>
-                                <th>Descripción de gastos</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th class="select-disabled">Acciones</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->
@@ -69,10 +156,6 @@ $pagina[] = "gestionar";
 
     </div>
 </div>
-
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-<script src="<?= constant('URL')?>assets/js/tables/fetchevents.js"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>
 </html>

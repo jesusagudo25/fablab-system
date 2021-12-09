@@ -12,7 +12,7 @@
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +25,12 @@
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/fetchobservations.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -49,9 +55,9 @@
                     <div class="fixed inset-0 transition-opacity">
                         <div class="absolute inset-0 bg-new-bg opacity-75"> </div>
                     </div>
-                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600">Nueva observación</h5>
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Nueva observación</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -65,12 +71,12 @@
                         <div class="p-5">
                                 <label class="block text-sm">
                                     <span class="text-gray-800">Observación (max 170 caracteres)</span>
-                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion" ></textarea>
+                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion"></textarea>
                                 </label>
 
                                 <label class="block text-sm mt-5">
                                     <span class="text-gray-800">Fecha</span>
-                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required></input>
+                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
                                 </label>
 
                         </div>
@@ -115,11 +121,7 @@
 
 </div>
 <!--/container-->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-<script src="<?= constant('URL')?>assets/js/tables/fetchobservations.js"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
+
 
 </body>
 </html>

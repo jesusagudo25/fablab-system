@@ -13,6 +13,10 @@ module.exports = {
       colors: {
         'new-bg': 'rgba(0,0,0,.4)',
       },
+      width: {
+        '1/7': '10%',
+        '2/7': '28%',
+      }
     },
   },
   variants: {

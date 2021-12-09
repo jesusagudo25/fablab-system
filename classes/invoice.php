@@ -22,15 +22,12 @@ class Invoice extends Model implements IModel
 
         $this->getLastID();
 
-        $contadorFilas = [0,0,0,0];
-
         foreach ($decoded['servicios_ag'] as $datos => $valor){
 
             $type = match ($valor['categoria']) {
-                'membresias', => function ($valor,&$contador){
+                'membresias', => function ($valor){
                     $membership_invoices = new MembershipInvoices();
 
-                    $membership_invoices->setNumDetail(++$contador[0]);
                     $membership_invoices->setInvoiceId($this->invoice_id);
                     $membership_invoices->setMembershipId($valor['servicio']);
                     $membership_invoices->setInitialDate($valor['detalles']['fecha_inicial']);
@@ -39,33 +36,18 @@ class Invoice extends Model implements IModel
 
                     $membership_invoices->save();
                 },
-                'eventos' => function ($valor,&$contador){
-                    $event = new Events();
-
-                    $event->setCategoryId($valor['servicio']);
-                    $event->setName($valor['detalles']['nombre_evento']);
-                    $event->setInitialDate($valor['detalles']['fecha_inicial']);
-                    $event->setFinalDate($valor['detalles']['fecha_final']);
-                    $event->setNumberHours($valor['detalles']['cantidad_horas']);
-                    $event->setPrice($valor['precio']);
-                    $event->setExpenses(empty($valor['detalles']['gastos_evento']) ? NULL : $valor['detalles']['gastos_evento']);
-                    $event->setDescriptionExpenses(empty($valor['detalles']['desc_gastos']) ? NULL : $valor['detalles']['desc_gastos']);
-
-                    $event->save();
-
-                    $event->getLastID();
-
+                'eventos' => function ($valor){
                     $invoices_events = new InvoicesEvents();
 
-                    $invoices_events->setNumDetail(++$contador[1]);
                     $invoices_events->setInvoiceId($this->invoice_id);
-                    $invoices_events->setEventId($event->getEventId());
+                    $invoices_events->setEventId($valor['detalles']['event_id']);
 
                     $invoices_events->save();
                 },
-                'areas' => function ($valor,&$contador){
+                'areas' => function ($valor){
                     $use_machine = new UseMachines();
 
+                    $use_machine->setInvoiceId($this->invoice_id);
                     $use_machine->setAreaId($valor['servicio']);
                     $use_machine->setConsumableId($valor['detalles']['tipo_consumible']);
                     $use_machine->setAmount($valor['detalles']['cantidad_unidad']);
@@ -74,25 +56,13 @@ class Invoice extends Model implements IModel
                     $use_machine->setPrintingPrice($valor['detalles']['precio_impresion']);
                     $use_machine->setBasePrice($valor['detalles']['costo_base']);
                     $use_machine->setProfitPercentages($valor['detalles']['porcentaje_ganancia']);
-                    $use_machine->setDiscountPercentage($valor['detalles']['porcentaje_descuento']);
                     $use_machine->setTotalPrice($valor['detalles']['costo_total']);
 
                     $use_machine->save();
-
-                    $use_machine->getLastID();
-
-                    $invoices_use_machines = new InvoicesUseMachines();
-
-                    $invoices_use_machines->setNumDetail(++$contador[2]);
-                    $invoices_use_machines->setInvoiceId($this->invoice_id);
-                    $invoices_use_machines->setUseId($use_machine->getUseId());
-
-                    $invoices_use_machines->save();
                 },
-                'alquiler' => function ($valor,&$contador){
+                'alquiler' => function ($valor){
                     $rental_invoices = new RentalInvoices();
 
-                    $rental_invoices->setNumDetail(++$contador[3]);
                     $rental_invoices->setInvoiceId($this->invoice_id);
                     $rental_invoices->setCategoryId($valor['servicio']);
                     $rental_invoices->setNumberHours($valor['detalles']['cantidad_horas']);
@@ -102,10 +72,8 @@ class Invoice extends Model implements IModel
                 },
             };
 
-            $type($valor,$contadorFilas);
-
+            $type($valor);
         }
-
 
     }
 

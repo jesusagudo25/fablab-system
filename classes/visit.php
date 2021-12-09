@@ -7,6 +7,7 @@ class Visit extends Model implements IModel
     private $reason_id;
     private $date;
     private $observation;
+    private $status;
 
     public function __construct()
     {
@@ -19,7 +20,6 @@ class Visit extends Model implements IModel
         if (!empty($newCustomer)) {
             $customer = new Customer();
 
-            //Validaciones
             $customer->setDocumentType($newCustomer['tipo_documento']);
             $customer->setDocument($newCustomer['documento']);
             $customer->setCode(empty($newCustomer['codigo']) ? NULL : $newCustomer['codigo']);
@@ -68,7 +68,7 @@ class Visit extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation FROM visits v
+        $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation, v.status FROM visits v
         INNER JOIN customers c ON c.customer_id = v.customer_id
         INNER JOIN reason_visits r ON r.reason_id = v.reason_id');
 
@@ -180,16 +180,88 @@ WHERE (s.date BETWEEN :start_date AND :end_date)");
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT v.visit_id, c.customer_id, c.document_type, c.document, c.name, rv.reason_id, rv.time, v.date, v.observation, v.status FROM visits v 
+        INNER JOIN customers c ON c.customer_id = v.customer_id
+        INNER JOIN reason_visits rv ON rv.reason_id = v.reason_id
+        WHERE visit_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $visit = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $visit;
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $actualizarDatos = $this->prepare("UPDATE visits SET status = :status WHERE visit_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $query = $this->prepare('UPDATE visits SET customer_id = :customer_id,reason_id = :reason_id,date = :date,observation = :observation WHERE (visit_id = :visit_id)');
+
+        $query->execute([
+            'customer_id' => $this->customer_id,
+            'reason_id'=>$this->reason_id,
+            'date'=>$this->date,
+            'observation'=>$this->observation,
+            'visit_id'=>$this->visit_id
+        ]);
     }
+
+    /**
+     * @param mixed $customer_id
+     */
+    public function setCustomerId($customer_id): void
+    {
+        $this->customer_id = $customer_id;
+    }
+
+    /**
+     * @param mixed $reason_id
+     */
+    public function setReasonId($reason_id): void
+    {
+        $this->reason_id = $reason_id;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate($date): void
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @param mixed $observation
+     */
+    public function setObservation($observation): void
+    {
+        $this->observation = $observation;
+    }
+
+    /**
+     * @param mixed $visit_id
+     */
+    public function setVisitId($visit_id): void
+    {
+        $this->visit_id = $visit_id;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+
 }

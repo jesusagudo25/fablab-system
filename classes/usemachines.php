@@ -3,6 +3,7 @@
 class UseMachines extends Model implements IModel
 {
     private $use_id;
+    private $invoice_id;
     private $area_id;
     private $consumable_id;
     private $amount;
@@ -11,7 +12,6 @@ class UseMachines extends Model implements IModel
     private $printing_price;
     private $base_price;
     private $profit_percentages;
-    private $discount_percentage;
     private $total_price;
 
     public function __construct()
@@ -21,9 +21,10 @@ class UseMachines extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO use_machines(area_id,consumable_id,amount,unit_price,printing_time,printing_price,base_price,profit_percentage,discount_percentage,total_price) VALUES (:area_id, :consumable_id,:amount,:unit_price,:printing_time,:printing_price,:base_price,:profit_percentage,:discount_percentage,:total_price)');
+        $nuevaFactura = $this->prepare('INSERT INTO use_machines(invoice_id,area_id,consumable_id,amount,unit_price,printing_time,printing_price,base_price,profit_percentage,total_price) VALUES (:invoice_id,:area_id, :consumable_id,:amount,:unit_price,:printing_time,:printing_price,:base_price,:profit_percentage,:total_price)');
 
         $nuevaFactura->execute([
+            'invoice_id' => $this->invoice_id,
             'area_id' => $this->area_id,
             'consumable_id' => $this->consumable_id,
             'amount' => $this->amount,
@@ -32,7 +33,6 @@ class UseMachines extends Model implements IModel
             'printing_price' => $this->printing_price,
             'base_price' => $this->base_price,
             'profit_percentage' => $this->profit_percentages,
-            'discount_percentage' => $this->discount_percentage,
             'total_price' => $this->total_price
         ]);
     }
@@ -43,9 +43,23 @@ class UseMachines extends Model implements IModel
         // TODO: Implement getAll() method.
     }
 
-    public function get($id)
+    public function get($id){
+
+    }
+
+    public function getToInvoice($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare("SELECT a.name, um.total_price AS price FROM use_machines um
+        INNER JOIN areas a ON a.area_id = um.area_id
+        WHERE invoice_id = :invoice_id");
+
+        $query->execute([
+            'invoice_id'=> $id,
+        ]);
+
+        $detalles = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $detalles;
     }
 
     public function getLastID(){
@@ -145,20 +159,30 @@ class UseMachines extends Model implements IModel
     }
 
     /**
-     * @param mixed $discount_percentage
-     */
-    public function setDiscountPercentage($discount_percentage): void
-    {
-        $this->discount_percentage = $discount_percentage;
-    }
-
-    /**
      * @param mixed $total_price
      */
     public function setTotalPrice($total_price): void
     {
         $this->total_price = $total_price;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getInvoiceId()
+    {
+        return $this->invoice_id;
+    }
+
+    /**
+     * @param mixed $invoice_id
+     */
+    public function setInvoiceId($invoice_id): void
+    {
+        $this->invoice_id = $invoice_id;
+    }
+
+
 
 
 }

@@ -2,7 +2,6 @@
 
 class InvoicesEvents extends Model implements IModel
 {
-    private $num_detail;
     private $invoice_id;
     private $event_id;
 
@@ -13,10 +12,9 @@ class InvoicesEvents extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO invoices_events(num_detail,invoice_id ,event_id) VALUES (:num_detail, :invoice_id,:event_id)');
+        $nuevaFactura = $this->prepare('INSERT INTO invoices_events(invoice_id ,event_id) VALUES (:invoice_id,:event_id)');
 
         $nuevaFactura->execute([
-            'num_detail' => $this->num_detail,
             'invoice_id' => $this->invoice_id,
             'event_id' => $this->event_id
         ]);
@@ -51,14 +49,6 @@ class InvoicesEvents extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
-    }
-
-    /**
-     * @param mixed $num_detail
-     */
-    public function setNumDetail($num_detail): void
-    {
-        $this->num_detail = $num_detail;
     }
 
     /**

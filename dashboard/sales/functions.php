@@ -31,6 +31,11 @@ if ($contentType === "application/json") {
             $consumables = $consumable->getAll();
             echo json_encode($consumables);
         }
+        else if($decoded['datos']['solicitud'] == 'evt'){
+            $event = new Events();
+            $events = $event->getToInvoice();
+            echo json_encode($events);
+        }
 
 
     } else {

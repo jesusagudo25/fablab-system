@@ -10,10 +10,8 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     containerRegister = document.querySelector('#containerregister'),
-        registrar = document.querySelector('input[type="submit"]'),
     observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
-    feedbackdocumento = document.querySelector('#feedbackdocumento'),
         codigo = document.querySelector('input[name="codigo"]'),
     email = document.querySelector('input[name="email"]'),
     telefono = document.querySelector('input[name="telefono"]'),
@@ -108,7 +106,6 @@ distrito.addEventListener('change', evt => {
     });
 });
 
-
 //Tipo de documento -> RUC/CEDULA/PASAPORTE
 const TIPOS_DOCUMENTOS = {
     C: () => {
@@ -128,6 +125,7 @@ const TIPOS_DOCUMENTOS = {
 tipoDocumento.addEventListener('change', evt => {
     TIPOS_DOCUMENTOS[evt.target.value]();
     inputDocumento.value = '';
+    feedbackdocumento.textContent='';
     triggerKeyup(inputDocumento)
 
 });
@@ -148,13 +146,7 @@ $( function() {
                     document_type: tipoDocumento.value
                 },
                 success: function (data) {
-                    try{
-                        response(data.slice(0, 3));
-                    }
-                    catch (e) {
-                        response(data);
-                    }
-
+                    response(data);
                 }
             });
         },

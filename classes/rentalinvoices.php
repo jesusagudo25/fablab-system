@@ -2,7 +2,6 @@
 
 class RentalInvoices extends Model implements IModel
 {
-    private $num_detail;
     private $invoice_id;
     private $category_id;
     private $number_hours;
@@ -15,10 +14,9 @@ class RentalInvoices extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevoDetalle = $this->prepare('INSERT INTO rental_invoices(num_detail, invoice_id,category_id,number_hours,price) VALUES (:num_detail, :invoice_id,:category_id,:number_hours,:price)');
+        $nuevoDetalle = $this->prepare('INSERT INTO rental_invoices( invoice_id,category_id,number_hours,price) VALUES (:invoice_id,:category_id,:number_hours,:price)');
 
         $nuevoDetalle->execute([
-            'num_detail' => $this->num_detail,
             'invoice_id' => $this->invoice_id,
             'category_id' => $this->category_id,
             'number_hours' => $this->number_hours,
@@ -54,14 +52,6 @@ class RentalInvoices extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
-    }
-
-    /**
-     * @param mixed $num_detail
-     */
-    public function setNumDetail($num_detail): void
-    {
-        $this->num_detail = $num_detail;
     }
 
     /**

@@ -165,6 +165,7 @@ $model->query("CREATE TABLE areas(
 
     $model->query("CREATE TABLE use_machines(
             use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            invoice_id INT UNSIGNED NOT NULL,
             area_id INT UNSIGNED NOT NULL,
             consumable_id INT UNSIGNED NOT NULL,
             amount INT UNSIGNED NOT NULL,
@@ -173,12 +174,13 @@ $model->query("CREATE TABLE areas(
             printing_price DECIMAL(5,2) NOT NULL,
             base_price DECIMAL(5,2) NOT NULL,
             profit_percentage DECIMAL(5,2) NOT NULL,
-            discount_percentage DECIMAL(5,2) NOT NULL,
             total_price DECIMAL(5,2) NOT NULL,
             
             FOREIGN KEY (area_id) REFERENCES areas(area_id),
-            FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id)
+            FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id),
+            FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id)
         );");
+
     $model->query("CREATE TABLE events(
             event_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             category_id INT UNSIGNED NOT NULL,
@@ -196,46 +198,31 @@ $model->query("CREATE TABLE areas(
 
 
     $model->query("CREATE TABLE membership_invoices(
-            num_detail INT UNSIGNED NOT NULL,
             invoice_id INT UNSIGNED NOT NULL,
             membership_id INT UNSIGNED NOT NULL,
             initial_date DATE NOT NULL,
             final_date DATE NOT NULL,
             price DECIMAL(5,2) NOT NULL,
 
-            PRIMARY KEY (num_detail, invoice_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
  	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id)      
         );     ");
 
     $model->query("CREATE TABLE invoices_events(
-            num_detail INT UNSIGNED NOT NULL,
             invoice_id INT UNSIGNED NOT NULL,
             event_id INT UNSIGNED NOT NULL,
 
-            PRIMARY KEY (num_detail, invoice_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
  	        FOREIGN KEY (event_id) REFERENCES events (event_id)            
             
         );  ");
-    $model->query("CREATE TABLE invoices_use_machines(
-            num_detail INT UNSIGNED NOT NULL,
-            invoice_id INT UNSIGNED NOT NULL,
-            use_id INT UNSIGNED NOT NULL,
 
-            PRIMARY KEY (num_detail, invoice_id),
-	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
- 	        FOREIGN KEY (use_id) REFERENCES use_machines (use_id)            
-            
-        );");
     $model->query("CREATE TABLE rental_invoices(
-            num_detail INT UNSIGNED NOT NULL,
             invoice_id INT UNSIGNED NOT NULL,
             category_id INT UNSIGNED NOT NULL,
             number_hours INT UNSIGNED NOT NULL,
             price DECIMAL(5,2) NOT NULL,
 
-            PRIMARY KEY (num_detail, invoice_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
  	        FOREIGN KEY (category_id) REFERENCES rental_category (category_id)            
             
@@ -253,7 +240,7 @@ $model->query("CREATE TABLE areas(
 
 $model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
 
-$model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas');");
+$model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas'),('Bordadora CNC','Pulgadas');");
 
     $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) VALUES(4,'VINILO ADHESIVO MATE',0.11,0.06),(4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),(4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),(4,'VINILO GLITER',0.30,0.06);");
 

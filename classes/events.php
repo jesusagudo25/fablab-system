@@ -11,6 +11,7 @@ class Events extends Model implements IModel
     private $price;
     private $expenses;
     private $description_expenses;
+    private $status;
 
     public function __construct()
     {
@@ -35,8 +36,18 @@ class Events extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses FROM events e
+        $query = $this->query('SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses, e.status FROM events e
         INNER JOIN event_category ec ON e.category_id = ec.category_id');
+
+        $events = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $events;
+    }
+
+    public function getToInvoice()
+    {
+        $query = $this->query('SELECT * FROM events
+WHERE status = 1');
 
         $events = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -45,7 +56,14 @@ class Events extends Model implements IModel
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT * FROM events WHERE event_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $event = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $event;
     }
 
     public function getLastID(){
@@ -56,12 +74,27 @@ class Events extends Model implements IModel
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $actualizarDatos = $this->prepare("UPDATE events SET status = :status WHERE event_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $actualizarDatos = $this->prepare("UPDATE events SET category_id = :category_id, name = :name, initial_date = :initial_date, final_date = :final_date, number_hours = :number_hours, price = :price, expenses = :expenses, description_expenses = :description_expenses WHERE event_id = :id;");
+        $actualizarDatos->execute([
+            'category_id' => $this->category_id,
+            'name' => $this->name,
+            'initial_date' => $this->initial_date,
+            'final_date' => $this->final_date,
+            'number_hours' => $this->number_hours,
+            'price' => $this->price,
+            'expenses' => $this->expenses,
+            'description_expenses' => $this->description_expenses,
+            'id'=>$this->event_id
+        ]);
     }
 
     /**
@@ -143,6 +176,15 @@ class Events extends Model implements IModel
     {
         return $this->event_id;
     }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
 
 
 

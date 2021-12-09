@@ -10,18 +10,9 @@ require_once '../../app.php';
 
 $pagina[] = "schedule";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $report = new Report();
-
-    if (isset($_REQUEST['borrar'])) {
-        $report->delete($_REQUEST['borrar']);
-    }
-}
-
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
 
     </script>
+
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -132,9 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </div>
 </div>
-
-
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>
 </html>

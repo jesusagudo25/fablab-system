@@ -80,8 +80,8 @@ function generarVenta(e){
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 Swal.close();
-
                 Swal.fire({
                     title: 'La venta se ha generado!',
                     allowOutsideClick: false,
@@ -98,6 +98,9 @@ function generarVenta(e){
                     }
                 });
             });
+
     }
+
+
 
 }

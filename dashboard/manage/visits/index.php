@@ -12,7 +12,7 @@ $pagina[] = "gestionar";
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,15 @@ $pagina[] = "gestionar";
     <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/fetchvisits.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -37,6 +45,34 @@ $pagina[] = "gestionar";
 
         <div class="flex flex-row flex-wrap flex-grow mt-2">
 
+            <div class="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden min-height-100vh flex items-center justify-center h-screen" id="modal">
+                <div class="w-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 transition-opacity">
+                        <div class="absolute inset-0 bg-new-bg opacity-75"> </div>
+                    </div>
+                    <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                        <div class="border-b p-3 flex justify-between items-center">
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Editar</h5>
+                            <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
+                                <svg
+                                        class="w-8 h-8 text-grey hover:text-grey-dark"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="p-5" id="modal-content">
+
+                        </div>
+                        <footer class="flex justify-end align-center border-t p-3" id="footer-modal">
+
+                        </footer>
+                    </div>
+                </div>
+            </div>
+
             <div class="w-full p-3">
                 <!--Graph Card-->
                 <div class="bg-white border rounded shadow">
@@ -47,12 +83,14 @@ $pagina[] = "gestionar";
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Razón de visita</th>
-                                <th>Areas</th>
+                                <th class="select-disabled">ID</th>
+                                <th class="select-disabled">Visitante</th>
+                                <th class="select-disabled">Razón de visita</th>
+                                <th class="select-disabled">Areas</th>
                                 <th>Fecha</th>
                                 <th>Observación</th>
+                                <th>Estado</th>
+                                <th class="select-disabled">Acciones</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->
@@ -66,10 +104,5 @@ $pagina[] = "gestionar";
 
     </div>
 </div>
-
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-<script src="<?= constant('URL')?>assets/js/tables/fetchvisits.js"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
-
 </body>
 </html>

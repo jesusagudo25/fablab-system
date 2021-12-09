@@ -1,27 +1,21 @@
 <?php
-session_start();
+    session_start();
 
-if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
-    header('Location: ../../index.php');
-    die;
-}
-
-require_once '../../app.php';
-
-$pagina[] = "sales";
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $report = new Report();
-
-    if (isset($_REQUEST['borrar'])) {
-        $report->delete($_REQUEST['borrar']);
+    if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
+        header('Location: ../../index.php');
+        die;
     }
-}
+
+    require_once '../../app.php';
+
+    $pagina[] = "sales";
+
+    $area = new Area();
+    $areaAll = $area->getAll();
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/app/sales.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/app/savesales.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -71,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </label>
 
                         <label class="text-sm w-1/4">
-                            <span class="text-gray-800">Nombre</span>
+                            <span class="text-gray-800">Nombre de visitante</span>
                             <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin cliente seleccionado" type="text" name="name" disabled>
                         </label>
                     </div>
@@ -137,7 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label class="text-sm w-2/5">
                                 <span class="text-gray-800">Seleccione el servicio</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="servicio">
-
+                                    <?php foreach ($areaAll as $datos => $valor): ?>
+                                    <option value="<?= $valor['id'] ?>"><?=$valor['name'] ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </label>
 
@@ -161,15 +164,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </tbody>
                                 <tfoot class="hidden bg-gray-100 divide-y divide-gray-200" id="detalle_totales">
                                 <tr>
-                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">SUBTOT</td>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">ITBMS 07.00%</td>
+                                    <td colspan="3" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
                                 </tr>
                                 </tfoot>
@@ -205,13 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </div>
 <!--/container-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
-<script src="<?= constant('URL')?>assets/js/app/sales.js"></script>
-<script src="<?= constant('URL')?>assets/js/app/savesales.js"></script>
 
 </body>
 </html>

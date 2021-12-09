@@ -27,6 +27,27 @@ class VisitArea extends Model implements IModel
         }
     }
 
+    public function deleteSave(...$args){
+
+        $deleteVA = $this->prepare('DELETE FROM visits_areas WHERE visit_id = :visit_id');
+
+        $deleteVA->execute([
+            'visit_id' => $args[0]
+        ]);
+
+        foreach ($args[1] as $datos => $valor) {
+            $nuevaVisitaArea = $this->prepare('INSERT INTO visits_areas(visit_id,area_id,arrival_time,departure_time) VALUES (:id_visita, :id_area, :hora_llegada, :hora_salida)');
+
+            $hora_salida = empty($valor['departure_time']) ? NULL : $valor['departure_time'];
+            $nuevaVisitaArea->execute([
+                'id_visita' => $args[0],
+                'id_area' => $valor['id'],
+                'hora_llegada' => $valor['arrival_time'],
+                'hora_salida' => $hora_salida
+            ]);
+        }
+    }
+
     public function getAll()
     {
         // TODO: Implement getAll() method.
@@ -34,12 +55,23 @@ class VisitArea extends Model implements IModel
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT * FROM visits_areas WHERE visit_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $visit_area = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $visit_area;
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $deleteVA = $this->prepare('DELETE FROM visits_areas WHERE visit_id = :visit_id');
+
+        $deleteVA->execute([
+            'visit_id' => $id
+        ]);
     }
 
     public function update()
@@ -82,4 +114,14 @@ class VisitArea extends Model implements IModel
             'departure_time' => $hora_salida
         ]);
     }
+
+    /**
+     * @param mixed $arrival_time
+     */
+    public function setArrivalTime($arrival_time): void
+    {
+        $this->arrival_time = $arrival_time;
+    }
+
+
 }

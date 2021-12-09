@@ -22,7 +22,7 @@
     $pagina[] = "form";
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,14 @@
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="<?= constant('URL')?>assets/js/app/main.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/app/saveform.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 
 </head>
 
@@ -55,7 +63,7 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos del visitante</h5>
                     </div>
-                    <div class="p-5 flex justify-between flex-wrap items-center">
+                    <div class="p-5 flex justify-between flex-wrap items-start">
                         <label class="text-sm w-1/2">
                             <span class="text-gray-800">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
@@ -74,31 +82,31 @@
                                     <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
-                            <span id="feedbackdocumento" class="text-xs text-red-600 hidden">Por favor, proporcione un RUC</span>
+                            <span id="feedbackdocumento" class="text-xs text-red-600 feed"></span>
                         </label>
 
-                        <div class="w-full flex justify-between flex-wrap items-center hidden" id="containerregister">
+                        <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800">Codigo de cliente CIDETE</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="0" required autocomplete="off">
-
+                                <span id="feedbackcodigo" class="text-xs text-red-600 feed"></span>
                             </label>
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Nombre</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
-
+                                <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
                             </label>
 
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800">Correo</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
-
+                                <span id="feedbackcorreo" class="text-xs text-red-600 feed"></span>
                             </label>
 
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800">Telefono</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
-
+                                <span id="feedbacktelefono" class="text-xs text-red-600 feed"></span>
                             </label>
                             <div class="mt-5 text-sm w-1/2">
                 <span class="text-gray-700">
@@ -112,6 +120,7 @@
                                     </label>
                                     <?php endforeach; ?>
                                 </div>
+                                <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
                             </div>
 
                             <div class="mt-5 text-sm w-5/12">
@@ -128,6 +137,7 @@
                                         <span class="ml-2">M</span>
                                     </label>
                                 </div>
+                                <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
                             </div>
 
                             <label class="text-sm w-1/2 mt-5">
@@ -188,15 +198,17 @@
                                     <label for="departure_time">Hora de salida:
                                         <input type="time" id="departure_time_area<?= $valor['id'] ?>" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
+<br/>
+                                    <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
                                 </div>
                             <?php endforeach; ?>
-                            <span id="feedbackareas" class="text-xs text-red-600 hidden">Por favor, seleccione las areas deseadas</span>
+                            <span id="feedbackareas" class="text-xs text-red-600 feed"></span>
                         </div>
 
                         <label class="block text-sm mt-5">
                             <span class="text-gray-800">Seleccione la fecha de la visita</span>
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
-                            <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
+                            <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
                         </label>
 
                         <label class="block text-sm mt-5">
@@ -222,14 +234,6 @@
 
 </div>
 <!--/container-->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= constant('URL')?>assets/js/app/main.js"></script>
-<script src="<?= constant('URL')?>assets/js/app/saveform.js"></script>
-<script src="<?= constant('URL')?>assets/js/templates/basetemplate.js"></script>
 
 </body>
 

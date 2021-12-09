@@ -24,7 +24,7 @@ class Customer extends Model implements IModel
     public function getAjax($documento,$tipo){
 
         $query = $this->prepare("SELECT *  FROM customers c
-WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type = :tipo");
+WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type = :tipo LIMIT 3");
         $query->execute([
             'documento' => $documento,
             'tipo'=>$tipo
@@ -121,7 +121,7 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
 
     public function get($id)
     {
-        $query = $this->prepare("SELECT c.document, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
+        $query = $this->prepare("SELECT c.document_type, c.document,c.code, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
         INNER JOIN provinces p ON p.province_id = c.province_id
         INNER JOIN districts d ON d.district_id = c.district_id
         INNER JOIN townships t ON t.township_id = c.township_id
@@ -134,6 +134,8 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
         $customer = $query->fetch();
 
         $this->document = $customer['document'];
+        $this->document_type = $customer['document_type'];
+        $this->code = $customer['code'];
         $this->telephone = $customer['telephone'];
         $this->name = $customer['name'];
         $this->email = $customer['email'];
@@ -150,6 +152,54 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
     public function update()
     {
         // TODO: Implement update() method.
+    }
+
+    public function checkDocument($document){
+        $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE document = :document;');
+
+        $miConsulta->execute([
+            'document' => $document
+        ]);
+
+        $resultado = $miConsulta->fetch();
+
+        return $resultado;
+    }
+
+    public function checkCode($code){
+        $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE code = :code;');
+
+        $miConsulta->execute([
+            'code' => $code
+        ]);
+
+        $resultado = $miConsulta->fetch();
+
+        return $resultado;
+    }
+
+    public function checkEmail($email){
+        $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE email = :email;');
+
+        $miConsulta->execute([
+            'email' => $email
+        ]);
+
+        $resultado = $miConsulta->fetch();
+
+        return $resultado;
+    }
+
+    public function checkTelephone($telephone){
+        $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE telephone = :telephone;');
+
+        $miConsulta->execute([
+            'telephone' => $telephone
+        ]);
+
+        $resultado = $miConsulta->fetch();
+
+        return $resultado;
     }
 
     /**
@@ -312,6 +362,21 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
         return $this->township;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDocumentType()
+    {
+        return $this->document_type;
+    }
 
 
 

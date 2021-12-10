@@ -36,7 +36,7 @@
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'up_v') {
 
-        if($_POST['time']){
+        if(filter_var($_POST['time'],FILTER_VALIDATE_BOOLEAN)){
             $visit_area = new VisitArea();
             $visit_area->delete($_POST['visit_id']);
         }

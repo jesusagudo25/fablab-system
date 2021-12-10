@@ -55,7 +55,9 @@ class VisitArea extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT * FROM visits_areas WHERE visit_id = :id');
+        $query = $this->prepare('SELECT va.area_id, va.arrival_time, va.departure_time, a.name FROM visits_areas va 
+        INNER JOIN areas a ON va.area_id = a.area_id
+        WHERE visit_id = :id');
         $query->execute([
             'id' => $id
         ]);

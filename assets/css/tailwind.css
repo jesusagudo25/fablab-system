@@ -69,6 +69,7 @@
     }
 
     button.dt-button:focus:not(.disabled), div.dt-button:focus:not(.disabled), a.dt-button:focus:not(.disabled), input.dt-button:focus:not(.disabled){
+        @apply shadow-none drop-shadow-none !important;
         text-shadow: none !important;
     }
 

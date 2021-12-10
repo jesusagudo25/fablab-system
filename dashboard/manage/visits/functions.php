@@ -36,9 +36,15 @@
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'up_v') {
 
-        if(filter_var($_POST['time'],FILTER_VALIDATE_BOOLEAN)){
+        if($_POST['time']){
             $visit_area = new VisitArea();
             $visit_area->delete($_POST['visit_id']);
+        }
+        else{
+            if (!empty($_POST['areas'])) {
+                $visit_area = new VisitArea();
+                $visit_area->deleteSave($_POST['visit_id'],$_POST['areas']);
+            }
         }
 
         $visit->setCustomerId($_POST['customer_id']);
@@ -56,12 +62,4 @@
         $visits_areas= $visit_area->get($_POST['id']);
 
         echo json_encode($visits_areas);
-    }else if ($_POST['solicitud'] == 'up_va') {
-
-        $visit_area = new VisitArea();
-
-        if (!empty($_POST['areas'])) {
-            $visit_area->deleteSave($_POST['visita'],$_POST['areas']);
-        }
-        echo json_encode('true');
     }

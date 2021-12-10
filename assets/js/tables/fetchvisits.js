@@ -343,6 +343,7 @@ function editarVisita(e){
                         closeModal.forEach( evt =>{
                             evt.removeEventListener('click', cerrarActualizar);
                         });
+                        areasActualizar = [];
                     }
 
                     function actualizar(evt) {
@@ -354,7 +355,8 @@ function editarVisita(e){
                                 solicitud: "up_v",
                                 customer_id: idHidden.value,
                                 reason_id: razonVisita.value,
-                                time: razonVisita.options[razonVisita.selectedIndex].classList.contains('free'),
+                                time: razonVisita.options[razonVisita.selectedIndex].classList.contains('free') ? 1 : 0,
+                                areas: areasActualizar,
                                 date: fechaVisita.value,
                                 observation: observacion.value,
                                 visit_id: e.value
@@ -366,6 +368,7 @@ function editarVisita(e){
                                 closeModal.forEach( e =>{
                                     e.removeEventListener('click', cerrarActualizar);
                                 });
+                                areasActualizar = [];
                                 Toastify({
                                     text: "Visita Actualizada",
                                     duration: 3000,
@@ -380,6 +383,8 @@ function editarVisita(e){
         }
     });
 }
+
+let areasActualizar = [];
 
 function editarAreas(e){
 
@@ -406,35 +411,48 @@ function editarAreas(e){
 
     guardarAreas.addEventListener('click', actualizarAreas);
 
-    $.ajax({
-        url: "./functions.php",
-        type: "POST",
-        datatype:"json",
-        data:  {
-            solicitud: "id_va",
-            id: e.value,
-        },
-        success: function(info) {
-            info.forEach(x => {
-                document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
-                const areaCheck = document.querySelector('#area'+x.area_id);
-                if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
-                document.querySelector('#area'+x.area_id).classList.remove('hidden');
-                document.querySelector('input[name="'+'arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
-                document.querySelector('input[name="'+'departure_time_area'+x.area_id+'"]').value = x.departure_time;
-            });
+    if(areasActualizar.length){
+        areasActualizar.forEach(x => {
+            document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
+            const areaCheck = document.querySelector('#area'+x.area_id);
+            if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+            document.querySelector('#area'+x.area_id).classList.remove('hidden');
+            document.querySelector('input[name="'+'arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
+            document.querySelector('input[name="'+'departure_time_area'+x.area_id+'"]').value = x.departure_time;
+        });
 
-            modalAreas.classList.toggle('hidden');
+        modalAreas.classList.toggle('hidden');
+    }
+    else{
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "id_va",
+                id: e.value,
+            },
+            success: function(info) {
+                    areasActualizar = info;
+                areasActualizar.forEach(x => {
+                    document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
+                    const areaCheck = document.querySelector('#area'+x.area_id);
+                    if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+                    document.querySelector('#area'+x.area_id).classList.remove('hidden');
+                    document.querySelector('input[name="'+'arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
+                    document.querySelector('input[name="'+'departure_time_area'+x.area_id+'"]').value = x.departure_time;
+                });
 
-    }});
+                modalAreas.classList.toggle('hidden');
+            }});
+    }
 
     function actualizarAreas(evt) {
-        let areasActualizar = [];
-
+        areasActualizar = [];
         areasTrabajo.forEach(x =>{
             if(x.checked){
                 let areaCheck = {
-                    id: x.value,
+                    area_id: x.value,
                     arrival_time: document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value,
                     departure_time: document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value
                 }
@@ -442,6 +460,7 @@ function editarAreas(e){
                 if(areaCheck.arrival_time.trim().length == 0){
                     //Validar
                 }
+
                 areasActualizar.push(areaCheck);
             }
             x.checked = false;
@@ -456,32 +475,19 @@ function editarAreas(e){
         if(areas.length == 0){
             //Validar
         }
-
-        $.ajax({
-            url: "./functions.php",
-            type: "POST",
-            datatype:"json",
-            data:  {
-                solicitud: "up_va",
-                areas: areasActualizar,
-                visita: e.value
-            },
-            success: function(data) {
-                modalAreas.classList.toggle('hidden');
-                tablaVisitas.ajax.reload();
-                guardarAreas.removeEventListener('click', actualizarAreas);
-                closeAreas.forEach( e =>{
-                    e.removeEventListener('click', cerrarEditarAreas);
-                });
-                Toastify({
-                    text: "Areas Actualizadas",
-                    duration: 3000,
-                    style: {
-                        background: '#10B981'
-                    }
-                }).showToast();
-            }
+        modalAreas.classList.toggle('hidden');
+        guardarAreas.removeEventListener('click', actualizarAreas);
+        closeAreas.forEach( e =>{
+            e.removeEventListener('click', cerrarEditarAreas);
         });
+
+        Toastify({
+            text: "Areas Actualizadas",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
     }
 }
 

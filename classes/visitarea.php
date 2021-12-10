@@ -41,7 +41,7 @@ class VisitArea extends Model implements IModel
             $hora_salida = empty($valor['departure_time']) ? NULL : $valor['departure_time'];
             $nuevaVisitaArea->execute([
                 'id_visita' => $args[0],
-                'id_area' => $valor['id'],
+                'id_area' => $valor['area_id'],
                 'hora_llegada' => $valor['arrival_time'],
                 'hora_salida' => $hora_salida
             ]);

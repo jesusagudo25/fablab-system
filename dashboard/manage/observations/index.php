@@ -24,11 +24,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/tables/fetchobservations.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
@@ -43,12 +42,6 @@
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
 
         <div class="flex flex-row flex-wrap flex-grow mt-2">
-
-            <div class="w-full p-3">
-                <!--Graph Card-->
-                    <button id="observacion" class="w-2/6 px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-sticky-note fa-fw mr-3"></i> Nueva observación</button>
-                <!--/Graph Card-->
-            </div>
 
             <div class="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden min-height-100vh flex items-center justify-center h-screen" id="modal">
                 <div class="w-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -70,12 +63,12 @@
                         </div>
                         <div class="p-5">
                                 <label class="block text-sm">
-                                    <span class="text-gray-800">Observación (max 170 caracteres)</span>
+                                    <span class="text-gray-800 font-medium">Observación</span>
                                     <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion"></textarea>
                                 </label>
 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800">Fecha</span>
+                                    <span class="text-gray-800 font-medium">Fecha</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
                                 </label>
 
@@ -94,7 +87,7 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Observaciones</h5>
                     </div>
-                    <div class="flex justify-center items-center w-full overflow-auto">
+                    <div class="flex justify-center items-center flex-col w-full overflow-auto">
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>

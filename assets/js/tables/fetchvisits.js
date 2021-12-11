@@ -112,7 +112,7 @@ function verAreas(e){
 
     modal_content.innerHTML = `
                     <div class="text-sm" id="containerarea">
-                            <span class="text-gray-800 inline-block mb-4">Áreas de trabajo seleccionadas</span></div>`;
+                            <span class="text-gray-800 inline-block mb-4 font-medium">Áreas de trabajo seleccionadas</span></div>`;
 
     $.ajax({
         url: "./functions.php",
@@ -173,7 +173,7 @@ function editarVisita(e){
         success: function(data) {
             modal_content.innerHTML = `                                
                                 <label class="block text-sm">
-                                    <span class="text-gray-800">Seleccione el tipo de documento</span>
+                                    <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
                                 <option value="R">RUC</option>
                                 <option value="C">Cédula</option>
@@ -182,34 +182,34 @@ function editarVisita(e){
                                 </label>
                                 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800" id="tituloDocumento">Numero de RUC de visitante</span>
+                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC de visitante</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
                                     <input type="hidden" name="id_customer">
                                 </label>
                                 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800">Nombre de visitante</span>
+                                    <span class="text-gray-800 font-medium">Nombre de visitante</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin visitante seleccionado" type="text" name="name" disabled>
                                 </label>
 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800">Seleccione la razón de visita</span>
+                                    <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="razonvisita">
                             </select>
                                 </label>
                                 
                           <div class="text-sm mt-5 hidden" id="containerarea">
-                            <span class="text-gray-800">Áreas de trabajo visitadas</span>
+                            <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
                             <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" value="${e.value}" onclick="editarAreas(this)">Editar</button>
                         </div>                                
                                 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800">Seleccione la fecha de la visita</span>
+                                    <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
                                     <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
                                 </label>
 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800">Observación complementaria</span>
+                                    <span class="text-gray-800 font-medium">Observación complementaria</span>
                                     <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Sin observación complementaria" name="observacion"></textarea>
                                 </label>`;
 

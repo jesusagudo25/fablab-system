@@ -56,7 +56,7 @@
                     </div>
                     <div class="p-5 flex justify-between flex-wrap items-end">
                         <label class="text-sm w-1/4">
-                            <span class="text-gray-800">Seleccione el tipo de documento</span>
+                            <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
                                 <option value="R">RUC</option>
                                 <option value="C">Cédula</option>
@@ -65,14 +65,14 @@
                         </label>
 
                         <label class="text-sm w-1/3">
-                            <span class="text-gray-800" id="tituloDocumento">Numero de RUC</span>
+                            <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                 <input type="hidden" name="id_customer">
                             <span id="feedbackdocumento" class="text-xs text-red-600 hidden">Por favor, proporcione un RUC</span>
                         </label>
 
                         <label class="text-sm w-1/4">
-                            <span class="text-gray-800">Nombre de visitante</span>
+                            <span class="text-gray-800 font-medium">Nombre de visitante</span>
                             <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin cliente seleccionado" type="text" name="name" disabled>
                         </label>
                     </div>
@@ -103,7 +103,7 @@
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-green border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>
                 </div>
@@ -119,14 +119,14 @@
 
                         <div class="flex justify-between flex-wrap items-center mb-5">
                         <label class="w-2/5 text-sm">
-                            <span class="text-gray-800">Seleccione la fecha</span>
+                            <span class="text-gray-800 font-medium">Seleccione la fecha</span>
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required="">
                             <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
                         </label>
                         </div>
                         <div class="flex justify-between flex-wrap items-center mb-5">
                             <label class="text-sm w-2/5">
-                                <span class="text-gray-800">Seleccione la categoría del servicio</span>
+                                <span class="text-gray-800 font-medium">Seleccione la categoría del servicio</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria_servicio">
                                     <option value="membresias">Membresías</option>
                                     <option value="eventos">Eventos</option>
@@ -136,7 +136,7 @@
                             </label>
 
                             <label class="text-sm w-2/5">
-                                <span class="text-gray-800">Seleccione el servicio</span>
+                                <span class="text-gray-800 font-medium">Seleccione el servicio</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="servicio">
                                     <?php foreach ($areaAll as $datos => $valor): ?>
                                     <option value="<?= $valor['id'] ?>"><?=$valor['name'] ?></option>

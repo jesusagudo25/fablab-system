@@ -6,6 +6,63 @@ tablaObservaciones = $('#datatable-json').DataTable({
         data: {solicitud:'o'},
         dataSrc:""
     },
+    dom: 'Bfrtip',
+    initComplete:function( settings, json){
+        document.querySelector('.dt-buttons').innerHTML += `                            <button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none"><i class="fas fa-sticky-note fa-fw mr-3"></i> Nueva observación</button>`;
+        const newObs = document.querySelector('#observacion');
+
+        newObs.addEventListener('click', evt => {
+            modal.classList.toggle('hidden');
+
+            guardar.addEventListener('click', crear);
+
+            closeModal.forEach( e =>{
+                e.addEventListener('click', cerrarCrear);
+            });
+
+            function cerrarCrear(e){
+                modal.classList.toggle('hidden');
+                guardar.removeEventListener('click', crear);
+                description.value = '';
+                fecha.value = '';
+                closeModal.forEach( e =>{
+                    e.removeEventListener('click', cerrarCrear);
+                });
+            }
+
+            function crear(e) {
+                modal.classList.toggle('hidden');
+
+                $.ajax({
+                    url: "./functions.php",
+                    type: "POST",
+                    datatype:"json",
+                    data:  {
+                        solicitud: "c",
+                        description: description.value,
+                        date: fecha.value,
+                    },
+                    success: function(data) {
+                        description.value = '';
+                        fecha.value = '';
+                        tablaObservaciones.ajax.reload();
+                        guardar.removeEventListener('click', crear);
+                        closeModal.forEach( e =>{
+                            e.removeEventListener('click', cerrarCrear);
+                        });
+                        Toastify({
+                            text: "Observación agregada",
+                            duration: 3000,
+                            style: {
+                                background: '#10B981'
+                            }
+                        }).showToast();
+                    }
+                });
+            }
+
+        });
+    },
     columns: [
         { "data": "observation_id" },
         { "data": "autor" },
@@ -28,67 +85,17 @@ tablaObservaciones = $('#datatable-json').DataTable({
     ]
 });
 
-const newObs = document.querySelector('#observacion'),
-    closeModal = document.querySelectorAll('.close'),
+const closeModal = document.querySelectorAll('.close'),
     modal = document.querySelector('#modal'),
+    titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     description = document.querySelector('textarea[name="descripcion"]'),
     fecha= document.querySelector('input[name="fecha"]');
 
-newObs.addEventListener('click', evt => {
-    modal.classList.toggle('hidden');
-
-    guardar.addEventListener('click', crear);
-
-    closeModal.forEach( e =>{
-        e.addEventListener('click', cerrarCrear);
-    });
-
-    function cerrarCrear(e){
-        modal.classList.toggle('hidden');
-        guardar.removeEventListener('click', crear);
-        description.value = '';
-        fecha.value = '';
-        closeModal.forEach( e =>{
-            e.removeEventListener('click', cerrarCrear);
-        });
-    }
-
-    function crear(e) {
-        modal.classList.toggle('hidden');
-
-        $.ajax({
-            url: "./functions.php",
-            type: "POST",
-            datatype:"json",
-            data:  {
-                solicitud: "c",
-                description: description.value,
-                date: fecha.value,
-            },
-            success: function(data) {
-                description.value = '';
-                fecha.value = '';
-                tablaObservaciones.ajax.reload();
-                guardar.removeEventListener('click', crear);
-                closeModal.forEach( e =>{
-                    e.removeEventListener('click', cerrarCrear);
-                });
-                Toastify({
-                    text: "Observación agregada",
-                    duration: 3000,
-                    style: {
-                        background: '#10B981'
-                    }
-                }).showToast();
-            }
-        });
-    }
-
-});
 
 function editar(e){
 
+    titulo_modal.textContent = 'Editar observación';
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -116,11 +123,12 @@ function editar(e){
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
+                titulo_modal.textContent = 'Nueva observación';
             }
 
             function actualizar(evt) {
                 modal.classList.toggle('hidden');
-
+                titulo_modal.textContent = 'Nueva observación';
                 $.ajax({
                     url: "./functions.php",
                     type: "POST",

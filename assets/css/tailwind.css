@@ -9,7 +9,7 @@
 @layer components {
 
     .dataTables_wrapper{
-        @apply text-sm mt-3;
+        @apply text-sm mt-1;
     }
     
     .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dt-buttons{

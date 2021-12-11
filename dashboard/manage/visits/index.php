@@ -55,7 +55,7 @@ $pagina[] = "gestionar";
                     </div>
                     <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Editar</h5>
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Editar visita</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -96,7 +96,7 @@ $pagina[] = "gestionar";
                             </button>
                         </div>
                         <div class="p-3 text-sm" id="modal-areas-content">
-                            <span class="text-gray-800">Seleccione las áreas de trabajo</span>
+                            <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
                             <?php foreach ($areaAll as $datos => $valor): ?>
                                 <label class="flex items-center mt-4">
                                     <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?=$valor['id']?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">

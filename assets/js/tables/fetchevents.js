@@ -96,6 +96,7 @@ function triggerChange(element){
 }
 
 const newEvent = document.querySelector('#evento'),
+    titulo_modal = document.querySelector('#titulo-modal'),
     closeModal = document.querySelectorAll('.close'),
     modal = document.querySelector('#modal'),
     guardar = document.querySelector('button[name="guardar"]'),
@@ -183,6 +184,8 @@ newEvent.addEventListener('click', evt => {
 
 function editar(e){
 
+    titulo_modal.textContent = 'Editar evento';
+
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -227,6 +230,7 @@ function editar(e){
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
+                titulo_modal.textContent = 'Nuevo evento';
             }
 
             function actualizar(evt) {
@@ -257,6 +261,7 @@ function editar(e){
                         gastosEvento.value = '';
                         descripcionGastos.value = '';
                         tablaEventos.ajax.reload();
+                        titulo_modal.textContent = 'Nueva evento';
                         guardar.removeEventListener('click', actualizar);
                         closeModal.forEach( e =>{
                             e.removeEventListener('click', cerrarActualizar);

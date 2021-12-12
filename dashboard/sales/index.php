@@ -31,6 +31,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.2.0/build/global/luxon.min.js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/app/sales.js" defer></script>
@@ -174,15 +175,15 @@
                         </div>
 
                         <div class="text-sm mt-8 hidden" id="acciones">
-                  <span class="text-gray-800">
+                  <span class="text-gray-800 font-medium">
                   Acciones
                   </span>
                             <div class="flex items-center">
-                                <button class="mt-3 flex items-center justify-between mr-5 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-md active:bg-red-600 hover:bg-red-700 focus:outline-none" id="anular">
+                                <button class="mt-3 flex items-center justify-between mr-5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-md active:bg-red-600 hover:bg-red-700 focus:outline-none" id="anular">
                                     <i class="fas fa-times mr-3"></i>
                                     <span>Anular</span>
                                 </button>
-                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none" id="generar">
+                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none" id="generar">
                                     <i class="fas fa-save mr-3"></i>
                                     <span>Generar venta</span>
                                 </button>

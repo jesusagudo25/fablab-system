@@ -352,7 +352,7 @@ const TIPO_TABLAS = {
                         <tr>
                         <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})"> </td>
                             
-                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}"></td>
+                        <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}"></td>
 </tr>
                         </tbody>
                         </table>
@@ -612,26 +612,31 @@ function verTablaDetalles(e) {
 }
 
 function cambiarFechaFinal(e,id_servicio) {
-    /*console.log(e.value,inputFechaFinal.value)
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    let res = new Date(e.value);
 
+    var DateTime = luxon.DateTime;
 
+    const dt = DateTime.fromISO(e.value);
 
-    let dia = res.toLocaleString("default",options)
-
-    console.log(dia)
-
-    if(dia == "Sat"){
-        res.setDate(res.getDate() + 4);
+    if(id_servicio == 1){
+        inputFechaFinal.value = e.value;
     }
-    else if (dia == "Sun"){
-        res.setDate(res.getDate() + 2);
+    else{
+        let res;
+        if(id_servicio == 2){res = dt.plus({ days: 14 });}
+        else{res = dt.plus({ months: 1 });}
+
+        if(res.weekday == 6){
+            res = res.plus({ days: 2 });
+            inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
+        }
+        else if(res.weekday == 7){
+            res = res.plus({ days: 1 });
+            inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
+        }
+        else{
+            inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
+        }
     }
-
-    let fechaFinal = res.toISOString().split('T')[0];
-
-    console.log(fechaFinal);*/
 }
 
 function cambiarPrecioUnitario(){
@@ -672,13 +677,18 @@ const TIPO_ACTUALIZAR = {
         }
     },
     "eventos": (numeroItem)=>{
-        servicios_ag[indice].detalles = {
-            event_id: inputHiddenEvento.value
-        }
-        const precio = document.querySelector('#'+numeroItem+' .precio');
-        precio.value = inputPrecioEvento.value;
+        if(inputHiddenEvento){
+            servicios_ag[indice].detalles = {
+                event_id: inputHiddenEvento.value
+            }
+            const precio = document.querySelector('#'+numeroItem+' .precio');
+            precio.value = inputPrecioEvento.value;
 
-        triggerChange(precio);
+            triggerChange(precio);
+        }
+        else{
+            //validar
+        }
     },
     "areas": (numeroItem)=>{
         servicios_ag[indice].detalles = {
@@ -738,8 +748,6 @@ function deleteServicio(id_tr){
         calcular();
     }
 }
-
-const ITBMS = 0.07;
 
 function calcular() {
     // obtenemos todas las filas del tbody

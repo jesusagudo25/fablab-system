@@ -96,6 +96,7 @@ const closeModal = document.querySelectorAll('.close'),
 function editar(e){
 
     titulo_modal.textContent = 'Editar observación';
+    guardar.textContent = 'Actualizar';
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -124,11 +125,13 @@ function editar(e){
                     e.removeEventListener('click', cerrarActualizar);
                 });
                 titulo_modal.textContent = 'Nueva observación';
+                guardar.textContent = 'Guardar';
             }
 
             function actualizar(evt) {
                 modal.classList.toggle('hidden');
                 titulo_modal.textContent = 'Nueva observación';
+                guardar.textContent = 'Guardar';
                 $.ajax({
                     url: "./functions.php",
                     type: "POST",

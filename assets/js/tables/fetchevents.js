@@ -185,6 +185,7 @@ newEvent.addEventListener('click', evt => {
 function editar(e){
 
     titulo_modal.textContent = 'Editar evento';
+    guardar.textContent = 'Actualizar';
 
     $.ajax({
         url: "./functions.php",
@@ -231,6 +232,7 @@ function editar(e){
                     e.removeEventListener('click', cerrarActualizar);
                 });
                 titulo_modal.textContent = 'Nuevo evento';
+                guardar.textContent = 'Guardar';
             }
 
             function actualizar(evt) {
@@ -262,6 +264,7 @@ function editar(e){
                         descripcionGastos.value = '';
                         tablaEventos.ajax.reload();
                         titulo_modal.textContent = 'Nueva evento';
+                        guardar.textContent = 'Guardar';
                         guardar.removeEventListener('click', actualizar);
                         closeModal.forEach( e =>{
                             e.removeEventListener('click', cerrarActualizar);

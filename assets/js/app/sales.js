@@ -367,7 +367,7 @@ const TIPO_TABLAS = {
 
         moda_content.innerHTML = `<main class="flex justify-center flex-wrap items-center">
                     <label class="text-sm w-11/12 flex">
-                            <span class="text-gray-800 w-1/4 self-center">Seleccione un evento</span>
+                            <span class="text-gray-800 w-1/4 self-center font-medium">Seleccione un evento</span>
                             <select class="mt-1 text-sm w-3/5 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
 
                             </select>

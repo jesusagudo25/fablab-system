@@ -218,7 +218,7 @@
 
                         <hr class="my-8">
                         <div class="flex justify-center items-center">
-                            <input type="submit" value="Registrar" class="w-3/5 px-4 py-2 text-m font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                            <button type="submit" value="Submit" class="w-1/2 px-4 py-2 text-m font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Registrar</button>
                         </div>
                     </form>
                 </div>

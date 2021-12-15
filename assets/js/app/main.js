@@ -12,6 +12,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     containerRegister = document.querySelector('#containerregister'),
     observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
+    registrar = document.querySelector('button[type="submit"]'),
         codigo = document.querySelector('input[name="codigo"]'),
     email = document.querySelector('input[name="email"]'),
     telefono = document.querySelector('input[name="telefono"]'),
@@ -328,6 +329,8 @@ accion.addEventListener('click',evt => {
         evt.currentTarget.innerHTML = '<i class="fas fa-user-plus"></i>';
         evt.currentTarget.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
         evt.currentTarget.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+
+        restore();
     }
     else if(evt.currentTarget.children[0].classList.contains('fa-eye')){
         containerRegister.classList.remove('hidden');
@@ -457,4 +460,8 @@ function restore() {
             corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
         }
     });
+
+    feeds.forEach(x => {
+        x.textContent = '';
+    })
 }

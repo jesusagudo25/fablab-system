@@ -13,10 +13,19 @@ formulario.addEventListener('submit',guardarEntrada);
 
 function guardarEntrada(evt) {
     evt.preventDefault();
+    formulario.removeEventListener('submit',guardarEntrada);
+
+    registrar.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>Procesando...`;
 
     feeds.forEach(x => {
         x.textContent = '';
     })
+
+    let regexNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+    let regexEmail = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
     let areas = [];
     let errores = {};
@@ -26,59 +35,53 @@ function guardarEntrada(evt) {
         observacion: observacion.value
     };
 
-    let regexNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
-    let regexEmail = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-
-
-    formulario.removeEventListener('submit',guardarEntrada);
-
-        if(optionSelected.classList.contains('notfree')){
-            areasTrabajo.forEach(evt =>{
-                if(evt.checked){
-                    let area = {
-                        id: evt.value,
-                        arrival_time: document.querySelector('#arrival_time_area'+evt.value).value,
-                        departure_time: document.querySelector('#departure_time_area'+evt.value).value
-                    }
-
-                    if(area.arrival_time.trim().length == 0){ //Equivocado
-                        errores.areallegada = "Por favor, proporcione una hora de llegada";
-                        document.querySelector('#feedbackarea'+evt.value).textContent = errores.areallegada;
-                    }
-                    areas.push(area);
+    if(optionSelected.classList.contains('notfree')){
+        areasTrabajo.forEach(evt =>{
+            if(evt.checked){
+                let area = {
+                    id: evt.value,
+                    arrival_time: document.querySelector('#arrival_time_area'+evt.value).value,
+                    departure_time: document.querySelector('#departure_time_area'+evt.value).value
                 }
-            });
 
-            if(areas.length == 0){
-                errores.areas = "Por favor, seleccione las areas deseadas";
-                feedbackareas.textContent = errores.areas;
+                if(area.arrival_time.trim().length == 0){ //Equivocado
+                    errores.areallegada = "Por favor, proporcione una hora de llegada";
+                    document.querySelector('#feedbackarea'+evt.value).textContent = errores.areallegada;
+                }
+                areas.push(area);
             }
+        });
 
-            datos["areasChecked"] = areas;
+        if(areas.length == 0){
+            errores.areas = "Por favor, seleccione las areas deseadas";
+            feedbackareas.textContent = errores.areas;
         }
 
-        if(fecha.value.trim().length == 0){
-            errores.fecha = "Por favor, seleccione una fecha";
-            feedbackfecha.textContent = errores.fecha;
+        datos["areasChecked"] = areas;
+    }
+
+    if(fecha.value.trim().length == 0){
+        errores.fecha = "Por favor, seleccione una fecha";
+        feedbackfecha.textContent = errores.fecha;
+    }
+    else{
+        datos["fecha"] = fecha.value
+    }
+
+    if(inputDocumento.value.trim().length == 0){
+        if(tipoDocumento.value == 'R'){
+            errores.documento = "Por favor, proporcione un RUC";
+            feedbackdocumento.textContent = errores.documento;
+        }
+        else if(tipoDocumento.value == 'C'){
+            errores.documento = "Por favor, proporcione una cédula";
+            feedbackdocumento.textContent = errores.documento;
         }
         else{
-            datos["fecha"] = fecha.value
+            errores.documento = "Por favor, proporcione un pasaporte";
+            feedbackdocumento.textContent = errores.documento;
         }
-
-        if(inputDocumento.value.trim().length == 0){
-            if(tipoDocumento.value == 'R'){
-                errores.documento = "Por favor, proporcione un RUC";
-                feedbackdocumento.textContent = errores.documento;
-            }
-            else if(tipoDocumento.value == 'C'){
-                errores.documento = "Por favor, proporcione una cédula";
-                feedbackdocumento.textContent = errores.documento;
-            }
-            else{
-                errores.documento = "Por favor, proporcione un pasaporte";
-                feedbackdocumento.textContent = errores.documento;
-            }
-        }
+    }
 
         if(accion.children[0].classList.contains('fa-user-times')){
 
@@ -90,7 +93,7 @@ function guardarEntrada(evt) {
             };
 
             if(email.value.trim().length != 0 && !regexEmail.test(email.value)){
-                errores.email = "Por favor, proporcione un correo valido";
+                errores.feedbackcorreo = "Por favor, proporcione un correo valido";
                 feedbackcorreo.textContent = errores.email;
             }
             else{
@@ -129,21 +132,7 @@ function guardarEntrada(evt) {
             }
 
             datos['newCustomer'] = newCustomer;
-        }
-        else{
-            if(idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0){
-                errores.id = "Por favor, seleccione o agregue un cliente";
-                feedbackdocumento.textContent = errores.id;
-            }
-            else if(idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0){
-                datos['id_cliente'] = idHidden.value;
-            }
-        }
 
-        if(Object.keys(errores).length > 0){
-            formulario.addEventListener('submit',guardarEntrada);
-        }
-        else{
             fetch('./functions.php',{
                 method: "POST",
                 mode: "same-origin",
@@ -151,11 +140,37 @@ function guardarEntrada(evt) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({datos: datos})
+                body: JSON.stringify({datos: {
+                        solicitud: 's',
+                        documento: inputDocumento.value,
+                        codigo: codigo.value,
+                        email: email.value.toLowerCase(),
+                        telefono: telefono.value
+                    }})
             })
                 .then(res => res.json())
                 .then(data =>{
-                    if(data == 'false'){
+                    if(data != 'false'){
+                        Object.entries(data).forEach(([key, value]) => {
+                            errores[key] = value;
+                            document.querySelector('#'+key).textContent = value;
+                        });
+                    }
+
+                    if(Object.keys(errores).length > 0){
+                        formulario.addEventListener('submit',guardarEntrada);
+                        registrar.innerHTML = `Registrar`;
+                    }
+                    else{
+                        fetch('./functions.php',{
+                            method: "POST",
+                            mode: "same-origin",
+                            credentials: "same-origin",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({datos: datos})
+                        })
                         Swal.fire({
                             title: 'La visita se ha guardado!',
                             allowOutsideClick: false,
@@ -167,17 +182,44 @@ function guardarEntrada(evt) {
                             }
                         });
                     }
-                    else{
-                        Object.entries(data).forEach(([key, value]) => {
-                            document.querySelector('#'+key).textContent = value;
-                        });
-                        formulario.addEventListener('submit',guardarEntrada);
-                    }
                 });
+        }
+        else{
+            if(idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0){
+                errores.id = "Por favor, seleccione o agregue un cliente";
+                feedbackdocumento.textContent = errores.id;
+            }
+            else if(idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0){
+                datos['id_cliente'] = idHidden.value;
+            }
 
-
-
-
+            if(Object.keys(errores).length > 0){
+                formulario.addEventListener('submit',guardarEntrada);
+                registrar.innerHTML = `Registrar`;
+            }
+            else{
+                fetch('./functions.php',{
+                    method: "POST",
+                    mode: "same-origin",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({datos: datos})
+                })
+                    .then(data =>{
+                        Swal.fire({
+                            title: 'La visita se ha guardado!',
+                            allowOutsideClick: false,
+                            icon: 'success',
+                            confirmButtonColor: '#3b82f6'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    });
+            }
         }
 
 }

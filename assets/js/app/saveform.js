@@ -1,8 +1,5 @@
 //###########Form validation##########
-const feedbackdocumento = document.querySelector('#feedbackdocumento'),feedbackcodigo = document.querySelector('#feedbackcodigo'),
-    feedbacknombre = document.querySelector('#feedbacknombre'),
-    feedbackcorreo = document.querySelector('#feedbackcorreo'),
-    feedbacktelefono = document.querySelector('#feedbacktelefono'),
+const feedbacknombre = document.querySelector('#feedbacknombre'),
     feedbackedad = document.querySelector('#feedbackedad'),
     feedbacksexo = document.querySelector('#feedbacksexo'),
     feedbackareas = document.querySelector('#feedbackareas'),
@@ -28,7 +25,6 @@ function guardarEntrada(evt) {
     let regexEmail = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
     let areas = [];
-    let errores = {};
     let datos = {
         id_razonvisita: razonVisita.value,
         solicitud: 'v',
@@ -48,6 +44,11 @@ function guardarEntrada(evt) {
                     errores.areallegada = "Por favor, proporcione una hora de llegada";
                     document.querySelector('#feedbackarea'+evt.value).textContent = errores.areallegada;
                 }
+                else{
+                    if('areallegada' in errores){
+                        delete errores.areallegada;
+                    }
+                }
                 areas.push(area);
             }
         });
@@ -55,6 +56,11 @@ function guardarEntrada(evt) {
         if(areas.length == 0){
             errores.areas = "Por favor, seleccione las areas deseadas";
             feedbackareas.textContent = errores.areas;
+        }
+        else{
+            if('areas' in errores){
+                delete errores.areas;
+            }
         }
 
         datos["areasChecked"] = areas;
@@ -85,30 +91,29 @@ function guardarEntrada(evt) {
 
         if(accion.children[0].classList.contains('fa-user-times')){
 
+            if('id' in errores){
+                delete errores.id;
+            }
+
             newCustomer = {
                 codigo: codigo.value,
                 tipo_documento: tipoDocumento.value,
                 documento: inputDocumento.value,
-                telefono: telefono.value
+                email: email.value.toLowerCase(),
+                telefono: telefono.value,
+                provincia: provincia.value,
+                distrito: distrito.value,
+                corregimiento: corregimiento.value
             };
-
-            if(email.value.trim().length != 0 && !regexEmail.test(email.value)){
-                errores.feedbackcorreo = "Por favor, proporcione un correo valido";
-                feedbackcorreo.textContent = errores.email;
-            }
-            else{
-                newCustomer.email = email.value.toLowerCase();
-            }
 
             if(nombreUsuario.value.trim().length == 0){
                 errores.nombre = "Por favor, proporcione un nombre";
                 feedbacknombre.textContent = errores.nombre;
             }
-            else if(!regexNombre.test(nombreUsuario.value)){
-                errores.nombre =  "Por favor, ingrese correctamente el nombre";
-                feedbacknombre.textContent = errores.nombre;
-            }
             else{
+                if('nombre' in errores){
+                    delete errores.nombre;
+                }
                 newCustomer.nombre = nombreUsuario.value;
             }
 
@@ -116,6 +121,9 @@ function guardarEntrada(evt) {
             const sexoChecked = Array.from(sexo).find(x => x.checked);
 
             if(edadChecked){
+                if('edad' in errores){
+                    delete errores.edad;
+                }
                 newCustomer.edad = edadChecked.value;
             }
             else{
@@ -124,6 +132,9 @@ function guardarEntrada(evt) {
             }
 
             if(sexoChecked){
+                if('sexo' in errores){
+                    delete errores.sexo;
+                }
                 newCustomer.sexo = sexoChecked.value;
             }
             else{
@@ -132,57 +143,6 @@ function guardarEntrada(evt) {
             }
 
             datos['newCustomer'] = newCustomer;
-
-            fetch('./functions.php',{
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({datos: {
-                        solicitud: 's',
-                        documento: inputDocumento.value,
-                        codigo: codigo.value,
-                        email: email.value.toLowerCase(),
-                        telefono: telefono.value
-                    }})
-            })
-                .then(res => res.json())
-                .then(data =>{
-                    if(data != 'false'){
-                        Object.entries(data).forEach(([key, value]) => {
-                            errores[key] = value;
-                            document.querySelector('#'+key).textContent = value;
-                        });
-                    }
-
-                    if(Object.keys(errores).length > 0){
-                        formulario.addEventListener('submit',guardarEntrada);
-                        registrar.innerHTML = `Registrar`;
-                    }
-                    else{
-                        fetch('./functions.php',{
-                            method: "POST",
-                            mode: "same-origin",
-                            credentials: "same-origin",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({datos: datos})
-                        })
-                        Swal.fire({
-                            title: 'La visita se ha guardado!',
-                            allowOutsideClick: false,
-                            icon: 'success',
-                            confirmButtonColor: '#3b82f6'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
-                    }
-                });
         }
         else{
             if(idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0){
@@ -191,35 +151,39 @@ function guardarEntrada(evt) {
             }
             else if(idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0){
                 datos['id_cliente'] = idHidden.value;
-            }
-
-            if(Object.keys(errores).length > 0){
-                formulario.addEventListener('submit',guardarEntrada);
-                registrar.innerHTML = `Registrar`;
-            }
-            else{
-                fetch('./functions.php',{
-                    method: "POST",
-                    mode: "same-origin",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({datos: datos})
-                })
-                    .then(data =>{
-                        Swal.fire({
-                            title: 'La visita se ha guardado!',
-                            allowOutsideClick: false,
-                            icon: 'success',
-                            confirmButtonColor: '#3b82f6'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
-                    });
+                if('id' in errores){
+                    console.log('entre')
+                    delete errores.id;
+                }
             }
         }
+
+    if(Object.keys(errores).length > 0){
+        formulario.addEventListener('submit',guardarEntrada);
+        registrar.innerHTML = `Registrar`;
+    }
+    else{
+        fetch('./functions.php',{
+            method: "POST",
+            mode: "same-origin",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({datos: datos})
+        })
+            .then(data =>{
+                Swal.fire({
+                    title: 'La visita se ha guardado!',
+                    allowOutsideClick: false,
+                    icon: 'success',
+                    confirmButtonColor: '#3b82f6'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            });
+    }
 
 }

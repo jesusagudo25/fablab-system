@@ -21,11 +21,16 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
+    feedbackcorreo = document.querySelector('#feedbackcorreo'),
+    feedbacktelefono = document.querySelector('#feedbacktelefono'),
+    feedbackdocumento = document.querySelector('#feedbackdocumento'),
+    feedbackcodigo = document.querySelector('#feedbackcodigo'),
     formulario = document.querySelector('form');
 
 //Informacion inicial
 let distritos = [];
 let corregimientos = [];
+let errores = {};
 
 fetch('./functions.php',{
     method: "POST",
@@ -276,8 +281,8 @@ $( function() {
 });
 
 function triggerKeyup(element){
-    let changeEvent = new Event('keyup');
-    element.dispatchEvent(changeEvent);
+    let keyUpEvent = new Event('keyup');
+    element.dispatchEvent(keyUpEvent);
 }
 
 //Dependiendo la razon social (NOTFREE, FREE) aparecera la seccion de area de trabajo
@@ -303,6 +308,11 @@ areasTrabajo.forEach(evt =>{
     });
 });
 
+function triggerBlur(element){
+    let blurEvent = new Event('blur');
+    element.dispatchEvent(blurEvent);
+}
+
 //Button action
 
 accion.addEventListener('click',evt => {
@@ -323,6 +333,12 @@ accion.addEventListener('click',evt => {
             }
         }).showToast();
 
+        inputDocumento.addEventListener('blur', validarDocumento);
+        codigo.addEventListener('blur', validarCodigo);
+        email.addEventListener('blur', validarEmail);
+        telefono.addEventListener('blur', validarTelefono);
+
+        triggerBlur(inputDocumento);
     }
     else if(evt.currentTarget.children[0].classList.contains('fa-user-times')){
         containerRegister.classList.add('hidden');
@@ -331,6 +347,14 @@ accion.addEventListener('click',evt => {
         evt.currentTarget.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
 
         restore();
+        inputDocumento.removeEventListener('blur', validarDocumento);
+        codigo.removeEventListener('blur', validarCodigo);
+        email.removeEventListener('blur', validarEmail);
+        telefono.removeEventListener('blur', validarTelefono);
+        feedbackdocumento.textContent = '';
+        feedbackcodigo.textContent = '';
+        feedbackcorreo.textContent = '';
+        feedbacktelefono.textContent = '';
     }
     else if(evt.currentTarget.children[0].classList.contains('fa-eye')){
         containerRegister.classList.remove('hidden');
@@ -353,6 +377,126 @@ accion.addEventListener('click',evt => {
     }
 });
 
+function validarDocumento(e){
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: 'doc',
+                documento: e.target.value,
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            if(data == true){
+                errores.documento = 'El documento ya esta registrado';
+                feedbackdocumento.textContent = errores.documento;
+            }
+            else{
+                if('documento' in errores){
+                    delete errores.documento;
+                }
+                feedbackdocumento.textContent = '';
+            }
+        });
+
+}
+
+function validarCodigo(e){
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: 'cod',
+                codigo: e.target.value,
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            if(data == true){
+                errores.codigo = 'El codigo ya esta registrado';
+                feedbackcodigo.textContent = errores.codigo;
+            }
+            else{
+                if('codigo' in errores){
+                    delete errores.codigo;
+                }
+                feedbackcodigo.textContent = '';
+            }
+        });
+
+}
+
+function validarEmail(e){
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: 'cor',
+                email: e.target.value,
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            if(data == 'true'){
+                errores.correo = 'El correo ya esta registrado';
+                feedbackcorreo.textContent = errores.correo;
+            }
+            else if(data == 'validate'){
+                errores.correo = 'Por favor, proporcione un correo valido';
+                feedbackcorreo.textContent = errores.correo;
+            }
+            else{
+                if('correo' in errores){
+                    delete errores.correo;
+                }
+                feedbackcorreo.textContent = '';
+            }
+        });
+
+}
+
+function validarTelefono(e){
+    fetch('./functions.php',{
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({datos: {
+                solicitud: 'tel',
+                telefono: e.target.value,
+            }})
+    })
+        .then(res => res.json())
+        .then(data =>{
+            if(data == true){
+                errores.telefono = 'El telefono ya esta registrado';
+                feedbacktelefono.textContent = errores.telefono;
+            }
+            else{
+                if('telefono' in errores){
+                    delete errores.telefono;
+                }
+                feedbacktelefono.textContent = '';
+            }
+        });
+
+}
+
 inputDocumento.addEventListener('keyup', evt => {
 
     if(evt.key != "Enter"){
@@ -365,8 +509,15 @@ inputDocumento.addEventListener('keyup', evt => {
         else{
             accion.classList.add('hidden');
             restore();
-
         }
+        inputDocumento.removeEventListener('blur', validarDocumento);
+        codigo.removeEventListener('blur', validarCodigo);
+        email.removeEventListener('blur', validarEmail);
+        telefono.removeEventListener('blur', validarTelefono);
+        feedbackdocumento.textContent = '';
+        feedbackcodigo.textContent = '';
+        feedbackcorreo.textContent = '';
+        feedbacktelefono.textContent = '';
     }
 
 });

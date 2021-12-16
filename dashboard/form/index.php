@@ -82,14 +82,14 @@
                                     <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
-                            <span id="feedbackdocumento" class="text-xs text-red-600 feed"></span>
+                            <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                         </label>
 
                         <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800 font-medium">Codigo de cliente CIDETE</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="0" required autocomplete="off">
-                                <span id="feedbackcodigo" class="text-xs text-red-600 feed"></span>
+                                <span id="feedbackcodigo" class="text-xs text-red-600 "></span>
                             </label>
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800 font-medium">Nombre</span>
@@ -100,13 +100,13 @@
                             <label class="text-sm w-1/2 mt-5">
                                 <span class="text-gray-800 font-medium">Correo</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
-                                <span id="feedbackcorreo" class="text-xs text-red-600 feed"></span>
+                                <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
                             </label>
 
                             <label class="text-sm w-5/12 mt-5">
                                 <span class="text-gray-800 font-medium">Telefono</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
-                                <span id="feedbacktelefono" class="text-xs text-red-600 feed"></span>
+                                <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
                             </label>
                             <div class="mt-5 text-sm w-1/2">
                 <span class="text-gray-700 font-medium">

@@ -18,56 +18,98 @@ if ($contentType === "application/json") {
             $visit = new Visit();
             $visit->saveAll($decoded['datos']);
         }
-        if($decoded['datos']['solicitud'] == 's'){ //Seguridad
-            $errores = array();
+        if($decoded['datos']['solicitud'] == 'doc'){ //Seguridad
+            $error = false;
 
-            $codigo = empty($decoded['datos']['documento']) ? '' : $decoded['datos']['documento'];
-            $documento = empty($decoded['datos']['codigo']) ? '' : $decoded['datos']['codigo'];
-            $email = empty($decoded['datos']['email']) ? '' :$decoded['datos']['email'];
-            $telefono = empty($decoded['datos']['telefono']) ? '' : $decoded['datos']['telefono'];
+            $documento = empty($decoded['datos']['documento']) ? '' : $decoded['datos']['documento'];
+
+            $customer = new Customer();
+
+            if(!empty($documento)){
+                $resulDocument = $customer->checkDocument($documento);
+                if ((int) $resulDocument['length'] > 0) {
+                    $error = true;
+                }
+            }
+
+            if ($error) {
+                echo json_encode($error);
+            }
+            else{
+                echo json_encode($error);
+            }
+
+        }
+        if($decoded['datos']['solicitud'] == 'cod'){
+            $error = false;
+
+            $codigo = empty($decoded['datos']['codigo']) ? '' : $decoded['datos']['codigo'];
 
             $customer = new Customer();
 
             if(!empty($codigo)){
-                $resulDocument = $customer->checkDocument($codigo);
-                if ((int) $resulDocument['length'] > 0) {
-                    $errores['feedbackdocumento'] = 'El documento ya esta registrado';
+                $resulCode = $customer->checkCode($codigo);
+                if ((int) $resulCode['length'] > 0) {
+                    $error = true;
                 }
             }
 
-            if(!empty($documento)){
-                $resulCode = $customer->checkCode($documento);
-                if ((int) $resulCode['length'] > 0) {
-                    $errores['feedbackcodigo'] = 'La codigo de CIDETE ya esta registrado';
-                }
+            if ($error) {
+                echo json_encode($error);
             }
+            else{
+                echo json_encode($error);
+            }
+
+        }
+        if($decoded['datos']['solicitud'] == 'cor'){
+            $error = 'false';
+
+            $email = empty($decoded['datos']['email']) ? '' :$decoded['datos']['email'];
+
+            $customer = new Customer();
 
             if(!empty($email)){
                 $resulEmail = $customer->checkEmail($email);
                 if ((int) $resulEmail['length'] > 0) {
-                    $errores['feedbackcorreo'] = 'La dirección de email ya esta registrada';
+                    $error = 'true';
                 }
                 else{
                     $email= filter_var($email,FILTER_VALIDATE_EMAIL);
                     if(!$email){
-                        $errores['feedbackcorreo'] = 'Por favor, proporcione un correo valido';
+                        $error = 'validate';
                     }
                 }
             }
+
+            if ($error) {
+                echo json_encode($error);
+            }
+            else{
+                echo json_encode($error);
+            }
+
+        }
+        if($decoded['datos']['solicitud'] == 'tel'){ //Seguridad
+            $error = false;
+
+            $telefono = empty($decoded['datos']['telefono']) ? '' : $decoded['datos']['telefono'];
+
+            $customer = new Customer();
 
             if(!empty($telefono)){
                 $resulTelephone = $customer->checkTelephone($telefono);
 
                 if ((int) $resulTelephone['length'] > 0) {
-                    $errores['feedbacktelefono'] = 'El numero de telefono ya esta registrada';
+                    $error = true;
                 }
             }
 
-            if (count($errores)) {
-                echo json_encode($errores);
+            if ($error) {
+                echo json_encode($error);
             }
             else{
-                echo json_encode('false');
+                echo json_encode($error);
             }
 
         }

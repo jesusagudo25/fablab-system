@@ -68,20 +68,20 @@ fetch('./functions.php',{
                     solicitud: "c",
                 }})
         })
-            .then(res => res.json())
-            .then(data =>{
-                corregimientos = data;
+        .then(res => res.json())
+        .then(data =>{
+            corregimientos = data;
 
-                const resul = corregimientos.filter(x => x.district_id == distrito.value);
-                resul.forEach(e => {
-                    if(e.name == 'Santiago'){
-                        corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
-                    }
-                    else{
-                        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-                    }
-                });
+            const resul = corregimientos.filter(x => x.district_id == distrito.value);
+            resul.forEach(e => {
+                if(e.name == 'Santiago'){
+                    corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
+                }
+                else{
+                    corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+                }
             });
+        });
     });
 
 //Algoritmo Provincia-Distrito-Corregimiento
@@ -138,147 +138,138 @@ tipoDocumento.addEventListener('change', evt => {
 
 //Se realiza un autocomplete buscando el cliente, en caso de no encontrase aparecera un signo de (+) para agregarlo
 
-$( function() {
-    // Single Select
-    $("#autoComplete").autocomplete({
 
-        source: function (request, response) {
-            $.ajax({
-                url: "../ajax.php",
-                type: 'post',
-                dataType: "json",
-                data: {
-                    customers: request.term,
-                    document_type: tipoDocumento.value
-                },
-                success: function (data) {
-                    response(data);
-                }
-            });
-        },
-        select: function (event, ui) {
-            $('#autoComplete').val(ui.item.label); // display the selected text
-            idHidden.value = ui.item.id;
+$("#autoComplete").autocomplete({
 
-            if(ui.item.code){
-                codigo.value = ui.item.code;
+    source: function (request, response) {
+        $.ajax({
+            url: "../ajax.php",
+            type: 'post',
+            dataType: "json",
+            data: {
+                customers: request.term,
+                document_type: tipoDocumento.value
+            },
+            success: function (data) {
+                response(data);
             }
-            else{
-                codigo.placeholder = 'Sin código asignado';
-            }
+        });
+    },
+    select: function (event, ui) {
+        $('#autoComplete').val(ui.item.label); // display the selected text
+        idHidden.value = ui.item.id;
 
-            codigo.disabled = true;
-            codigo.classList.add('bg-gray-300');
-            codigo.classList.add('cursor-not-allowed');
-            nombreUsuario.value = ui.item.name;
-            nombreUsuario.disabled = true;
-            nombreUsuario.classList.add('bg-gray-300');
-            nombreUsuario.classList.add('cursor-not-allowed');
-
-            if(ui.item.email){
-                email.value = ui.item.email;
-            }
-            else{
-                email.placeholder = 'Sin correo electrónico asignado';
-            }
-
-            email.disabled = true;
-            email.classList.add('bg-gray-300');
-            email.classList.add('cursor-not-allowed');
-
-            if(ui.item.telephone){
-                telefono.value = ui.item.telephone;
-            }
-            else{
-                telefono.placeholder = 'Sin teléfono asignado';
-            }
-
-            telefono.disabled = true;
-            telefono.classList.add('bg-gray-300');
-            telefono.classList.add('cursor-not-allowed');
-            //edad
-            let edadChecked = Array.from(edad).find( x => x.value == ui.item.age_range);
-            edadChecked.checked = true;
-            edad.forEach( e =>{
-                e.disabled = true;
-                e.classList.remove('text-blue-600')
-                e.classList.add('cursor-not-allowed', 'text-gray-500');
-            })
-            //sexo
-            let sexoChecked = Array.from(sexo).find( x => x.value == ui.item.sex);
-            sexoChecked.checked = true;
-            sexo.forEach( e =>{
-                e.disabled = true;
-                e.classList.remove('text-blue-600')
-                e.classList.add('cursor-not-allowed', 'text-gray-500');
-            })
-
-            //provincia
-            Array.from(provincia.options).forEach( (opt) =>{
-                if(opt.value == ui.item.province){
-                    opt.selected = true;
-                }
-            });
-
-            provincia.disabled = true;
-            provincia.classList.add('bg-gray-300');
-            provincia.classList.add('cursor-not-allowed');
-            //distrito
-
-            distrito.innerHTML = '';
-            let items = distritos.filter(x => x.province_id == provincia.value);
-            items.forEach(e => {
-                if(e.district_id == ui.item.district){
-                distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
-                }
-                else{
-
-                distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
-                }
-            });
-
-            //corregim
-            corregimiento.innerHTML = '';
-            items = corregimientos.filter(x => x.district_id == distrito.value);
-            items.forEach(e => {
-                if (e.township_id == ui.item.township){
-                corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-
-                }
-                else{
-                corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-
-                }
-            });
-
-            distrito.disabled = true;
-            distrito.classList.add('bg-gray-300');
-            distrito.classList.add('cursor-not-allowed');
-
-            corregimiento.disabled = true;
-            corregimiento.classList.add('bg-gray-300');
-            corregimiento.classList.add('cursor-not-allowed');
-
-            Toastify({
-                text: "Visitante seleccionado",
-                duration: 3000,
-                style: {
-                    background: '#10B981'
-                }
-            }).showToast();
-
-            accion.innerHTML = '<i class="fas fa-eye"></i>';
-            accion.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
-            accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
-
-            return false;
-
+        if(ui.item.code){
+            codigo.value = ui.item.code;
+        }
+        else{
+            codigo.placeholder = 'Sin código asignado';
         }
 
-    });
+        codigo.disabled = true;
+        codigo.classList.add('bg-gray-300');
+        codigo.classList.add('cursor-not-allowed');
+        nombreUsuario.value = ui.item.name;
+        nombreUsuario.disabled = true;
+        nombreUsuario.classList.add('bg-gray-300');
+        nombreUsuario.classList.add('cursor-not-allowed');
 
+        if(ui.item.email){
+            email.value = ui.item.email;
+        }
+        else{
+            email.placeholder = 'Sin correo electrónico asignado';
+        }
+
+        email.disabled = true;
+        email.classList.add('bg-gray-300');
+        email.classList.add('cursor-not-allowed');
+
+        if(ui.item.telephone){
+            telefono.value = ui.item.telephone;
+        }
+        else{
+            telefono.placeholder = 'Sin teléfono asignado';
+        }
+
+        telefono.disabled = true;
+        telefono.classList.add('bg-gray-300');
+        telefono.classList.add('cursor-not-allowed');
+        //edad
+        let edadChecked = Array.from(edad).find( x => x.value == ui.item.age_range);
+        edadChecked.checked = true;
+        edad.forEach( e =>{
+            e.disabled = true;
+            e.classList.remove('text-blue-600')
+            e.classList.add('cursor-not-allowed', 'text-gray-500');
+        })
+        //sexo
+        let sexoChecked = Array.from(sexo).find( x => x.value == ui.item.sex);
+        sexoChecked.checked = true;
+        sexo.forEach( e =>{
+            e.disabled = true;
+            e.classList.remove('text-blue-600')
+            e.classList.add('cursor-not-allowed', 'text-gray-500');
+        })
+
+        //provincia
+        let provinceSelect = Array.from(provincia.options).find(opt => opt.value == ui.item.province);
+        provinceSelect.selected = true;
+
+        provincia.disabled = true;
+        provincia.classList.add('bg-gray-300');
+        provincia.classList.add('cursor-not-allowed');
+        //distrito
+
+        distrito.innerHTML = '';
+        let items = distritos.filter(x => x.province_id == provincia.value);
+        items.forEach(e => {
+            if(e.district_id == ui.item.district){
+                distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
+            }
+            else{
+                distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
+            }
+        });
+
+        //corregim
+        corregimiento.innerHTML = '';
+        items = corregimientos.filter(x => x.district_id == distrito.value);
+        items.forEach(e => {
+            if (e.township_id == ui.item.township){
+                corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+            }
+            else{
+                corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+            }
+        });
+
+        distrito.disabled = true;
+        distrito.classList.add('bg-gray-300');
+        distrito.classList.add('cursor-not-allowed');
+
+        corregimiento.disabled = true;
+        corregimiento.classList.add('bg-gray-300');
+        corregimiento.classList.add('cursor-not-allowed');
+
+        Toastify({
+            text: "Visitante seleccionado",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
+
+        accion.innerHTML = '<i class="fas fa-eye"></i>';
+        accion.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+        accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
+
+        return false;
+
+    }
 
 });
+
 
 function triggerKeyup(element){
     let keyUpEvent = new Event('keyup');

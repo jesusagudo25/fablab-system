@@ -15,6 +15,7 @@ class Customer extends Model implements IModel
     private $province;
     private $city;
     private $township;
+    private $status;
 
     public function __construct()
     {
@@ -37,8 +38,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
         return $datos;
     }
 
-    public function save(...$args)
-    {
+    public function save(...$args){
         $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,range_id,sex,province_id,district_id,township_id) VALUES (:document_type, :document ,:code ,:name, :email, :telephone,:range_id, :sex,:province, :city, :township)');
 
         $nuevoCliente->execute([
@@ -114,13 +114,32 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
         return $ageRanges;
     }
 
-    public function getAll()
-    {
-        // TODO: Implement getAll() method.
+    public function getAll(){
+        $query = $this->query('SELECT c.customer_id, c.document_type, c.document, c.code, c.name AS customer_name, ar.name AS range_name, c.sex, c.email, c.telephone, p.name AS province_name, d.name AS district_name, t.name AS township_name, c.status FROM customers c
+        INNER JOIN age_range ar ON c.range_id = ar.range_id
+        INNER JOIN provinces p ON c.province_id = p.province_id
+        INNER JOIN districts d ON c.district_id = d.district_id
+        INNER JOIN townships t ON c.township_id = t.township_id
+        ');
+
+        $events = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $events;
     }
 
     public function get($id)
     {
+        $query = $this->prepare('SELECT * FROM customers WHERE customer_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $customer = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $customer;
+    }
+
+    public function getDetails($id){
         $query = $this->prepare("SELECT c.document_type, c.document,c.code, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
         INNER JOIN provinces p ON p.province_id = c.province_id
         INNER JOIN districts d ON d.district_id = c.district_id
@@ -131,7 +150,7 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
             'customer_id' => $id
         ]);
 
-        $customer = $query->fetch();
+        $customer = $query->fetch(PDO::FETCH_ASSOC);
 
         $this->document = $customer['document'];
         $this->document_type = $customer['document_type'];
@@ -146,12 +165,30 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $actualizarDatos = $this->prepare("UPDATE customers SET status = :status WHERE customer_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $actualizarDatos = $this->prepare("UPDATE customers SET document_type = :document_type, document = :document, code = :code, name = :name, range_id = :range_id, sex = :sex, email = :email, telephone = :telephone, province_id = :province_id, district_id = :district_id, township_id = :township_id WHERE customer_id = :id;");
+        $actualizarDatos->execute([
+            'document_type' => $this->document_type,
+            'document' => $this->document,
+            'code' => $this->code,
+            'name' => $this->name,
+            'range_id' => $this->age_range,
+            'sex' => $this->sexo,
+            'email' => $this->email,
+            'telephone' => $this->telephone,
+            'province_id' => $this->province,
+            'district_id' => $this->city,
+            'township_id' => $this->township,
+            'id'=>$this->customer_id
+        ]);
     }
 
     public function checkDocument($document){
@@ -307,6 +344,22 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
     }
 
     /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @param mixed $customer_id
+     */
+    public function setCustomerID($customer_id): void
+    {
+        $this->customer_id = $customer_id;
+    }    
+    
+    /**
      * @return mixed
      */
     public function getDocument()
@@ -377,7 +430,5 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
     {
         return $this->document_type;
     }
-
-
 
 }

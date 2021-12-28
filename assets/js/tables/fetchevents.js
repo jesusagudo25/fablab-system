@@ -198,7 +198,7 @@ function editar(e){
         success: function(data) {
 
             Array.from(categoria.options).forEach( (opt) =>{
-                if(opt.value = data['category_id']){
+                if(opt.value == data['category_id']){
                     opt.selected = true;
                 }
             });
@@ -236,7 +236,6 @@ function editar(e){
             }
 
             function actualizar(evt) {
-                modal.classList.toggle('hidden');
 
                 $.ajax({
                     url: "./functions.php",
@@ -276,6 +275,7 @@ function editar(e){
                                 background: '#10B981'
                             }
                         }).showToast();
+                        modal.classList.toggle('hidden');
                     }
                 });
             }

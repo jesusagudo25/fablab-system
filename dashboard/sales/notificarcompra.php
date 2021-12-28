@@ -19,7 +19,7 @@
     $user->get($invoice->getUserId());
 
     $customer = new Customer();
-    $customer->get($invoice->getCustomerId());
+    $customer->getDetails($invoice->getCustomerId());
 
     if($customer->getEmail()){
 

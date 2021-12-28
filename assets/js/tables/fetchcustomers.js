@@ -1,0 +1,305 @@
+//Informacion inicial
+let distritos = [];
+let corregimientos = [];
+
+$.ajax({
+    url: "./functions.php",
+    type: "POST",
+    datatype:"json",
+    data:  {
+        solicitud: "dis",
+    },
+    success: function(data) {
+        distritos = data;
+
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "cor",
+            },
+            success: function(data) {
+                corregimientos = data;
+            }
+        });
+    }
+});
+
+tablaClientes = $('#datatable-json').DataTable({
+    language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
+    ajax:{
+        url: './functions.php',
+        type: 'POST',
+        data: {solicitud:'c'},
+        dataSrc:""
+    },
+    dom: 'Bfrtip',
+    buttons: [
+        {
+            extend: 'colvis',
+            columns: ':not(".select-disabled")'
+        }
+    ],
+    columns: [
+        { "data": "customer_id" },
+        { "data": "document" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+
+                if(data['code']){
+                    return data['code'];
+                }
+                else{
+                    return 'Sin codigo';
+                }
+            },
+            "targets": -1
+        },
+        { "data": "customer_name" },
+        { "data": "range_name" },
+        { "data": "sex" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+
+                if(data['email']){
+                    return data['email'];
+                }
+                else{
+                    return 'Sin correo';
+                }
+            },
+            "targets": -1
+        },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                if(data['telephone']){
+                    return data['telephone'];
+                }
+                else{
+                    return 'Sin telefono';
+                }
+            },
+            "targets": -1
+        },
+        { "data": "province_name" },
+        { "data": "district_name" },
+        { "data": "township_name" },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                if(data['status']){
+                    return '<span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100">Activo</span>';
+                }
+                else{
+                    return '<span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100 dark:text-red-100 dark:bg-red-700">Inactivo</span>';
+                }
+            },
+            "targets": -1
+        },
+        {
+            "data": null,
+            render:function(data, type, row)
+            {
+                return '<div class="flex items-center space-x-4"> <button value="'+data['customer_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button><button value="'+data['customer_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+            },
+            "targets": -1
+        }
+
+    ],
+    responsive: true,
+    processing: true,
+    'columnDefs' : [
+        //hide the second & fourth column
+        { 'visible': false, 'targets': [0,4,5,8,9,10,11] }
+    ],
+    order: [[ 0, "desc" ]]
+});
+
+
+const closeModal = document.querySelectorAll('.close'),
+    modal = document.querySelector('#modal'),
+    guardar = document.querySelector('button[name="guardar"]'),
+    tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
+    tituloDocumento=  document.querySelector('#tituloDocumento'),
+    inputDocumento = document.querySelector('input[name="documento"]'),
+    nombreUsuario = document.querySelector('input[name="name"]'),
+    codigo = document.querySelector('input[name="codigo"]'),
+    email = document.querySelector('input[name="email"]'),
+    telefono = document.querySelector('input[name="telefono"]'),
+    edad = document.querySelectorAll('input[name="edad"]'),
+    sexo = document.querySelectorAll('input[name="sexo"]'),
+    provincia = document.querySelector('select[name="provincia"]'),
+    distrito = document.querySelector('select[name="distrito"]'),
+    corregimiento = document.querySelector('select[name="corregimiento"]');
+
+
+//Algoritmo Provincia-Distrito-Corregimiento
+provincia.addEventListener('change', evt => {
+    distrito.innerHTML = '';
+    let resul = distritos.filter(x => x.province_id == provincia.value);
+    resul.forEach(e => {
+        distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
+    });
+
+    corregimiento.innerHTML = '';
+    resul = corregimientos.filter(x => x.district_id == distrito.value);
+    resul.forEach(e => {
+        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+    });
+
+});
+
+
+distrito.addEventListener('change', evt => {
+    corregimiento.innerHTML = '';
+    const resul = corregimientos.filter(x => x.district_id == distrito.value);
+    resul.forEach(e => {
+        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+    });
+});    
+
+function triggerChange(element){
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+}
+
+function editar(e){
+    $.ajax({
+        url: "./functions.php",
+        type: "POST",
+        datatype:"json",
+        data:  {
+            solicitud: "id_c",
+            id: e.value,
+        },
+        success: function(data) {
+
+            let tipoDocumentoSelect = Array.from(tipoDocumento.options).find( opt => opt.value == data['document_type']);
+            tipoDocumentoSelect.selected = true;
+            
+            inputDocumento.value = data['document'];
+            codigo.value = data['code'];
+            nombreUsuario.value = data['name'];
+            
+            let edadCheck = Array.from(edad).find( opt => opt.value == data['range_id']);
+            edadCheck.checked = true;
+
+            let sexoCheck = Array.from(sexo).find( opt => opt.value == data['sex']);
+            sexoCheck.checked = true;
+            
+            email.value = data['email'];
+            telefono.value = data['telephone'];
+
+            let provinciaSelect = Array.from(provincia.options).find( opt => opt.value == data['province_id']);
+            provinciaSelect.selected = true;
+
+            triggerChange(provincia);
+
+            let districtSelect = Array.from(distrito.options).find( opt => opt.value == data['district_id']);
+            districtSelect.selected = true;
+
+            let townshipSelect = Array.from(corregimiento.options).find( opt => opt.value == data['township_id']);
+            townshipSelect.selected = true;
+
+            modal.classList.toggle('hidden');
+
+            guardar.addEventListener('click', actualizar);
+            closeModal.forEach( e =>{
+                e.addEventListener('click', cerrarActualizar);
+            });
+
+            function cerrarActualizar(e){
+                modal.classList.toggle('hidden');
+                guardar.removeEventListener('click', actualizar);
+                closeModal.forEach( e =>{
+                    e.removeEventListener('click', cerrarActualizar);
+                });
+            }
+
+            function actualizar(evt) {
+                edadCheck = Array.from(edad).find( opt => opt.checked);
+                sexoCheck = Array.from(sexo).find( opt => opt.checked);
+
+                $.ajax({
+                    url: "./functions.php",
+                    type: "POST",
+                    datatype:"json",
+                    data:  {
+                        solicitud: "u",
+                        document_type: tipoDocumento.value,
+                        document: inputDocumento.value,
+                        code: codigo.value,
+                        name: nombreUsuario.value,
+                        email: email.value,
+                        telephone: telefono.value,
+                        age_range: edadCheck.value,
+                        sexo: sexoCheck.value,
+                        province_id: provincia.value,
+                        district_id: distrito.value,
+                        township_id: corregimiento.value,
+                        id: e.value
+                    },
+                    success: function(data) {
+                        tablaClientes.ajax.reload();
+                        guardar.removeEventListener('click', actualizar);
+                        closeModal.forEach( e =>{
+                            e.removeEventListener('click', cerrarActualizar);
+                        });
+                        Toastify({
+                            text: "Cliente actualizado",
+                            duration: 3000,
+                            style: {
+                                background: '#10B981'
+                            }
+                        }).showToast();
+                        modal.classList.toggle('hidden');
+                    }
+                });
+            }
+        }
+    });
+}
+
+function borrar(e) {
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "El cliente será desactivado.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#10B981',
+        cancelButtonColor: '#EF4444',
+        confirmButtonText: 'Si, desactivar ahora!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "./functions.php",
+                type: "POST",
+                datatype:"json",
+                data:  {
+                    solicitud: "d",
+                    id: e.value
+                },
+                success: function(data) {
+                    tablaClientes.ajax.reload();
+                    Toastify({
+                        text: "Cliente desactivado!",
+                        duration: 3000,
+                        style: {
+                            background: '#10B981'
+                        }
+                    }).showToast();
+                }
+            });
+        }
+    })
+}

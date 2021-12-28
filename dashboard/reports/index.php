@@ -53,7 +53,7 @@ $pagina[] = "reports";
                     </div>
                     <div class="p-5">
                             <form>
-                        <span class="text-gray-800 text-sm ">Rango de fechas</span>
+                        <span class="text-gray-800 text-sm font-medium">Rango de fechas</span>
                         <div date-rangepicker datepicker-autohide datepicker-format="yyyy/mm/dd" class="flex flex-wrap items-center justify-between">
                                 <label class="text-sm w-1/4 relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

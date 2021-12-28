@@ -129,9 +129,6 @@ function editar(e){
             }
 
             function actualizar(evt) {
-                modal.classList.toggle('hidden');
-                titulo_modal.textContent = 'Nueva observación';
-                guardar.textContent = 'Guardar';
                 $.ajax({
                     url: "./functions.php",
                     type: "POST",
@@ -157,6 +154,9 @@ function editar(e){
                                 background: '#10B981'
                             }
                         }).showToast();
+                        modal.classList.toggle('hidden');
+                        titulo_modal.textContent = 'Nueva observación';
+                        guardar.textContent = 'Guardar';
                     }
                 });
             }

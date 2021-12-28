@@ -18,7 +18,7 @@ if ($contentType === "application/json") {
             $visit = new Visit();
             $visit->saveAll($decoded['datos']);
         }
-        if($decoded['datos']['solicitud'] == 'doc'){ //Seguridad
+        else if($decoded['datos']['solicitud'] == 'doc'){ //Seguridad
             $error = false;
 
             $documento = empty($decoded['datos']['documento']) ? '' : $decoded['datos']['documento'];
@@ -40,7 +40,7 @@ if ($contentType === "application/json") {
             }
 
         }
-        if($decoded['datos']['solicitud'] == 'cod'){
+        else if($decoded['datos']['solicitud'] == 'cod'){
             $error = false;
 
             $codigo = empty($decoded['datos']['codigo']) ? '' : $decoded['datos']['codigo'];
@@ -62,7 +62,7 @@ if ($contentType === "application/json") {
             }
 
         }
-        if($decoded['datos']['solicitud'] == 'cor'){
+        else if($decoded['datos']['solicitud'] == 'cor'){
             $error = 'false';
 
             $email = empty($decoded['datos']['email']) ? '' :$decoded['datos']['email'];
@@ -90,7 +90,7 @@ if ($contentType === "application/json") {
             }
 
         }
-        if($decoded['datos']['solicitud'] == 'tel'){ //Seguridad
+        else if($decoded['datos']['solicitud'] == 'tel'){ //Seguridad
             $error = false;
 
             $telefono = empty($decoded['datos']['telefono']) ? '' : $decoded['datos']['telefono'];
@@ -113,7 +113,7 @@ if ($contentType === "application/json") {
             }
 
         }
-        if($decoded['datos']['solicitud'] == 'd'){
+        else if($decoded['datos']['solicitud'] == 'd'){
             $district = new District();
             $districts = $district->getAll();
             echo json_encode($districts);

@@ -126,7 +126,7 @@ function verAreas(e){
             data.forEach(v =>{
                 document.querySelector('#containerarea').innerHTML += `
        <label class="flex items-center">
-                                    <input type="checkbox" value="${v.area_id}" name="areacheck${v.area_id}" class="rounded border-gray-300 text-gray-500 shadow-sm cursor-not-allowed text-gray-500" checked disabled>
+                                    <input type="checkbox" value="${v.area_id}" name="areacheck${v.area_id}" class="rounded border-gray-300 text-gray-500 shadow-sm cursor-not-allowed" checked disabled>
                                     <span class="ml-2">${v.name}</span>
                             </label>
 

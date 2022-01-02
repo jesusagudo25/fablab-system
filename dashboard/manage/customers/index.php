@@ -187,7 +187,7 @@ $rangeAll = $range->getAll();
                                 <th>Distrito</th>
                                 <th>Corregimiento</th>
                                 <th>Estado</th>
-                                <th class="select-disabled">Acciones</th>
+                                <th class="select-disabled">Acción</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->

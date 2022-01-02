@@ -1,5 +1,5 @@
 <?php
-define('URL','http://localhost:80/Tecnologia_web/fablab_Project/');
+define('URL','http://localhost/fablabSystem/');
 
 define('HOST','localhost');
 define('DB','fablab_system');

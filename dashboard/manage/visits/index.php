@@ -138,7 +138,7 @@ $pagina[] = "gestionar";
                                 <th>Fecha</th>
                                 <th>Observación</th>
                                 <th>Estado</th>
-                                <th class="select-disabled">Acciones</th>
+                                <th class="select-disabled">Acción</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->

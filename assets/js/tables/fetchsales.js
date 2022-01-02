@@ -16,7 +16,7 @@ $(document).ready(function () {
                         "data": null,
                         render:function(data, type, row)
                         {
-                            return '<div class="flex items-center"> <a href="../../sales/download.php?factura='+data['invoice_id']+'.pdf" target="_blank" class="flex items-center px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-file-pdf"></i></a></div>';
+                            return '<div class="flex items-center"> <a href="../../sales/download.php?factura='+data['invoice_id']+'.pdf" target="_blank" class="flex items-center px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-file-pdf"></i></a></div>';
                         },
                         "targets": -1
                     }

@@ -222,7 +222,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
             <td class="px-4 py-4">
               <div class="flex items-center space-x-4 text-sm">
                 <button
-                  class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                  class="flex items-center justify-between px-2 py-2 text-xl font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"
                   aria-label="Delete"
                   onclick="deleteServicio(${numeroItem})"
                 >
@@ -346,8 +346,8 @@ const TIPO_TABLAS = {
                         <table class="w-full min-w-full divide-y divide-gray-200">
                         <tbody class="divide-y divide-gray-200">
                         <tr>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha inicial</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha final</th>
                         </tr>
                         <tr>
                         <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})"> </td>
@@ -379,8 +379,8 @@ const TIPO_TABLAS = {
                         <table class="w-full min-w-full divide-y divide-gray-200">
                         <tbody>
                         <tr>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Nombre</th>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nombre</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Precio</th>
                         </tr>
                         <tr>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="text" placeholder="Nombre del evento" name="nombre_evento" value="" disabled></td>
@@ -388,9 +388,9 @@ const TIPO_TABLAS = {
                                           <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled></td>
                         </tr>
                         <tr>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha inicial</th>
 
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha final</th>
                         </tr>
                         <tr>
                           <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled></td>
@@ -398,15 +398,15 @@ const TIPO_TABLAS = {
                           <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled></td>
                         </tr>
                         <tr>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
-                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cantidad de horas</th>
+                            <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Gastos</th>
                         </tr>
                         <tr>
                                                   <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" placeholder="Cantidad de horas del evento" name="cantidad_horas" min="1" value="" disabled></td>
                           <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" placeholder="Gastos del evento" name="gastos_evento" min="0.00" step="0.01" value="" disabled></td>          
                         </tr>
                         <tr>
-                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Descripcíon gastos</th>
                         </tr>                        
                         <tr>
                         <td colspan="2" class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Descripción de gastos" name="desc_gastos" disabled></textarea></td>
@@ -452,7 +452,7 @@ const TIPO_TABLAS = {
 
         }
         else{
-            selectorEvento.innerHTML = `<option value selected>No existen eventos</option>`;
+            selectorEvento.innerHTML = `<option value selected hidden>No existen eventos</option>`;
 
         }
     },
@@ -474,36 +474,36 @@ const TIPO_TABLAS = {
                     <table class="w-full min-w-full divide-y divide-gray-200">
                         <tbody>
                         <tr>
-                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tipo de consumible</th>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Tipo de consumible</th>
                         </tr>
                         <tr>
                             <td colspan="2" class="px-2 py-2"><select class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible" onchange="cambiarPrecioUnitario()">
                             </select></td>
                         </tr>
                         <tr>
-                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">${unidad}</th>
-                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio unitario</th>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">${unidad}</th>
+                            <th class="bg-red-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Precio unitario</th>
                         </tr>
                         <tr>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de ${unidad.toLowerCase()}" name="cantidad_unidad" value="${respuesta ? servicios_ag[indice].detalles.cantidad_unidad : ''}" min="0" onchange="cambiarTotales()"></td>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_unitario" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
-                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Tiempo impresión (minutos)</th>
-                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio impresión</th>
+                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Tiempo impresión (minutos)</th>
+                            <th class="bg-green-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Precio impresión</th>
                         </tr>
                         <tr>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de minutos" name="cantidad_tiempo" value="${respuesta ? servicios_ag[indice].detalles.cantidad_tiempo : ''}" min="0" onchange="cambiarTotales()"></td>
                             <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_impresion" value="0.05" min="0.00" step="0.01" onchange="cambiarTotales()"></td>
                         </tr>
                         <tr>
-                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Costo base</th>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Costo base</th>
                         </tr>
                         <tr>
                             <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_base" value="${respuesta ? servicios_ag[indice].detalles.costo_base : '0.00'}" disabled></td>
                         </tr>
                         <tr>
-                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Porcentaje ganancia</th>
+                            <th colspan="2" class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Porcentaje ganancia</th>
                         </tr>
                         <tr>
                             <td colspan="2" class="px-2 py-2"><select class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="tipo_ganancia" onchange="cambiarCostoTotal()">
@@ -513,7 +513,7 @@ const TIPO_TABLAS = {
                             </select></td>
                         </tr>
                         <tr>
-                            <th colspan="2" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left bg-gray-100">Costo total</th>
+                            <th colspan="2" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider bg-gray-100">Costo total</th>
                         </tr>
                         <tr>
                             <td colspan="2" class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_total" value="${respuesta ? servicios_ag[indice].detalles.costo_total : '0.00'}" disabled></td>
@@ -550,7 +550,7 @@ const TIPO_TABLAS = {
             cambiarPrecioUnitario();
         }
         else{
-            selectorConsumible.innerHTML = `<option value selected>No existen consumibles</option>`;
+            selectorConsumible.innerHTML = `<option value selected hidden>No existen consumibles</option>`;
             inputPrecioUnitario.value = '0.00';
         }
 
@@ -563,7 +563,7 @@ const TIPO_TABLAS = {
                         <table class="w-full min-w-full divide-y divide-gray-200">
                         <tbody class="divide-y divide-gray-200">
                         <tr>
-                            <th class="bg-gray-100 w-1/4 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
+                            <th class="bg-gray-100 w-1/4 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cantidad de horas</th>
                         <td class="px-3 py-3 whitespace-nowrap"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del alquiler" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].detalles.cantidad_horas : ''}"></td>
                         </tr>
                         </tbody>

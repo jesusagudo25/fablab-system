@@ -69,8 +69,8 @@ $categories = $category->getAll();
                             <table class="w-full min-w-full divide-y divide-gray-200">
                                 <tbody>
                                 <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Nombre</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Categoría</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nombre</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Categoría</th>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value=""></td>
@@ -81,24 +81,24 @@ $categories = $category->getAll();
                                         </select></td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Cantidad de horas</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Precio</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cantidad de horas</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Precio</th>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value=""></td>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value=""></td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha inicial</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Fecha final</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha inicial</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha final</th>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value=""></td>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value=""></td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
+                                    <th class="bg-gray-100 px-3 py-3 text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value=""></td>
@@ -142,7 +142,7 @@ $categories = $category->getAll();
                                 <th>Gastos</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>
-                                <th class="select-disabled">Acciones</th>
+                                <th class="select-disabled">Acción</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->

@@ -62,11 +62,11 @@ tablaEventos = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                if(data['status'] == 1){
-                    return '<span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100">Activo</span>';
+                if(data['status']){
+                    return '<button value="'+data['event_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-green-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
-                    return '<span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100 dark:text-red-100 dark:bg-red-700">Inactivo</span>';
+                    return '<button value="'+data['event_id']+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
             "targets": -1
@@ -75,7 +75,7 @@ tablaEventos = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                return '<div class="flex items-center space-x-4"> <button value="'+data['event_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button><button value="'+data['event_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+                return '<button value="'+data['event_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
             },
             "targets": -1
         }
@@ -85,7 +85,7 @@ tablaEventos = $('#datatable-json').DataTable({
     processing: true,
     'columnDefs' : [
         //hide the second & fourth column
-        { 'visible': false, 'targets': [0,5,6,7,8,9] }
+        { 'visible': false, 'targets': [0,5,6,7,8] }
     ],
     order: [[ 0, "desc" ]]
 });
@@ -283,38 +283,44 @@ function editar(e){
     });
 }
 
-function borrar(e) {
+function interruptor(e) {
 
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "El evento será desactivado.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#10B981',
-        cancelButtonColor: '#EF4444',
-        confirmButtonText: 'Si, desactivar ahora!',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "./functions.php",
-                type: "POST",
-                datatype:"json",
-                data:  {
-                    solicitud: "d",
-                    id: e.value
-                },
-                success: function(data) {
-                    tablaEventos.ajax.reload();
-                    Toastify({
-                        text: "Evento desactivado!",
-                        duration: 3000,
-                        style: {
-                            background: '#10B981'
-                        }
-                    }).showToast();
-                }
-            });
+    console.log('hola')
+    let estado = 0;
+
+    if(e.name == "activar"){
+        estado = 1;
+    }
+
+    $.ajax({
+        url: "./functions.php",
+        type: "POST",
+        datatype:"json",
+        data:  {
+            solicitud: "d",
+            id: e.value,
+            status: estado
+        },
+        success: function(data) {
+            tablaEventos.ajax.reload();
+            if(estado){
+                Toastify({
+                    text: "Evento activado!",
+                    duration: 3000,
+                    style: {
+                        background: '#10B981'
+                    }
+                }).showToast();
+            }
+            else{
+                Toastify({
+                    text: "Evento desactivado!",
+                    duration: 3000,
+                    style: {
+                        background: '#EF4444'
+                    }
+                }).showToast();
+            }
         }
-    })
+    });
 }

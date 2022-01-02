@@ -30,8 +30,8 @@
 
         echo json_encode($visits);
     }else if ($_POST['solicitud'] == 'd') {
-        $visit->setStatus(0);
-        $visits= $visit->delete($_POST['id']);
+        $visit->setStatus($_POST['status']);
+        $visits= $visit->switched($_POST['id']);
 
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'up_v') {

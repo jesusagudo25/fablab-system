@@ -133,7 +133,7 @@ $pagina[] = "gestionar";
                                 <th>Cliente</th>
                                 <th>Vendedor</th>
                                 <th>Fecha</th>
-                                <th>Acciones</th>
+                                <th>Acción</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->

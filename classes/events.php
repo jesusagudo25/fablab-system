@@ -72,13 +72,18 @@ WHERE status = 1');
         $this->event_id = $evento['event_id'];
     }
 
-    public function delete($id)
+    public function switched($id)
     {
         $actualizarDatos = $this->prepare("UPDATE events SET status = :status WHERE event_id = :id;");
         $actualizarDatos->execute([
             'status' => $this->status,
             'id'=>$id
         ]);
+    }
+
+    public function delete($id)
+    {
+        //...
     }
 
     public function update()

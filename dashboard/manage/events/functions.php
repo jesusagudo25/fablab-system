@@ -22,8 +22,8 @@
         echo json_encode('true');
     }
     else if($_POST['solicitud'] == 'd'){
-        $event->setStatus(0);
-        $event->delete($_POST['id']);
+        $event->setStatus($_POST['status']);
+        $event->switched($_POST['id']);
 
         echo json_encode('true');
     }

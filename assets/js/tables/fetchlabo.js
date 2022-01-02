@@ -23,7 +23,7 @@ tablaLaboratorio = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                return '<button type="button" name="actualizar" class="flex items-center justify-between px-2 py-2 text-base font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="actualizar('+data['visit_id']+','+data['area_id']+')"><i class="far fa-calendar-check"></i></button>';
+                return '<button type="button" name="actualizar" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="actualizar('+data['visit_id']+','+data['area_id']+')"><i class="far fa-calendar-check"></i></button>';
             },
             "targets": -1
         }

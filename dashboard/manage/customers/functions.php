@@ -19,8 +19,8 @@
         echo json_encode($customers);
         
     }else if ($_POST['solicitud'] == 'd') {
-        $customer->setStatus(0);
-        $customer->delete($_POST['id']);
+        $customer->setStatus($_POST['status']);
+        $customer->switched($_POST['id']);
 
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'u') {

@@ -193,13 +193,18 @@ WHERE (s.date BETWEEN :start_date AND :end_date)");
         return $visit;
     }
 
-    public function delete($id)
+    public function switched($id)
     {
         $actualizarDatos = $this->prepare("UPDATE visits SET status = :status WHERE visit_id = :id;");
         $actualizarDatos->execute([
             'status' => $this->status,
             'id'=>$id
         ]);
+    }
+
+    public function delete($id)
+    {
+        //....
     }
 
     public function update()

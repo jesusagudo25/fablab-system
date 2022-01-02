@@ -163,13 +163,18 @@ WHERE (v.date BETWEEN :start_date AND :end_date);");
         $this->township = $customer['township'];
     }
 
-    public function delete($id)
+    public function switched($id)
     {
         $actualizarDatos = $this->prepare("UPDATE customers SET status = :status WHERE customer_id = :id;");
         $actualizarDatos->execute([
             'status' => $this->status,
             'id'=>$id
         ]);
+    }
+
+    public function delete($id)
+    {
+        //....
     }
 
     public function update()

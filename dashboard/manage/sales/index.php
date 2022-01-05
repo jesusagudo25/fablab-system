@@ -29,7 +29,7 @@ $pagina[] = "gestionar";
 
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/fetchsales.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/general/fetchsales.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -65,7 +65,7 @@ $pagina[] = "gestionar";
                                         </div>
                                         <div>
                                             <p class="text-lg font-semibold text-gray-700">
-                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="/dashboard">Membresías</a>
+                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" href="/dashboard">Membresías</a>
                                             </p>
                                         </div>
                                     </div></div>
@@ -77,7 +77,7 @@ $pagina[] = "gestionar";
                                         </div>
                                         <div>
                                             <p class="text-lg font-semibold text-gray-700">
-                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="../events/">Eventos</a>
+                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" href="../events/">Eventos</a>
                                             </p>
                                         </div>
                                     </div></div>
@@ -90,7 +90,7 @@ $pagina[] = "gestionar";
                                         </div>
                                         <div>
                                             <p class="text-lg font-semibold text-gray-700">
-                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="/dashboard">Maquinas</a>
+                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" href="/dashboard">Maquinas</a>
                                             </p>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@ $pagina[] = "gestionar";
                                         </div>
                                         <div>
                                             <p class="text-lg font-semibold text-gray-700">
-                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" type="button" href="/dashboard">Alquiler</a>
+                                                <a class="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium bg-blue-500 text-white px-4 py-2 rounded-lg text-sm active:bg-blue-600 hover:bg-blue-700 focus:outline-none" href="/dashboard">Alquiler</a>
                                             </p>
                                         </div>
                                     </div>

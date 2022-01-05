@@ -96,7 +96,7 @@ tablaClientes = $('#datatable-json').DataTable({
             render:function(data, type, row)
             {
                 if(data['status']){
-                    return '<button value="'+data['customer_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-green-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
+                    return '<button value="'+data['customer_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
                     return '<button value="'+data['customer_id']+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
@@ -166,6 +166,28 @@ distrito.addEventListener('change', evt => {
     });
 });    
 
+//Tipo de documento -> RUC/CEDULA/PASAPORTE
+const TIPOS_DOCUMENTOS = {
+    C: () => {
+        tituloDocumento.textContent = 'Número de cédula';
+        inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
+    },
+    R: () => {
+        tituloDocumento.textContent = 'Número de RUC';
+        inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
+    },
+    P: () => {
+        tituloDocumento.textContent = 'Número de Pasaporte';
+        inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
+    }
+}
+
+tipoDocumento.addEventListener('change', evt => {
+    TIPOS_DOCUMENTOS[evt.target.value]();
+    inputDocumento.value = '';
+
+});
+
 function triggerChange(element){
     let changeEvent = new Event('change');
     element.dispatchEvent(changeEvent);
@@ -184,6 +206,8 @@ function editar(e){
 
             let tipoDocumentoSelect = Array.from(tipoDocumento.options).find( opt => opt.value == data['document_type']);
             tipoDocumentoSelect.selected = true;
+
+            triggerChange(tipoDocumento);
             
             inputDocumento.value = data['document'];
             codigo.value = data['code'];
@@ -205,6 +229,8 @@ function editar(e){
 
             let districtSelect = Array.from(distrito.options).find( opt => opt.value == data['district_id']);
             districtSelect.selected = true;
+
+            triggerChange(distrito)
 
             let townshipSelect = Array.from(corregimiento.options).find( opt => opt.value == data['township_id']);
             townshipSelect.selected = true;

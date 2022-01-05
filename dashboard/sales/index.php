@@ -104,7 +104,7 @@
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                                 </select>
                             </label>
 
-                            <button type="button" class="self-end px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none w-1/12" id="agregar"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="self-end px-4 py-2 text-base font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none w-1/12" id="agregar"><i class="fas fa-plus"></i></button>
                         </div>
 
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -183,7 +183,7 @@
                                     <i class="fas fa-times mr-3"></i>
                                     <span>Anular</span>
                                 </button>
-                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none" id="generar">
+                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none" id="generar">
                                     <i class="fas fa-save mr-3"></i>
                                     <span>Generar venta</span>
                                 </button>

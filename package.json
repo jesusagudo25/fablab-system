@@ -5,17 +5,16 @@
   "main": "index.php",
   "scripts": {
     "build": "tailwindcss build assets/css/tailwind.css -o assets/css/tailwind.output.css",
-    "watch": "tailwindcss build assets/css/tailwind.css -o assets/css/tailwind.output.css -w"
+    "watch": "tailwindcss build assets/css/tailwind.css -o assets/css/tailwind.output.css -w",
+    "build:css": "NODE_ENV=production npx tailwindcss -i assets/css/tailwind.css -o assets/css/tailwind.output.css --minify"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.3.11",
-    "tailwindcss": "^2.2.17"
-  },
-  "dependencies": {
-    "@tailwindcss/forms": "^0.3.4"
+    "@tailwindcss/forms": "^0.4.0",
+    "autoprefixer": "^10.4.1",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.9"
   }
 }

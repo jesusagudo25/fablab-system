@@ -33,7 +33,7 @@ $pagina[] = "gestionar";
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/fetchvisits.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/visits/fetchvisits.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -71,7 +71,7 @@ $pagina[] = "gestionar";
                         </div>
                         <footer class="flex justify-end align-center border-t p-3" id="footer-modal">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Actualizar</button>
+                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Actualizar</button>
                         </footer>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ $pagina[] = "gestionar";
                         </div>
                         <footer class="flex justify-end align-center border-t p-3" id="footer-modal">
                             <button class="mr-3 p-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray cancelar-areas" type="button" name="cancelar-areas" >Cancelar</button>
-                            <button class="p-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar-areas">Actualizar</button>
+                            <button class="p-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar-areas">Actualizar</button>
                         </footer>
                     </div>
                 </div>

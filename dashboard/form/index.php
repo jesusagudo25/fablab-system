@@ -78,7 +78,7 @@
                             <div class="relative">
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                 <input type="hidden" name="id_customer">
-                                <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-r-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
+                                <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-r-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-purple">
                                     <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
@@ -218,7 +218,7 @@
 
                         <hr class="my-8">
                         <div class="flex justify-center items-center">
-                            <button type="submit" value="Submit" class="w-1/2 px-4 py-2 text-m font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Registrar</button>
+                            <button type="submit" value="Submit" class="w-1/2 px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Registrar</button>
                         </div>
                     </form>
                 </div>

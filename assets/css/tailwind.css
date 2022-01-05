@@ -1,122 +1,116 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-
-    .dataTables_wrapper{
-        @apply text-sm mt-1;
-    }
-    
-    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dt-buttons{
-        @apply w-1/2 !important;
-    }
-
-    .dataTables_wrapper{
-        @apply w-full !important;
-    }
-
-    .dataTables_wrapper #datatable-json{
-        @apply w-full !important;
-    }
-
-    #datatable-json_wrapper .dt-buttons{
-        @apply p-2 !important;
-    }
-
-    #datatable-json_wrapper #datatable-json_paginate{
-        @apply p-2 !important;
-    }
-
-    #datatable-json_wrapper #datatable-json_info{
-        @apply p-2 !important;
-    }
-    #datatable-json_wrapper #datatable-json_filter{
-        @apply p-2 !important;
-    }
-
-    #datatable-json_wrapper #datatable-json_length{
-        @apply p-2 !important;
-    }
-
-    .dataTables_wrapper .dataTables_length select{
-        @apply text-sm w-1/5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
-    }
-
-    .dataTables_wrapper .dataTables_filter input {
-        @apply mt-1 text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
-    }
-
-    #datatable-json_wrapper .dt-buttons .buttons-collection{
-        @apply w-1/3 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-black transition-colors duration-150 bg-gray-200 border border-transparent rounded-lg shadow-none !important;
-        background: none;
-    }
-
-    #datatable-json_wrapper .dt-buttons .buttons-collection:active{
-        @apply bg-gray-300 outline-none text-sm font-semibold uppercase leading-5 text-center text-black shadow-none drop-shadow-none !important;
-    }
-
-    #datatable-json_wrapper .dt-buttons .buttons-collection:hover{
-        @apply bg-gray-400 shadow-none drop-shadow-none !important;
-    }
-
-    #datatable-json_wrapper .dt-buttons .buttons-collection:focus{
-        @apply outline-none shadow-none drop-shadow-none text-sm font-semibold uppercase leading-5 text-center text-black !important;
-    }
-
-    button.dt-button:focus:not(.disabled), div.dt-button:focus:not(.disabled), a.dt-button:focus:not(.disabled), input.dt-button:focus:not(.disabled){
-        @apply shadow-none drop-shadow-none !important;
-        text-shadow: none !important;
-    }
-
-    #datatable-json_wrapper .dt-buttons .buttons-collection .dt-down-arrow{
-        @apply text-black shadow-none drop-shadow-none !important;
-    }
-
-    table.dataTable thead th{
-        @apply px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider border-b border-gray-100 !important;
-    }
-
-    table.dataTable tbody td{
-        @apply px-6 py-4 whitespace-nowrap bg-gray-100 !important;
-    }
-
-    table.dataTable tbody{
-        @apply divide-y divide-white !important;
-    }
-
-
-    table.dataTable.no-footer{
-        @apply border-b border-gray-100 !important;
-    }
-
-    /*Pagination Buttons*/
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-        @apply rounded border-none outline-none !important;
-    }
-
-    /*Pagination Buttons - Current selected */
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-        background: rgba(229, 231, 235, 1) !important;
-        @apply rounded border-none outline-none !important;
-    }
-
-    .dataTables_wrapper .dataTables_paginate a.paginate_button:hover{
-        color: #000000 !important;				/*text-white*/
-        background: rgba(229, 231, 235, 1) !important;
-        @apply rounded border-none outline-none !important;
-    }
-
-    .swiper-button-prev::after,
-    .swiper-button-next::after{
-        content: '';
-    }
-
-    .swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction{
-        bottom: 0 !important;
-    }
+.dataTables_wrapper{
+    @apply text-sm mt-1;
 }
+
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dt-buttons{
+    @apply w-1/2 !important;
+}
+
+.dataTables_wrapper{
+    @apply w-full !important;
+}
+
+.dataTables_wrapper #datatable-json{
+    @apply w-full !important;
+}
+
+#datatable-json_wrapper .dt-buttons{
+    @apply p-2 !important;
+}
+
+#datatable-json_wrapper #datatable-json_paginate{
+    @apply p-2 !important;
+}
+
+#datatable-json_wrapper #datatable-json_info{
+    @apply p-2 !important;
+}
+#datatable-json_wrapper #datatable-json_filter{
+    @apply p-2 !important;
+}
+
+#datatable-json_wrapper #datatable-json_length{
+    @apply p-2 !important;
+}
+
+.dataTables_wrapper .dataTables_length select{
+    @apply text-sm w-1/5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    @apply mt-1 text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2 !important;
+}
+
+#datatable-json_wrapper .dt-buttons .buttons-collection{
+    @apply w-1/3 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-black transition-colors duration-150 bg-gray-200 border border-transparent rounded-lg shadow-none !important;
+    background: none;
+}
+
+#datatable-json_wrapper .dt-buttons .buttons-collection:active{
+    @apply bg-gray-300 outline-none text-sm font-semibold uppercase leading-5 text-center text-black shadow-none drop-shadow-none !important;
+}
+
+#datatable-json_wrapper .dt-buttons .buttons-collection:hover{
+    @apply bg-gray-400 shadow-none drop-shadow-none !important;
+}
+
+#datatable-json_wrapper .dt-buttons .buttons-collection:focus{
+    @apply outline-none shadow-none drop-shadow-none text-sm font-semibold uppercase leading-5 text-center text-black !important;
+}
+
+button.dt-button:focus:not(.disabled), div.dt-button:focus:not(.disabled), a.dt-button:focus:not(.disabled), input.dt-button:focus:not(.disabled){
+    @apply shadow-none drop-shadow-none !important;
+    text-shadow: none !important;
+}
+
+#datatable-json_wrapper .dt-buttons .buttons-collection .dt-down-arrow{
+    @apply text-black shadow-none drop-shadow-none !important;
+}
+
+table.dataTable thead th{
+    @apply px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider border-b border-gray-100 !important;
+}
+
+table.dataTable tbody td{
+    @apply px-6 py-4 whitespace-nowrap bg-gray-100 !important;
+}
+
+table.dataTable tbody{
+    @apply divide-y divide-white !important;
+}
+
+
+table.dataTable.no-footer{
+    @apply border-b border-gray-100 !important;
+}
+
+/*Pagination Buttons*/
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    @apply rounded border-none outline-none !important;
+}
+
+/*Pagination Buttons - Current selected */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+    background: rgba(229, 231, 235, 1) !important;
+    @apply rounded border-none outline-none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate a.paginate_button:hover{
+    color: #000000 !important;				/*text-white*/
+    background: rgba(229, 231, 235, 1) !important;
+    @apply rounded border-none outline-none !important;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after{
+    content: '';
+}
+
+.swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction{
+    bottom: 0 !important;
+}
+
+@tailwind utilities;

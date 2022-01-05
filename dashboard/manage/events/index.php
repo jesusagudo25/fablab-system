@@ -10,9 +10,6 @@ require_once '../../../app.php';
 
 $pagina[] = "gestionar";
 
-$category = new EventCategory();
-$categories = $category->getAll();
-
 ?>
 <!DOCTYPE html>
 <html lang="es" class="overflow-y-scroll">
@@ -31,7 +28,7 @@ $categories = $category->getAll();
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/fetchevents.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/events/fetchevents.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -75,9 +72,6 @@ $categories = $category->getAll();
                                 <tr>
                                     <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value=""></td>
                                     <td class="px-2 py-2">                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria">
-                                            <?php foreach ($categories as $datos => $valor): ?>
-                                                <option value="<?= $valor['id'] ?>"><?=$valor['name'] ?></option>
-                                            <?php endforeach; ?>
                                         </select></td>
                                 </tr>
                                 <tr>
@@ -110,7 +104,7 @@ $categories = $category->getAll();
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
-                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
+                            <button class="p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar">Guardar</button>
                         </footer>
                     </div>
                 </div>
@@ -124,9 +118,9 @@ $categories = $category->getAll();
                     </div>
                     <div class="flex justify-center items-center flex-col w-full overflow-auto">
                         <div class="w-full flex pl-2 pt-2 pr-2">
-                            <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none">Nuevo evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
+                            <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nuevo evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
 
-                            <a href="#" class="w-1/4 ml-2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Gestionar categorias<i class="fas fa-cogs fa-fw ml-3"></i></a>
+                            <a href="./categories.php" class="w-1/4 ml-2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Gestionar categorias<i class="fas fa-cogs fa-fw ml-3"></i></a>
                         </div>
 
                         <table id="datatable-json" class="min-w-full divide-y divide-white">

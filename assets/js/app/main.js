@@ -261,7 +261,7 @@ $("#autoComplete").autocomplete({
         }).showToast();
 
         accion.innerHTML = '<i class="fas fa-eye"></i>';
-        accion.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+        accion.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
         accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
 
         return false;
@@ -313,7 +313,7 @@ accion.addEventListener('click',evt => {
     if(evt.currentTarget.children[0].classList.contains('fa-user-plus')){
         containerRegister.classList.remove('hidden');
         evt.currentTarget.innerHTML = '<i class="fas fa-user-times"></i>';
-        evt.currentTarget.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+        evt.currentTarget.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
         evt.currentTarget.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
 
         Toastify({
@@ -335,7 +335,7 @@ accion.addEventListener('click',evt => {
         containerRegister.classList.add('hidden');
         evt.currentTarget.innerHTML = '<i class="fas fa-user-plus"></i>';
         evt.currentTarget.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
-        evt.currentTarget.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+        evt.currentTarget.classList.add('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
 
         restore();
         inputDocumento.removeEventListener('blur', validarDocumento);
@@ -519,7 +519,7 @@ function restore() {
     accion.innerHTML = '<i class="fas fa-user-plus"></i>';
     accion.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
     accion.classList.remove('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
-    accion.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+    accion.classList.add('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
 
     codigo.disabled = false;
     codigo.value = '';

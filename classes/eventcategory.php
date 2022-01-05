@@ -3,6 +3,10 @@
 class EventCategory extends Model implements IModel
 {
 
+    private $category_id;
+    private $name;
+    private $price;
+    private $status;
 
     public function __construct()
     {
@@ -11,12 +15,25 @@ class EventCategory extends Model implements IModel
 
     public function save(...$args)
     {
-        // TODO: Implement save() method.
+        $nuevaFactura = $this->prepare('INSERT INTO event_category(name,price) VALUES (:name,:price)');
+
+        $nuevaFactura->execute([
+            'name' => $this->name,
+            'price' => $this->price
+        ]);
+    }
+
+    public function getAjax()
+    {
+        $query = $this->query('SELECT category_id AS id, name,price, status FROM event_category WHERE status = 1');
+        $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $categories;
     }
 
     public function getAll()
     {
-        $query = $this->query('SELECT category_id AS id, name,price FROM event_category');
+        $query = $this->query('SELECT category_id AS id, name,price, status FROM event_category');
         $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $categories;
@@ -24,7 +41,14 @@ class EventCategory extends Model implements IModel
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT * FROM event_category WHERE category_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $category = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $category;
     }
 
     public function delete($id)
@@ -34,6 +58,52 @@ class EventCategory extends Model implements IModel
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $actualizarDatos = $this->prepare("UPDATE event_category SET name = :name, price = :price WHERE category_id = :id;");
+        $actualizarDatos->execute([
+            'name' => $this->name,
+            'price' => $this->price,
+            'id'=>$this->category_id
+        ]);
+    }
+
+    public function switched($id)
+    {
+        $actualizarDatos = $this->prepare("UPDATE event_category SET status = :status WHERE category_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
+    }
+    
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+        /**
+     * @param mixed $price
+     */
+    public function setPrice($price): void
+    {
+        $this->price = $price;
+    }
+
+        /**
+     * @param mixed $category_id
+     */
+    public function setCategoryID($category_id): void
+    {
+        $this->category_id = $category_id;
     }
 }

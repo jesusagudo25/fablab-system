@@ -30,7 +30,7 @@ $pagina[] = "reports";
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/plugins/datepicker.bundle.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/fetchreports.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/general/fetchreports.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -74,7 +74,7 @@ $pagina[] = "reports";
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 datepicker pl-10 p-2.5" type="text" name="end_date" placeholder="Seleccionar fecha de finalización" required>
                                 </label>
 
-                                <button value="reporte" type="submit" name="generar" class="w-1/3 ml-4 mt-1 self-center px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte
+                                <button value="reporte" type="submit" name="generar" class="w-1/3 ml-4 mt-1 self-center px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none"><i class="fas fa-chart-bar fa-fw mr-3"></i> Generar reporte
                                 </button>
                             </form>
 

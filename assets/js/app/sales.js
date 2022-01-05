@@ -371,7 +371,7 @@ const TIPO_TABLAS = {
                             <select class="mt-1 text-sm w-3/5 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
 
                             </select>
-                            <button class="ml-5 w-1/7 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-green-500 active:bg-green-600 hover:bg-green-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
+                            <button class="ml-5 w-1/7 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
                             <input type="hidden" name="event_id">
                     </label>
                         
@@ -593,7 +593,7 @@ function verTablaDetalles(e) {
     if(selectorEvento.value){
         if(e.children[0].classList.contains('fa-eye')){
             e.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            e.classList.remove('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+            e.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
             e.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
             e.parentElement.classList.add('mb-5');
 
@@ -602,7 +602,7 @@ function verTablaDetalles(e) {
         else{
             e.innerHTML = '<i class="fas fa-eye"></i>';
             e.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
-            e.classList.add('bg-green-500', 'active:bg-green-600', 'hover:bg-green-700');
+            e.classList.add('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
             e.parentElement.classList.remove('mb-5');
 
             e.parentElement.nextElementSibling.classList.add('hidden');

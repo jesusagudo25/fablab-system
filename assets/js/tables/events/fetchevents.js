@@ -1,11 +1,19 @@
 // Send the data using post
-var posting = $.post( './functions.php', { solicitud: 'cat' } );
+var posting = $.post( './functions.php', { solicitud: 'c', status: 1 } );
 
 let categoriasEventos = [];
 
 // Put the results in a div
 posting.done(function( data ) {
     categoriasEventos = data;
+    if(data.length){
+        data.forEach(v => {
+            categoria.innerHTML += `<option value="${v.id}">${v.name}</option>`;
+        })
+    }
+    else{
+        categoria.innerHTML += `<option value="">Sin categorías disponibles</option>`;
+    }
 });
 
 tablaEventos = $('#datatable-json').DataTable({
@@ -63,7 +71,7 @@ tablaEventos = $('#datatable-json').DataTable({
             render:function(data, type, row)
             {
                 if(data['status']){
-                    return '<button value="'+data['event_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-green-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
+                    return '<button value="'+data['event_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
                     return '<button value="'+data['event_id']+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
@@ -110,8 +118,12 @@ const newEvent = document.querySelector('#evento'),
     descripcionGastos = document.querySelector('textarea[name="desc_gastos"]');
 
 categoria.addEventListener('change', evt => {
-    const respuestaEvento = categoriasEventos.find(x => x.id == evt.target.value);
-    precioEvento.value = respuestaEvento.price;
+
+    if(evt.target.value){
+        const respuestaEvento = categoriasEventos.find(x => x.id == evt.target.value);
+        precioEvento.value = respuestaEvento.price;
+    }
+
 });
 
 newEvent.addEventListener('click', evt => {
@@ -146,7 +158,7 @@ newEvent.addEventListener('click', evt => {
             type: "POST",
             datatype:"json",
             data:  {
-                solicitud: "c",
+                solicitud: "c_e",
                 categoria: categoria.value,
                 nombre: nombreEvento.value,
                 horas: cantidadHoras.value,
@@ -192,7 +204,7 @@ function editar(e){
         type: "POST",
         datatype:"json",
         data:  {
-            solicitud: "id",
+            solicitud: "id_e",
             id: e.value,
         },
         success: function(data) {
@@ -242,7 +254,7 @@ function editar(e){
                     type: "POST",
                     datatype:"json",
                     data:  {
-                        solicitud: "u",
+                        solicitud: "u_e",
                         categoria: categoria.value,
                         nombre: nombreEvento.value,
                         horas: cantidadHoras.value,
@@ -285,7 +297,6 @@ function editar(e){
 
 function interruptor(e) {
 
-    console.log('hola')
     let estado = 0;
 
     if(e.name == "activar"){
@@ -297,7 +308,7 @@ function interruptor(e) {
         type: "POST",
         datatype:"json",
         data:  {
-            solicitud: "d",
+            solicitud: "d_e",
             id: e.value,
             status: estado
         },

@@ -11,7 +11,7 @@
     $reasonAll = $reason->getAll();
 
     $area = new Area();
-    $areaAll = $area->getAll();
+    $areaAll = $area->getAjax();
 
     $province = new Province();
     $provinceAll = $province->getAll();

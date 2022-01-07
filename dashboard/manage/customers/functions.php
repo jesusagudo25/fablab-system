@@ -20,7 +20,7 @@
         
     }else if ($_POST['solicitud'] == 'd') {
         $customer->setStatus($_POST['status']);
-        $customer->switched($_POST['id']);
+        $customer->delete($_POST['id']);
 
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'u') {

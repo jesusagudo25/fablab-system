@@ -15,9 +15,9 @@ class EventCategory extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO event_category(name,price) VALUES (:name,:price)');
+        $nuevaCategoria = $this->prepare('INSERT INTO event_category(name,price) VALUES (:name,:price)');
 
-        $nuevaFactura->execute([
+        $nuevaCategoria->execute([
             'name' => $this->name,
             'price' => $this->price
         ]);
@@ -53,7 +53,11 @@ class EventCategory extends Model implements IModel
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $actualizarDatos = $this->prepare("UPDATE event_category SET status = :status WHERE category_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
     }
 
     public function update()
@@ -63,15 +67,6 @@ class EventCategory extends Model implements IModel
             'name' => $this->name,
             'price' => $this->price,
             'id'=>$this->category_id
-        ]);
-    }
-
-    public function switched($id)
-    {
-        $actualizarDatos = $this->prepare("UPDATE event_category SET status = :status WHERE category_id = :id;");
-        $actualizarDatos->execute([
-            'status' => $this->status,
-            'id'=>$id
         ]);
     }
     

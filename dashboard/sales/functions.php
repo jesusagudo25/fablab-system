@@ -20,10 +20,10 @@ if ($contentType === "application/json") {
             $rentalCategory = new RentalCategory();
             $area = new Area();
 
-            $datos['eventos']= $eventCategory->getAll();
-            $datos['membresias']= $membershipPlans->getAll();
-            $datos['alquiler']= $rentalCategory->getAll();
-            $datos['areas']= $area->getAll();
+            $datos['eventos']= $eventCategory->getAjax();
+            $datos['membresias']= $membershipPlans->getAjax();
+            $datos['alquiler']= $rentalCategory->getAjax();
+            $datos['areas']= $area->getAjax();
             echo json_encode($datos);
         }
         else if($decoded['datos']['solicitud'] == 'cons'){

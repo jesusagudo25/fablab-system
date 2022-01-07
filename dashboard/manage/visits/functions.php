@@ -31,7 +31,7 @@
         echo json_encode($visits);
     }else if ($_POST['solicitud'] == 'd') {
         $visit->setStatus($_POST['status']);
-        $visits= $visit->switched($_POST['id']);
+        $visit->delete($_POST['id']);
 
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'up_v') {

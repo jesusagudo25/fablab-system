@@ -17,7 +17,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Categorías - Fablab System</title>
+    <title>Maquinas - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
     <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/events/fetchcategory.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/machines/fetchareas.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -50,7 +50,7 @@
                     </div>
                     <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Nueva categoría</h5>
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Nuevo área</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -64,12 +64,12 @@
                         <div class="p-5">
                                 <label class="block text-sm">
                                     <span class="text-gray-800 font-medium">Nombre</span>
-                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" name="name" placeholder="Ingrese el nombre de la categoría" required>
+                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" name="name" placeholder="Ingrese el nombre del área" required>
                                 </label>
 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Precio</span>
-                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio base de la categoría" name="price" min="0.00" step="0.01" required>
+                                    <span class="text-gray-800 font-medium">Unidad</span>
+                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese la unidad de medida del área" name="measure" required>
                                 </label>
 
                         </div>
@@ -85,7 +85,7 @@
                 <!--Graph Card-->
                 <div class="bg-white border rounded shadow">
                     <div class="border-b p-3">
-                        <h5 class="font-bold uppercase text-gray-600">Categorías de eventos</h5>
+                        <h5 class="font-bold uppercase text-gray-600">Áreas de maquinas</h5>
                     </div>
                     <div class="flex justify-center items-center flex-col w-full overflow-auto">
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
@@ -93,7 +93,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Precio</th>
+                                    <th>Unidad</th>
                                     <th>Estado</th>
                                     <th>Acción</th>
                                 </tr>

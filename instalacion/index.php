@@ -135,7 +135,7 @@ $model->query("CREATE TABLE areas(
     $model->query("CREATE TABLE event_category(
             category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
+            price DECIMAL(6,2) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
             
         );");
@@ -143,8 +143,8 @@ $model->query("CREATE TABLE areas(
             consumable_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             area_id INT UNSIGNED NOT NULL,
             name VARCHAR(80) NOT NULL,
-            unit_price DECIMAL(5,2) NOT NULL,
-            printing_price DECIMAL(5,2) NOT NULL,
+            unit_price DECIMAL(6,2) NOT NULL,
+            printing_price DECIMAL(6,2) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
             
             FOREIGN KEY (area_id) REFERENCES areas(area_id)
@@ -153,13 +153,13 @@ $model->query("CREATE TABLE areas(
     $model->query("CREATE TABLE membership_plans(
             membership_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
+            price DECIMAL(6,2) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
     $model->query("CREATE TABLE rental_category(
             category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
+            price DECIMAL(6,2) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
 
@@ -169,12 +169,12 @@ $model->query("CREATE TABLE areas(
             area_id INT UNSIGNED NOT NULL,
             consumable_id INT UNSIGNED NOT NULL,
             amount INT UNSIGNED NOT NULL,
-            unit_price DECIMAL(5,2) NOT NULL,
+            unit_price DECIMAL(6,2) NOT NULL,
             printing_time INT UNSIGNED NOT NULL,
-            printing_price DECIMAL(5,2) NOT NULL,
-            base_price DECIMAL(5,2) NOT NULL,
-            profit_percentage DECIMAL(5,2) NOT NULL,
-            total_price DECIMAL(5,2) NOT NULL,
+            printing_price DECIMAL(6,2) NOT NULL,
+            base_price DECIMAL(6,2) NOT NULL,
+            profit_percentage DECIMAL(6,2) NOT NULL,
+            total_price DECIMAL(6,2) NOT NULL,
             
             FOREIGN KEY (area_id) REFERENCES areas(area_id),
             FOREIGN KEY (consumable_id) REFERENCES consumables(consumable_id),
@@ -188,8 +188,8 @@ $model->query("CREATE TABLE areas(
             initial_date DATE NOT NULL,
             final_date DATE NOT NULL,
             number_hours INT UNSIGNED NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
-            expenses DECIMAL(5,2) NULL,
+            price DECIMAL(6,2) NOT NULL,
+            expenses DECIMAL(6,2) NULL,
             description_expenses TEXT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
             
@@ -202,7 +202,7 @@ $model->query("CREATE TABLE areas(
             membership_id INT UNSIGNED NOT NULL,
             initial_date DATE NOT NULL,
             final_date DATE NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
+            price DECIMAL(6,2) NOT NULL,
 
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
  	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id)      
@@ -221,7 +221,7 @@ $model->query("CREATE TABLE areas(
             invoice_id INT UNSIGNED NOT NULL,
             category_id INT UNSIGNED NOT NULL,
             number_hours INT UNSIGNED NOT NULL,
-            price DECIMAL(5,2) NOT NULL,
+            price DECIMAL(6,2) NOT NULL,
 
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id),
  	        FOREIGN KEY (category_id) REFERENCES rental_category (category_id)            

@@ -3,8 +3,9 @@
 
 class Area extends Model implements IModel
 {
-    private $reason_id;
+    private $area_id;
     private $name;
+    private $measure;
     private $status;
 
     /**
@@ -18,17 +19,17 @@ class Area extends Model implements IModel
     /**
      * @return mixed
      */
-    public function getReasonId()
+    public function getAreaId()
     {
-        return $this->reason_id;
+        return $this->area_id;
     }
 
     /**
-     * @param mixed $reason_id
+     * @param mixed $area_id
      */
-    public function setReasonId($reason_id): void
+    public function setAreaId($area_id): void
     {
-        $this->reason_id = $reason_id;
+        $this->area_id = $area_id;
     }
 
     /**
@@ -45,6 +46,22 @@ class Area extends Model implements IModel
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+        /**
+     * @return mixed
+     */
+    public function getMeasure()
+    {
+        return $this->measure;
+    }
+
+    /**
+     * @param mixed $measure
+     */
+    public function setMeasure($measure): void
+    {
+        $this->measure = $measure;
     }
 
     /**
@@ -72,24 +89,53 @@ class Area extends Model implements IModel
         return $areas;
     }
 
+    public function getAjax(){
+
+        $query = $this->query('SELECT area_id AS id, name, measure,status FROM areas WHERE status = 1');
+
+        $areas = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $areas;
+    }
 
     public function save(...$args)
     {
-        // TODO: Implement save() method.
+        $nuevaArea = $this->prepare('INSERT INTO areas(name,measure) VALUES (:name,:measure)');
+
+        $nuevaArea->execute([
+            'name' => $this->name,
+            'measure' => $this->measure
+        ]);
     }
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT * FROM areas WHERE area_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $area = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $area;
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $actualizarDatos = $this->prepare("UPDATE areas SET status = :status WHERE area_id = :id;");
+        $actualizarDatos->execute([
+            'status' => $this->status,
+            'id'=>$id
+        ]);
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $actualizarDatos = $this->prepare("UPDATE areas SET name = :name, measure = :measure WHERE area_id = :id;");
+        $actualizarDatos->execute([
+            'name' => $this->name,
+            'measure' => $this->measure,
+            'id'=>$this->area_id
+        ]);
     }
 }

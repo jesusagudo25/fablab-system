@@ -24,7 +24,7 @@
     }
     else if($_POST['solicitud'] == 'd_e'){
         $event->setStatus($_POST['status']);
-        $event->switched($_POST['id']);
+        $event->delete($_POST['id']);
 
         echo json_encode('true');
     }
@@ -59,13 +59,12 @@
 
         if($_POST['status']){
             $categories = $category->getAjax();
-            echo json_encode($categories);
         }
         else{
             $categories = $category->getAll();
-            echo json_encode($categories);
         }
-
+        echo json_encode($categories);
+        
     }
     else if ($_POST['solicitud'] == 'c_c') {
 
@@ -78,7 +77,7 @@
     }
     else if ($_POST['solicitud'] == 'd_c') {
         $category->setStatus($_POST['status']);
-        $category->switched($_POST['id']);
+        $category->delete($_POST['id']);
 
         echo json_encode('true');
     }

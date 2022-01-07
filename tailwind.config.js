@@ -1,7 +1,6 @@
 module.exports = {
   content: ['./assets/js/tables/*/*.js',
           './assets/js/app/*.js',
-          './assets/js/plugins/datepicker.bundle.js',
           './*.php',
           './*/*.php',
           './*/*/*.php',

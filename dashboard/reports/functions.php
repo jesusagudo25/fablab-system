@@ -11,7 +11,7 @@
     if($_POST['solicitud'] == 'c'){
 
         $report->setUserId($_SESSION['user_id']);
-        $report->setStartDate(isset($_POST['start_date']) ? $_REQUEST['start_date'] : '');
+        $report->setStartDate(isset($_POST['start_date']) ? $_POST['start_date'] : '');
         $report->setEndDate(isset($_POST['end_date']) ? $_POST['end_date'] : '');
 
         #Mes del reporte o fecha

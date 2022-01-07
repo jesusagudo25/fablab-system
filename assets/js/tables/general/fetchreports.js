@@ -30,8 +30,14 @@ tablaReportes = $('#datatable-json').DataTable({
 });
 
 const formulario = document.querySelector('form'),
-        start_date = document.querySelector('input[name="start_date"]'),
-        end_date = document.querySelector('input[name="end_date"]');
+        start_date = document.querySelector('input[name="start"]'),
+        end_date = document.querySelector('input[name="end"]');
+
+        const elem = document.getElementById('foo');
+const rangepicker = new DateRangePicker(elem, {
+    format: 'yyyy/mm/dd',
+    language: "es"
+});
 
 formulario.addEventListener('submit', e =>{
     e.preventDefault();
@@ -54,8 +60,8 @@ formulario.addEventListener('submit', e =>{
         datatype:"json",
         data:  {
             solicitud: "c",
-            start_date: datos.get('start_date'),
-            end_date: datos.get('end_date')
+            start_date: datos.get('start'),
+            end_date: datos.get('end')
         },
         success: function(data) {
             tablaReportes.ajax.reload();
@@ -73,8 +79,10 @@ formulario.addEventListener('submit', e =>{
             });
             start_date.value = '';
             end_date.value = '';
+            rangepicker.setDates({clear:true});
         }
     });
+
 });
 
 function borrar(e) {

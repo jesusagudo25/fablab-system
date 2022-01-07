@@ -23,7 +23,10 @@ $pagina[] = "gestionar";
     <meta name="keywords" content="keywords,here">
     <link rel="icon" href="<?= constant('URL')?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/plugins/swiper.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="<?= constant('URL')?>assets/js/graphs/line.js" defer></script>
@@ -47,7 +50,12 @@ $pagina[] = "gestionar";
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Servicios</h5>
                     </div>
-                    <div class="p-5 flex gap-5 overflow-auto">
+                    <div class="p-5">
+                    <div class="swiper pb-5">
+                            <!-- Additional required wrapper -->
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    
                         <a href="../memberships/" class="w-3/4">
                             <div class="bg-gray-100 border rounded shadow p-2">
                                 <div class="flex flex-row items-center">
@@ -62,7 +70,9 @@ $pagina[] = "gestionar";
                                 </div>
                             </div>
                         </a>
-                        <a href="../events/" class="w-3/4">
+                                </div>
+                                <div class="swiper-slide">
+                                <a href="../events/" class="w-3/4">
                             <div class="bg-gray-100 border rounded shadow p-2">
                                 <div class="flex flex-row items-center">
                                     <div class="flex-shrink pr-4">
@@ -76,7 +86,8 @@ $pagina[] = "gestionar";
                                 </div>
                             </div>
                         </a>
-                    
+                                </div>
+                                <div class="swiper-slide">
                         <a href="../machines/" class="w-3/4">
                             <div class="bg-gray-100 border rounded shadow p-2">
                                 <div class="flex flex-row items-center">
@@ -91,6 +102,8 @@ $pagina[] = "gestionar";
                                 </div>
                             </div>
                         </a>
+                                </div>
+                                <div class="swiper-slide">
                         <a href="../rentals/" class="w-3/4">
                             <div class="bg-gray-100 border rounded shadow p-2">
                                 <div class="flex flex-row items-center">
@@ -104,6 +117,13 @@ $pagina[] = "gestionar";
                                 </div>
                             </div>
                         </a>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination -bottom-12"></div>
+                    </div>
+
+                    
+
                     </div>
                 </div>
                 <!--/Graph Card-->
@@ -138,6 +158,5 @@ $pagina[] = "gestionar";
 
     </div>
 </div>
-<!--/container-->
 </body>
 </html>

@@ -11,7 +11,21 @@ tablaCategorias = $('#datatable-json').DataTable({
         document.querySelector('.dt-buttons').innerHTML += `                            <button id="categoria" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva categoría<i class="fas fa-archive ml-3"></i></button>`;
         const newCat = document.querySelector('#categoria');
 
+        inputs.forEach( x =>{
+            x.addEventListener('change', evt =>{
+                evt.target.nextElementSibling.textContent = '';
+            })
+        });
+
         newCat.addEventListener('click', evt => {
+            feeds.forEach(x =>{
+                x.textContent = '';
+            });
+            
+            inputs.forEach(x =>{
+                x.value = '';
+            });
+
             modal.classList.toggle('hidden');
 
             guardar.addEventListener('click', crear);
@@ -23,42 +37,51 @@ tablaCategorias = $('#datatable-json').DataTable({
             function cerrarCrear(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', crear);
-                nombreCategoria.value = '';
-                precioCategoria.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarCrear);
                 });
             }
 
             function crear(e) {
-                modal.classList.toggle('hidden');
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "c_c",
-                        name: nombreCategoria.value,
-                        price: precioCategoria.value,
-                    },
-                    success: function(data) {
-                        nombreCategoria.value = '';
-                        precioCategoria.value = '';
-                        tablaCategorias.ajax.reload();
-                        guardar.removeEventListener('click', crear);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarCrear);
-                        });
-                        Toastify({
-                            text: "Categoría agregada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                    }
-                });
+                if(nombreCategoria.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre de la categoría";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(precioCategoria.value.trim().length == 0 || precioCategoria.value == 0){
+                    errores.precio = "Por favor, ingrese el precio base de la categoría";
+                    feedbackprice.textContent = errores.precio;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "c_c",
+                            name: nombreCategoria.value,
+                            price: precioCategoria.value,
+                        },
+                        success: function(data) {
+                            modal.classList.toggle('hidden');
+                            tablaCategorias.ajax.reload();
+                            guardar.removeEventListener('click', crear);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarCrear);
+                            });
+                            Toastify({
+                                text: "Categoría agregada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                        }
+                    });
+                }
             }
 
         });
@@ -102,9 +125,14 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     nombreCategoria = document.querySelector('input[name="name"]'),
-    precioCategoria= document.querySelector('input[name="price"]');
+    precioCategoria= document.querySelector('input[name="price"]'),
+    inputs = document.querySelectorAll('#modal input'),
+    feeds = document.querySelectorAll('.feed');
 
 function editar(e){
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
 
     titulo_modal.textContent = 'Editar categoría';
     guardar.textContent = 'Actualizar';
@@ -118,7 +146,6 @@ function editar(e){
             id: e.value,
         },
         success: function(data) {
-
             nombreCategoria.value = data['name'];
             precioCategoria.value = data['price'];
 
@@ -132,8 +159,6 @@ function editar(e){
             function cerrarActualizar(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', actualizar);
-                nombreCategoria.value = '';
-                precioCategoria.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
@@ -142,37 +167,48 @@ function editar(e){
             }
 
             function actualizar(evt) {
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u_c",
-                        name: nombreCategoria.value,
-                        price: precioCategoria.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        nombreCategoria.value = '';
-                        precioCategoria.value = '';
-                        tablaCategorias.ajax.reload();
-                        titulo_modal.textContent = 'Nueva evento';
-                        guardar.textContent = 'Guardar';
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
-                        });
-                        Toastify({
-                            text: "Categoría actualizada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                    }
-                });
+                if(nombreCategoria.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre de la categoría";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(precioCategoria.value.trim().length == 0 || precioCategoria.value == 0){
+                    errores.precio = "Por favor, ingrese el precio base de la categoría";
+                    feedbackprice.textContent = errores.precio;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u_c",
+                            name: nombreCategoria.value,
+                            price: precioCategoria.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            tablaCategorias.ajax.reload();
+                            titulo_modal.textContent = 'Nueva evento';
+                            guardar.textContent = 'Guardar';
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            Toastify({
+                                text: "Categoría actualizada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                        }
+                    });
+                }
             }
         }
     });

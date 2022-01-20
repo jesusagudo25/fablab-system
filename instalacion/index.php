@@ -189,7 +189,7 @@ $model->query("CREATE TABLE areas(
             final_date DATE NOT NULL,
             number_hours INT UNSIGNED NOT NULL,
             price DECIMAL(6,2) NOT NULL,
-            expenses DECIMAL(6,2) NULL,
+            expenses DECIMAL(6,2) NOT NULL,
             description_expenses TEXT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
             

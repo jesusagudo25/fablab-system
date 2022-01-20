@@ -68,7 +68,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
                                         INNER JOIN visits_areas va ON v.visit_id = va.visit_id
                                         INNER JOIN customers c ON v.customer_id = c.customer_id
 INNER JOIN areas a ON va.area_id = a.area_id
-                                        WHERE (va.departure_time IS NULL );');
+                                        WHERE (va.departure_time IS NULL ) AND (v.status = 1);');
         $customers = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $customers;
@@ -81,6 +81,7 @@ INNER JOIN areas a ON va.area_id = a.area_id
     INNER JOIN customers c ON v.customer_id = c.customer_id
     RIGHT JOIN age_range ar ON c.range_id = ar.range_id
     WHERE (v.date BETWEEN :start_date AND :end_date)
+    AND (v.status = 1)
     GROUP BY ar.range_id
 ) as x
 RIGHT JOIN age_range ar ON x.range_id = ar.range_id
@@ -102,7 +103,8 @@ GROUP BY ar.range_id;");
     COUNT(CASE WHEN c.sex = 'F' THEN c.customer_id END) AS F 
 FROM visits v
 INNER JOIN customers c ON c.customer_id = v.customer_id
-WHERE (v.date BETWEEN :start_date AND :end_date);");
+WHERE (v.date BETWEEN :start_date AND :end_date)
+AND (v.status = 1);");
 
         $query->execute([
             'start_date'=> $start_date,

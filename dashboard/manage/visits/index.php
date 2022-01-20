@@ -9,7 +9,7 @@ if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SE
 require_once '../../../app.php';
 
 $area = new Area();
-$areaAll = $area->getAll();
+$areaAll = $area->getAjax();
 
 $pagina[] = "gestionar";
 
@@ -55,7 +55,7 @@ $pagina[] = "gestionar";
                     </div>
                     <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Editar visita</h5>
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">áreas visitadas</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -66,7 +66,7 @@ $pagina[] = "gestionar";
                                 </svg>
                             </button>
                         </div>
-                        <div class="p-5" id="modal-content">
+                        <div class="p-5 max-h-96 overflow-auto" id="modal-content">
 
                         </div>
                         <footer class="flex justify-end align-center border-t p-3" id="footer-modal">
@@ -84,7 +84,7 @@ $pagina[] = "gestionar";
                     </div>
                     <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Editar areas</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Editar areas</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear cancelar-areas" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -95,7 +95,7 @@ $pagina[] = "gestionar";
                                 </svg>
                             </button>
                         </div>
-                        <div class="p-3 text-sm" id="modal-areas-content">
+                        <div class="p-3 text-sm max-h-96 overflow-auto" id="modal-areas-content">
                             <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
                             <?php foreach ($areaAll as $datos => $valor): ?>
                                 <label class="flex items-center mt-4">
@@ -110,10 +110,13 @@ $pagina[] = "gestionar";
                                     <label for="departure_time">Hora de salida:
                                         <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
+                                    <br/>
+                                    <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
                                 </div>
                             <?php endforeach; ?>
+                            <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                         </div>
-                        <footer class="flex justify-end align-center border-t p-3" id="footer-modal">
+                        <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray cancelar-areas" type="button" name="cancelar-areas" >Cancelar</button>
                             <button class="p-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-blue" type="button" name="guardar-areas">Actualizar</button>
                         </footer>

@@ -192,17 +192,17 @@
                                 </label>
                                 <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
                                     <label for="arrival_time" class="mr-6">Hora de llegada:
-                                        <input type="time" id="arrival_time_area<?= $valor['id'] ?>" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
 
                                     <label for="departure_time">Hora de salida:
-                                        <input type="time" id="departure_time_area<?= $valor['id'] ?>" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
 <br/>
                                     <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
                                 </div>
                             <?php endforeach; ?>
-                            <span id="feedbackareas" class="text-xs text-red-600 feed"></span>
+                            <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                         </div>
 
                         <label class="block text-sm mt-5">

@@ -15,7 +15,7 @@ tablaLaboratorio = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                return '<input type="time" id="visit'+data['visit_id']+'area'+data['area_id']+'" name="departure_time_area" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">';
+                return '<input type="time" id="visit'+data['visit_id']+'area'+data['area_id']+'" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">';
             },
             "targets": -1
         },

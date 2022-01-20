@@ -86,6 +86,7 @@
                       class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-500 focus:ring-0"
                       placeholder="Correo electrónico"
                       value="<?= isset($_REQUEST['email']) ? $_REQUEST['email'] : '';?>"
+                      autocomplete="email"
                       required
                     />
                   </div>
@@ -99,6 +100,7 @@
                       name="password"
                       class="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-500 focus:ring-0"
                       placeholder="Contraseña"
+                      autocomplete="current-password"
                       required
                     />
                   </div>

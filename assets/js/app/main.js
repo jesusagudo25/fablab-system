@@ -13,7 +13,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
     registrar = document.querySelector('button[type="submit"]'),
-        codigo = document.querySelector('input[name="codigo"]'),
+    codigo = document.querySelector('input[name="codigo"]'),
     email = document.querySelector('input[name="email"]'),
     telefono = document.querySelector('input[name="telefono"]'),
     edad = document.querySelectorAll('input[name="edad"]'),
@@ -21,10 +21,6 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
-    feedbackcorreo = document.querySelector('#feedbackcorreo'),
-    feedbacktelefono = document.querySelector('#feedbacktelefono'),
-    feedbackdocumento = document.querySelector('#feedbackdocumento'),
-    feedbackcodigo = document.querySelector('#feedbackcodigo'),
     formulario = document.querySelector('form');
 
 //Informacion inicial
@@ -137,7 +133,6 @@ tipoDocumento.addEventListener('change', evt => {
 });
 
 //Se realiza un autocomplete buscando el cliente, en caso de no encontrase aparecera un signo de (+) para agregarlo
-
 
 $("#autoComplete").autocomplete({
 
@@ -294,9 +289,16 @@ razonVisita.addEventListener('change', evt => {
 areasTrabajo.forEach(evt =>{
     evt.addEventListener('click', item =>{
         const areaCheck = document.querySelector('#area'+item.target.value);
-        if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+        if(areaCheck.nextElementSibling.classList.contains('feed')){
+            areaCheck.parentElement.nextElementSibling.classList.toggle('mt-5');
+        }
+        else{
+            areaCheck.nextElementSibling.classList.toggle('mt-4');
+        }
         areaCheck.classList.toggle('hidden');
+        feedbackareas.textContent = '';
     });
+    
 });
 
 function triggerBlur(element){
@@ -342,6 +344,35 @@ accion.addEventListener('click',evt => {
         codigo.removeEventListener('blur', validarCodigo);
         email.removeEventListener('blur', validarEmail);
         telefono.removeEventListener('blur', validarTelefono);
+
+        if('identificacion' in errores){
+            delete errores.identificacion;
+        }
+
+        if('nombre' in errores){
+            delete errores.nombre;
+        }
+
+        if('codigo' in errores){
+            delete errores.codigo;
+        }
+        
+        if('correo' in errores){
+            delete errores.correo;
+        }
+        
+        if('telefono' in errores){
+            delete errores.telefono;
+        }
+
+        if('sexo' in errores){
+            delete errores.sexo;
+        }
+
+        if('edad' in errores){
+            delete errores.edad;
+        }
+
         feedbackdocumento.textContent = '';
         feedbackcodigo.textContent = '';
         feedbackcorreo.textContent = '';
@@ -383,18 +414,16 @@ function validarDocumento(e){
     })
         .then(res => res.json())
         .then(data =>{
-            if(data == true){
-                errores.documento = 'El documento ya esta registrado';
-                feedbackdocumento.textContent = errores.documento;
+            if('identificacion' in errores){
+                delete errores.identificacion;
             }
-            else{
-                if('documento' in errores){
-                    delete errores.documento;
-                }
-                feedbackdocumento.textContent = '';
+            feedbackdocumento.textContent = '';
+
+            if(data == true){
+                errores.identificacion = 'El documento ya esta registrado';
+                feedbackdocumento.textContent = errores.identificacion;
             }
         });
-
 }
 
 function validarCodigo(e){
@@ -412,16 +441,16 @@ function validarCodigo(e){
     })
         .then(res => res.json())
         .then(data =>{
+            if('codigo' in errores){
+                delete errores.codigo;
+            }
+            feedbackcodigo.textContent = '';
+
             if(data == true){
                 errores.codigo = 'El codigo ya esta registrado';
                 feedbackcodigo.textContent = errores.codigo;
             }
-            else{
-                if('codigo' in errores){
-                    delete errores.codigo;
-                }
-                feedbackcodigo.textContent = '';
-            }
+            
         });
 
 }
@@ -441,19 +470,23 @@ function validarEmail(e){
     })
         .then(res => res.json())
         .then(data =>{
-            if(data == 'true'){
+
+            let regexEmail = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+            
+            if('correo' in errores){
+                delete errores.correo;
+            }
+            feedbackcorreo.textContent = '';
+
+            if(data == true){
                 errores.correo = 'El correo ya esta registrado';
                 feedbackcorreo.textContent = errores.correo;
             }
-            else if(data == 'validate'){
-                errores.correo = 'Por favor, proporcione un correo valido';
-                feedbackcorreo.textContent = errores.correo;
-            }
-            else{
-                if('correo' in errores){
-                    delete errores.correo;
+            else if(e.target.value.trim().length != 0){
+                if(!regexEmail.test(e.target.value)){
+                    errores.correo = 'Por favor, proporcione un correo valido';
+                    feedbackcorreo.textContent = errores.correo;
                 }
-                feedbackcorreo.textContent = '';
             }
         });
 
@@ -474,15 +507,14 @@ function validarTelefono(e){
     })
         .then(res => res.json())
         .then(data =>{
+            if('telefono' in errores){
+                delete errores.telefono;
+            }
+            feedbacktelefono.textContent = '';
+            
             if(data == true){
                 errores.telefono = 'El telefono ya esta registrado';
                 feedbacktelefono.textContent = errores.telefono;
-            }
-            else{
-                if('telefono' in errores){
-                    delete errores.telefono;
-                }
-                feedbacktelefono.textContent = '';
             }
         });
 
@@ -505,6 +537,35 @@ inputDocumento.addEventListener('keyup', evt => {
         codigo.removeEventListener('blur', validarCodigo);
         email.removeEventListener('blur', validarEmail);
         telefono.removeEventListener('blur', validarTelefono);
+
+        if('identificacion' in errores){
+            delete errores.identificacion;
+        }
+
+        if('nombre' in errores){
+            delete errores.nombre;
+        }
+
+        if('codigo' in errores){
+            delete errores.codigo;
+        }
+        
+        if('correo' in errores){
+            delete errores.correo;
+        }
+        
+        if('telefono' in errores){
+            delete errores.telefono;
+        }
+
+        if('sexo' in errores){
+            delete errores.sexo;
+        }
+
+        if('edad' in errores){
+            delete errores.edad;
+        }
+
         feedbackdocumento.textContent = '';
         feedbackcodigo.textContent = '';
         feedbackcorreo.textContent = '';

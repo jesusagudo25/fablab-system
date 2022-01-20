@@ -1,11 +1,4 @@
-var posting = $.post( './functions.php', { solicitud: 'ar' } );
-
-let areas = [];
 let reasonVisits = [];
-
-posting.done(function( data ) {
-    areas = data;
-});
 
 posting = $.post( './functions.php', { solicitud: 'raz' } );
 
@@ -98,13 +91,22 @@ const modal_content = document.querySelector('#modal-content'),
     closeAreas = document.querySelectorAll('.cancelar-areas'),
     guardarAreas = document.querySelector('button[name="guardar-areas"]'),
     areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
-    footer_modal = document.querySelector('#footer-modal');
+    titulo_modal = document.querySelector('#titulo-modal'),
+    footer_modal = document.querySelector('#footer-modal'),
+    feedsareas = document.querySelectorAll('#modal-areas-content .feed');
 
 areasTrabajo.forEach(evt =>{
     evt.addEventListener('click', item =>{
         const areaCheck = document.querySelector('#area'+item.target.value);
-        if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+        if(areaCheck.nextElementSibling.classList.contains('feed')){
+            areaCheck.parentElement.classList.toggle('p-3');
+            areaCheck.parentElement.classList.toggle('px-3','pt-3');
+        }
+        else{
+            areaCheck.nextElementSibling.classList.toggle('mt-4');
+        }
         areaCheck.classList.toggle('hidden');
+        feedbackareas.textContent = '';
     });
 });
 
@@ -112,7 +114,7 @@ function verAreas(e){
 
     modal_content.innerHTML = `
                     <div class="text-sm" id="containerarea">
-                            <span class="text-gray-800 inline-block mb-4 font-medium">Áreas de trabajo seleccionadas</span></div>`;
+                            <span class="text-gray-800 inline-block mb-4 font-medium">Áreas de trabajo visitadas</span></div>`;
 
     $.ajax({
         url: "./functions.php",
@@ -162,6 +164,7 @@ function verAreas(e){
 
 function editarVisita(e){
 
+    titulo_modal.textContent = 'Editar visita';
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -182,9 +185,10 @@ function editarVisita(e){
                                 </label>
                                 
                                 <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC de visitante</span>
+                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC del visitante</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
                                     <input type="hidden" name="id_customer">
+                                    <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                                 </label>
                                 
                                 <label class="block text-sm mt-5">
@@ -206,11 +210,12 @@ function editarVisita(e){
                                 <label class="block text-sm mt-5">
                                     <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
                                     <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
+                                    <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
                                 </label>
 
                                 <label class="block text-sm mt-5">
                                     <span class="text-gray-800 font-medium">Observación complementaria</span>
-                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Sin observación complementaria" name="observacion"></textarea>
+                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observacion"></textarea>
                                 </label>`;
 
             const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
@@ -225,15 +230,15 @@ function editarVisita(e){
 
                     const TIPOS_DOCUMENTOS = {
                         C: () => {
-                            tituloDocumento.textContent = 'Número de cédula de visitante';
+                            tituloDocumento.textContent = 'Número de cédula del visitante';
                             inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
                         },
                         R: () => {
-                            tituloDocumento.textContent = 'Número de RUC de visitante';
+                            tituloDocumento.textContent = 'Número de RUC del visitante';
                             inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
                         },
                         P: () => {
-                            tituloDocumento.textContent = 'Número de Pasaporte de visitante';
+                            tituloDocumento.textContent = 'Número de Pasaporte del visitante';
                             inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
                         }
                     }
@@ -251,12 +256,8 @@ function editarVisita(e){
                         triggerKeyup(inputDocumento);
                     });
 
-                    Array.from(tipoDocumento.options).forEach(v => {
-                        if(v.value == data['document_type']){
-                            v.selected = true;
-                            triggerChange(tipoDocumento);
-                        }
-                    })
+                    tipoDocumento.value = data['document_type'];
+                    triggerChange(tipoDocumento);
 
                     inputDocumento.value = data['document'];
                     idHidden.value = data['customer_id'];
@@ -344,40 +345,69 @@ function editarVisita(e){
                             evt.removeEventListener('click', cerrarActualizar);
                         });
                         areasActualizar = [];
+                        titulo_modal.textContent = 'áreas visitadas';
                     }
 
                     function actualizar(evt) {
-                        $.ajax({
-                            url: "./functions.php",
-                            type: "POST",
-                            datatype:"json",
-                            data:  {
-                                solicitud: "up_v",
-                                customer_id: idHidden.value,
-                                reason_id: razonVisita.value,
-                                time: razonVisita.options[razonVisita.selectedIndex].classList.contains('free') ? 1 : 0,
-                                areas: areasActualizar,
-                                date: fechaVisita.value,
-                                observation: observacion.value,
-                                visit_id: e.value
-                            },
-                            success: function(data) {
-                                modal.classList.toggle('hidden');
-                                tablaVisitas.ajax.reload();
-                                guardar.removeEventListener('click', actualizar);
-                                closeModal.forEach( e =>{
-                                    e.removeEventListener('click', cerrarActualizar);
-                                });
-                                areasActualizar = [];
-                                Toastify({
-                                    text: "Visita Actualizada",
-                                    duration: 3000,
-                                    style: {
-                                        background: '#10B981'
-                                    }
-                                }).showToast();
+
+                        let errores = {};
+
+                        if(inputDocumento.value.trim().length == 0){
+                            if(tipoDocumento.value == 'R'){
+                                errores.documento = "Por favor, proporcione un RUC";
                             }
-                        });
+                            else if(tipoDocumento.value == 'C'){
+                                errores.documento = "Por favor, proporcione una cédula";
+                            }
+                            else{
+                                errores.documento = "Por favor, proporcione un pasaporte";
+                            }
+                            feedbackdocumento.textContent = errores.documento;
+                        }
+                        else if(idHidden.value.trim().length == 0){
+                            errores.id = "Por favor, seleccione o agregue un cliente";
+                            feedbackdocumento.textContent = errores.id;
+                        }
+
+                        if(fechaVisita.value.trim().length == 0){
+                            errores.fecha = "Por favor, seleccione una fecha";
+                            feedbackfecha.textContent = errores.fecha;
+                        }
+
+                        if(Object.keys(errores).length == 0){
+                            $.ajax({
+                                url: "./functions.php",
+                                type: "POST",
+                                datatype:"json",
+                                data:  {
+                                    solicitud: "up_v",
+                                    customer_id: idHidden.value,
+                                    reason_id: razonVisita.value,
+                                    time: razonVisita.options[razonVisita.selectedIndex].classList.contains('free') ? 1 : 0,
+                                    areas: areasActualizar,
+                                    date: fechaVisita.value,
+                                    observation: observacion.value,
+                                    visit_id: e.value
+                                },
+                                success: function(data) {
+                                    titulo_modal.textContent = 'áreas visitadas';
+                                    modal.classList.toggle('hidden');
+                                    tablaVisitas.ajax.reload();
+                                    guardar.removeEventListener('click', actualizar);
+                                    closeModal.forEach( e =>{
+                                        e.removeEventListener('click', cerrarActualizar);
+                                    });
+                                    areasActualizar = [];
+                                    Toastify({
+                                        text: "Visita Actualizada",
+                                        duration: 3000,
+                                        style: {
+                                            background: '#10B981'
+                                        }
+                                    }).showToast();
+                                }
+                            });
+                        }
                     }
 
         }
@@ -388,37 +418,41 @@ let areasActualizar = [];
 
 function editarAreas(e){
 
-    closeAreas.forEach( e =>{
-        e.addEventListener('click', cerrarEditarAreas);
+    feedsareas.forEach(x =>{
+        x.textContent = '';
     });
 
-    function cerrarEditarAreas(e){
-        modalAreas.classList.toggle('hidden');
-        guardarAreas.removeEventListener('click', actualizarAreas);
-        closeAreas.forEach( evt =>{
-            evt.removeEventListener('click', cerrarEditarAreas);
-            areasTrabajo.forEach(x => {
-                x.checked = false;
-                const areaCheck = document.querySelector('#area'+x.value);
-                if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.add('mt-4');}
-                document.querySelector('#area'+x.value).classList.add('hidden');
-                document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value = '';
-                document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value = '';
+    areasTrabajo.forEach(x => {
+        x.checked = false;
+        const areaCheck = document.querySelector('#area'+x.value);
+        if(areaCheck.nextElementSibling.classList.contains('feed')){
+            areaCheck.parentElement.classList.add('p-3');
+            areaCheck.parentElement.classList.remove('px-3','pt-3');
+        }
+        else{
+            areaCheck.nextElementSibling.classList.add('mt-4');
+        }
+        document.querySelector('#area'+x.value).classList.add('hidden');
+        document.querySelector('input[name="arrival_time_area'+x.value+'"]').value = '';
+        document.querySelector('input[name="departure_time_area'+x.value+'"]').value = '';
 
-            })
-        });
-    }
+    });
 
-    guardarAreas.addEventListener('click', actualizarAreas);
-
+    //Cargar información inicial
     if(areasActualizar.length){
         areasActualizar.forEach(x => {
             document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
             const areaCheck = document.querySelector('#area'+x.area_id);
-            if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+            if(areaCheck.nextElementSibling.classList.contains('feed')){
+                areaCheck.parentElement.classList.remove('p-3');
+                areaCheck.parentElement.classList.add('px-3','pt-3');
+            }
+            else{
+                areaCheck.nextElementSibling.classList.remove('mt-4');
+            }
             document.querySelector('#area'+x.area_id).classList.remove('hidden');
-            document.querySelector('input[name="'+'arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
-            document.querySelector('input[name="'+'departure_time_area'+x.area_id+'"]').value = x.departure_time;
+            document.querySelector('input[name="arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
+            document.querySelector('input[name="departure_time_area'+x.area_id+'"]').value = x.departure_time;
         });
 
         modalAreas.classList.toggle('hidden');
@@ -433,61 +467,92 @@ function editarAreas(e){
                 id: e.value,
             },
             success: function(info) {
-                    areasActualizar = info;
+                areasActualizar = info;
                 areasActualizar.forEach(x => {
                     document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
                     const areaCheck = document.querySelector('#area'+x.area_id);
-                    if(areaCheck.nextElementSibling){areaCheck.nextElementSibling.classList.toggle('mt-4');}
+                    if(areaCheck.nextElementSibling.classList.contains('feed')){
+                        areaCheck.parentElement.classList.remove('p-3');
+                        areaCheck.parentElement.classList.add('px-3','pt-3');
+                    }
+                    else{
+                        areaCheck.nextElementSibling.classList.remove('mt-4');
+                    }
                     document.querySelector('#area'+x.area_id).classList.remove('hidden');
-                    document.querySelector('input[name="'+'arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
-                    document.querySelector('input[name="'+'departure_time_area'+x.area_id+'"]').value = x.departure_time;
+                    document.querySelector('input[name="arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
+                    document.querySelector('input[name="departure_time_area'+x.area_id+'"]').value = x.departure_time;
                 });
 
                 modalAreas.classList.toggle('hidden');
             }});
     }
 
+    closeAreas.forEach( e =>{
+        e.addEventListener('click', cerrarEditarAreas);
+    });
+
+    function cerrarEditarAreas(e){
+        modalAreas.classList.toggle('hidden');
+        guardarAreas.removeEventListener('click', actualizarAreas);
+        closeAreas.forEach( evt =>{
+            evt.removeEventListener('click', cerrarEditarAreas);
+        });
+    }
+
+    guardarAreas.addEventListener('click', actualizarAreas);
+
     function actualizarAreas(evt) {
-        areasActualizar = [];
+        let errores = {};
+
+        let areasTempo = [];
+
         areasTrabajo.forEach(x =>{
+
             if(x.checked){
-                let areaCheck = {
+                let area = {
                     area_id: x.value,
                     arrival_time: document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value,
                     departure_time: document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value
                 }
 
-                if(areaCheck.arrival_time.trim().length == 0){
-                    //Validar
+                if(area.arrival_time.trim().length == 0){
+                    errores['area'+x.value] = "Por favor, proporcione una hora de llegada";
+                    document.querySelector('#feedbackarea'+x.value).textContent = errores['area'+x.value];
+
+                    document.querySelector('input[name="arrival_time_area'+x.value+'"]').addEventListener('change',evt =>{
+                        if(evt.target.value.trim().length != 0){
+                            document.querySelector('#feedbackarea'+x.value).textContent = '';
+                        }
+                    });
                 }
 
-                areasActualizar.push(areaCheck);
+                areasTempo.push(area);
             }
-            x.checked = false;
-            const areaDetalles = document.querySelector('#area'+x.value);
-            if(areaDetalles.nextElementSibling){areaDetalles.nextElementSibling.classList.add('mt-4');}
-
-            document.querySelector('#area'+x.value).classList.add('hidden');
-            document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value = '';
-            document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value = '';
         });
 
-        if(areas.length == 0){
-            //Validar
+        if(areasTempo.length == 0){
+            errores.areas = "Por favor, seleccione las áreas deseadas";
+            feedbackareas.textContent = errores.areas;
         }
-        modalAreas.classList.toggle('hidden');
-        guardarAreas.removeEventListener('click', actualizarAreas);
-        closeAreas.forEach( e =>{
-            e.removeEventListener('click', cerrarEditarAreas);
-        });
 
-        Toastify({
-            text: "Areas Actualizadas",
-            duration: 3000,
-            style: {
-                background: '#10B981'
-            }
-        }).showToast();
+        if(Object.keys(errores).length == 0){
+
+            areasActualizar = Array.from(areasTempo);
+            modalAreas.classList.toggle('hidden');
+            guardarAreas.removeEventListener('click', actualizarAreas);
+            closeAreas.forEach( e =>{
+                e.removeEventListener('click', cerrarEditarAreas);
+            });
+    
+            Toastify({
+                text: "Areas Actualizadas",
+                duration: 3000,
+                style: {
+                    background: '#10B981'
+                }
+            }).showToast();
+        }
+
     }
 }
 

@@ -124,6 +124,7 @@ tablaClientes = $('#datatable-json').DataTable({
 });
 
 
+let errores = {};
 const closeModal = document.querySelectorAll('.close'),
     modal = document.querySelector('#modal'),
     guardar = document.querySelector('button[name="guardar"]'),
@@ -138,7 +139,8 @@ const closeModal = document.querySelectorAll('.close'),
     sexo = document.querySelectorAll('input[name="sexo"]'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
-    corregimiento = document.querySelector('select[name="corregimiento"]');
+    corregimiento = document.querySelector('select[name="corregimiento"]'),
+    feeds = document.querySelectorAll('.feed');
 
 
 //Algoritmo Provincia-Distrito-Corregimiento
@@ -185,7 +187,7 @@ const TIPOS_DOCUMENTOS = {
 tipoDocumento.addEventListener('change', evt => {
     TIPOS_DOCUMENTOS[evt.target.value]();
     inputDocumento.value = '';
-
+    feedbackdocumento.textContent = '';
 });
 
 function triggerChange(element){
@@ -193,7 +195,17 @@ function triggerChange(element){
     element.dispatchEvent(changeEvent);
 }
 
+let getDocumento;
+let getCodigo;
+let getCorreo;
+let getTelefono;
+
 function editar(e){
+    
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
+
     $.ajax({
         url: "./functions.php",
         type: "POST",
@@ -204,8 +216,17 @@ function editar(e){
         },
         success: function(data) {
 
-            let tipoDocumentoSelect = Array.from(tipoDocumento.options).find( opt => opt.value == data['document_type']);
-            tipoDocumentoSelect.selected = true;
+            inputDocumento.addEventListener('change', validarDocumento);
+            codigo.addEventListener('change', validarCodigo);
+            email.addEventListener('change', validarEmail);
+            telefono.addEventListener('change', validarTelefono);
+
+            getDocumento = data['document'];
+            getCodigo = data['code'];
+            getCorreo = data['email'];
+            getTelefono = data['telephone'];
+
+            tipoDocumento.value = data['document_type'];
 
             triggerChange(tipoDocumento);
             
@@ -221,19 +242,16 @@ function editar(e){
             
             email.value = data['email'];
             telefono.value = data['telephone'];
-
-            let provinciaSelect = Array.from(provincia.options).find( opt => opt.value == data['province_id']);
-            provinciaSelect.selected = true;
+        
+            provincia.value = data['province_id'];
 
             triggerChange(provincia);
 
-            let districtSelect = Array.from(distrito.options).find( opt => opt.value == data['district_id']);
-            districtSelect.selected = true;
+            distrito.value = data['district_id'];
 
             triggerChange(distrito)
 
-            let townshipSelect = Array.from(corregimiento.options).find( opt => opt.value == data['township_id']);
-            townshipSelect.selected = true;
+            corregimiento.value = data['township_id'];
 
             modal.classList.toggle('hidden');
 
@@ -248,50 +266,232 @@ function editar(e){
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
+                inputDocumento.removeEventListener('change', validarDocumento);
+                codigo.removeEventListener('change', validarCodigo);
+                email.removeEventListener('change', validarEmail);
+                telefono.removeEventListener('change', validarTelefono);
             }
 
             function actualizar(evt) {
+
+                if('documento' in errores){
+                    delete errores.documento;
+                }
+
+                if(inputDocumento.value.trim().length == 0){
+                    if(tipoDocumento.value == 'R'){
+                        errores.documento = "Por favor, proporcione un RUC";
+                        feedbackdocumento.textContent = errores.documento;
+                    }
+                    else if(tipoDocumento.value == 'C'){
+                        errores.documento = "Por favor, proporcione una cédula";
+                        feedbackdocumento.textContent = errores.documento;
+                    }
+                    else{
+                        errores.documento = "Por favor, proporcione un pasaporte";
+                        feedbackdocumento.textContent = errores.documento;
+                    }
+                }
+
+                if('nombre' in errores){
+                    delete errores.nombre;
+                }
+
+                if(nombreUsuario.value.trim().length == 0){
+                    errores.nombre = "Por favor, proporcione un nombre";
+                    feedbacknombre.textContent = errores.nombre;
+                    nombreUsuario.addEventListener('change', evt =>{
+                        feedbacknombre.textContent = '';
+                    });
+                }
+
                 edadCheck = Array.from(edad).find( opt => opt.checked);
                 sexoCheck = Array.from(sexo).find( opt => opt.checked);
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u",
-                        document_type: tipoDocumento.value,
-                        document: inputDocumento.value,
-                        code: codigo.value,
-                        name: nombreUsuario.value,
-                        email: email.value,
-                        telephone: telefono.value,
-                        age_range: edadCheck.value,
-                        sexo: sexoCheck.value,
-                        province_id: provincia.value,
-                        district_id: distrito.value,
-                        township_id: corregimiento.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        tablaClientes.ajax.reload();
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
+                if('edad' in errores){
+                    delete errores.edad;
+                }
+        
+                if(!edadCheck){
+                    errores.edad = "Por favor, seleccione un rango de edad";
+                    feedbackedad.textContent = errores.edad;
+                    edad.forEach(x =>{
+                        x.addEventListener('click', evt =>{
+                            feedbackedad.textContent = '';
                         });
-                        Toastify({
-                            text: "Cliente actualizado",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                    }
-                });
+                    })
+                }
+        
+                if('sexo' in errores){
+                    delete errores.sexo;
+                }
+        
+                if(!sexoCheck){
+                    errores.sexo = "Por favor, seleccione un tipo de sexo";
+                    feedbacksexo.textContent = errores.sexo;
+                    sexo.forEach(x =>{
+                        x.addEventListener('click', evt =>{
+                            feedbacksexo.textContent = '';
+                        });
+                    })
+                }
+
+                if(Object.keys(errores).length == 0){                
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u",
+                            document_type: tipoDocumento.value,
+                            document: inputDocumento.value,
+                            code: codigo.value,
+                            name: nombreUsuario.value,
+                            email: email.value,
+                            telephone: telefono.value,
+                            age_range: edadCheck.value,
+                            sexo: sexoCheck.value,
+                            province_id: provincia.value,
+                            district_id: distrito.value,
+                            township_id: corregimiento.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            tablaClientes.ajax.reload();
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            inputDocumento.removeEventListener('change', validarDocumento);
+                            codigo.removeEventListener('change', validarCodigo);
+                            email.removeEventListener('change', validarEmail);
+                            telefono.removeEventListener('change', validarTelefono);
+                            Toastify({
+                                text: "Cliente actualizado",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                        }
+                    });
+                }
             }
         }
     });
+}
+
+function validarDocumento(e){
+
+    if('identificacion' in errores){
+        delete errores.identificacion;
+    }
+    feedbackdocumento.textContent = '';
+
+    if(e.target.value != getDocumento){
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "doc",
+                document: e.target.value,
+            },
+            success: function(data) {    
+                if(data == true){
+                    errores.identificacion = 'El documento ya esta registrado';
+                    feedbackdocumento.textContent = errores.identificacion;
+                }
+            }
+        });
+    }
+}
+
+function validarCodigo(e){
+
+    if('codigo' in errores){
+        delete errores.codigo;
+    }
+    feedbackcodigo.textContent = '';
+
+    if(e.target.value != getCodigo){
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "cod",
+                code: e.target.value,
+            },
+            success: function(data) {
+                if(data == true){
+                    errores.codigo = 'El codigo ya esta registrado';
+                    feedbackcodigo.textContent = errores.codigo;
+                }
+            }
+        });
+    }
+}
+
+function validarEmail(e){
+
+    if('correo' in errores){
+        delete errores.correo;
+    }
+    feedbackcorreo.textContent = '';
+
+    if(e.target.value != getCorreo){    
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: "ema",
+                email: e.target.value,
+            },
+            success: function(data) {
+                let regexEmail = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    
+                if(data == true){
+                    errores.correo = 'El correo ya esta registrado';
+                    feedbackcorreo.textContent = errores.correo;
+                }
+                else if(e.target.value.trim().length != 0){
+                    if(!regexEmail.test(e.target.value)){
+                        errores.correo = 'Por favor, proporcione un correo valido';
+                        feedbackcorreo.textContent = errores.correo;
+                    }
+                }
+            }
+        });
+    }
+}
+
+function validarTelefono(e){
+
+    if('telefono' in errores){
+        delete errores.telefono;
+    }
+    feedbacktelefono.textContent = '';
+
+    if(e.target.value != getTelefono){      
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            datatype:"json",
+            data:  {
+                solicitud: 'tel',
+                telephone: e.target.value,
+            },
+            success: function(data) {                
+                if(data == true){
+                    errores.telefono = 'El telefono ya esta registrado';
+                    feedbacktelefono.textContent = errores.telefono;
+                }
+            }
+        });
+    }
 }
 
 function interruptor(e) {

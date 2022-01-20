@@ -12,12 +12,6 @@
 
         echo json_encode($visits);
 
-    }else if ($_POST['solicitud'] == 'ar') {
-
-        $area = new Area();
-        $areas = $area->getAll();
-
-        echo json_encode($areas);
     }else if ($_POST['solicitud'] == 'raz') {
 
         $reason = new ReasonVisit();

@@ -61,46 +61,53 @@ $pagina[] = "gestionar";
                                 </svg>
                             </button>
                         </div>
-                        <div class="p-5">
-                            <div class="w-full shadow overflow-auto border-b border-gray-200 sm:rounded-lg">
-                            <table class="w-full min-w-full divide-y divide-gray-200">
-                                <tbody>
-                                <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nombre</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Categoría</th>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value=""></td>
-                                    <td class="px-2 py-2">                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria">
-                                        </select></td>
-                                </tr>
-                                <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Cantidad de horas</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Precio</th>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value=""></td>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value=""></td>
-                                </tr>
-                                <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha inicial</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fecha final</th>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value=""></td>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value=""></td>
-                                </tr>
-                                <tr>
-                                    <th class="bg-gray-100 px-3 py-3 text-xs font-semibold uppercase tracking-wider text-left">Gastos</th>
-                                    <th class="bg-gray-100 px-3 py-3 text-xs font-semibold uppercase tracking-wider text-left">Descripcíon gastos</th>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2"><input class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese los gastos del evento" name="gastos_evento" min="0.00" step="0.01" value=""></td>
-                                    <td class="px-2 py-2"><textarea class="text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos"></textarea></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </div>
+                        <div class="p-5 grid grid-cols-2 gap-5 max-h-96 overflow-auto">
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Nombre</span>
+<input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="">
+                                <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Categoría</span>
+                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria"></select>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Cantidad de horas</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value="">
+                                <span id="feedbackhoras" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Precio</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value="">
+                                <span id="feedbackprecio" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Fecha inicial</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="">
+                                <span id="feedbackinicial" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Fecha final</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="">
+                                <span id="feedbackfinal" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Gastos</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el gasto total del evento" name="gastos_evento" min="0.00" step="0.01" value="">
+                                <span id="feedbackgastos" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Descripción de gastos</span>
+                                <textarea class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Describa los gastos del evento" name="desc_gastos"></textarea>
+                            </label>
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>

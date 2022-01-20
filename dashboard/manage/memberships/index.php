@@ -65,13 +65,14 @@
                                 <label class="block text-sm">
                                     <span class="text-gray-800 font-medium">Nombre</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" name="name" placeholder="Ingrese el nombre del plan" required>
+                                    <span id="feedbackname" class="text-xs text-center text-red-600 feed"></span>
                                 </label>
 
                                 <label class="block text-sm mt-5">
                                     <span class="text-gray-800 font-medium">Precio</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio base del plan" name="price" min="0.00" step="0.01" required>
+                                    <span id="feedbackprice" class="text-xs text-center text-red-600 feed"></span>
                                 </label>
-
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>
@@ -98,19 +99,12 @@
                                     <th>Acción</th>
                                 </tr>
                                 </thead>
-
                             </table>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
-
 </div>
-
 </body>
 </html>

@@ -15,7 +15,7 @@
         $event->setInitialDate($_POST['inicial']);
         $event->setFinalDate($_POST['final']);
         $event->setPrice($_POST['precio']);
-        $event->setExpenses(empty($_POST['gastos']) ? NULL :$_POST['gastos']);
+        $event->setExpenses($_POST['gastos']);
         $event->setDescriptionExpenses(empty($_POST['descripcion']) ? NULL :$_POST['descripcion']);
 
         $event->save();
@@ -38,7 +38,7 @@
         $event->setInitialDate($_POST['inicial']);
         $event->setFinalDate($_POST['final']);
         $event->setPrice($_POST['precio']);
-        $event->setExpenses(empty($_POST['gastos']) ? NULL :$_POST['gastos']);
+        $event->setExpenses($_POST['gastos']);
         $event->setDescriptionExpenses(empty($_POST['descripcion']) ? NULL :$_POST['descripcion']);
 
         $event->update();

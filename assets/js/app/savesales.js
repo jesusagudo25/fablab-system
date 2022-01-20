@@ -9,18 +9,29 @@ function generarVenta(e){
     btn_generar.removeEventListener('click',generarVenta);
 
     if(inputDocumento.value.trim().length == 0){
-        errores.documento = "Por favor, seleccione un cliente";
+        if(tipoDocumento.value == 'R'){
+            errores.documento = "Por favor, proporcione un RUC";
+        }
+        else if(tipoDocumento.value == 'C'){
+            errores.documento = "Por favor, proporcione una cédula";
+        }
+        else{
+            errores.documento = "Por favor, proporcione un pasaporte";
+        }
+        feedbackdocumento.textContent = errores.documento;
     }
 
-    if(idHidden.value.trim().length != 0){
-        datos['id_cliente'] = idHidden.value;
-    }
-    else{
+    if(idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0){
         errores.id = "Por favor, seleccione un cliente";
+        feedbackdocumento.textContent = errores.id;
+    }
+    else if(idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0){
+        datos['id_cliente'] = idHidden.value;
     }
 
     if(fecha.value.trim().length == 0){
         errores.fecha = "Por favor, seleccione una fecha";
+        feedbackfecha.textContent = errores.fecha;
     }
     else{
         datos["fecha"] = fecha.value
@@ -30,29 +41,33 @@ function generarVenta(e){
 
     filas.forEach((e,i) => {
         let columnas = e.querySelectorAll("td");
+        if(Number.isNaN(parseFloat(columnas[2].children[0].value))){
+            columnas[2].children[0].classList.remove('border-gray-300','focus:border-blue-300','focus:ring-blue-200');
+            columnas[2].children[0].classList.add('border-red-300','focus:border-red-300','focus:ring-red-200');
+        }
+        else{
+            servicios_ag[i].precio = parseFloat(columnas[2].children[0].value);
+        }
 
-        servicios_ag[i].precio = parseFloat(columnas[2].children[0].value);
     });
 
     let itemDetalles = [];
 
     servicios_ag.forEach( value => {
+
         if(!value.hasOwnProperty('detalles')){
-            itemDetalles.push(value.numeroItem)
+            itemDetalles.push(value.numeroItem);
+            const btnDetails = document.querySelector('#'+value.numeroItem+' '+'button')
+            btnDetails.classList.remove('bg-blue-500','active:bg-blue-600','hover:bg-blue-700');
+            btnDetails.classList.add('bg-red-500','active:bg-red-600','hover:bg-red-700');
         }
-    })
+    });
 
     if(itemDetalles.length){
-        errores.fecha = "Por favor, proporcione los datos del servicio ingresado";
+        errores.itemDetalles = "Por favor, proporcione los datos del servicio ingresado";
     }
 
     if(Object.keys(errores).length > 0){
-        Swal.fire({
-            title: 'Error!',
-            text: 'Existen campos incompletos.',
-            icon: 'error',
-            confirmButtonColor: '#ef4444'
-        });
 
         btn_generar.addEventListener('click',generarVenta);
     }
@@ -80,7 +95,6 @@ function generarVenta(e){
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 Swal.close();
                 Swal.fire({
                     title: 'La venta se ha generado!',
@@ -100,7 +114,4 @@ function generarVenta(e){
             });
 
     }
-
-
-
 }

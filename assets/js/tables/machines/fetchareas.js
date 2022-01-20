@@ -8,10 +8,18 @@ tablaAreas = $('#datatable-json').DataTable({
     },
     dom: 'Brtip',
     initComplete:function( settings, json){
-        document.querySelector('.dt-buttons').innerHTML += `                            <button id="area" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva área<i class="fas fa-archive ml-3"></i></button>`;
+        document.querySelector('.dt-buttons').innerHTML += `<button id="area" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva área<i class="fas fa-archive ml-3"></i></button>`;
         const newArea = document.querySelector('#area');
 
+        nombreArea.addEventListener('change', evt =>{
+            evt.target.nextElementSibling.textContent = '';
+        });
+
         newArea.addEventListener('click', evt => {
+            feedbackname.textContent = '';
+            nombreArea.value = '';
+            unidadArea.options[0].selected = true;
+
             modal.classList.toggle('hidden');
 
             guardar.addEventListener('click', crear);
@@ -23,42 +31,46 @@ tablaAreas = $('#datatable-json').DataTable({
             function cerrarCrear(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', crear);
-                nombreArea.value = '';
-                unidadArea.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarCrear);
                 });
             }
 
             function crear(e) {
-                modal.classList.toggle('hidden');
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "c",
-                        name: nombreArea.value,
-                        measure: unidadArea.value
-                    },
-                    success: function(data) {
-                        nombreArea.value = '';
-                        unidadArea.value = '';
-                        tablaAreas.ajax.reload();
-                        guardar.removeEventListener('click', crear);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarCrear);
-                        });
-                        Toastify({
-                            text: "Área agregada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                    }
-                });
+                if(nombreArea.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre del área";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "c",
+                            name: nombreArea.value,
+                            measure: unidadArea.value
+                        },
+                        success: function(data) {
+                            modal.classList.toggle('hidden');
+                            tablaAreas.ajax.reload();
+                            guardar.removeEventListener('click', crear);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarCrear);
+                            });
+                            Toastify({
+                                text: "Área agregada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                        }
+                    });
+                }
             }
 
         });
@@ -102,9 +114,10 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     nombreArea = document.querySelector('input[name="name"]'),
-    unidadArea= document.querySelector('input[name="measure"]');
+    unidadArea= document.querySelector('select[name="measure"]');
 
 function editar(e){
+    feedbackname.textContent ='';
 
     titulo_modal.textContent = 'Editar área';
     guardar.textContent = 'Actualizar';
@@ -132,8 +145,6 @@ function editar(e){
             function cerrarActualizar(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', actualizar);
-                nombreArea.value = '';
-                unidadArea.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
@@ -143,36 +154,44 @@ function editar(e){
 
             function actualizar(evt) {
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u",
-                        name: nombreArea.value,
-                        measure: unidadArea.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        nombreArea.value = '';
-                        unidadArea.value = '';
-                        tablaAreas.ajax.reload();
-                        titulo_modal.textContent = 'Nueva área';
-                        guardar.textContent = 'Guardar';
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
-                        });
-                        Toastify({
-                            text: "Área actualizada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                    }
-                });
+                let errores = {};
+
+                if(nombreArea.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre del área";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u",
+                            name: nombreArea.value,
+                            measure: unidadArea.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            tablaAreas.ajax.reload();
+                            titulo_modal.textContent = 'Nueva área';
+                            guardar.textContent = 'Guardar';
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            Toastify({
+                                text: "Área actualizada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                        }
+                    });
+                }
+
             }
         }
     });

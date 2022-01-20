@@ -8,10 +8,23 @@ tablaObservaciones = $('#datatable-json').DataTable({
     },
     dom: 'Bfrtip',
     initComplete:function( settings, json){
-        document.querySelector('.dt-buttons').innerHTML += `                            <button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
+        document.querySelector('.dt-buttons').innerHTML += `<button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
         const newObs = document.querySelector('#observacion');
 
+        inputs.forEach( x =>{
+            x.addEventListener('change', evt =>{
+                evt.target.nextElementSibling.textContent = '';
+            })
+        });
+
         newObs.addEventListener('click', evt => {
+            feeds.forEach(x =>{
+                x.textContent = '';
+            });
+
+            inputs.forEach(x =>{
+                x.value = '';
+            });
             modal.classList.toggle('hidden');
 
             guardar.addEventListener('click', crear);
@@ -23,42 +36,51 @@ tablaObservaciones = $('#datatable-json').DataTable({
             function cerrarCrear(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', crear);
-                description.value = '';
-                fecha.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarCrear);
                 });
             }
 
             function crear(e) {
-                modal.classList.toggle('hidden');
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "c",
-                        description: description.value,
-                        date: fecha.value,
-                    },
-                    success: function(data) {
-                        description.value = '';
-                        fecha.value = '';
-                        tablaObservaciones.ajax.reload();
-                        guardar.removeEventListener('click', crear);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarCrear);
-                        });
-                        Toastify({
-                            text: "Observación agregada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                    }
-                });
+                if(description.value.trim().length == 0){
+                    errores.description = "Por favor, ingrese una observación";
+                    feedbackobservacion.textContent = errores.description;
+                }
+
+                if(fecha.value.trim().length == 0){
+                    errores.fecha = "Por favor, seleccione una fecha";
+                    feedbackfecha.textContent = errores.fecha;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "c",
+                            description: description.value,
+                            date: fecha.value,
+                        },
+                        success: function(data) {
+                            modal.classList.toggle('hidden');
+                            tablaObservaciones.ajax.reload();
+                            guardar.removeEventListener('click', crear);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarCrear);
+                            });
+                            Toastify({
+                                text: "Observación agregada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                        }
+                    });
+                }
             }
 
         });
@@ -90,11 +112,15 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     description = document.querySelector('textarea[name="descripcion"]'),
-    fecha= document.querySelector('input[name="fecha"]');
-
+    fecha= document.querySelector('input[name="fecha"]'),
+    inputs = document.querySelectorAll('#modal input, #modal textarea'),
+    feeds = document.querySelectorAll('.feed');
 
 function editar(e){
-
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
+    
     titulo_modal.textContent = 'Editar observación';
     guardar.textContent = 'Actualizar';
     $.ajax({
@@ -119,46 +145,57 @@ function editar(e){
             function cerrarActualizar(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', actualizar);
-                description.value = '';
-                fecha.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
                 titulo_modal.textContent = 'Nueva observación';
                 guardar.textContent = 'Guardar';
+
             }
 
             function actualizar(evt) {
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u",
-                        description: description.value,
-                        date: fecha.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        description.value = '';
-                        fecha.value = '';
-                        tablaObservaciones.ajax.reload();
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
-                        });
-                        Toastify({
-                            text: "Observación actualizada",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                        titulo_modal.textContent = 'Nueva observación';
-                        guardar.textContent = 'Guardar';
-                    }
-                });
+                let errores = {};
+
+                if(description.value.trim().length == 0){
+                    errores.description = "Por favor, ingrese una observación";
+                    feedbackobservacion.textContent = errores.description;
+                }
+
+                if(fecha.value.trim().length == 0){
+                    errores.fecha = "Por favor, seleccione una fecha";
+                    feedbackfecha.textContent = errores.fecha;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u",
+                            description: description.value,
+                            date: fecha.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            tablaObservaciones.ajax.reload();
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            Toastify({
+                                text: "Observación actualizada",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                            titulo_modal.textContent = 'Nueva observación';
+                            guardar.textContent = 'Guardar';
+                        }
+                    });
+                }
             }
         }
     });

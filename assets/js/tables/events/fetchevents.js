@@ -115,18 +115,35 @@ const newEvent = document.querySelector('#evento'),
     fechaFinal = document.querySelector('input[name="fecha_final"]'),
     precioEvento = document.querySelector('input[name="precio"]'),
     gastosEvento = document.querySelector('input[name="gastos_evento"]'),
-    descripcionGastos = document.querySelector('textarea[name="desc_gastos"]');
+    descripcionGastos = document.querySelector('textarea[name="desc_gastos"]'),
+    inputs = document.querySelectorAll('#modal input, #modal textarea'),
+    feeds = document.querySelectorAll('.feed');
+
+
+inputs.forEach( x =>{
+    x.addEventListener('change', evt =>{
+        evt.target.nextElementSibling.textContent = '';
+    })
+});
 
 categoria.addEventListener('change', evt => {
-
     if(evt.target.value){
         const respuestaEvento = categoriasEventos.find(x => x.id == evt.target.value);
         precioEvento.value = respuestaEvento.price;
+        feedbackprecio.textContent = '';
     }
-
 });
 
 newEvent.addEventListener('click', evt => {
+
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
+
+    inputs.forEach(x =>{
+        x.value = '';
+    });
+
     modal.classList.toggle('hidden');
     triggerChange(categoria)
     guardar.addEventListener('click', crear);
@@ -139,62 +156,87 @@ newEvent.addEventListener('click', evt => {
         modal.classList.toggle('hidden');
         guardar.removeEventListener('click', crear);
         categoria.options[0].selected = true;
-        nombreEvento.value = '';
-        cantidadHoras.value = '';
-        fechaInicial.value = '';
-        fechaFinal.value = '';
-        gastosEvento.value = '';
-        descripcionGastos.value = '';
         closeModal.forEach( e =>{
             e.removeEventListener('click', cerrarCrear);
         });
     }
 
     function crear(e) {
-        modal.classList.toggle('hidden');
+        let errores = {};
 
-        $.ajax({
-            url: "./functions.php",
-            type: "POST",
-            datatype:"json",
-            data:  {
-                solicitud: "c_e",
-                categoria: categoria.value,
-                nombre: nombreEvento.value,
-                horas: cantidadHoras.value,
-                inicial: fechaInicial.value,
-                final: fechaFinal.value,
-                precio: precioEvento.value,
-                gastos: gastosEvento.value,
-                descripcion: descripcionGastos.value
-            },
-            success: function(data) {
-                categoria.options[0].selected = true;
-                nombreEvento.value = '';
-                cantidadHoras.value = '';
-                fechaInicial.value = '';
-                fechaFinal.value = '';
-                gastosEvento.value = '';
-                descripcionGastos.value = '';
-                tablaEventos.ajax.reload();
-                guardar.removeEventListener('click', crear);
-                closeModal.forEach( e =>{
-                    e.removeEventListener('click', cerrarCrear);
-                });
-                Toastify({
-                    text: "Evento agregado",
-                    duration: 3000,
-                    style: {
-                        background: '#10B981'
-                    }
-                }).showToast();
-            }
-        });
+        if(nombreEvento.value.trim().length == 0){
+            errores.nombre = "Por favor, ingrese el nombre del evento";
+            feedbacknombre.textContent = errores.nombre;
+        }
+
+        if(cantidadHoras.value.trim().length == 0 || cantidadHoras.value == 0){
+            errores.horas = "Por favor, ingrese la cantidad de horas del evento";
+            feedbackhoras.textContent = errores.horas;
+        }
+
+        if(precioEvento.value.trim().length == 0){
+            errores.precio = "Por favor, ingrese el precio del evento";
+            feedbackprecio.textContent = errores.precio;
+        }
+
+        if(fechaInicial.value.trim().length == 0){
+            errores.fechainicial = "Por favor, seleccione la fecha inicial del evento";
+            feedbackinicial.textContent = errores.fechainicial;
+        }
+
+        if(fechaFinal.value.trim().length == 0){
+            errores.fechafinal = "Por favor, seleccione la fecha final del evento";
+            feedbackfinal.textContent = errores.fechafinal;
+        }
+
+        if(gastosEvento.value.trim().length == 0){
+            errores.gastos = "Por favor, ingrese el gasto total del evento";
+            feedbackgastos.textContent = errores.gastos;
+        }
+
+        if(Object.keys(errores).length == 0){
+            $.ajax({
+                url: "./functions.php",
+                type: "POST",
+                datatype:"json",
+                data:  {
+                    solicitud: "c_e",
+                    categoria: categoria.value,
+                    nombre: nombreEvento.value,
+                    horas: cantidadHoras.value,
+                    inicial: fechaInicial.value,
+                    final: fechaFinal.value,
+                    precio: precioEvento.value,
+                    gastos: gastosEvento.value,
+                    descripcion: descripcionGastos.value
+                },
+                success: function(data) {
+                    categoria.options[0].selected = true;
+                    tablaEventos.ajax.reload();
+                    guardar.removeEventListener('click', crear);
+                    closeModal.forEach( e =>{
+                        e.removeEventListener('click', cerrarCrear);
+                    });
+                    Toastify({
+                        text: "Evento agregado",
+                        duration: 3000,
+                        style: {
+                            background: '#10B981'
+                        }
+                    }).showToast();
+                    modal.classList.toggle('hidden');
+                }
+            });
+        }
     }
 
 });
 
 function editar(e){
+
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
 
     titulo_modal.textContent = 'Editar evento';
     guardar.textContent = 'Actualizar';
@@ -234,12 +276,6 @@ function editar(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', actualizar);
                 categoria.options[0].selected = true;
-                nombreEvento.value = '';
-                cantidadHoras.value = '';
-                fechaInicial.value = '';
-                fechaFinal.value = '';
-                gastosEvento.value = '';
-                descripcionGastos.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
@@ -249,47 +285,76 @@ function editar(e){
 
             function actualizar(evt) {
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u_e",
-                        categoria: categoria.value,
-                        nombre: nombreEvento.value,
-                        horas: cantidadHoras.value,
-                        inicial: fechaInicial.value,
-                        final: fechaFinal.value,
-                        precio: precioEvento.value,
-                        gastos: gastosEvento.value,
-                        descripcion: descripcionGastos.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        categoria.options[0].selected = true;
-                        nombreEvento.value = '';
-                        cantidadHoras.value = '';
-                        fechaInicial.value = '';
-                        fechaFinal.value = '';
-                        gastosEvento.value = '';
-                        descripcionGastos.value = '';
-                        tablaEventos.ajax.reload();
-                        titulo_modal.textContent = 'Nueva evento';
-                        guardar.textContent = 'Guardar';
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
-                        });
-                        Toastify({
-                            text: "Evento actualizado",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                    }
-                });
+                let errores = {};
+
+
+                if(nombreEvento.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre del evento";
+                    feedbacknombre.textContent = errores.nombre;
+                }
+        
+                if(cantidadHoras.value.trim().length == 0 || cantidadHoras.value == 0){
+                    errores.horas = "Por favor, ingrese la cantidad de horas del evento";
+                    feedbackhoras.textContent = errores.horas;
+                }
+        
+                if(precioEvento.value.trim().length == 0){
+                    errores.precio = "Por favor, ingrese el precio del evento";
+                    feedbackprecio.textContent = errores.precio;
+                }
+        
+                if(fechaInicial.value.trim().length == 0){
+                    errores.fechainicial = "Por favor, seleccione la fecha inicial del evento";
+                    feedbackinicial.textContent = errores.fechainicial;
+                }
+        
+                if(fechaFinal.value.trim().length == 0){
+                    errores.fechafinal = "Por favor, seleccione la fecha final del evento";
+                    feedbackfinal.textContent = errores.fechafinal;
+                }
+        
+                if(gastosEvento.value.trim().length == 0){
+                    errores.gastos = "Por favor, ingrese el gasto total del evento";
+                    feedbackgastos.textContent = errores.gastos;
+                }
+        
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u_e",
+                            categoria: categoria.value,
+                            nombre: nombreEvento.value,
+                            horas: cantidadHoras.value,
+                            inicial: fechaInicial.value,
+                            final: fechaFinal.value,
+                            precio: precioEvento.value,
+                            gastos: gastosEvento.value,
+                            descripcion: descripcionGastos.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            categoria.options[0].selected = true;
+                            tablaEventos.ajax.reload();
+                            titulo_modal.textContent = 'Nueva evento';
+                            guardar.textContent = 'Guardar';
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            Toastify({
+                                text: "Evento actualizado",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                        }
+                    });
+                }
             }
         }
     });

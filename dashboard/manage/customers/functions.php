@@ -5,6 +5,7 @@
     header('Content-Type: application/json; charset=utf-8');
 
     $customer = new Customer();
+    $error = false;
 
     if ($_POST['solicitud'] == 'c') {
 
@@ -50,4 +51,48 @@
         $township = new Township();
         $townships = $township->getAll();
         echo json_encode($townships);
+    }
+    else if($_POST['solicitud'] == 'doc'){
+
+        if(!empty($_POST['document'])){
+            $resulDocument = $customer->checkDocument($_POST['document']);
+            if ((int) $resulDocument['length'] > 0) {
+                $error = true;
+            }
+        }
+
+        echo json_encode($error);
+    }
+    else if($_POST['solicitud'] == 'cod'){
+        
+        if(!empty($_POST['code'])){
+            $resulCode = $customer->checkCode($_POST['code']);
+            if ((int) $resulCode['length'] > 0) {
+                $error = true;
+            }
+        }
+
+        echo json_encode($error);
+    }
+    else if($_POST['solicitud'] == 'ema'){
+
+        if(!empty($_POST['email'])){
+            $resulEmail = $customer->checkEmail($_POST['email']);
+            if ((int) $resulEmail['length'] > 0) {
+                $error = true;
+            }
+        }
+
+        echo json_encode($error);
+    }
+    else if($_POST['solicitud'] == 'tel'){
+
+        if(!empty($_POST['telephone'])){
+            $resulTelephone = $customer->checkTelephone($_POST['telephone']);
+            if ((int) $resulTelephone['length'] > 0) {
+                $error = true;
+            }
+        }
+
+        echo json_encode($error);
     }

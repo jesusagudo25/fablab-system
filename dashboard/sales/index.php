@@ -11,7 +11,7 @@
     $pagina[] = "sales";
 
     $area = new Area();
-    $areaAll = $area->getAll();
+    $areaAll = $area->getAjax();
 
 ?>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Datos del cliente</h5>
                     </div>
-                    <div class="p-5 flex justify-between flex-wrap items-end">
+                    <div class="p-5 flex justify-between flex-wrap items-start">
                         <label class="text-sm w-1/4">
                             <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
@@ -69,7 +69,7 @@
                             <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                 <input type="hidden" name="id_customer">
-                            <span id="feedbackdocumento" class="text-xs text-red-600 hidden">Por favor, proporcione un RUC</span>
+                                <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                         </label>
 
                         <label class="text-sm w-1/4">
@@ -122,7 +122,7 @@
                         <label class="w-2/5 text-sm">
                             <span class="text-gray-800 font-medium">Seleccione la fecha</span>
                             <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required="">
-                            <span id="feedbackfecha" class="text-xs text-red-600 hidden">Por favor, proporcione una fecha</span>
+                            <span id="feedbackfecha" class="text-xs text-red-600"></span>
                         </label>
                         </div>
                         <div class="flex justify-between flex-wrap items-center mb-5">
@@ -174,21 +174,17 @@
                             </table>
                         </div>
 
-                        <div class="text-sm mt-8 hidden" id="acciones">
-                  <span class="text-gray-800 font-medium">
-                  Acciones
-                  </span>
-                            <div class="flex items-center">
-                                <button class="mt-3 flex items-center justify-between mr-5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-md active:bg-red-600 hover:bg-red-700 focus:outline-none" id="anular">
-                                    <i class="fas fa-times mr-3"></i>
-                                    <span>Anular</span>
-                                </button>
-                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none" id="generar">
-                                    <i class="fas fa-save mr-3"></i>
-                                    <span>Generar venta</span>
-                                </button>
-                            </div>
+                        <div class="mt-5 hidden flex items-center justify-center" id="acciones">
+                            <button class="mt-3 flex items-center justify-between mr-5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-md active:bg-red-600 hover:bg-red-700 focus:outline-none" id="anular">
+                                <i class="fas fa-times mr-3"></i>
+                                <span>Anular</span>
+                            </button>
+                            <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none" id="generar">
+                                <i class="fas fa-save mr-3"></i>
+                                <span>Generar venta</span>
+                            </button>
                         </div>
+
                     </div>
                 </div>
                 <!--/Graph Card-->

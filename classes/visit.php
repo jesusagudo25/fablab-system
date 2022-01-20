@@ -81,7 +81,7 @@ class Visit extends Model implements IModel
 
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
     INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
-    WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1)");
+    WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1) AND (v.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -97,7 +97,7 @@ class Visit extends Model implements IModel
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
     INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
     WHERE (v.date BETWEEN :start_date AND :end_date)                                       
-    AND (r.time = 0)");
+    AND (r.time = 0) AND (v.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -117,6 +117,7 @@ class Visit extends Model implements IModel
     INNER JOIN visits s ON v.visit_id = s.visit_id 
     RIGHT JOIN areas a ON v.area_id = a.area_id
     WHERE (s.date BETWEEN :start_date AND :end_date)
+    AND (s.status = 1)
     GROUP BY a.area_id
 ) as x
 RIGHT JOIN areas a ON x.area_id = a.area_id
@@ -140,6 +141,7 @@ GROUP BY a.area_id;");
     INNER JOIN visits_areas va ON v.visit_id = va.visit_id
     RIGHT JOIN reason_visits r ON v.reason_id = r.reason_id
     WHERE (v.date BETWEEN :start_date AND :end_date)
+    AND (v.status = 1)
     GROUP BY r.reason_id
 ) as x
 RIGHT JOIN reason_visits r ON x.reason_id = r.reason_id
@@ -158,7 +160,8 @@ GROUP BY r.reason_id;");
     public function getTimeDifTotal($start_date,$end_date){
         $query = $this->prepare("SELECT COALESCE(SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))),0) AS total FROM visits_areas v 
 INNER JOIN visits s ON v.visit_id = s.visit_id
-WHERE (s.date BETWEEN :start_date AND :end_date)");
+WHERE (s.date BETWEEN :start_date AND :end_date)
+AND (s.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,

@@ -64,14 +64,15 @@
                         <div class="p-5">
                                 <label class="block text-sm">
                                     <span class="text-gray-800 font-medium">Observación</span>
-                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Descripción" name="descripcion"></textarea>
+                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación" name="descripcion"></textarea>
+                                    <span id="feedbackobservacion" class="text-xs text-center text-red-600 feed"></span>
                                 </label>
 
                                 <label class="block text-sm mt-5">
                                     <span class="text-gray-800 font-medium">Fecha</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
+                                    <span id="feedbackfecha" class="text-xs text-center text-red-600 feed"></span>
                                 </label>
-
                         </div>
                         <footer class="flex justify-end align-center border-t p-3">
                             <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar" >Cancelar</button>

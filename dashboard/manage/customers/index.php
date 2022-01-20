@@ -69,7 +69,7 @@ $rangeAll = $range->getAll();
                                 </svg>
                             </button>
                         </div>
-                        <div class="p-5 grid grid-cols-2 gap-5">
+                        <div class="p-5 grid grid-cols-2 gap-5 max-h-96 overflow-auto">
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipodocumento">
@@ -82,12 +82,12 @@ $rangeAll = $range->getAll();
                                 <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 ui-autocomplete-input ui-autocomplete-loading" placeholder="Ingrese el número de RUC con guiones" name="documento" required="" type="text" id="autoComplete" autocomplete="off">
                                     <input type="hidden" name="id_customer">
-                                <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
+                                <span id="feedbackdocumento" class="text-xs text-red-600 feed"></span>
                             </label>
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Codigo de cliente CIDETE</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="0" required="" autocomplete="off">
-                                <span id="feedbackcodigo" class="text-xs text-red-600 "></span>
+                                <span id="feedbackcodigo" class="text-xs text-red-600 feed"></span>
                             </label>
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Nombre</span>
@@ -98,18 +98,18 @@ $rangeAll = $range->getAll();
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Correo</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required="" autocomplete="off">
-                                <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
+                                <span id="feedbackcorreo" class="text-xs text-red-600 feed"></span>
                             </label>
 
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Telefono</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required="" autocomplete="off">
-                                <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
+                                <span id="feedbacktelefono" class="text-xs text-red-600 feed"></span>
                             </label>
                             <div class="text-sm block">
-                <span class="text-gray-700 font-medium">
-                  Selecciona la edad
-                </span>
+                                <span class="text-gray-700 font-medium">
+                                Selecciona la edad
+                                </span>
                                 <div class="mt-2 grid grid-cols-2 gap-4">
                                     <?php foreach ($rangeAll as $datos => $valor): ?>
                                         <label class="inline-flex items-center text-gray-600">

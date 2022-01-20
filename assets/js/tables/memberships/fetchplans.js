@@ -11,7 +11,21 @@ tablaPlanes = $('#datatable-json').DataTable({
         document.querySelector('.dt-buttons').innerHTML += `                            <button id="plan" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nuevo plan<i class="fas fa-archive ml-3"></i></button>`;
         const newPlan = document.querySelector('#plan');
 
+        inputs.forEach( x =>{
+            x.addEventListener('change', evt =>{
+                evt.target.nextElementSibling.textContent = '';
+            })
+        });
+
         newPlan.addEventListener('click', evt => {
+            feeds.forEach(x =>{
+                x.textContent = '';
+            });
+
+            inputs.forEach(x =>{
+                x.value = '';
+            });
+
             modal.classList.toggle('hidden');
 
             guardar.addEventListener('click', crear);
@@ -23,42 +37,51 @@ tablaPlanes = $('#datatable-json').DataTable({
             function cerrarCrear(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', crear);
-                nombrePlan.value = '';
-                precioPlan.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarCrear);
                 });
             }
 
             function crear(e) {
-                modal.classList.toggle('hidden');
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "c",
-                        name: nombrePlan.value,
-                        price: precioPlan.value
-                    },
-                    success: function(data) {
-                        nombrePlan.value = '';
-                        precioPlan.value = '';
-                        tablaPlanes.ajax.reload();
-                        guardar.removeEventListener('click', crear);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarCrear);
-                        });
-                        Toastify({
-                            text: "Plan agregado",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                    }
-                });
+                if(nombrePlan.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre del plan";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(precioPlan.value.trim().length == 0 || precioPlan.value == 0){
+                    errores.precio = "Por favor, ingrese el precio base del plan";
+                    feedbackprice.textContent = errores.precio;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "c",
+                            name: nombrePlan.value,
+                            price: precioPlan.value
+                        },
+                        success: function(data) {
+                            modal.classList.toggle('hidden');
+                            tablaPlanes.ajax.reload();
+                            guardar.removeEventListener('click', crear);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarCrear);
+                            });
+                            Toastify({
+                                text: "Plan agregado",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                        }
+                    });
+                }
             }
 
         });
@@ -102,10 +125,15 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     nombrePlan = document.querySelector('input[name="name"]'),
-    precioPlan= document.querySelector('input[name="price"]');
+    precioPlan= document.querySelector('input[name="price"]'),
+    inputs = document.querySelectorAll('#modal input'),
+    feeds = document.querySelectorAll('.feed');
 
 function editar(e){
-
+    feeds.forEach(x =>{
+        x.textContent = '';
+    });
+    
     titulo_modal.textContent = 'Editar plan';
     guardar.textContent = 'Actualizar';
 
@@ -118,7 +146,6 @@ function editar(e){
             id: e.value,
         },
         success: function(data) {
-
             nombrePlan.value = data['name'];
             precioPlan.value = data['price'];
 
@@ -132,8 +159,6 @@ function editar(e){
             function cerrarActualizar(e){
                 modal.classList.toggle('hidden');
                 guardar.removeEventListener('click', actualizar);
-                nombrePlan.value = '';
-                precioPlan.value = '';
                 closeModal.forEach( e =>{
                     e.removeEventListener('click', cerrarActualizar);
                 });
@@ -142,37 +167,49 @@ function editar(e){
             }
 
             function actualizar(evt) {
+                let errores = {};
 
-                $.ajax({
-                    url: "./functions.php",
-                    type: "POST",
-                    datatype:"json",
-                    data:  {
-                        solicitud: "u",
-                        name: nombrePlan.value,
-                        price: precioPlan.value,
-                        id: e.value
-                    },
-                    success: function(data) {
-                        nombrePlan.value = '';
-                        precioPlan.value = '';
-                        tablaPlanes.ajax.reload();
-                        titulo_modal.textContent = 'Nueva evento';
-                        guardar.textContent = 'Guardar';
-                        guardar.removeEventListener('click', actualizar);
-                        closeModal.forEach( e =>{
-                            e.removeEventListener('click', cerrarActualizar);
-                        });
-                        Toastify({
-                            text: "Plan actualizado",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                        modal.classList.toggle('hidden');
-                    }
-                });
+                if(nombrePlan.value.trim().length == 0){
+                    errores.nombre = "Por favor, ingrese el nombre del plan";
+                    feedbackname.textContent = errores.nombre;
+                }
+
+                if(precioPlan.value.trim().length == 0 || precioPlan.value == 0){
+                    errores.precio = "Por favor, ingrese el precio base del plan";
+                    feedbackprice.textContent = errores.precio;
+                }
+
+                if(Object.keys(errores).length == 0){
+                    $.ajax({
+                        url: "./functions.php",
+                        type: "POST",
+                        datatype:"json",
+                        data:  {
+                            solicitud: "u",
+                            name: nombrePlan.value,
+                            price: precioPlan.value,
+                            id: e.value
+                        },
+                        success: function(data) {
+                            tablaPlanes.ajax.reload();
+                            titulo_modal.textContent = 'Nueva evento';
+                            guardar.textContent = 'Guardar';
+                            guardar.removeEventListener('click', actualizar);
+                            closeModal.forEach( e =>{
+                                e.removeEventListener('click', cerrarActualizar);
+                            });
+                            Toastify({
+                                text: "Plan actualizado",
+                                duration: 3000,
+                                style: {
+                                    background: '#10B981'
+                                }
+                            }).showToast();
+                            modal.classList.toggle('hidden');
+                        }
+                    });
+                }
+                
             }
         }
     });

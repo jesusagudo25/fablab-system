@@ -44,7 +44,7 @@
         $visit->setCustomerId($_POST['customer_id']);
         $visit->setReasonId($_POST['reason_id']);
         $visit->setDate($_POST['date']);
-        $visit->setObservation($_POST['observation']);
+        $visit->setObservation(empty($_POST['observation']) ? NULL : $_POST['observation']);
         $visit->setVisitId($_POST['visit_id']);
 
         $visit->update();

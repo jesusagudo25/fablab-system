@@ -26,7 +26,6 @@ $pagina[] = "gestionar";
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/tables/events/fetchevents.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
@@ -123,7 +122,7 @@ $pagina[] = "gestionar";
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Eventos</h5>
                     </div>
-                    <div class="flex justify-center items-center flex-col w-full overflow-auto">
+                    <div class="flex justify-center items-center flex-col w-full">
                         <div class="w-full flex pl-2 pt-2 pr-2">
                             <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nuevo evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
 

@@ -35,7 +35,6 @@ $rangeAll = $range->getAll();
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="<?= constant('URL')?>assets/js/tables/general/fetchcustomers.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
@@ -171,7 +170,7 @@ $rangeAll = $range->getAll();
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Clientes</h5>
                     </div>
-                    <div class="flex justify-center items-center w-full overflow-auto">
+                    <div class="flex justify-center items-center w-full">
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>

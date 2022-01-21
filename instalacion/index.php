@@ -232,7 +232,7 @@ $model->query("CREATE TABLE areas(
 
     $model->query("INSERT INTO membership_plans(name,price) VALUES('Membresía: Pase de un día',5.00),('Membresía: 15 días',25.00),('Membresía: mensual',50.00);");
 
-    $model->query("INSERT INTO event_category(name,price) VALUES('Capacitaciones: seminarios o talleres de 40 horas',50.00),('Workshop: talleres cortos de 4 horas',10.00),('Fab Lab Kids (verano - 10 días)',50.00);");
+    $model->query("INSERT INTO event_category(name,price) VALUES('Capacitaciones: 40 horas',50.00),('Workshop: 4 horas',10.00),('Fab Lab Kids: 10 días',50.00);");
 
     $model->query("INSERT INTO rental_category(name,price) VALUES('Computadora + Software ',5.00);");
 

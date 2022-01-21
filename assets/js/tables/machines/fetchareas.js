@@ -114,8 +114,46 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     nombreArea = document.querySelector('input[name="name"]'),
-    unidadArea= document.querySelector('select[name="measure"]');
+    unidadArea= document.querySelector('select[name="measure"]'),
+    agregar = document.querySelector('#agregar');
 
+agregar.addEventListener('click',evt => {
+    
+
+    html =`
+            <tr>                    
+                <td class="px-4 py-4">
+                    <div class="flex items-center text-sm">
+                        <p class="font-medium">Electrónica</p>
+                    </div>
+                </td>
+
+                <td class="px-4 py-4">
+                    <button class="flex items-center justify-between px-2 py-2 text-xl font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray">
+                        <i class="fas fa-toggle-on"></i>
+                    </button>
+                </td>        
+
+                <td class="px-4 py-4">
+                    <button class="flex items-center justify-between px-2 py-2 text-xl font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+    document.querySelector("#lista_consumible").innerHTML += html;
+
+    Toastify({
+        text: "Consumible ingresado!",
+        duration: 3000,
+        style: {
+            background: '#10B981'
+        }
+    }).showToast();
+
+});
+    
 function editar(e){
     feedbackname.textContent ='';
 

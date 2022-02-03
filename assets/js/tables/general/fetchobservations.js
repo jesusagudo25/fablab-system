@@ -11,20 +11,14 @@ tablaObservaciones = $('#datatable-json').DataTable({
         document.querySelector('.dt-buttons').innerHTML += `<button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
         const newObs = document.querySelector('#observacion');
 
-        inputs.forEach( x =>{
-            x.addEventListener('change', evt =>{
-                evt.target.nextElementSibling.textContent = '';
-            })
-        });
-
         newObs.addEventListener('click', evt => {
             feeds.forEach(x =>{
                 x.textContent = '';
             });
 
-            inputs.forEach(x =>{
-                x.value = '';
-            });
+            description.value = '';
+            fecha.value = '';
+            
             modal.classList.toggle('hidden');
 
             guardar.addEventListener('click', crear);
@@ -113,7 +107,6 @@ const closeModal = document.querySelectorAll('.close'),
     guardar = document.querySelector('button[name="guardar"]'),
     description = document.querySelector('textarea[name="descripcion"]'),
     fecha= document.querySelector('input[name="fecha"]'),
-    inputs = document.querySelectorAll('#modal input, #modal textarea'),
     feeds = document.querySelectorAll('.feed');
 
 function editar(e){

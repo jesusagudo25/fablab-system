@@ -148,7 +148,7 @@
                             <button type="button" class="self-end px-4 py-2 text-base font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none w-1/12" id="agregar"><i class="fas fa-plus"></i></button>
                         </div>
 
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded">
                             <table class="w-full min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-100">
                                 <tr>

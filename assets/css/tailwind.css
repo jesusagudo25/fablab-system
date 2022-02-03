@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 .dataTables_wrapper{
     @apply text-sm mt-1;
@@ -103,14 +104,3 @@ table.dataTable.no-footer{
     background: rgba(229, 231, 235, 1) !important;
     @apply rounded border-none outline-none !important;
 }
-
-.swiper-button-prev::after,
-.swiper-button-next::after{
-    content: '';
-}
-
-.swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction{
-    bottom: 0 !important;
-}
-
-@tailwind utilities;

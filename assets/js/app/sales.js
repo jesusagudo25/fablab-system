@@ -199,7 +199,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
         <tr id="${numeroItem}">
             <td class="px-4 py-4">
               <div class="flex items-center text-sm">
-              <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700" onclick="editarItem('${categoria_servicio}',${id_servicio},${numeroItem},'${measure}')">
+              <button class="flex items-center justify-center p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-full active:bg-blue-600 hover:bg-blue-700 btn-detalles" onclick="editarItem('${categoria_servicio}',${id_servicio},${numeroItem},'${measure}')">
 <svg fill="currentColor" viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
             </button>
               </div>

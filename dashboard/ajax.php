@@ -17,7 +17,6 @@
     }
     else if($_POST['solicitud'] == 'l'){
 
-
         $customers = $customer->getLabo();
         echo json_encode($customers);
 

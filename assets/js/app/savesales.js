@@ -57,7 +57,7 @@ function generarVenta(e){
 
         if(!value.hasOwnProperty('detalles')){
             itemDetalles.push(value.numeroItem);
-            const btnDetails = document.querySelector('#'+value.numeroItem+' '+'button')
+            const btnDetails = document.querySelector('#'+value.numeroItem+' '+'.btn-detalles');
             btnDetails.classList.remove('bg-blue-500','active:bg-blue-600','hover:bg-blue-700');
             btnDetails.classList.add('bg-red-500','active:bg-red-600','hover:bg-red-700');
         }

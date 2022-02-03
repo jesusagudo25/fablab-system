@@ -138,4 +138,10 @@ class Area extends Model implements IModel
             'id'=>$this->area_id
         ]);
     }
+
+    public function getLastID(){
+        $consultarIDArea = $this->query('SELECT area_id FROM areas ORDER BY area_id DESC LIMIT 1');
+        $areaResultado = $consultarIDArea->fetch();
+        $this->area_id = $areaResultado['area_id'];
+    }
 }

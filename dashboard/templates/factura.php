@@ -171,7 +171,7 @@ else{
 							</td>
 
 							<td>
-                                                Vendedor: ' . $user->getName() . ' ' . $user->getLastname() . '<br />
+                                                Agente: ' . $user->getName() . ' ' . $user->getLastname() . '<br />
                                                 Correo: ' . $user->getEmail() . '
 							</td>
 						</tr>
@@ -188,8 +188,6 @@ else{
 					<td style="text-align: center;" width="10%">Cantidad</td>
 					<td style="text-align: center;" width="15%">Total</td>
 				</tr>';
-
-$total = 0;
 foreach ($detalles as $tabla => $entidad) {
     foreach ($entidad as $registro => $valor){
         $html .= '
@@ -199,14 +197,13 @@ foreach ($detalles as $tabla => $entidad) {
                         <td style="text-align: center;"> 1 </td>
                         <td style="text-align: center;">' . $valor['price'] . '</td>
                     </tr>';
-        $total += $valor['price'];
     }
 }
 $html .= '</tbody>
 			<tfoot>
 				<tr class="heading-foot">
 					<td colspan="3" style="text-align: right;">Total</td>
-					<td style="text-align: center;">'.number_format($total,2).'</td>
+					<td style="text-align: center;">'.$invoice->getTotal().'</td>
 				</tr>
 			</tfoot>
 </table>

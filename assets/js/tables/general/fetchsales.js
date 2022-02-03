@@ -12,6 +12,7 @@ $(document).ready(function () {
                     { "data": "customer_id" },
                     { "data": "user_id" },
                     { "data": "date" },
+                    { "data": "total" },
                     {
                         "data": null,
                         render:function(data, type, row)
@@ -22,11 +23,7 @@ $(document).ready(function () {
                     }
                 ],
                 responsive: true,
-                processing: true,
-                'columnDefs' : [
-                    //hide the second & fourth column
-                    { 'visible': false, 'targets': [0] }
-                ]
+                processing: true
             });
         }
     });

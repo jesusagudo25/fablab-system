@@ -328,7 +328,7 @@
         $mail->CharSet = 'UTF-8';
 
         try {
-            $mail->send();
+            //$mail->send();
         } catch (Exception $e) {
             echo "Mailer Error: " . $mail->ErrorInfo;
         }

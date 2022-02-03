@@ -7,6 +7,7 @@ class Invoice extends Model implements IModel
     private $customer_id;
     private $user_id;
     private $date;
+    private $total;
 
     public function __construct()
     {
@@ -17,6 +18,8 @@ class Invoice extends Model implements IModel
         $this->customer_id = $decoded['id_cliente'];
         $this->user_id = $user_id;
         $this->date = $decoded['fecha'];
+        $this->total = $decoded['total'];
+
 
         $this->save();
 
@@ -79,18 +82,19 @@ class Invoice extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO invoices(customer_id, user_id,date) VALUES (:customer_id, :user_id,:date)');
+        $nuevaFactura = $this->prepare('INSERT INTO invoices(customer_id, user_id,date,total) VALUES (:customer_id, :user_id, :date, :total)');
 
         $nuevaFactura->execute([
             'customer_id' => $this->customer_id,
             'user_id' => $this->user_id,
-            'date' => $this->date
+            'date' => $this->date,
+            'total' => $this->total
         ]);
     }
 
     public function getAll()
     {
-        $query = $this->query("SELECT i.invoice_id, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date FROM invoices i
+        $query = $this->query("SELECT LPAD(i.invoice_id,7,'0') AS invoice_id, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date, total FROM invoices i
         INNER JOIN customers c ON c.customer_id = i.customer_id
         INNER JOIN users u ON u.user_id = i.user_id");
 
@@ -101,7 +105,7 @@ class Invoice extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare("SELECT invoice_id,LPAD(invoice_id,7,'0') AS invoice,customer_id,user_id,date FROM invoices WHERE invoice_id = :invoice_id");
+        $query = $this->prepare("SELECT invoice_id,LPAD(invoice_id,7,'0') AS invoice,customer_id,user_id,date,total FROM invoices WHERE invoice_id = :invoice_id");
 
         $query->execute([
             'invoice_id' => $id
@@ -114,6 +118,7 @@ class Invoice extends Model implements IModel
         $this->customer_id = $invoice['customer_id'];
         $this->user_id = $invoice['user_id'];
         $this->date = $invoice['date'];
+        $this->total = $invoice['total'];
     }
 
     public function getLastID(){
@@ -162,6 +167,14 @@ class Invoice extends Model implements IModel
         return $this->user_id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+    
     /**
      * @return mixed
      */

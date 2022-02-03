@@ -375,7 +375,7 @@ const TIPO_TABLAS = {
                     <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
                             <div class="w-full flex justify-center items-center gap-2">
                                 <span class="text-gray-800 font-medium">Seleccione un evento</span>
-                                <select class="text-sm w-2/5 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
+                                <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
                                 </select>
                                 <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
                             </div>
@@ -830,11 +830,13 @@ function deleteServicio(id_tr){
     }
 }
 
+let total;
+
 function calcular() {
-    // obtenemos todas las filas del tbody
+    // obtenemos todas las filas del tfoot
     let filas = document.querySelectorAll("#detalle_venta tr");
 
-    let total = 0;
+    total = 0;
 
     // recorremos cada una de las filas
     filas.forEach((e) => {

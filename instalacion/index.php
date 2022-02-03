@@ -128,6 +128,7 @@ $model->query("CREATE TABLE areas(
             customer_id INT UNSIGNED NOT NULL,
             user_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL,
+            total DECIMAL(6,2) NOT NULL,
             
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
             FOREIGN KEY (user_id) REFERENCES users(user_id)

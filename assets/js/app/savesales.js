@@ -73,6 +73,7 @@ function generarVenta(e){
     }
     else{
         datos["servicios_ag"] = servicios_ag;
+        datos.total = total;
 
         Swal.fire({
             title: 'Cargando...',

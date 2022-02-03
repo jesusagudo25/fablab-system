@@ -34,7 +34,6 @@ $pagina[] = "gestionar";
 
 <?php require_once '../../templates/header.php'; ?>
 
-<!--Container-->
 <div class="container w-10/12 mx-auto pt-20">
 
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -42,7 +41,6 @@ $pagina[] = "gestionar";
         <div class="flex flex-row flex-wrap flex-grow">
 
             <div class="w-full p-3">
-                <!--Graph Card-->
                 <div class="bg-white border rounded shadow">
                     <div class="border-b p-3">
                         <h5 class="font-bold uppercase text-gray-600">Ventas</h5>
@@ -51,28 +49,25 @@ $pagina[] = "gestionar";
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Num. Factura</th>
                                 <th>Cliente</th>
-                                <th>Vendedor</th>
+                                <th>Agente</th>
                                 <th>Fecha</th>
+                                <th>Total</th>
                                 <th>Acción</th>
                             </tr>
                             </thead>
-                            <!-- Ajax Color Table Body -->
                         </table>
                     </div>
                 </div>
-                <!--/Graph Card-->
+
             </div>
 
         </div>
-
-        <!--/ Console Content-->
 
     </div>
 
 
 </div>
-<!--/container-->
 </body>
 </html>

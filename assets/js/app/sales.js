@@ -160,30 +160,16 @@ agregar.addEventListener('click',evt => {
     registrarServicio(categoria_servicio.value,servicioAdd.id,servicioAdd.name,servicioAdd.price,servicioAdd.measure);
 });
 
-let id_cliente = 0;
 let servicios_ag = [];
 
 let contandorF = 0;
 let html = '';
-let sw= 0;
 
 function registrarServicio(categoria_servicio,id_servicio, descripcion, precio = '0.00',measure = 'S/U') {
 
     contandorF++;
 
     let numeroItem = 'item'+contandorF;
-    servicios_ag.push({
-        categoria: categoria_servicio,
-        servicio: id_servicio,
-        numeroItem: numeroItem,
-        cantidad: 1
-    });
-
-    if(sw === 0 ){
-        sw=1;
-        document.querySelector("#detalle_totales").classList.remove('hidden');
-        document.querySelector("#acciones").classList.remove('hidden');
-    }
 
     let validar = (categoria_servicio == 'areas') || (categoria_servicio == 'eventos');
 
@@ -234,7 +220,22 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
           </tr>
         `;
 
-    document.querySelector("#detalle_venta").innerHTML += html;
+    if(servicios_ag.length == 0){
+        document.querySelector("#detalle_venta").innerHTML = html;
+        document.querySelector("#detalle_totales").classList.remove('hidden');
+        document.querySelector("#acciones").classList.remove('hidden');
+    }
+    else{
+        document.querySelector("#detalle_venta").innerHTML += html;
+    }
+
+    servicios_ag.push({
+        categoria: categoria_servicio,
+        servicio: id_servicio,
+        numeroItem: numeroItem,
+        cantidad: 1
+    });
+        
 
     calcular();
 
@@ -820,9 +821,19 @@ function deleteServicio(id_tr){
     html= document.querySelector("#detalle_venta").innerHTML;
 
     if(html.trim() == ''){
+        document.querySelector("#detalle_venta").innerHTML = `
+        <tr>
+            <td class="p-3 text-center" colspan="6">
+                <div class="flex flex-col gap-1 justify-center items-center text-base">
+                    <span class="text-xl text-emerald-500">
+                        <i class="fas fa-cart-arrow-down"></i>
+                    </span>    
+                    <p class="font-medium">Añadir servicios a la compra</p>
+                </div>
+            </td>
+        </tr>`;
         document.querySelector("#detalle_totales").classList.add('hidden');
         document.querySelector("#acciones").classList.add('hidden');
-        sw=0;
         contandorF = 0;
     }
     else{

@@ -27,7 +27,7 @@ tablaAreas = $('#datatable-json').DataTable({
                 <tr id="null-data">                    
                     <td colspan="3" class="p-2">
                         <div class="flex justify-center items-center text-sm">
-                        <p class="font-medium text-center">Ningún dato disponible en esta tabla</p>
+                            <p class="font-medium text-center">Ningún dato disponible en esta tabla</p>
                         </div>
                     </td>
                 </tr>

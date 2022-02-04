@@ -161,7 +161,16 @@
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200" id="detalle_venta">
-
+                                <tr>
+                                    <td class="p-3 text-center" colspan="6">
+                                        <div class="flex flex-col gap-1 justify-center items-center text-base">
+                                            <span class="text-xl text-emerald-500">
+                                                <i class="fas fa-cart-arrow-down"></i>
+                                            </span>    
+                                            <p class="font-medium">Añadir servicios a la compra</p>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                                 <tfoot class="hidden bg-gray-100 divide-y divide-gray-200" id="detalle_totales">
                                 <tr>

@@ -8,7 +8,6 @@ class Report extends Model implements IModel
      private $user_id;
      private $start_date;
      private $end_date;
-     private $document;
 
     public function __construct()
     {

@@ -90,6 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             font-family: \'Helvetica Neue\', \'Helvetica\', Helvetica, Arial, sans-serif;
                             color: #555;
                         }
+
+                        .page_break { page-break-before: always; }
                 
                         .invoice-box table {
                             width: 100%;
@@ -299,6 +301,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $html .= '</ul></div>
 </div>
+<div class="page_break"></div>
+<h1>Sección para informe de ventas</h1>
                         </body>
                         </html>';
 

@@ -102,7 +102,7 @@ $pagina[] = "gestionar";
                                     <span class="ml-2"> <?= $valor['name'] ?></span>
                                 </label>
                                 <div class="p-2 hidden" id="area<?= $valor['id'] ?>">
-                                    <label for="arrival_time" class="mr-2">Hora de llegada:
+                                    <label for="arrival_time">Hora de llegada:
                                         <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     </label>
 

@@ -514,7 +514,7 @@ areasTrabajo.forEach(evt =>{
     });
 });
 
-//Modal-areas para cuando se va a crear una reservacion
+//Modal-areas para cuando se va a crear/editar una reservacion
 function seleccionarAreas(e){
     feedsareas.forEach(x =>{
         x.textContent = '';

@@ -224,10 +224,10 @@ class Visit extends Model implements IModel
 
         $query->execute([
             'customer_id' => $this->customer_id,
-            'reason_id'=>$this->reason_id,
-            'date'=>$this->date,
-            'observation'=>$this->observation,
-            'visit_id'=>$this->visit_id
+            'reason_id'=> $this->reason_id,
+            'date'=> $this->date,
+            'observation'=> $this->observation,
+            'visit_id'=> $this->visit_id
         ]);
     }
 

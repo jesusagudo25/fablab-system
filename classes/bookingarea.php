@@ -36,8 +36,7 @@ class BookingArea extends Model implements IModel
         $query = $this->prepare("SELECT b.booking_id, CONCAT(b.date,' ',ba.arrival_time) AS start, CONCAT(b.date,' ',ba.departure_time) AS end, a.name FROM booking_area ba 
         INNER JOIN areas a ON ba.area_id = a.area_id
         INNER JOIN bookings b ON b.booking_id = ba.booking_id
-        WHERE b.date BETWEEN :start AND :end
-        AND b.status = 1");
+        WHERE b.date BETWEEN :start AND :end");
 
         $query->execute([
             'start' => $start,

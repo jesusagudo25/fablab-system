@@ -261,7 +261,7 @@ $model->query("CREATE TABLE areas(
 
     $model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
 
-    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas'),('Bordadora CNC','Pulgadas');");
+    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini Fresadora CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas'),('Bordadora CNC','Pulgadas');");
 
     $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) 
     VALUES 

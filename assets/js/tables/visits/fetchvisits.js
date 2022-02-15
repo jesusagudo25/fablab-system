@@ -1,4 +1,6 @@
 let reasonVisits = [];
+let optionSelected,
+    buttonEditAreas;
 
 posting = $.post( './functions.php', { solicitud: 'raz' } );
 
@@ -178,6 +180,7 @@ function editarVisita(e){
             id: e.value,
         },
         success: function(data) {
+            areasActualizar = data['areas'];
             modal_content.innerHTML = `                                
             <label class="block text-sm">
                 <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
@@ -191,8 +194,8 @@ function editarVisita(e){
             <label class="block text-sm mt-5">
                 <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC del visitante</span>
                 <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
-                <input type="hidden" name="id_customer">
                 <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
+                <input type="hidden" name="id_customer">
             </label>
             
             <label class="block text-sm mt-5">
@@ -208,7 +211,8 @@ function editarVisita(e){
             
         <div class="text-sm mt-5 hidden" id="containerarea">
         <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
-        <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" value="${e.value}" onclick="editarAreas(this)">Editar</button>
+        <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas" value="${e.value}" onclick="editarAreas(this)">Editar</button>
+        <span id="feedbackbuttonareas" class="text-xs text-red-600 feed"></span>
     </div>                                
             
             <label class="block text-sm mt-5">
@@ -232,6 +236,8 @@ function editarVisita(e){
                 observacion = document.querySelector('textarea[name="observacion"]'),
                 idHidden = document.querySelector('input[type="hidden"]');
 
+                buttonEditAreas = document.querySelector('button[name="editareas"]');
+
                     const TIPOS_DOCUMENTOS = {
                         C: () => {
                             tituloDocumento.textContent = 'Número de cédula del visitante';
@@ -252,6 +258,7 @@ function editarVisita(e){
                             idHidden.value = '';
                             nombreCliente.value = '';
                         }
+                        feedbackdocumento.textContent = '';
                     });
 
                     tipoDocumento.addEventListener('change', evt => {
@@ -260,12 +267,12 @@ function editarVisita(e){
                         triggerKeyup(inputDocumento);
                     });
 
-                    tipoDocumento.value = data['document_type'];
+                    tipoDocumento.value = data['visits']['document_type'];
                     triggerChange(tipoDocumento);
 
-                    inputDocumento.value = data['document'];
-                    idHidden.value = data['customer_id'];
-                    nombreCliente.value = data['name'];
+                    inputDocumento.value = data['visits']['document'];
+                    idHidden.value = data['visits']['customer_id'];
+                    nombreCliente.value = data['visits']['name'];
 
                     $("#autoComplete").autocomplete({
 
@@ -287,7 +294,6 @@ function editarVisita(e){
                             $('#autoComplete').val(ui.item.label);
                             idHidden.value = ui.item.id;
                             nombreCliente.value = ui.item.name;
-
 
                             Toastify({
                                 text: "Visitante seleccionado",
@@ -314,12 +320,14 @@ function editarVisita(e){
 
                     reasonVisits.forEach( value => {
                         razonVisita.innerHTML += `
-                        <option value="${value.reason_id}" class="${value.time == 1  ? 'notfree' : 'free' }" ${value.reason_id == data['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
+                        <option value="${value.reason_id}" class="${value.time == 1  ? 'notfree' : 'free' }" ${value.reason_id == data['visits']['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
                     });
 
                     if(razonVisita.options[razonVisita.selectedIndex].classList.contains('notfree')){
                         containerArea.classList.remove('hidden')
                     }
+
+                    optionSelected = razonVisita.options[razonVisita.selectedIndex];
 
                     razonVisita.addEventListener('change', evt => {
                         optionSelected = evt.target.options[evt.target.selectedIndex];
@@ -331,8 +339,8 @@ function editarVisita(e){
                         }
                     });
 
-                    fechaVisita.value = data['date'];
-                    observacion.value = data['observation'];
+                    fechaVisita.value = data['visits']['date'];
+                    observacion.value = data['visits']['observation'];
 
                     footer_modal.classList.remove('hidden');
                     modal.classList.toggle('hidden');
@@ -356,7 +364,13 @@ function editarVisita(e){
 
                         //No se valida las areasActualizar vacias cuando se cambia de razonesfree->notfree
                         let errores = {};
-
+                        
+                        //Refactorizar----------------------------
+                        let datos = {
+                            reason_id: razonVisita.value,
+                            observation: observacion.value
+                        };
+                    
                         if(inputDocumento.value.trim().length == 0){
                             if(tipoDocumento.value == 'R'){
                                 errores.documento = "Por favor, proporcione un RUC";
@@ -368,17 +382,35 @@ function editarVisita(e){
                                 errores.documento = "Por favor, proporcione un pasaporte";
                             }
                             feedbackdocumento.textContent = errores.documento;
+                            inputDocumento.addEventListener('change', cambioValor);
                         }
                         else if(idHidden.value.trim().length == 0){
                             errores.id = "Por favor, seleccione o agregue un cliente";
                             feedbackdocumento.textContent = errores.id;
+                        }
+                        else{
+                            datos["customer_id"] = idHidden.value;
                         }
 
                         if(fechaVisita.value.trim().length == 0){
                             errores.fecha = "Por favor, seleccione una fecha";
                             feedbackfecha.textContent = errores.fecha;
                         }
-                        //Refactorizar
+                        else{
+                            datos["date"] = fechaVisita.value;
+                        }
+                    
+                        if(optionSelected.classList.contains('notfree')){
+                            if(areasActualizar.length == 0){
+                                buttonEditAreas.classList.remove('bg-blue-500', 'active:bg-blue-600','hover:bg-blue-700');
+                                buttonEditAreas.classList.add('bg-red-500', 'active:bg-red-600','hover:bg-red-700');
+                                errores.areas = "Por favor, seleccione las áreas a visitar";
+                                feedbackbuttonareas.textContent = errores.areas;
+                            }
+                            else{
+                                datos["areasChecked"] = areasActualizar;
+                            }
+                        }
 
                         if(Object.keys(errores).length == 0){
                             $.ajax({
@@ -387,12 +419,7 @@ function editarVisita(e){
                                 datatype:"json",
                                 data:  {
                                     solicitud: "up_v",
-                                    customer_id: idHidden.value,
-                                    reason_id: razonVisita.value,
-                                    time: razonVisita.options[razonVisita.selectedIndex].classList.contains('free') ? 1 : 0,
-                                    areas: areasActualizar,
-                                    date: fechaVisita.value,
-                                    observation: observacion.value,
+                                    datos: datos,
                                     visit_id: e.value
                                 },
                                 success: function(data) {
@@ -461,37 +488,8 @@ function editarAreas(e){
             document.querySelector('input[name="departure_time_area'+x.area_id+'"]').value = x.departure_time;
         });
 
-        modalAreas.classList.toggle('hidden');
     }
-    else{
-        $.ajax({
-            url: "./functions.php",
-            type: "POST",
-            datatype:"json",
-            data:  {
-                solicitud: "id_va",
-                id: e.value,
-            },
-            success: function(info) {
-                areasActualizar = info;
-                areasActualizar.forEach(x => {
-                    document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
-                    const areaCheck = document.querySelector('#area'+x.area_id);
-                    if(areaCheck.nextElementSibling.classList.contains('feed')){
-                        areaCheck.parentElement.classList.remove('p-3');
-                        areaCheck.parentElement.classList.add('px-3','pt-3');
-                    }
-                    else{
-                        areaCheck.nextElementSibling.classList.remove('mt-4');
-                    }
-                    document.querySelector('#area'+x.area_id).classList.remove('hidden');
-                    document.querySelector('input[name="arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
-                    document.querySelector('input[name="departure_time_area'+x.area_id+'"]').value = x.departure_time;
-                });
-
-                modalAreas.classList.toggle('hidden');
-            }});
-    }
+    modalAreas.classList.toggle('hidden');
 
     closeAreas.forEach( e =>{
         e.addEventListener('click', cerrarEditarAreas);
@@ -512,52 +510,86 @@ function editarAreas(e){
 
         let areasTempo = [];
 
-        areasTrabajo.forEach(x =>{
+    areasTrabajo.forEach(x =>{
 
-            if(x.checked){
-                let area = {
-                    area_id: x.value,
-                    arrival_time: document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value,
-                    departure_time: document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value
-                }
-
-                if(area.arrival_time.trim().length == 0){
-                    errores['area'+x.value] = "Por favor, proporcione una hora de llegada";
-                    document.querySelector('#feedbackarea'+x.value).textContent = errores['area'+x.value];
-
-                    document.querySelector('input[name="arrival_time_area'+x.value+'"]').addEventListener('change',evt =>{
-                        if(evt.target.value.trim().length != 0){
-                            document.querySelector('#feedbackarea'+x.value).textContent = '';
-                        }
-                    });
-                }
-
-                areasTempo.push(area);
+        if(x.checked){
+            let area = {
+                area_id: x.value,
+                arrival_time: document.querySelector('input[name="'+'arrival_time_area'+x.value+'"]').value,
+                departure_time: document.querySelector('input[name="'+'departure_time_area'+x.value+'"]').value
             }
-        });
 
-        if(areasTempo.length == 0){
-            errores.areas = "Por favor, seleccione las áreas deseadas";
-            feedbackareas.textContent = errores.areas;
-        }
+            if(area.arrival_time.trim().length == 0 && area.departure_time.trim().length == 0){
+                errores['area'+x.value] = "Por favor, proporcione una hora de llegada y salida";
+                document.querySelector('#feedbackarea'+x.value).textContent = errores['area'+x.value];
 
-        if(Object.keys(errores).length == 0){
+                document.querySelector('input[name="arrival_time_area'+x.value+'"]').addEventListener('change',validateTime);
 
-            areasActualizar = Array.from(areasTempo);
-            modalAreas.classList.toggle('hidden');
-            guardarAreas.removeEventListener('click', actualizarAreas);
-            closeAreas.forEach( e =>{
-                e.removeEventListener('click', cerrarEditarAreas);
-            });
-    
-            Toastify({
-                text: "Areas Actualizadas",
-                duration: 3000,
-                style: {
-                    background: '#10B981'
+                document.querySelector('input[name="departure_time_area'+x.value+'"]').addEventListener('change', validateTime);
+            }
+            else if(area.arrival_time.trim().length == 0){
+                errores['area'+x.value] = "Por favor, proporcione una hora de llegada";
+
+                document.querySelector('#feedbackarea'+x.value).textContent = errores['area'+x.value];
+
+                document.querySelector('input[name="arrival_time_area'+x.value+'"]').addEventListener('change',validateTime);
+            }
+            else if(area.departure_time.trim().length == 0){
+                errores['area'+x.value] = "Por favor, proporcione una hora de salida";
+
+                document.querySelector('#feedbackarea'+x.value).textContent = errores['area'+x.value];
+
+                document.querySelector('input[name="departure_time_area'+x.value+'"]').addEventListener('change', validateTime);
+            }
+
+            function validateTime(e){
+                if(e.target.parentElement.htmlFor == 'arrival_time'){
+                    if(e.target.value.trim().length != 0 && e.target.parentElement.nextElementSibling.children[0].value.trim().length != 0 ){
+                        document.querySelector('#feedbackarea'+x.value).textContent = '';
+                        e.target.removeEventListener('change', validateTime);
+                    }
+                    else{
+                        document.querySelector('#feedbackarea'+x.value).textContent = 'Por favor, proporcione una hora de salida';
+                    }
                 }
-            }).showToast();
+                else{
+                    if(e.target.value.trim().length != 0 && e.target.parentElement.previousElementSibling.children[0].value.trim().length != 0 ){
+                        document.querySelector('#feedbackarea'+x.value).textContent = '';
+                        e.target.removeEventListener('change', validateTime);
+                    }
+                    else{
+                        document.querySelector('#feedbackarea'+x.value).textContent = 'Por favor, proporcione una hora de llegada';
+                    }
+                }
+            }
+            areasTempo.push(area);
         }
+    });
+
+    if(areasTempo.length == 0){
+        errores.areas = "Por favor, seleccione las áreas deseadas";
+        feedbackareas.textContent = errores.areas;
+    }
+
+    if(Object.keys(errores).length == 0){
+
+        areasActualizar = Array.from(areasTempo);
+        modalAreas.classList.toggle('hidden');
+        guardarAreas.removeEventListener('click', actualizarAreas);
+        closeAreas.forEach( e =>{
+            e.removeEventListener('click', cerrarEditarAreas);
+        });
+        buttonEditAreas.classList.remove('bg-red-500', 'active:bg-red-600','hover:bg-red-700');
+        buttonEditAreas.classList.add('bg-blue-500', 'active:bg-blue-600','hover:bg-blue-700');
+        feedbackbuttonareas.textContent = '';
+        Toastify({
+            text: "Areas Actualizadas!",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
+    }
 
     }
 }
@@ -603,3 +635,10 @@ function interruptor(e) {
     });
         
 }
+
+//Funcion para detectar cambio de valor en un campo incorrecto<-validate
+function cambioValor(e) {
+    e.target.nextElementSibling.textContent = '';
+    e.target.removeEventListener('change',cambioValor);
+}
+

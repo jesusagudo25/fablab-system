@@ -5,6 +5,7 @@
     header('Content-Type: application/json; charset=utf-8');
 
     $visit = new Visit();
+    $visit_area = new VisitArea();
 
     if ($_POST['solicitud'] == 'v') {
 
@@ -19,10 +20,13 @@
 
         echo json_encode($reason_visits);
     }else if ($_POST['solicitud'] == 'id_v') {
+        $data = array();
 
-        $visits= $visit->get($_POST['id']);
+        $data['visits']= $visit->get($_POST['id']);
+        $data['areas']= $visit_area->get($_POST['id']);
 
-        echo json_encode($visits);
+        echo json_encode($data);
+
     }else if ($_POST['solicitud'] == 'd') {
         $visit->setStatus($_POST['status']);
         $visit->delete($_POST['id']);
@@ -30,24 +34,17 @@
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'up_v') {
 
-        if($_POST['time']){
-            $visit_area = new VisitArea();
-            $visit_area->delete($_POST['visit_id']);
-        }
-        else{
-            if (!empty($_POST['areas'])) {
-                $visit_area = new VisitArea();
-                $visit_area->deleteSave($_POST['visit_id'],$_POST['areas']);
-            }
-        }//Refactorizar
-
-        $visit->setCustomerId($_POST['customer_id']);
-        $visit->setReasonId($_POST['reason_id']);
-        $visit->setDate($_POST['date']);
-        $visit->setObservation(empty($_POST['observation']) ? NULL : $_POST['observation']);
+        $datos = $_POST['datos'];
+        
+        $visit->setCustomerId($datos['customer_id']);
+        $visit->setReasonId($datos['reason_id']);
+        $visit->setDate($datos['date']);
+        $visit->setObservation(empty($datos['observation']) ? NULL : $datos['observation']);
         $visit->setVisitId($_POST['visit_id']);
-
+        
         $visit->update();
+
+        empty($datos['areasChecked']) ? $visit_area->delete($_POST['visit_id']) : $visit_area->deleteSave($_POST['visit_id'],$datos['areasChecked']);
 
         echo json_encode('true');
     }else if ($_POST['solicitud'] == 'id_va') {
@@ -57,3 +54,4 @@
 
         echo json_encode($visits_areas);
     }
+    

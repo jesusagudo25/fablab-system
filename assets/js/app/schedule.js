@@ -21,7 +21,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, { //Timezone local en pc de
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
-    events: '/fablabSystem/dashboard/schedule/functions.php',
+    events: './functions.php',
     eventTimeFormat: { 
         hour: 'numeric', 
         minute: '2-digit'

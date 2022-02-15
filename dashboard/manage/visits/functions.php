@@ -39,7 +39,7 @@
                 $visit_area = new VisitArea();
                 $visit_area->deleteSave($_POST['visit_id'],$_POST['areas']);
             }
-        }
+        }//Refactorizar
 
         $visit->setCustomerId($_POST['customer_id']);
         $visit->setReasonId($_POST['reason_id']);

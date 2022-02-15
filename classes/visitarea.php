@@ -12,8 +12,7 @@ class VisitArea extends Model implements IModel
         parent::__construct();
     }
 
-    public function save(...$args)
-    {
+    public function save(...$args){
         foreach ($args[1] as $datos => $valor) {
             $nuevaVisitaArea = $this->prepare('INSERT INTO visits_areas(visit_id,area_id,arrival_time,departure_time) VALUES (:id_visita, :id_area, :hora_llegada, :hora_salida)');
 
@@ -67,8 +66,7 @@ class VisitArea extends Model implements IModel
         return $visit_area;
     }
 
-    public function delete($id)
-    {
+    public function delete($id){
         $deleteVA = $this->prepare('DELETE FROM visits_areas WHERE visit_id = :visit_id');
 
         $deleteVA->execute([
@@ -76,8 +74,7 @@ class VisitArea extends Model implements IModel
         ]);
     }
 
-    public function update()
-    {
+    public function update(){
         // TODO: Implement update() method.
     }
 

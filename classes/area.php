@@ -91,7 +91,7 @@ class Area extends Model implements IModel
 
     public function getAjax(){
 
-        $query = $this->query('SELECT area_id AS id, name, measure,status FROM areas WHERE status = 1');
+        $query = $this->query('SELECT area_id AS id, name, measure,status FROM areas WHERE status = 1 ORDER BY name ASC');
 
         $areas = $query->fetchAll(PDO::FETCH_ASSOC);
 

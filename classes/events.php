@@ -44,6 +44,23 @@ class Events extends Model implements IModel
         return $events;
     }
 
+    public function getAllRange($start,$end){
+        $query = $this->prepare('SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses, e.status FROM events e
+        INNER JOIN event_category ec ON e.category_id = ec.category_id 
+        WHERE (e.initial_date >= :start 
+        OR e.final_date <= :end)
+        AND e.status = 1');
+
+        $query->execute([
+            'start' => $start,
+            'end' => $end
+        ]);
+
+        $events = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $events;
+    }
+
     public function getToInvoice()
     {
         $query = $this->query('SELECT * FROM events

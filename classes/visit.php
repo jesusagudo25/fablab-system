@@ -47,11 +47,26 @@ class Visit extends Model implements IModel
         $this->save();
         $this->getLastID();
 
+        if(!empty($decoded['booking_id'])){
+
+            //Se borran las areas de la reserva
+            if (!empty($areasChecked)) {
+                $booking_areas = new BookingArea();
+                $booking_areas->delete($decoded['booking_id']);
+            }
+            
+            //Se borra la reserva <- se puede evitar con cascade
+            $booking = new Booking();
+            $booking->delete($decoded['booking_id']);
+
+        }
+
         if (!empty($areasChecked)) {
             $visits_areas = new VisitArea();
             $visits_areas->save($this->visit_id, $areasChecked);
         }
 
+        //Se deben delegar responsabilidades a las clases implicadas -> crear metodos para accion
     }
 
     public function save(...$args) //Save solo table_visit
@@ -66,8 +81,7 @@ class Visit extends Model implements IModel
         ]);
     }
 
-    public function getAll()
-    {
+    public function getAll(){
         $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation, v.status FROM visits v
         INNER JOIN customers c ON c.customer_id = v.customer_id
         INNER JOIN reason_visits r ON r.reason_id = v.reason_id');
@@ -80,8 +94,8 @@ class Visit extends Model implements IModel
     public function getVisitsNotFree($start_date,$end_date){
 
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
-    INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
-    WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1) AND (v.status = 1)");
+        INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
+        WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1) AND (v.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -95,9 +109,9 @@ class Visit extends Model implements IModel
 
     public function getVisitsFree($start_date,$end_date){
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
-    INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
-    WHERE (v.date BETWEEN :start_date AND :end_date)                                       
-    AND (r.time = 0) AND (v.status = 1)");
+        INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
+        WHERE (v.date BETWEEN :start_date AND :end_date)                                       
+        AND (r.time = 0) AND (v.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -112,16 +126,16 @@ class Visit extends Model implements IModel
     public function getTimeDifAreas($start_date,$end_date){
 
         $query = $this->prepare("SELECT a.name, COALESCE(x.diferencia,0) AS diferencia FROM
-(
-    SELECT SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))) AS diferencia, a.area_id FROM visits_areas v 
-    INNER JOIN visits s ON v.visit_id = s.visit_id 
-    RIGHT JOIN areas a ON v.area_id = a.area_id
-    WHERE (s.date BETWEEN :start_date AND :end_date)
-    AND (s.status = 1)
-    GROUP BY a.area_id
-) as x
-RIGHT JOIN areas a ON x.area_id = a.area_id
-GROUP BY a.area_id;");
+        (
+            SELECT SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))) AS diferencia, a.area_id FROM visits_areas v 
+            INNER JOIN visits s ON v.visit_id = s.visit_id 
+            RIGHT JOIN areas a ON v.area_id = a.area_id
+            WHERE (s.date BETWEEN :start_date AND :end_date)
+            AND (s.status = 1)
+            GROUP BY a.area_id
+        ) as x
+        RIGHT JOIN areas a ON x.area_id = a.area_id
+        GROUP BY a.area_id;");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -136,16 +150,16 @@ GROUP BY a.area_id;");
     public function getTimeDifRazones($start_date,$end_date){
 
         $query = $this->prepare("SELECT r.name, COALESCE(x.diferencia,0) AS diferencia, r.time FROM
-(
-    SELECT SUM(HOUR(TIMEDIFF(va.departure_time,va.arrival_time))) AS diferencia, r.reason_id FROM visits v
-    INNER JOIN visits_areas va ON v.visit_id = va.visit_id
-    RIGHT JOIN reason_visits r ON v.reason_id = r.reason_id
-    WHERE (v.date BETWEEN :start_date AND :end_date)
-    AND (v.status = 1)
-    GROUP BY r.reason_id
-) as x
-RIGHT JOIN reason_visits r ON x.reason_id = r.reason_id
-GROUP BY r.reason_id;");
+        (
+            SELECT SUM(HOUR(TIMEDIFF(va.departure_time,va.arrival_time))) AS diferencia, r.reason_id FROM visits v
+            INNER JOIN visits_areas va ON v.visit_id = va.visit_id
+            RIGHT JOIN reason_visits r ON v.reason_id = r.reason_id
+            WHERE (v.date BETWEEN :start_date AND :end_date)
+            AND (v.status = 1)
+            GROUP BY r.reason_id
+        ) as x
+        RIGHT JOIN reason_visits r ON x.reason_id = r.reason_id
+        GROUP BY r.reason_id;");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -159,13 +173,13 @@ GROUP BY r.reason_id;");
 
     public function getTimeDifTotal($start_date,$end_date){
         $query = $this->prepare("SELECT COALESCE(SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))),0) AS total FROM visits_areas v 
-INNER JOIN visits s ON v.visit_id = s.visit_id
-WHERE (s.date BETWEEN :start_date AND :end_date)
-AND (s.status = 1)");
+        INNER JOIN visits s ON v.visit_id = s.visit_id
+        WHERE (s.date BETWEEN :start_date AND :end_date)
+        AND (s.status = 1)");
 
         $query->execute([
             'start_date'=> $start_date,
-            'end_date'=> $end_date,
+            'end_date'=> $end_date
         ]);
 
         $areastimeTotal = $query->fetch();
@@ -179,7 +193,6 @@ AND (s.status = 1)");
         $visitaResultado = $consultarIDVisita->fetch();
         $this->visit_id = $visitaResultado['visit_id'];
     }
-
 
     public function get($id)
     {

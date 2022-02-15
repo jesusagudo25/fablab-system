@@ -25,7 +25,7 @@ class Customer extends Model implements IModel
     public function getAjax($documento,$tipo){
 
         $query = $this->prepare("SELECT *  FROM customers c
-WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type = :tipo LIMIT 3");
+        WHERE document_type = :tipo AND document LIKE CONCAT('%',:documento,'%') AND status = 1 LIMIT 3");
         $query->execute([
             'documento' => $documento,
             'tipo'=>$tipo
@@ -67,7 +67,7 @@ WHERE document LIKE CONCAT('%',:documento,'%') AND status = 1 AND document_type 
         $query = $this->query('SELECT v.visit_id , va.area_id, c.name AS nombre_cliente,a.name AS nombre_area,va.departure_time FROM visits v
                                         INNER JOIN visits_areas va ON v.visit_id = va.visit_id
                                         INNER JOIN customers c ON v.customer_id = c.customer_id
-INNER JOIN areas a ON va.area_id = a.area_id
+        INNER JOIN areas a ON va.area_id = a.area_id
                                         WHERE (va.departure_time IS NULL ) AND (v.status = 1);');
         $customers = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -76,16 +76,16 @@ INNER JOIN areas a ON va.area_id = a.area_id
 
     public function getAllAgeRange($start_date,$end_date){
         $query = $this->prepare("SELECT ar.name, COALESCE(x.total,0) AS total FROM
-(
-    SELECT COUNT(v.visit_id) AS total, ar.range_id FROM visits v
-    INNER JOIN customers c ON v.customer_id = c.customer_id
-    RIGHT JOIN age_range ar ON c.range_id = ar.range_id
-    WHERE (v.date BETWEEN :start_date AND :end_date)
-    AND (v.status = 1)
-    GROUP BY ar.range_id
-) as x
-RIGHT JOIN age_range ar ON x.range_id = ar.range_id
-GROUP BY ar.range_id;");
+        (
+        SELECT COUNT(v.visit_id) AS total, ar.range_id FROM visits v
+        INNER JOIN customers c ON v.customer_id = c.customer_id
+        RIGHT JOIN age_range ar ON c.range_id = ar.range_id
+        WHERE (v.date BETWEEN :start_date AND :end_date)
+        AND (v.status = 1)
+        GROUP BY ar.range_id
+        ) as x
+        RIGHT JOIN age_range ar ON x.range_id = ar.range_id
+        GROUP BY ar.range_id;");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -99,12 +99,12 @@ GROUP BY ar.range_id;");
 
     public function getAllTypeSex($start_date,$end_date){
         $query = $this->prepare("SELECT
-    COUNT(CASE WHEN c.sex = 'M' THEN c.customer_id END) AS M,
-    COUNT(CASE WHEN c.sex = 'F' THEN c.customer_id END) AS F 
-FROM visits v
-INNER JOIN customers c ON c.customer_id = v.customer_id
-WHERE (v.date BETWEEN :start_date AND :end_date)
-AND (v.status = 1);");
+        COUNT(CASE WHEN c.sex = 'M' THEN c.customer_id END) AS M,
+        COUNT(CASE WHEN c.sex = 'F' THEN c.customer_id END) AS F 
+        FROM visits v
+        INNER JOIN customers c ON c.customer_id = v.customer_id
+        WHERE (v.date BETWEEN :start_date AND :end_date)
+        AND (v.status = 1);");
 
         $query->execute([
             'start_date'=> $start_date,
@@ -237,6 +237,19 @@ AND (v.status = 1);");
         ]);
 
         $resultado = $miConsulta->fetch();
+
+        return $resultado;
+    }
+
+    public function verifyRecord(){
+        $miConsulta = $this->prepare('SELECT customer_id, document_type, document, code, name, range_id, sex, email, telephone, province_id, district_id, township_id  FROM customers WHERE document_type = :type AND document = :document AND status = 1');
+
+        $miConsulta->execute([
+            'type' => $this->document_type,
+            'document' =>$this->document
+        ]);
+
+        $resultado = $miConsulta->fetch(PDO::FETCH_ASSOC);
 
         return $resultado;
     }

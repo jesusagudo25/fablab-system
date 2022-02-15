@@ -96,8 +96,8 @@ const modal_content = document.querySelector('#modal-content'),
     feedsareas = document.querySelectorAll('#modal-areas-content .feed');
 
 areasTrabajo.forEach(evt =>{
-    evt.addEventListener('click', item =>{
-        const areaCheck = document.querySelector('#area'+item.target.value);
+    evt.addEventListener('click', x =>{
+        const areaCheck = document.querySelector('#area'+x.target.value);
         if(areaCheck.nextElementSibling.classList.contains('feed')){
             areaCheck.parentElement.classList.toggle('p-3');
             areaCheck.parentElement.classList.toggle('px-3','pt-3');
@@ -106,10 +106,13 @@ areasTrabajo.forEach(evt =>{
             areaCheck.nextElementSibling.classList.toggle('mt-4');
         }
         areaCheck.classList.toggle('hidden');
+        document.querySelector('input[name="arrival_time_area'+x.target.value+'"]').value = '';
+        document.querySelector('input[name="departure_time_area'+x.target.value+'"]').value = '';
         feedbackareas.textContent = '';
     });
 });
 
+//Consultar areas -> Modal separado
 function verAreas(e){
 
     modal_content.innerHTML = `
@@ -162,6 +165,7 @@ function verAreas(e){
     });
 }
 
+//Editar visita -> Modal separado
 function editarVisita(e){
 
     titulo_modal.textContent = 'Editar visita';
@@ -175,48 +179,48 @@ function editarVisita(e){
         },
         success: function(data) {
             modal_content.innerHTML = `                                
-                                <label class="block text-sm">
-                                    <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
-                            <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
-                                <option value="R">RUC</option>
-                                <option value="C">Cédula</option>
-                                <option value="P">Pasaporte</option>
-                            </select>
-                                </label>
-                                
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC del visitante</span>
-                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
-                                    <input type="hidden" name="id_customer">
-                                    <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
-                                </label>
-                                
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Nombre de visitante</span>
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin visitante seleccionado" type="text" name="name" disabled>
-                                </label>
+            <label class="block text-sm">
+                <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
+        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
+            <option value="R">RUC</option>
+            <option value="C">Cédula</option>
+            <option value="P">Pasaporte</option>
+        </select>
+            </label>
+            
+            <label class="block text-sm mt-5">
+                <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC del visitante</span>
+                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
+                <input type="hidden" name="id_customer">
+                <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
+            </label>
+            
+            <label class="block text-sm mt-5">
+                <span class="text-gray-800 font-medium">Nombre de visitante</span>
+                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin visitante seleccionado" type="text" name="name" disabled>
+            </label>
 
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="razonvisita">
-                            </select>
-                                </label>
-                                
-                          <div class="text-sm mt-5 hidden" id="containerarea">
-                            <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
-                            <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" value="${e.value}" onclick="editarAreas(this)">Editar</button>
-                        </div>                                
-                                
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
-                                    <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
-                                    <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
-                                </label>
+            <label class="block text-sm mt-5">
+                <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
+                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="razonvisita">
+        </select>
+            </label>
+            
+        <div class="text-sm mt-5 hidden" id="containerarea">
+        <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
+        <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" value="${e.value}" onclick="editarAreas(this)">Editar</button>
+    </div>                                
+            
+            <label class="block text-sm mt-5">
+                <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
+                <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
+                <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
+            </label>
 
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Observación complementaria</span>
-                                    <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observacion"></textarea>
-                                </label>`;
+            <label class="block text-sm mt-5">
+                <span class="text-gray-800 font-medium">Observación complementaria</span>
+                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observacion"></textarea>
+            </label>`;
 
             const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
                 tituloDocumento=  document.querySelector('#tituloDocumento'),
@@ -310,7 +314,7 @@ function editarVisita(e){
 
                     reasonVisits.forEach( value => {
                         razonVisita.innerHTML += `
-<option value="${value.reason_id}" class="${value.time == 1  ? 'notfree' : 'free' }" ${value.reason_id == data['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
+                        <option value="${value.reason_id}" class="${value.time == 1  ? 'notfree' : 'free' }" ${value.reason_id == data['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
                     });
 
                     if(razonVisita.options[razonVisita.selectedIndex].classList.contains('notfree')){
@@ -350,6 +354,7 @@ function editarVisita(e){
 
                     function actualizar(evt) {
 
+                        //No se valida las areasActualizar vacias cuando se cambia de razonesfree->notfree
                         let errores = {};
 
                         if(inputDocumento.value.trim().length == 0){
@@ -373,6 +378,7 @@ function editarVisita(e){
                             errores.fecha = "Por favor, seleccione una fecha";
                             feedbackfecha.textContent = errores.fecha;
                         }
+                        //Refactorizar
 
                         if(Object.keys(errores).length == 0){
                             $.ajax({

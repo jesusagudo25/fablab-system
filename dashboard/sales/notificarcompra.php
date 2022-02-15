@@ -298,12 +298,12 @@
 
         $mail->isSMTP();
 
-        $mail->Host = "mail.jagudodeveloper.educationhost.cloud";
+        $mail->Host = "smtp.hostinger.com";
 
         $mail->SMTPAuth = true;
 
-        $mail->Username = "support@jagudodeveloper.educationhost.cloud";
-        $mail->Password = "Panama09";
+        $mail->Username = "jagudo@explorando.xyz";
+        $mail->Password = "FabLab*22";
 
         $mail->SMTPOptions = array(
             'ssl' => array(
@@ -315,7 +315,7 @@
 
         $mail->Port = 587;
 
-        $mail->From = "support@jagudodeveloper.educationhost.cloud";
+        $mail->From = "jagudo@explorando.xyz";
         $mail->FromName = "FabLab";
 
         $mail->addAddress($customer->getEmail(), $customer->getName());
@@ -328,7 +328,7 @@
         $mail->CharSet = 'UTF-8';
 
         try {
-            //$mail->send();
+            $mail->send();
         } catch (Exception $e) {
             echo "Mailer Error: " . $mail->ErrorInfo;
         }

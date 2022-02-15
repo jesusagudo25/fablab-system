@@ -89,6 +89,18 @@
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
         );");
 
+    $model->query("CREATE TABLE bookings(
+            booking_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            document_type CHAR NOT NULL,
+            document VARCHAR(60) NOT NULL,
+            name VARCHAR(90) NOT NULL,
+            reason_id INT UNSIGNED NOT NULL,
+            date DATE NOT NULL,
+            observation TEXT NULL,
+    
+            FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id)
+        );");
+
 $model->query("CREATE TABLE areas(
             area_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
@@ -105,6 +117,15 @@ $model->query("CREATE TABLE areas(
             FOREIGN KEY (visit_id) REFERENCES visits(visit_id),
             FOREIGN KEY (area_id) REFERENCES areas(area_id)
         );   ");
+    $model->query("CREATE TABLE booking_area(
+        booking_id INT UNSIGNED NOT NULL,
+        area_id INT UNSIGNED NOT NULL,
+        arrival_time TIME NOT NULL,
+        departure_time TIME NULL,
+
+        FOREIGN KEY (booking_id) REFERENCES bookings(booking_id),
+        FOREIGN KEY (area_id) REFERENCES areas(area_id)
+    );   ");        
     $model->query("CREATE TABLE observations(
             observation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             user_id INT UNSIGNED NOT NULL,
@@ -197,7 +218,6 @@ $model->query("CREATE TABLE areas(
             FOREIGN KEY (category_id) REFERENCES event_category(category_id)
         );");
 
-
     $model->query("CREATE TABLE membership_invoices(
             invoice_id INT UNSIGNED NOT NULL,
             membership_id INT UNSIGNED NOT NULL,
@@ -229,7 +249,7 @@ $model->query("CREATE TABLE areas(
             
         );");
 
-    $model->query("INSERT INTO user_role(name) VALUES('User'),('Admin'),('Super Admin');");
+    $model->query("INSERT INTO user_role(name) VALUES('Secretaria'),('Agente'),('Administrador');");
 
     $model->query("INSERT INTO membership_plans(name,price) VALUES('Membresía: Pase de un día',5.00),('Membresía: 15 días',25.00),('Membresía: mensual',50.00);");
 
@@ -239,11 +259,23 @@ $model->query("CREATE TABLE areas(
 
     $model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
 
-$model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
+    $model->query("INSERT INTO reason_visits(name,time) VALUES('Proyecto personal',1),('Proyecto académico',1),('Emprendimiento',1),('Capacitación',1),('Visita general/Tour',0);");
 
-$model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas'),('Bordadora CNC','Pulgadas');");
+    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Horas'),('Mini CNC','Gramos'),('Láser','Pulgadas'),('Corte vinyl','Pulgadas'),('CNC grande','Gramos'),('Impresión 3D','Gramos'), ('Diseño en computadora','Horas'),('Bordadora CNC','Pulgadas');");
 
-    $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) VALUES(4,'VINILO ADHESIVO MATE',0.11,0.06),(4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),(4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),(4,'VINILO GLITER',0.30,0.06);");
+    $model->query("INSERT INTO consumables(area_id,name,unit_price,printing_price) 
+    VALUES 
+    (4,'VINILO ADHESIVO MATE',0.11,0.06),
+    (4,'VINILO OPAL, SPARKLE, RAINBOW, SATÍN',0.25,0.06),
+    (4,'VINILO GALAXY, MIRROW, STARLIGHT',0.25,0.06),
+    (1,'Consumible A',0.30,0.06),
+    (2,'Consumible A',0.30,0.06),
+    (3,'Consumible A',0.30,0.06),
+    (4,'Consumible A',0.30,0.06),
+    (5,'Consumible A',0.30,0.06),
+    (6,'Consumible A',0.30,0.06),
+    (7,'Consumible A',0.30,0.06),
+    (8,'Consumible A',0.30,0.06);");
 
 $model->query("INSERT INTO provinces (name) 
 VALUES ('Bocas del Toro'),

@@ -9,6 +9,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     containerArea = document.querySelector('#containerarea'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
+    booking = document.querySelector('#booking'),
     containerRegister = document.querySelector('#containerregister'),
     observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
@@ -110,26 +111,25 @@ distrito.addEventListener('change', evt => {
 
 //Tipo de documento -> RUC/CEDULA/PASAPORTE
 const TIPOS_DOCUMENTOS = {
-    C: () => {
+    C: (tituloDocumento,inputDocumento) => {
         tituloDocumento.textContent = 'Número de cédula';
         inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
     },
-    R: () => {
+    R: (tituloDocumento,inputDocumento) => {
         tituloDocumento.textContent = 'Número de RUC';
         inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
     },
-    P: () => {
+    P: (tituloDocumento,inputDocumento) => {
         tituloDocumento.textContent = 'Número de Pasaporte';
         inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
     }
 }
 
 tipoDocumento.addEventListener('change', evt => {
-    TIPOS_DOCUMENTOS[evt.target.value]();
+    TIPOS_DOCUMENTOS[evt.target.value](tituloDocumento,inputDocumento);
     inputDocumento.value = '';
     feedbackdocumento.textContent='';
     triggerKeyup(inputDocumento)
-
 });
 
 //Se realiza un autocomplete buscando el cliente, en caso de no encontrase aparecera un signo de (+) para agregarlo
@@ -278,17 +278,32 @@ razonVisita.addEventListener('change', evt => {
     optionSelected = evt.target.options[evt.target.selectedIndex];
     if(optionSelected.classList.contains('free')){
         containerArea.classList.add('hidden');
+        areasTrabajo.forEach(x => {
+            x.checked = false;
+            const areaCheck = document.querySelector('#area'+x.value);
+            if(areaCheck.nextElementSibling.classList.contains('feed')){
+                areaCheck.parentElement.nextElementSibling.classList.add('mt-5');
+            }
+            else{
+                areaCheck.nextElementSibling.classList.add('mt-4');
+            }
+            document.querySelector('#area'+x.value).classList.add('hidden');
+            document.querySelector('input[name="arrival_time_area'+x.value+'"]').value = '';
+            document.querySelector('input[name="departure_time_area'+x.value+'"]').value = '';
+    
+        });
     }
     else{
         containerArea.classList.remove('hidden');
     }
+
 });
 
 //Dependiendo del checkbox seleccionado aparecera su hora de inicio y salida.
 
 areasTrabajo.forEach(evt =>{
-    evt.addEventListener('click', item =>{
-        const areaCheck = document.querySelector('#area'+item.target.value);
+    evt.addEventListener('click', x =>{
+        const areaCheck = document.querySelector('#area'+x.target.value);
         if(areaCheck.nextElementSibling.classList.contains('feed')){
             areaCheck.parentElement.nextElementSibling.classList.toggle('mt-5');
         }
@@ -296,6 +311,8 @@ areasTrabajo.forEach(evt =>{
             areaCheck.nextElementSibling.classList.toggle('mt-4');
         }
         areaCheck.classList.toggle('hidden');
+        document.querySelector('input[name="arrival_time_area'+x.target.value+'"]').value = '';
+        document.querySelector('input[name="departure_time_area'+x.target.value+'"]').value = '';
         feedbackareas.textContent = '';
     });
     
@@ -668,3 +685,261 @@ function restore() {
         x.textContent = '';
     })
 }
+
+function triggerChange(element){
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+}
+
+
+//Booking
+
+let bookingTitleDocument,
+    bookingDocument;
+
+function changeTypeDocument(evt) {
+    bookingTitleDocument = document.querySelector('#titledocument');
+    bookingDocument = document.querySelector('#document');
+    TIPOS_DOCUMENTOS[evt.value](bookingTitleDocument,bookingDocument);
+    bookingDocument.value = '';
+}
+
+booking.addEventListener('click',searchBooking);
+
+function searchBooking(e) {
+
+    if(e.target.value == ''){        
+        Swal.fire({
+            title: 'Datos de la reservación',
+            html: `
+            <main class="grid justify-items-center gap-5">
+                <label for="document-type" class="mt-2">Seleccione el tipo de documento</label>
+                <select class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="document-type" onchange="changeTypeDocument(this)">
+                    <option value="R">RUC</option>
+                    <option value="C">Cédula</option>
+                    <option value="P">Pasaporte</option>
+                </select>
+                <label for="document" id="titledocument">Numero de RUC</label>
+                <input type="text" id="document" class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 mb-2" placeholder="Ingrese el número de RUC con guiones">
+            </main>`,
+            showCancelButton: true,
+            confirmButtonText: 'Buscar',
+            confirmButtonColor: '#10B981',
+            cancelButtonColor: '#6B7280',
+            showLoaderOnConfirm: true,
+            backdrop: true,
+            preConfirm: () => {
+                const type = Swal.getPopup().querySelector('#document-type').value;
+                const document = Swal.getPopup().querySelector('#document').value;
+    
+                if (!document) {
+                    Swal.showValidationMessage(`Por favor, ingrese el número de documento`)
+                }
+                return fetch('./functions.php',{
+                    method: "POST",
+                    mode: "same-origin",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({datos: {
+                            solicitud: "book",
+                            document_type: type,
+                            document: document
+                    }})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                      throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(`Solicitud fallida: ${error}`)
+                })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                if(result.value.count == 0){
+                    Swal.fire({
+                        title: 'La reserva no ha sido encontrada!',
+                        allowOutsideClick: false,
+                        text: 'Por favor, verifica los datos de la reservación',
+                        icon: 'error',
+                        confirmButtonColor: '#3b82f6'
+                    });
+                }
+                else{
+                    e.target.classList.remove('animate-bounce','bg-blue-500','active:bg-blue-600','hover:bg-blue-700');
+                    e.target.classList.add('bg-red-500','active:bg-red-600' ,'hover:bg-red-700');
+                    e.target.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Anular selección
+                    `;
+                    e.target.value = result.value.booking['booking_id'];
+                    unpackData(result.value);
+                    const message = result.value.customer.customer_id
+                                    ? 
+                                    'El cliente se encuentra registrado, puedes seguir adelante con la visita.' 
+                                    : 
+                                    'El cliente no se encuentra registrado, debes proceder a registrarlo.';
+                    Swal.fire({
+                        title: 'La reserva se ha cargado correctamente!',
+                        allowOutsideClick: false,
+                        text: `${message}`,
+                        icon: 'success',
+                        confirmButtonColor: '#3b82f6'
+                    });
+                }
+            }
+        });
+    }
+    else{
+        location.reload();
+    }
+}
+
+function unpackData(data) {
+    console.log(data);
+
+    if(data.customer.customer_id){
+        tipoDocumento.value = data.customer['document_type'];
+        triggerChange(tipoDocumento);
+
+        inputDocumento.value = data.customer['document'];
+        triggerKeyup(inputDocumento);
+
+        idHidden.value = data.customer['customer_id'];
+
+        codigo.value = data.customer['code'];
+        codigo.disabled = true;
+        codigo.classList.add('bg-gray-300');
+        codigo.classList.add('cursor-not-allowed');
+
+        nombreUsuario.value = data.customer['name'];
+        nombreUsuario.disabled = true;
+        nombreUsuario.classList.add('bg-gray-300');
+        nombreUsuario.classList.add('cursor-not-allowed');
+
+        if(data.customer['email']){
+            email.value = data.customer['email'];
+        }
+        else{
+            email.placeholder = 'Sin correo electrónico asignado';
+        }
+        email.disabled = true;
+        email.classList.add('bg-gray-300');
+        email.classList.add('cursor-not-allowed');
+
+        if(data.customer['telephone']){
+            telefono.value = data.customer['telephone'];
+        }
+        else{
+            telefono.placeholder = 'Sin teléfono asignado';
+        }
+        telefono.disabled = true;
+        telefono.classList.add('bg-gray-300');
+        telefono.classList.add('cursor-not-allowed');
+
+        let edadChecked = Array.from(edad).find( x => x.value == data.customer['range_id']);
+        edadChecked.checked = true;
+        edad.forEach( e =>{
+            e.disabled = true;
+            e.classList.remove('text-blue-600')
+            e.classList.add('cursor-not-allowed', 'text-gray-500');
+        });
+
+        let sexoChecked = Array.from(sexo).find( x => x.value == data.customer['sex']);
+        sexoChecked.checked = true;
+        sexo.forEach( e =>{
+            e.disabled = true;
+            e.classList.remove('text-blue-600')
+            e.classList.add('cursor-not-allowed', 'text-gray-500');
+        });
+        provincia.value = data.customer['province_id'];
+        provincia.disabled = true;
+        provincia.classList.add('bg-gray-300');
+        provincia.classList.add('cursor-not-allowed');
+
+        triggerChange(provincia);
+        distrito.value = data.customer['district_id'];
+        distrito.disabled = true;
+        distrito.classList.add('bg-gray-300');
+        distrito.classList.add('cursor-not-allowed');
+        
+        triggerChange(distrito)
+        corregimiento.value = data.customer['township_id'];
+        corregimiento.disabled = true;
+        corregimiento.classList.add('bg-gray-300');
+        corregimiento.classList.add('cursor-not-allowed');
+
+        Toastify({
+            text: "Visitante seleccionado",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
+
+        accion.innerHTML = '<i class="fas fa-eye"></i>';
+        accion.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
+        accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
+    }
+    else{
+        tipoDocumento.value = data.customer['document_type'];
+        triggerChange(tipoDocumento);
+
+        inputDocumento.value = data.customer['document'];
+        triggerKeyup(inputDocumento);
+
+        nombreUsuario.value = data.customer['name'];
+        
+        containerRegister.classList.remove('hidden');
+        accion.innerHTML = '<i class="fas fa-user-times"></i>';
+        accion.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
+        accion.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+
+        Toastify({
+            text: "Se registrará un nuevo cliente",
+            duration: 3000,
+            style: {
+                background: '#10B981'
+            }
+        }).showToast();
+
+        inputDocumento.addEventListener('blur', validarDocumento);
+        codigo.addEventListener('blur', validarCodigo);
+        email.addEventListener('blur', validarEmail);
+        telefono.addEventListener('blur', validarTelefono);
+
+        triggerBlur(inputDocumento);
+    }
+    
+    razonVisita.value = data.booking['reason_id'];
+    triggerChange(razonVisita);
+
+    if(data.areas){
+        data.areas.forEach(x => {
+            document.querySelector('input[name="'+'areacheck'+x.area_id+'"]').checked = true;
+            const areaCheck = document.querySelector('#area'+x.area_id);
+            if(areaCheck.nextElementSibling.classList.contains('feed')){
+                areaCheck.parentElement.nextElementSibling.classList.remove('mt-5');
+            }
+            else{
+                areaCheck.nextElementSibling.classList.remove('mt-4');
+            }
+            document.querySelector('#area'+x.area_id).classList.remove('hidden');
+            document.querySelector('input[name="arrival_time_area'+x.area_id+'"]').value = x.arrival_time;
+            document.querySelector('input[name="departure_time_area'+x.area_id+'"]').value = x.departure_time;
+        });
+    }
+    
+    fecha.value = data.booking['date'];
+    observacion.value = data.booking['observation'];
+}
+
+//Tomar en cuenta los campos que uno llena involutnariamente y que pasa con ellos cuando se carga info. Por ejemplo las areas->

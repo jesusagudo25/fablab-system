@@ -71,6 +71,47 @@ if ($contentType === "application/json") {
             $townships = $township->getAll();
             echo json_encode($townships);
         }
+        else if($decoded['datos']['solicitud'] == 'book'){
+            $data = array();
+
+            $booking = new Booking();
+            $booking->setDocumentType($decoded['datos']['document_type']);
+            $booking->setDocument($decoded['datos']['document']);
+            $bookingSelect = $booking->getBookingVisit();
+            
+            if(empty($bookingSelect)){
+                echo json_encode([
+                    'count' => 0
+                ]);
+            }
+            else{
+                $data['booking'] = $bookingSelect;
+
+                $customer = new Customer();
+                $customer->setDocumentType($bookingSelect['document_type']);
+                $customer->setDocument($bookingSelect['document']);
+                $customerSelect = $customer->verifyRecord();
+
+                if(empty($customerSelect)){
+                    $data['customer'] = [
+                        'document_type' => $bookingSelect['document_type'],
+                        'document' => $bookingSelect['document'],
+                        'name' => $bookingSelect['name']
+                    ];
+                }
+                else{
+                    $data['customer'] = $customerSelect;
+                }
+                if($bookingSelect['time']){
+                    $bookingArea = new BookingArea();
+                    $bookingArea->setBookingId($bookingSelect['booking_id']);
+                    $bookingsAreas = $bookingArea->getBookingsAreasVisit();
+                    $data['areas'] = $bookingsAreas;
+                }
+
+                echo json_encode($data);
+            }
+        }
     }
 }
 

@@ -23,6 +23,10 @@ function guardarEntrada(evt) {
         observacion: observacion.value
     };
 
+    if(booking.value != ''){
+        datos["booking_id"] = booking.value
+    }
+
     if('areas' in errores){
         delete errores.areas;
     }

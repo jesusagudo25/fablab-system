@@ -22,7 +22,7 @@
     $pagina[] = "form";
 ?>
 <!DOCTYPE html>
-<html lang="es" class="overflow-y-scroll">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,6 +49,15 @@
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
 <?php require_once '../templates/header.php'; ?>
+
+<div class="fixed bottom-2 right-2">
+    <button id="booking" class="animate-bounce flex items-center gap-3 py-3 px-4 bg-blue-500 active:bg-blue-600 hover:bg-blue-700 focus:outline-none text-white rounded-lg font-medium transition-colors duration-150 border border-transparent">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+    ¿Es una reservación?
+    </button>
+</div>
 
 <!--Container-->
 <div class="container w-10/12 mx-auto pt-20">
@@ -109,9 +118,9 @@
                                 <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
                             </label>
                             <div class="mt-5 text-sm w-1/2">
-                <span class="text-gray-700 font-medium">
-                  Selecciona la edad
-                </span>
+                                <span class="text-gray-700 font-medium">
+                                Selecciona la edad
+                                </span>
                                 <div class="mt-2 flex flex-wrap justify-between items-center">
                                     <?php foreach ($rangeAll as $datos => $valor): ?>
                                     <label class="inline-flex items-center text-gray-600">
@@ -185,23 +194,23 @@
 
                         <div class="text-sm mt-5" id="containerarea">
                             <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
-                            <?php foreach ($areaAll as $datos => $valor): ?>
-                                <label class="flex items-center mt-4">
-                                    <input type="checkbox" value="<?= $valor['id'] ?>" name="areas[]" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
-                                    <span class="ml-2"> <?= $valor['name'] ?></span>
-                                </label>
-                                <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
-                                    <label for="arrival_time" class="mr-6">Hora de llegada:
-                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                <?php foreach ($areaAll as $datos => $valor): ?>
+                                    <label class="flex items-center mt-4">
+                                        <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?=$valor['id']?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
+                                        <span class="ml-2"> <?= $valor['name'] ?></span>
                                     </label>
-
-                                    <label for="departure_time">Hora de salida:
-                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    </label>
-<br/>
-                                    <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
-                                </div>
-                            <?php endforeach; ?>
+                                    <div class="p-3 hidden" id="area<?= $valor['id']?>">
+                                        <label for="arrival_time" class="mr-6">Hora de llegada:
+                                            <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        </label>
+                                        <label for="departure_time">Hora de salida:
+                                            <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        </label>
+                                        
+                                        <br/>
+                                        <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
+                                    </div>
+                                <?php endforeach; ?>
                             <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                         </div>
 

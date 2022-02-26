@@ -23,7 +23,7 @@
     ?>
 
 <!DOCTYPE html>
-<html lang="es" class="overflow-y-scroll">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,8 +54,6 @@
 
         <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
 
-            <!--Console Content-->
-
             <div class="flex flex-wrap">
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -70,7 +68,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -85,7 +82,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -100,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
+
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -115,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
+
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -130,7 +126,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
+
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
@@ -145,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--/Metric Card-->
+
                 </div>
             </div>
 
@@ -165,7 +161,7 @@
 
                         </div>
                     </div>
-                    <!--/Graph Card-->
+
                 </div>
 
                 <div class="w-full md:w-1/2 p-3">
@@ -178,7 +174,6 @@
                             <canvas id="doughnut"></canvas>
                         </div>
                     </div>
-                    <!--/Graph Card-->
                 </div>
 
                 <div class="w-full p-3">
@@ -199,18 +194,13 @@
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
-                                <!-- Ajax Color Table Body -->
                             </table>
                         </div>
                     </div>
-                    <!--/table Card-->
                 </div>
 
 
             </div>
-
-            <!--/ Console Content-->
-
         </div>
     </div>
 </body>

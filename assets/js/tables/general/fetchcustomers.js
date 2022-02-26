@@ -28,97 +28,61 @@ $.ajax({
 
 tablaClientes = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
-    ajax:{
-        url: './functions.php',
-        type: 'POST',
-        data: {solicitud:'c'},
-        dataSrc:""
-    },
-    dom: 'Bfrtip',
-    buttons: [
-        {
-            extend: 'colvis',
-            columns: ':not(".select-disabled")'
-        }
-    ],
-    columns: [
-        { "data": "customer_id" },
-        { "data": "document" },
+    "processing": true,
+    "serverSide": true,
+    "ajax": "./functions.php",
+    "columnDefs": 
+    [
         {
             "data": null,
             render:function(data, type, row)
             {
 
-                if(data['code']){
-                    return data['code'];
+                if(data[2]){
+                    return data[2];
                 }
                 else{
                     return 'Sin codigo';
                 }
             },
-            "targets": -1
+            "targets": 2
         },
-        { "data": "customer_name" },
-        { "data": "range_name" },
-        { "data": "sex" },
         {
             "data": null,
             render:function(data, type, row)
             {
 
-                if(data['email']){
-                    return data['email'];
+                if(data[4]){
+                    return data[4];
                 }
                 else{
                     return 'Sin correo';
                 }
             },
-            "targets": -1
+            "targets": 4
         },
         {
             "data": null,
             render:function(data, type, row)
             {
-                if(data['telephone']){
-                    return data['telephone'];
+                if(data[5]){
+                    return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
-                    return 'Sin telefono';
+                    return '<button value="'+data[0]+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
-            "targets": -1
-        },
-        { "data": "province_name" },
-        { "data": "district_name" },
-        { "data": "township_name" },
-        {
-            "data": null,
-            render:function(data, type, row)
-            {
-                if(data['status']){
-                    return '<button value="'+data['customer_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
-                }
-                else{
-                    return '<button value="'+data['customer_id']+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
-                }
-            },
-            "targets": -1
+            "targets": 5
         },
         {
             "data": null,
             render:function(data, type, row)
             {
-                return '<button value="'+data['customer_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
+                return '<button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
             },
-            "targets": -1
-        }
-
-    ],
-    responsive: true,
-    processing: true,
-    'columnDefs' : [
-        //hide the second & fourth column
-        { 'visible': false, 'targets': [0,4,5,7,8,9,10] }
+            "targets": 6
+        },
+        { "visible": false,  "targets": [ 0 ] }
     ],
     order: [[ 0, "desc" ]]
 });

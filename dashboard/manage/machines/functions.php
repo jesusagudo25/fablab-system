@@ -6,9 +6,35 @@
 
     $area = new Area();
 
-    if ($_POST['solicitud'] == 'a') {
-        $areas = $area->getAll();
-        echo json_encode($areas);
+    if(isset($_GET['draw'])){
+        $table = <<<EOT
+        ( 
+            SELECT area_id AS id, name, measure,status FROM areas
+        ) temp
+        EOT;
+
+        $primaryKey = 'id';
+
+        $columns = array(
+            array( 'db' => 'id',          'dt' => 0 ),
+            array( 'db' => 'name',        'dt' => 1 ),
+            array( 'db' => 'measure',    'dt' => 2 ),
+            array( 'db' => 'status',    'dt' => 3 )
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => constant('USER'),
+            'pass' => constant('PASSWORD'),
+            'db'   => constant('DB'),
+            'host' => constant('HOST')
+        );
+
+        require( '../../../ssp.class.php' );
+
+        echo json_encode(
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+        );
     
     }
     else if ($_POST['solicitud'] == 'c') {

@@ -1,31 +1,19 @@
 tablaReportes = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
-    ajax:{
-        url: './functions.php',
-        type: 'POST',
-        data: {solicitud:'r'},
-        dataSrc:""
-    },
-    columns: [
-        { "data": "report_id" },
-        { "data": "month" },
-        { "data": "autor" },
-        { "data": "start_date" },
-        { "data": "end_date" },
+    "processing": true,
+    "serverSide": true,
+    "ajax": "./functions.php",
+    "columnDefs": 
+    [
         {
             "data": null,
             render:function(data, type, row)
             {
-                return '<div class="flex items-center space-x-4"><a href="./download.php?reporte='+data['report_id']+'.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a><button value="'+data['report_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+                return '<div class="flex items-center space-x-4"><a href="./download.php?reporte='+data[0]+'.pdf" target="_blank" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" ><i class="fas fa-file-pdf"></i></a><button value="'+data[0]+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
             },
-            "targets": -1
-        }
-    ],
-    responsive: true,
-    processing: true,
-    'columnDefs' : [
-        //hide the second & fourth column
-        { 'visible': false, 'targets': [0] }
+            "targets": 5
+        },
+        { "visible": false,  "targets": [ 0 ] }
     ]
 });
 

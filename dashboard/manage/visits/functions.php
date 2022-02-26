@@ -7,11 +7,39 @@
     $visit = new Visit();
     $visit_area = new VisitArea();
 
-    if ($_POST['solicitud'] == 'v') {
+    if(isset($_GET['draw'])){
+        $table = <<<EOT
+        ( 
+            SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, v.status FROM visits v
+            INNER JOIN customers c ON c.customer_id = v.customer_id
+            INNER JOIN reason_visits r ON r.reason_id = v.reason_id
+        ) temp
+        EOT;
 
-        $visits = $visit->getAll();
+        $primaryKey = 'visit_id';
 
-        echo json_encode($visits);
+        $columns = array(
+            array( 'db' => 'visit_id',          'dt' => 0 ),
+            array( 'db' => 'customer_id',        'dt' => 1 ),
+            array( 'db' => 'reason_id',    'dt' => 2 ),
+            array( 'db' => 'time',    'dt' => 3 ),
+            array( 'db' => 'date',    'dt' => 4 ),
+            array( 'db' => 'status',    'dt' => 5 )
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => constant('USER'),
+            'pass' => constant('PASSWORD'),
+            'db'   => constant('DB'),
+            'host' => constant('HOST')
+        );
+
+        require( '../../../ssp.class.php' );
+
+        echo json_encode(
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+        );
 
     }else if ($_POST['solicitud'] == 'raz') {
 

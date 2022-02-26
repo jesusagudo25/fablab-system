@@ -18,7 +18,7 @@ $rangeAll = $range->getAll();
 
 ?>
 <!DOCTYPE html>
-<html lang="es" class="overflow-y-scroll">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,19 +174,13 @@ $rangeAll = $range->getAll();
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
                             <thead>
                             <tr>
-                                <th class="select-disabled">ID</th>
-                                <th class="select-disabled">Documento</th>
-                                <th class="select-disabled">Codigo</th>
-                                <th class="select-disabled">Nombre</th>
-                                <th>Edad</th>
-                                <th>Genero</th>
+                                <th>ID</th>
+                                <th>Documento</th>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
                                 <th>Correo</th>
-                                <th>Telefono</th>
-                                <th>Provincia</th>
-                                <th>Distrito</th>
-                                <th>Corregimiento</th>
                                 <th>Estado</th>
-                                <th class="select-disabled">Acción</th>
+                                <th>Acción</th>
                             </tr>
                             </thead>
                             <!-- Ajax Color Table Body -->

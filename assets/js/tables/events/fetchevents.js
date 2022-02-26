@@ -1,10 +1,10 @@
 // Send the data using post
-var posting = $.post( './functions.php', { solicitud: 'c', status: 1 } );
+var gesting = $.get( './functions.php', { solicitud: 'c', status: 1 } );
 
 let categoriasEventos = [];
 
 // Put the results in a div
-posting.done(function( data ) {
+gesting.done(function( data ) {
     categoriasEventos = data;
     if(data.length){
         data.forEach(v => {
@@ -18,84 +18,39 @@ posting.done(function( data ) {
 
 tablaEventos = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
-    ajax:{
-        url: './functions.php',
-        type: 'POST',
-        data: {solicitud:'e'},
-        dataSrc:""
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "./functions.php",
+        "data": {
+            "solicitud":"e"
+        }
     },
-    dom: 'Bfrtip',
-    buttons: [
-        {
-            extend: 'colvis',
-            columns: ':not(".select-disabled")'
-        }
-    ],
-    columns: [
-        { "data": "event_id" },
-        { "data": "category_id" },
-        { "data": "name" },
-        { "data": "initial_date" },
-        { "data": "final_date" },
-        { "data": "number_hours" },
-        { "data": "price" },
+    "columnDefs": [
         {
             "data": null,
             render:function(data, type, row)
             {
-
-                if(data['expenses']){
-                    return data['expenses'];
+                if(data[5]){
+                    return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
-                    return '0.00';
+                    return '<button value="'+data[0]+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
-            "targets": -1
+            "targets": 5
         },
         {
             "data": null,
             render:function(data, type, row)
             {
-                if(data['description_expenses'] == null){
-                    return 'Sin descripción';
-                }
-                else{
-                    return data['description_expenses'];
-                }
+                return '<button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
             },
-            "targets": -1
+            "targets": 6
         },
-        {
-            "data": null,
-            render:function(data, type, row)
-            {
-                if(data['status']){
-                    return '<button value="'+data['event_id']+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
-                }
-                else{
-                    return '<button value="'+data['event_id']+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
-                }
-            },
-            "targets": -1
-        },
-        {
-            "data": null,
-            render:function(data, type, row)
-            {
-                return '<button value="'+data['event_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
-            },
-            "targets": -1
-        }
-
+        { 'visible': false, 'targets': [0] }
     ],
-    responsive: true,
-    processing: true,
-    'columnDefs' : [
-        //hide the second & fourth column
-        { 'visible': false, 'targets': [0,5,6,7,8] }
-    ],
-    order: [[ 0, "desc" ]]
+    "order": [[ 0, "desc" ]]
 });
 
 function triggerChange(element){

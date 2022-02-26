@@ -6,9 +6,35 @@
 
     $category = new RentalCategory();
 
-    if ($_POST['solicitud'] == 'c') {
-        $categories = $category->getAll();
-        echo json_encode($categories);
+    if(isset($_GET['draw'])){
+        $table = <<<EOT
+        ( 
+            SELECT category_id AS id, name, price, status FROM rental_category
+        ) temp
+        EOT;
+
+        $primaryKey = 'id';
+
+        $columns = array(
+            array( 'db' => 'id',          'dt' => 0 ),
+            array( 'db' => 'name',        'dt' => 1 ),
+            array( 'db' => 'price',    'dt' => 2 ),
+            array( 'db' => 'status',    'dt' => 3 )
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => constant('USER'),
+            'pass' => constant('PASSWORD'),
+            'db'   => constant('DB'),
+            'host' => constant('HOST')
+        );
+
+        require( '../../../ssp.class.php' );
+
+        echo json_encode(
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+        );
     }
     else if ($_POST['solicitud'] == 'c_c') {
 

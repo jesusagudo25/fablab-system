@@ -1,13 +1,10 @@
 tablaObservaciones = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
-    ajax:{
-        url: './functions.php',
-        type: 'POST',
-        data: {solicitud:'o'},
-        dataSrc:""
-    },
-    dom: 'Bfrtip',
-    initComplete:function( settings, json){
+    "processing": true,
+    "serverSide": true,
+    "ajax": "./functions.php",
+    "dom": 'Bfrtip',
+    "initComplete":function( settings, json){
         document.querySelector('.dt-buttons').innerHTML += `<button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
         const newObs = document.querySelector('#observacion');
 
@@ -79,25 +76,16 @@ tablaObservaciones = $('#datatable-json').DataTable({
 
         });
     },
-    columns: [
-        { "data": "observation_id" },
-        { "data": "autor" },
-        { "data": "descripcion" },
-        { "data": "fecha" },
+    "columnDefs": [
         {
             "data": null,
             render:function(data, type, row)
             {
-                return '<div class="flex items-center space-x-4"> <button value="'+data['observation_id']+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button><button value="'+data['observation_id']+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
+                return '<div class="flex items-center space-x-4"> <button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button><button value="'+data[0]+'" type="button" name="borrar" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="borrar(this)"><i class="fas fa-trash-alt"></i></button></div>';
             },
-            "targets": -1
-        }
-    ],
-    responsive: true,
-    processing: true,
-    'columnDefs' : [
-        //hide the second & fourth column
-        { 'visible': false, 'targets': [0] }
+            "targets": 4
+        },
+        { "visible": false,  "targets": [ 0 ] }
     ]
 });
 

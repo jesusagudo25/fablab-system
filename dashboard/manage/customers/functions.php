@@ -7,11 +7,38 @@
     $customer = new Customer();
     $error = false;
 
-    if ($_POST['solicitud'] == 'c') {
+    if(isset($_GET['draw'])){
 
-        $customers = $customer->getAll();
+        $table = <<<EOT
+        ( 
+            SELECT c.customer_id, c.document, c.code, c.name AS customer_name, c.email, c.status FROM customers c
+        ) temp
+        EOT;
 
-        echo json_encode($customers);
+        $primaryKey = 'customer_id';
+
+        $columns = array(
+            array( 'db' => 'customer_id',          'dt' => 0 ),
+            array( 'db' => 'document',        'dt' => 1 ),
+            array( 'db' => 'code',    'dt' => 2 ),
+            array( 'db' => 'customer_name',    'dt' => 3 ),
+            array( 'db' => 'email',    'dt' => 4 ),
+            array( 'db' => 'status',    'dt' => 5 )
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => constant('USER'),
+            'pass' => constant('PASSWORD'),
+            'db'   => constant('DB'),
+            'host' => constant('HOST')
+        );
+
+        require( '../../../ssp.class.php' );
+
+        echo json_encode(
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+        );
 
     }else if ($_POST['solicitud'] == 'id_c') {
 

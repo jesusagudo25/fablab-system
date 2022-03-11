@@ -67,6 +67,30 @@ function guardarEntrada(evt) {
 
         datos["areasChecked"] = areas;
     }
+    else{
+        if(containerTiempo.querySelector('input').value.trim().length == 0){
+            errores.tiempo = "Por favor, seleccione una hora de visita";
+            feedbacktiempo.textContent = errores.tiempo;
+        }
+        else{
+            datos.tiempo = containerTiempo.querySelector('input').value;
+
+        }
+
+        /*
+
+        Para las razónes de visitas => general/tour debe haber una hora de visita.
+
+        En base a que no se especifica el tiempo(entrada, salida) para cada area, podemos hacer que el sistema lo calcule automaticamente. 
+        (Por ejemplo, deducimos que una visita de este tipo puede durar 3 horas. Bueno estas 3 horas se reparten por areas)
+
+        O tambien podemos asignar por área una cantidad de tiempo. 30 minutos x (C_A)
+        A traves de esto se ingresa la hora de entrada y el sistema calcula la hora de salida.
+        
+        De esta manera en las reservas ahora las visitas de este tipo pueden tener una hora de entrada y salida. Ademas, podrán aparecer en el informe mensual.)
+
+        */
+    }
 
     if(fecha.value.trim().length == 0){
         errores.fecha = "Por favor, seleccione una fecha";
@@ -192,19 +216,22 @@ function guardarEntrada(evt) {
             },
             body: JSON.stringify({datos: datos})
         })
+            .then(res => res.json())
             .then(data =>{
                 registrar.innerHTML = `Registrado`;
                 Swal.fire({
                     title: 'La visita se ha guardado!',
                     allowOutsideClick: false,
                     icon: 'success',
-                    confirmButtonColor: '#3b82f6'
+                    confirmButtonColor: '#3b82f6',
+                    footer: `<a href="../sales/index.php?id=${data}" class="text-blue-500 underline">¿Desea vender?</a>`
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
                     }
                 });
             });
+            
     }
 
 }

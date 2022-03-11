@@ -67,6 +67,8 @@ class Visit extends Model implements IModel
         }
 
         //Se deben delegar responsabilidades a las clases implicadas -> crear metodos para accion
+
+        return $this->customer_id;
     }
 
     public function save(...$args) //Save solo table_visit

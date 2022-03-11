@@ -27,10 +27,10 @@ fetch('./functions.php',{
             solicitud: "evt",
         }})
 })
-    .then(res => res.json())
-    .then(data =>{
-        events = data;
-    });
+.then(res => res.json())
+.then(data =>{
+    events = data;
+});
 
 let servicios = [];
 
@@ -45,10 +45,10 @@ fetch('./functions.php',{
             solicitud: "s",
         }})
 })
-    .then(res => res.json())
-    .then(data =>{
-        servicios = data;
-    });
+.then(res => res.json())
+.then(data =>{
+    servicios = data;
+});
 
 let consumibles = [];
 
@@ -63,10 +63,10 @@ fetch('./functions.php',{
             solicitud: "cons",
         }})
 })
-    .then(res => res.json())
-    .then(data =>{
-        consumibles = data;
-    });
+.then(res => res.json())
+.then(data =>{
+    consumibles = data;
+});
 
 //Cambio de categoria servicio
 categoria_servicio.addEventListener('change', evt => {
@@ -199,9 +199,6 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
             <td class="px-4 py-4 w-1/6">
                 <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 precio ${ validar ? 'bg-gray-300 cursor-not-allowed' : ''}" value="${validar ? '0.00' :precio}" placeholder="Precio" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" ${ validar ? 'disabled' : ''} >
             </td>
-            <td class="px-4 py-4 w-1/6">
-                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 placeholder="Cantidad" cursor-not-allowed" name="cantidad" value="1" disabled>
-            </td>
             
             <td class="px-4 py-4 text-sm font-semibold" id="total_item${contandorF}">
               ${precio}
@@ -232,8 +229,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
     servicios_ag.push({
         categoria: categoria_servicio,
         servicio: id_servicio,
-        numeroItem: numeroItem,
-        cantidad: 1
+        numeroItem: numeroItem
     });
         
 
@@ -799,8 +795,7 @@ function cambiarValue(elm,columna_total){
         elm.classList.add('border-gray-300','focus:border-blue-300','focus:ring-blue-200');
     }
     elm.defaultValue = elm.value;
-    let cantidad = elm.parentElement.nextElementSibling.children[0];
-    columna_total.textContent = (elm.value * cantidad.value).toFixed(2);
+    columna_total.textContent = (elm.value * 1).toFixed(2);
     calcular();
 }
 
@@ -856,7 +851,7 @@ function calcular() {
         let columnas = e.querySelectorAll("td");
 
         // obtenemos los valores de la cantidad y importe
-        let importe = parseFloat(columnas[4].textContent);
+        let importe = parseFloat(columnas[3].textContent);
 
         total += importe;
     });

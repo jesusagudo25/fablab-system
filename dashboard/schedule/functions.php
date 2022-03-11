@@ -19,13 +19,22 @@
 
         foreach($events as $row)
         {
-            $data[] = array( //Aqui si deberia ir el id
-                'id'   => $row["event_id"],
-                'title'   => $row["name"],
-                'start'   => $row["initial_date"],
-                'end'   => $row["final_date"],
-                'className' => 'events'
-            );
+            for(
+                $currentDate = strtotime($row["initial_date"]);
+                $currentDate <= strtotime($row["final_date"]);
+                $currentDate += (86400)
+            ){
+
+                $data[] = array( //Aqui si deberia ir el id
+                    'groupId'   => $row["event_id"],
+                    'title'   => $row["area_id"],
+                    'start'   => date('Y-m-d', $currentDate).' '.$row["start_time"],
+                    'end'   => date('Y-m-d', $currentDate).' '.$row["end_time"],
+                    'className' => 'events',
+                    'color'=> '#16a34a'
+                );
+            }
+
         }
 
         $bookingArea = new BookingArea();

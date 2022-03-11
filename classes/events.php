@@ -4,10 +4,12 @@ class Events extends Model implements IModel
 {
     private $event_id;
     private $category_id;
+    private $area_id;
     private $name;
+    private $start_time;
+    private $end_time;
     private $initial_date;
     private $final_date;
-    private $number_hours;
     private $price;
     private $expenses;
     private $description_expenses;
@@ -20,14 +22,16 @@ class Events extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO events(category_id,name,initial_date,final_date,number_hours,price,expenses,description_expenses) VALUES (:category_id, :name,:initial_date,:final_date,:number_hours,:price,:expenses,:description_expenses)');
+        $nuevoEvento = $this->prepare('INSERT INTO events(category_id,area_id,name,start_time, end_time, initial_date,final_date,price,expenses,description_expenses) VALUES (:category_id, :area_id, :name, :start_time, :end_time, :initial_date, :final_date, :price, :expenses, :description_expenses)');
 
-        $nuevaFactura->execute([
+        $nuevoEvento->execute([
             'category_id' => $this->category_id,
+            'area_id' => $this->area_id,
             'name' => $this->name,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
             'initial_date' => $this->initial_date,
             'final_date' => $this->final_date,
-            'number_hours' => $this->number_hours,
             'price' => $this->price,
             'expenses' => $this->expenses,
             'description_expenses' => $this->description_expenses
@@ -45,8 +49,9 @@ class Events extends Model implements IModel
     }
 
     public function getAllRange($start,$end){
-        $query = $this->prepare('SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses, e.status FROM events e
-        INNER JOIN event_category ec ON e.category_id = ec.category_id 
+        $query = $this->prepare('SELECT e.event_id, ec.name AS category_id, a.name AS area_id, e.name, e.start_time ,e.end_time, e.initial_date ,e.final_date, e.price, e.expenses, e.description_expenses, e.status FROM events e
+        INNER JOIN event_category ec ON e.category_id = ec.category_id
+        INNER JOIN areas a ON e.area_id = a.area_id 
         WHERE (e.initial_date >= :start 
         OR e.final_date <= :end)
         AND e.status = 1');
@@ -64,7 +69,9 @@ class Events extends Model implements IModel
     public function getToInvoice()
     {
         $query = $this->query('SELECT * FROM events
-WHERE status = 1');
+        WHERE (final_date >= CURDATE())
+        AND
+        status = 1');
 
         $events = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -73,7 +80,10 @@ WHERE status = 1');
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT * FROM events WHERE event_id = :id');
+        $query = $this->prepare('SELECT e.event_id, ec.name AS category_id, a.name AS area_id, e.name, e.start_time ,e.end_time, e.initial_date ,e.final_date, e.price FROM events e
+        INNER JOIN event_category ec ON e.category_id = ec.category_id
+        INNER JOIN areas a ON e.area_id = a.area_id
+        WHERE e.event_id = :id');
         $query->execute([
             'id' => $id
         ]);
@@ -100,13 +110,16 @@ WHERE status = 1');
 
     public function update()
     {
-        $actualizarDatos = $this->prepare("UPDATE events SET category_id = :category_id, name = :name, initial_date = :initial_date, final_date = :final_date, number_hours = :number_hours, price = :price, expenses = :expenses, description_expenses = :description_expenses WHERE event_id = :id;");
+        $actualizarDatos = $this->prepare("UPDATE events SET category_id = :category_id,
+        area_id = :area_id, name = :name, start_time = :start_time, end_time = :end_time, initial_date = :initial_date, final_date = :final_date, price = :price, expenses = :expenses, description_expenses = :description_expenses WHERE event_id = :id;");
         $actualizarDatos->execute([
             'category_id' => $this->category_id,
+            'area_id' => $this->area_id,
             'name' => $this->name,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
             'initial_date' => $this->initial_date,
             'final_date' => $this->final_date,
-            'number_hours' => $this->number_hours,
             'price' => $this->price,
             'expenses' => $this->expenses,
             'description_expenses' => $this->description_expenses,
@@ -131,6 +144,14 @@ WHERE status = 1');
     }
 
     /**
+     * @param mixed $category_id
+     */
+    public function setAreaId($area_id): void
+    {
+        $this->area_id = $area_id;
+    }
+
+    /**
      * @param mixed $name
      */
     public function setName($name): void
@@ -152,6 +173,22 @@ WHERE status = 1');
     public function setFinalDate($final_date): void
     {
         $this->final_date = $final_date;
+    }
+
+    /**
+     * @param mixed $initial_date
+     */
+    public function setStartTime($start_time): void
+    {
+        $this->start_time = $start_time;
+    }
+
+    /**
+     * @param mixed $final_date
+     */
+    public function setEndTime($end_time): void
+    {
+        $this->end_time = $end_time;
     }
 
     /**

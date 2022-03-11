@@ -9,7 +9,7 @@ tablaLaboratorio = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                return '<input type="time" id="visit'+data[0]+'area'+data[1]+'" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">';
+                return '<input type="time" id="visit'+data[0]+'area'+data[1]+'" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">';
             },
             "targets": 4
         },

@@ -13,7 +13,22 @@
     $area = new Area();
     $areaAll = $area->getAjax();
 
+    if(isset($_GET['id'])){
+        $customer = new Customer();
+        $customer = $customer->get($_GET['id']);
+    }
+
 ?>
+
+
+<!-- 
+
+Actualmente a traves del uso de maquinas, se encuentra el de diseño en computadora (Es una area) que prácticamente es el computadora + software (servicio alquiler). Es importante tomarte en cuenta, que está tabla se debe eliminar. Y realizar todo mejor desde el uso de maquinas; pero debemos tomar en cuenta los consumibles de cada area. Ya que sus caracteristicas son diferentes. Lo mismo para los de detalles de cada venta de uso de maquinas, sus caracteristicas son diferentes.
+
+ 
+-->
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,22 +74,24 @@
                         <label class="text-sm w-1/4">
                             <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
-                                <option value="R">RUC</option>
-                                <option value="C">Cédula</option>
-                                <option value="P">Pasaporte</option>
+                                <option value="R" 
+                                <?= $customer['document_type'] == 'R' ? 'selected' : '' ?> 
+                                >RUC</option>
+                                <option value="C" <?= $customer['document_type'] == 'C' ? 'selected' : '' ?> >Cédula</option>
+                                <option value="P" <?= $customer['document_type'] == 'P' ? 'selected' : '' ?> >Pasaporte</option>
                             </select>
                         </label>
 
                         <label class="text-sm w-1/3">
                             <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
-                                <input type="hidden" name="id_customer">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false" value="<?= $customer['document'] ?>">
+                                <input type="hidden" name="id_customer" value="<?= $customer['customer_id'] ?>">
                                 <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                         </label>
 
                         <label class="text-sm w-1/4">
                             <span class="text-gray-800 font-medium">Nombre de visitante</span>
-                            <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin cliente seleccionado" type="text" name="name" disabled>
+                            <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin cliente seleccionado" type="text" name="name" value="<?= $customer['name'] ?>" disabled>
                         </label>
                     </div>
                 </div>
@@ -119,12 +136,17 @@
                     <div class="p-5">
 
                         <div class="flex justify-between flex-wrap items-center mb-5">
-                        <label class="w-2/5 text-sm">
-                            <span class="text-gray-800 font-medium">Seleccione la fecha</span>
-                            <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required="">
-                            <span id="feedbackfecha" class="text-xs text-red-600"></span>
-                        </label>
+                            <label class="w-2/5 text-sm">
+                                <span class="text-gray-800 font-medium">Seleccione la fecha</span>
+                                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required="">
+                                <span id="feedbackfecha" class="text-xs text-red-600"></span>
+                            </label>
+                            <label class="w-7/11 text-sm">
+                                <span class="text-gray-800 font-medium">Numero de recibo</span>
+                                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el número de recibo" required="" min="1" name="numero_recibo">
+                            </label>
                         </div>
+                        <hr class="my-6">
                         <div class="flex justify-between flex-wrap items-center mb-5">
                             <label class="text-sm w-2/5">
                                 <span class="text-gray-800 font-medium">Seleccione la categoría del servicio</span>
@@ -145,7 +167,9 @@
                                 </select>
                             </label>
 
-                            <button type="button" class="self-end px-4 py-2 text-base font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none w-1/12" id="agregar"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="self-end px-4 py-2 text-sm font-bold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none w-1/12" id="agregar">
+                                Añadir
+                            </button>
                         </div>
 
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded">
@@ -155,7 +179,6 @@
                                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider"></th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Descripción</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Precio</th>
-                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Cantidad</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Total</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Acción</th>
                                 </tr>
@@ -175,7 +198,7 @@
                                 <tfoot class="hidden bg-gray-100 divide-y divide-gray-200" id="detalle_totales">
                                 <tr>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
-                                    <td colspan="3" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>
+                                    <td colspan="2" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
                                     <td class="px-4 py-3 text-sm font-semibold"></td>
                                 </tr>

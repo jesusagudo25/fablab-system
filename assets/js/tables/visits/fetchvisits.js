@@ -107,11 +107,11 @@ function verAreas(e){
 
                             <div class="p-3" id="area${v.area_id}">
                                     <label for="arrival_time" class="mr-6">Hora de llegada:
-                                        <input type="time" name="arrival_time_area${v.area_id}" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" value="${v.arrival_time ? v.arrival_time : ''}" disabled>
+                                        <input type="time" name="arrival_time_area${v.area_id}" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" value="${v.arrival_time ? v.arrival_time : ''}" min="08:00" max="16:00" disabled>
                                     </label>
 
                                     <label for="departure_time">Hora de salida:
-                                        <input type="time" name="departure_time_area${v.area_id}" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" value="${v.departure_time ? v.departure_time : ''}" disabled>
+                                        <input type="time" name="departure_time_area${v.area_id}" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" value="${v.departure_time ? v.departure_time : ''}" min="08:00" max="16:00" disabled>
                                     </label>
                                 </div>
               `;

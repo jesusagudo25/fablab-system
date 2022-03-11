@@ -64,8 +64,19 @@ $pagina[] = "gestionar";
 
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Nombre</span>
-<input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="">
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="">
                                 <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
+                            </label>
+                            
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Precio</span>
+                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value="">
+                                <span id="feedbackprecio" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Área</span>
+                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="area"></select>
                             </label>
 
                             <label class="text-sm block">
@@ -74,27 +85,27 @@ $pagina[] = "gestionar";
                             </label>
 
                             <label class="text-sm block">
-                                <span class="text-gray-800 font-medium">Cantidad de horas</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del evento" name="cantidad_horas" min="1" value="">
-                                <span id="feedbackhoras" class="text-xs text-red-600 feed"></span>
-                            </label>
-
-                            <label class="text-sm block">
-                                <span class="text-gray-800 font-medium">Precio</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el precio del evento" name="precio" min="0.00" step="0.01" value="">
-                                <span id="feedbackprecio" class="text-xs text-red-600 feed"></span>
-                            </label>
-
-                            <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Fecha inicial</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="">
-                                <span id="feedbackinicial" class="text-xs text-red-600 feed"></span>
+                                <span id="feedbackinitialdate" class="text-xs text-red-600 feed"></span>
                             </label>
 
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Fecha final</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_final" value="">
-                                <span id="feedbackfinal" class="text-xs text-red-600 feed"></span>
+                                <span id="feedbackfinaldate" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            </label><label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Hora inicial</span>
+                                <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                <span id="feedbackstarttime" class="text-xs text-red-600 feed"></span>
+                            </label>
+
+                            <label class="text-sm block">
+                                <span class="text-gray-800 font-medium">Hora final</span>
+                                <input type="time" name="hora_final" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                <span id="feedbackendtime" class="text-xs text-red-600 feed"></span>
                             </label>
 
                             <label class="text-sm block">

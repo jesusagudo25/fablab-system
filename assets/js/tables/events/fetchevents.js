@@ -16,6 +16,21 @@ gesting.done(function( data ) {
     }
 });
 
+// Send the data using post
+var posting = $.post( './functions.php', { solicitud: 'a' } );
+
+// Put the results in a div
+posting.done(function( data ) {
+    if(data.length){
+        data.forEach(x => {
+            area.innerHTML += `<option value="${x.id}">${x.name}</option>`;
+        })
+    }
+    else{
+        area.innerHTML += `<option value="">Sin áreas disponibles</option>`;
+    }
+});
+
 tablaEventos = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
     "processing": true,
@@ -64,8 +79,10 @@ const newEvent = document.querySelector('#evento'),
     modal = document.querySelector('#modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     categoria = document.querySelector('select[name="categoria"]'),
+    area = document.querySelector('select[name="area"]'),
     nombreEvento = document.querySelector('input[name="nombre_evento"]'),
-    cantidadHoras = document.querySelector('input[name="cantidad_horas"]'),
+    horaInicial = document.querySelector('input[name="hora_inicial"]'),
+    horaFinal = document.querySelector('input[name="hora_final"]'),
     fechaInicial = document.querySelector('input[name="fecha_inicial"]'),
     fechaFinal = document.querySelector('input[name="fecha_final"]'),
     precioEvento = document.querySelector('input[name="precio"]'),
@@ -124,24 +141,29 @@ newEvent.addEventListener('click', evt => {
             feedbacknombre.textContent = errores.nombre;
         }
 
-        if(cantidadHoras.value.trim().length == 0 || cantidadHoras.value == 0){
-            errores.horas = "Por favor, ingrese la cantidad de horas del evento";
-            feedbackhoras.textContent = errores.horas;
-        }
-
         if(precioEvento.value.trim().length == 0){
             errores.precio = "Por favor, ingrese el precio del evento";
             feedbackprecio.textContent = errores.precio;
         }
 
+        if(horaInicial.value.trim().length == 0){
+            errores.horainicial = "Por favor, seleccione la hora inicial del evento";
+            feedbackstarttime.textContent = errores.horainicial;
+        }
+
+        if(horaFinal.value.trim().length == 0){
+            errores.horafinal = "Por favor, seleccione la hora final del evento";
+            feedbackendtime.textContent = errores.horafinal;
+        }
+
         if(fechaInicial.value.trim().length == 0){
             errores.fechainicial = "Por favor, seleccione la fecha inicial del evento";
-            feedbackinicial.textContent = errores.fechainicial;
+            feedbackinitialdate.textContent = errores.fechainicial;
         }
 
         if(fechaFinal.value.trim().length == 0){
             errores.fechafinal = "Por favor, seleccione la fecha final del evento";
-            feedbackfinal.textContent = errores.fechafinal;
+            feedbackfinaldate.textContent = errores.fechafinal;
         }
 
         if(gastosEvento.value.trim().length == 0){
@@ -157,16 +179,19 @@ newEvent.addEventListener('click', evt => {
                 data:  {
                     solicitud: "c_e",
                     categoria: categoria.value,
+                    area: area.value,
                     nombre: nombreEvento.value,
-                    horas: cantidadHoras.value,
-                    inicial: fechaInicial.value,
-                    final: fechaFinal.value,
+                    horainicial: horaInicial.value,
+                    horafinal: horaFinal.value,
+                    fechainicial: fechaInicial.value,
+                    fechafinal: fechaFinal.value,
                     precio: precioEvento.value,
                     gastos: gastosEvento.value,
                     descripcion: descripcionGastos.value
                 },
                 success: function(data) {
                     categoria.options[0].selected = true;
+                    area.options[0].selected = true;
                     tablaEventos.ajax.reload();
                     guardar.removeEventListener('click', crear);
                     closeModal.forEach( e =>{
@@ -206,16 +231,13 @@ function editar(e){
         },
         success: function(data) {
 
-            Array.from(categoria.options).forEach( (opt) =>{
-                if(opt.value == data['category_id']){
-                    opt.selected = true;
-                }
-            });
-
+            categoria.value = data['category_id']
+            area.value = data['area_id'];
             nombreEvento.value = data['name'];
+            horaInicial.value = data['start_time'];
+            horaFinal.value = data['end_time'];
             fechaInicial.value = data['initial_date'];
             fechaFinal.value = data['final_date'];
-            cantidadHoras.value = data['number_hours'];
             precioEvento.value = data['price'];
             gastosEvento.value = data['expenses'];
             descripcionGastos.value = data['description_expenses'];
@@ -242,22 +264,26 @@ function editar(e){
 
                 let errores = {};
 
-
                 if(nombreEvento.value.trim().length == 0){
                     errores.nombre = "Por favor, ingrese el nombre del evento";
                     feedbacknombre.textContent = errores.nombre;
-                }
-        
-                if(cantidadHoras.value.trim().length == 0 || cantidadHoras.value == 0){
-                    errores.horas = "Por favor, ingrese la cantidad de horas del evento";
-                    feedbackhoras.textContent = errores.horas;
                 }
         
                 if(precioEvento.value.trim().length == 0){
                     errores.precio = "Por favor, ingrese el precio del evento";
                     feedbackprecio.textContent = errores.precio;
                 }
+
+                if(horaInicial.value.trim().length == 0){
+                    errores.horainicial = "Por favor, seleccione la hora inicial del evento";
+                    feedbackstarttime.textContent = errores.horainicial;
+                }
         
+                if(horaFinal.value.trim().length == 0){
+                    errores.horafinal = "Por favor, seleccione la hora final del evento";
+                    feedbackendtime.textContent = errores.horafinal;
+                }
+
                 if(fechaInicial.value.trim().length == 0){
                     errores.fechainicial = "Por favor, seleccione la fecha inicial del evento";
                     feedbackinicial.textContent = errores.fechainicial;
@@ -281,10 +307,12 @@ function editar(e){
                         data:  {
                             solicitud: "u_e",
                             categoria: categoria.value,
+                            area: area.value,
                             nombre: nombreEvento.value,
-                            horas: cantidadHoras.value,
-                            inicial: fechaInicial.value,
-                            final: fechaFinal.value,
+                            horainicial: horaInicial.value,
+                            horafinal: horaFinal.value,
+                            fechainicial: fechaInicial.value,
+                            fechafinal: fechaFinal.value,
                             precio: precioEvento.value,
                             gastos: gastosEvento.value,
                             descripcion: descripcionGastos.value,
@@ -292,6 +320,7 @@ function editar(e){
                         },
                         success: function(data) {
                             categoria.options[0].selected = true;
+                            area.options[0].selected = true;
                             tablaEventos.ajax.reload();
                             titulo_modal.textContent = 'Nueva evento';
                             guardar.textContent = 'Guardar';

@@ -6,12 +6,13 @@
 
     $event = new Events();
     $category = new EventCategory();
+    $area = new Area();
 
     if($_GET['solicitud'] == 'e'){
 
         $table = <<<EOT
         ( 
-            SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.number_hours, e.price, e.expenses, e.description_expenses, e.status FROM events e
+            SELECT e.event_id, ec.name AS category_id, e.name,e.initial_date ,e.final_date, e.status FROM events e
             INNER JOIN event_category ec ON e.category_id = ec.category_id
         ) temp
         EOT;
@@ -81,10 +82,12 @@
     }
     else if($_POST['solicitud'] == 'c_e'){
         $event->setCategoryId($_POST['categoria']);
+        $event->setAreaId($_POST['area']);
         $event->setName($_POST['nombre']);
-        $event->setNumberHours($_POST['horas']);
-        $event->setInitialDate($_POST['inicial']);
-        $event->setFinalDate($_POST['final']);
+        $event->setStartTime($_POST['horainicial']);
+        $event->setEndTime($_POST['horafinal']);
+        $event->setInitialDate($_POST['fechainicial']);
+        $event->setFinalDate($_POST['fechafinal']);
         $event->setPrice($_POST['precio']);
         $event->setExpenses($_POST['gastos']);
         $event->setDescriptionExpenses(empty($_POST['descripcion']) ? NULL :$_POST['descripcion']);
@@ -103,10 +106,12 @@
     else if($_POST['solicitud'] == 'u_e'){
         $event->setEventId($_POST['id']);
         $event->setCategoryId($_POST['categoria']);
+        $event->setAreaId($_POST['area']);
         $event->setName($_POST['nombre']);
-        $event->setNumberHours($_POST['horas']);
-        $event->setInitialDate($_POST['inicial']);
-        $event->setFinalDate($_POST['final']);
+        $event->setStartTime($_POST['horainicial']);
+        $event->setEndTime($_POST['horafinal']);
+        $event->setInitialDate($_POST['fechainicial']);
+        $event->setFinalDate($_POST['fechafinal']);
         $event->setPrice($_POST['precio']);
         $event->setExpenses($_POST['gastos']);
         $event->setDescriptionExpenses(empty($_POST['descripcion']) ? NULL :$_POST['descripcion']);
@@ -146,4 +151,8 @@
     else if ($_POST['solicitud'] == 'id_c') {
         $categories= $category->get($_POST['id']);
         echo json_encode($categories);
+    }
+    else if ($_POST['solicitud'] == 'a') {
+        $areas= $area->getAjax();
+        echo json_encode($areas);
     }

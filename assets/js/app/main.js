@@ -7,6 +7,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
     razonVisita = document.querySelector('select[name="razonvisita"]'),
     containerArea = document.querySelector('#containerarea'),
+    containerTiempo = document.querySelector('#containertiempo'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     booking = document.querySelector('#booking'),
@@ -278,6 +279,7 @@ razonVisita.addEventListener('change', evt => {
     optionSelected = evt.target.options[evt.target.selectedIndex];
     if(optionSelected.classList.contains('free')){
         containerArea.classList.add('hidden');
+        containerTiempo.classList.remove('hidden');
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area'+x.value);
@@ -295,6 +297,7 @@ razonVisita.addEventListener('change', evt => {
     }
     else{
         containerArea.classList.remove('hidden');
+        containerTiempo.classList.add('hidden');
     }
 
 });

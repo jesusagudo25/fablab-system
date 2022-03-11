@@ -19,9 +19,9 @@ tablaReportes = $('#datatable-json').DataTable({
 
 const formulario = document.querySelector('form'),
         start_date = document.querySelector('input[name="start"]'),
-        end_date = document.querySelector('input[name="end"]');
-
-        const elem = document.getElementById('foo');
+        end_date = document.querySelector('input[name="end"]'),
+        elem = document.getElementById('foo');
+        
 const rangepicker = new DateRangePicker(elem, {
     format: 'yyyy/mm/dd',
     language: "es"

@@ -50,8 +50,8 @@ $pagina[] = "gestionar";
                             <thead>
                             <tr>
                                 <th>Num. Factura</th>
+                                <th>Num. Recibo</th>
                                 <th>Cliente</th>
-                                <th>Agente</th>
                                 <th>Fecha</th>
                                 <th>Total</th>
                                 <th>Acción</th>

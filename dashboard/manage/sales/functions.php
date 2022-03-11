@@ -8,7 +8,7 @@
 
         $table = <<<EOT
         ( 
-            SELECT LPAD(i.invoice_id,7,'0') AS invoice_id, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date, total FROM invoices i
+            SELECT LPAD(i.invoice_id,7,'0') AS invoice_id, receipt, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date, total FROM invoices i
             INNER JOIN customers c ON c.customer_id = i.customer_id
             INNER JOIN users u ON u.user_id = i.user_id
         ) temp
@@ -18,7 +18,7 @@
 
         $columns = array(
             array( 'db' => 'invoice_id',          'dt' => 0 ),
-            array( 'db' => 'customer_id',        'dt' => 1 ),
+            array( 'db' => 'receipt',          'dt' => 1 ),
             array( 'db' => 'user_id',    'dt' => 2 ),
             array( 'db' => 'date',    'dt' => 3 ),
             array( 'db' => 'total',    'dt' => 4 )

@@ -4,6 +4,7 @@ class Invoice extends Model implements IModel
 {
     private $invoice_id;
     private $invoice;
+    private $receipt;
     private $customer_id;
     private $user_id;
     private $date;
@@ -19,7 +20,7 @@ class Invoice extends Model implements IModel
         $this->user_id = $user_id;
         $this->date = $decoded['fecha'];
         $this->total = $decoded['total'];
-
+        $this->receipt = empty($decoded['receipt']) ? NULL : $decoded['receipt'];
 
         $this->save();
 
@@ -82,9 +83,10 @@ class Invoice extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaFactura = $this->prepare('INSERT INTO invoices(customer_id, user_id,date,total) VALUES (:customer_id, :user_id, :date, :total)');
+        $nuevaFactura = $this->prepare('INSERT INTO invoices(receipt, customer_id, user_id,date,total) VALUES (:receipt, :customer_id, :user_id, :date, :total)');
 
         $nuevaFactura->execute([
+            'receipt' => $this->receipt,
             'customer_id' => $this->customer_id,
             'user_id' => $this->user_id,
             'date' => $this->date,
@@ -105,7 +107,7 @@ class Invoice extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare("SELECT invoice_id,LPAD(invoice_id,7,'0') AS invoice,customer_id,user_id,date,total FROM invoices WHERE invoice_id = :invoice_id");
+        $query = $this->prepare("SELECT invoice_id,LPAD(invoice_id,7,'0') AS invoice,receipt, customer_id,user_id,date,total FROM invoices WHERE invoice_id = :invoice_id");
 
         $query->execute([
             'invoice_id' => $id
@@ -115,6 +117,7 @@ class Invoice extends Model implements IModel
 
         $this->invoice = $invoice['invoice'];
         $this->invoice_id = $invoice['invoice_id'];
+        $this->receipt = $invoice['receipt'];
         $this->customer_id = $invoice['customer_id'];
         $this->user_id = $invoice['user_id'];
         $this->date = $invoice['date'];
@@ -173,6 +176,14 @@ class Invoice extends Model implements IModel
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReceipt()
+    {
+        return $this->receipt;
     }
     
     /**

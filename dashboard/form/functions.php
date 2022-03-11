@@ -19,7 +19,7 @@ if ($contentType === "application/json") {
 
         if($decoded['datos']['solicitud'] == 'v'){
             $visit = new Visit();
-            $visit->saveAll($decoded['datos']);
+            echo json_encode($visit->saveAll($decoded['datos']));
         }
         else if($decoded['datos']['solicitud'] == 'doc'){ //Seguridad
             

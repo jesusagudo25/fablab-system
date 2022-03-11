@@ -106,11 +106,11 @@ $pagina[] = "schedule";
                                 </label>
                                 <div class="p-2 hidden" id="area<?= $valor['id'] ?>">
                                     <label for="arrival_time">Hora de llegada:
-                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
                                     </label>
 
                                     <label for="departure_time">Hora de salida:
-                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
                                     </label>
                                     <br/>
                                     <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>

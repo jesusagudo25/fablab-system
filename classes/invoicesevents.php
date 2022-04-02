@@ -1,6 +1,6 @@
 <?php
 
-class InvoicesEvents extends Model implements IModel
+class InvoicesEvents extends Model
 {
     private $invoice_id;
     private $event_id;
@@ -27,7 +27,12 @@ class InvoicesEvents extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare("SELECT ec.name, e.price FROM invoices_events ie
+        //
+    }
+
+    public function getToInvoice($id)
+    {
+        $query = $this->prepare("SELECT ie.event_id AS id, ec.name, e.price, 'eventos' AS service FROM invoices_events ie
         INNER JOIN events e ON e.event_id = ie.event_id
         INNER JOIN event_category ec ON ec.category_id = e.category_id
         WHERE invoice_id = :invoice_id");

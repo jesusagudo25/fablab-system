@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/visits/fetchlabo.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/sales/fetchdash.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
@@ -49,14 +49,13 @@
 
     <?php require_once './templates/header.php'; ?>
 
-    <!--Container-->
     <div class="container w-10/12 mx-auto pt-20">
 
         <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
 
             <div class="flex flex-wrap">
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
-                    <!--Metric Card-->
+
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
@@ -70,7 +69,6 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
-                    <!--Metric Card-->
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
@@ -180,18 +178,17 @@
                     <!--Table Card-->
                     <div class="bg-white border rounded shadow">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Tabla - Clientes en laboratorio</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Tabla - Ventas</h5>
                         </div>
                         <div class="flex justify-center items-center w-full overflow-auto">
                             <table id="datatable-json" class="min-w-full divide-y divide-white">
                                 <thead>
                                 <tr>
-                                    <th>ID_V</th>
-                                    <th>ID_A</th>
-                                    <th>Nombre</th>
-                                    <th>Area</th>
-                                    <th>Fecha de salida</th>
-                                    <th>Acciones</th>
+                                    <th>Num. Factura</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Acción</th>
                                 </tr>
                                 </thead>
                             </table>

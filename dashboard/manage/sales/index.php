@@ -26,7 +26,7 @@ $pagina[] = "gestionar";
     <link href="<?= constant('URL')?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL')?>assets/js/tables/general/fetchsales.js" defer></script>
+    <script src="<?= constant('URL')?>assets/js/tables/sales/fetchsales.js" defer></script>
     <script src="<?= constant('URL')?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -43,7 +43,7 @@ $pagina[] = "gestionar";
             <div class="w-full p-3">
                 <div class="bg-white border rounded shadow">
                     <div class="border-b p-3">
-                        <h5 class="font-bold uppercase text-gray-600">Ventas</h5>
+                        <h5 class="font-bold uppercase text-gray-600">Tabla - Ventas</h5>
                     </div>
                     <div class="flex justify-center items-center w-full overflow-auto">
                         <table id="datatable-json" class="min-w-full divide-y divide-white">
@@ -60,13 +60,14 @@ $pagina[] = "gestionar";
                         </table>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
+<!-- 
 
+    En las ordenes de venta, he desaparecido campos como vendedor, número de recibo.
+
+ -->
 
 </div>
 </body>

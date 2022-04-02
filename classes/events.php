@@ -68,10 +68,12 @@ class Events extends Model implements IModel
 
     public function getToInvoice()
     {
-        $query = $this->query('SELECT * FROM events
+        $query = $this->query('SELECT e.event_id, e.category_id, a.name AS area_id, e.name, e.start_time ,e.end_time, e.initial_date ,e.final_date, e.price, e.expenses, e.description_expenses, e.status FROM events e
+        INNER JOIN event_category ec ON e.category_id = ec.category_id
+        INNER JOIN areas a ON e.area_id = a.area_id 
         WHERE (final_date >= CURDATE())
         AND
-        status = 1');
+        e.status = 1');
 
         $events = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -80,7 +82,7 @@ class Events extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT e.event_id, ec.name AS category_id, a.name AS area_id, e.name, e.start_time ,e.end_time, e.initial_date ,e.final_date, e.price FROM events e
+        $query = $this->prepare('SELECT e.event_id, ec.name AS category_name, a.name AS area_name, ec.category_id, a.area_id , e.name, e.start_time ,e.end_time, e.initial_date ,e.final_date, e.price, e.expenses, e.description_expenses FROM events e
         INNER JOIN event_category ec ON e.category_id = ec.category_id
         INNER JOIN areas a ON e.area_id = a.area_id
         WHERE e.event_id = :id');

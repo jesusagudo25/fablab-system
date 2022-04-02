@@ -44,12 +44,19 @@ class UseMachines extends Model implements IModel
     }
 
     public function get($id){
+        $query = $this->prepare('SELECT * FROM use_machines WHERE use_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
 
+        $use_machine = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $use_machine;
     }
 
     public function getToInvoice($id)
     {
-        $query = $this->prepare("SELECT a.name, um.total_price AS price FROM use_machines um
+        $query = $this->prepare("SELECT um.use_id AS id, a.name, um.total_price AS price, 'areas' AS service FROM use_machines um
         INNER JOIN areas a ON a.area_id = um.area_id
         WHERE invoice_id = :invoice_id");
 

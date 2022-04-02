@@ -93,8 +93,8 @@ var calendar = new FullCalendar.Calendar(calendarEl, { //Timezone local en pc de
                 success: function (data) {
                     document.querySelector('input[name="nombre_evento"]').value = data['name'];
                     document.querySelector('input[name="precio_evento"]').value = data['price'];
-                    document.querySelector('select[name="area"]').innerHTML += `<option>${data['area_id']}</option>`;
-                    document.querySelector('select[name="categoria"]').innerHTML += `<option>${data['category_id']}</option>`;
+                    document.querySelector('select[name="area"]').innerHTML += `<option>${data['area_name']}</option>`;
+                    document.querySelector('select[name="categoria"]').innerHTML += `<option>${data['category_name']}</option>`;
                     document.querySelector('input[name="fecha_inicial"]').value = data['initial_date'];
                     document.querySelector('input[name="fecha_final"]').value = data['final_date'];
                     document.querySelector('input[name="hora_inicial"]').value = data['start_time'];
@@ -279,15 +279,9 @@ const TIPO_TABLAS = {
                `;
     },
     "events": () => {
-        titulo_modal.textContent = 'Evento'; //Area donde trabaja
-        //Nombre
-        //Precio
-        //Area
-        //Categoría
-        //Hora x2
-        //Fecha x2
+        titulo_modal.textContent = 'Evento';
         modalContent.innerHTML = `
-            <div class="grid grid-cols-2 gap-5">
+            <div class="w-full grid grid-cols-2 gap-5">
                 <label class="text-sm block">
                     <span class="text-gray-800 font-medium">Nombre</span>
                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="text" placeholder="Ingrese el nombre del evento" name="nombre_evento" value="" disabled>
@@ -318,8 +312,7 @@ const TIPO_TABLAS = {
                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled="">
                 </label>
 
-                
-                </label><label class="text-sm block">
+                <label class="text-sm block">
                     <span class="text-gray-800 font-medium">Hora inicial</span>
                     <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
                 </label>

@@ -114,6 +114,7 @@ $model->query("CREATE TABLE areas(
             arrival_time TIME NOT NULL,
             departure_time TIME NOT NULL,
 
+            PRIMARY KEY (visit_id, area_id),
             FOREIGN KEY (visit_id) REFERENCES visits(visit_id) ON DELETE CASCADE,
             FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE
         );   ");
@@ -123,6 +124,7 @@ $model->query("CREATE TABLE areas(
         arrival_time TIME NOT NULL,
         departure_time TIME NOT NULL,
 
+        PRIMARY KEY (booking_id, area_id),
         FOREIGN KEY (booking_id) REFERENCES bookings(booking_id),
         FOREIGN KEY (area_id) REFERENCES areas(area_id)
     );   ");        
@@ -223,12 +225,14 @@ $model->query("CREATE TABLE areas(
         );");
 
     $model->query("CREATE TABLE membership_invoices(
+            id INT UNSIGNED AUTO_INCREMENT,
             invoice_id INT UNSIGNED NOT NULL,
             membership_id INT UNSIGNED NOT NULL,
             initial_date DATE NOT NULL,
             final_date DATE NOT NULL,
             price DECIMAL(6,2) NOT NULL,
-
+            
+            PRIMARY KEY (id,invoice_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id) ON DELETE CASCADE,
  	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id) ON DELETE CASCADE     
         );     ");
@@ -237,6 +241,7 @@ $model->query("CREATE TABLE areas(
             invoice_id INT UNSIGNED NOT NULL,
             event_id INT UNSIGNED NOT NULL,
 
+            PRIMARY KEY (invoice_id, event_id),
 	        FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id) ON DELETE CASCADE,
  	        FOREIGN KEY (event_id) REFERENCES events (event_id) ON DELETE CASCADE           
             

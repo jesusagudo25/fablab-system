@@ -42,7 +42,7 @@ tablaClientes = $('#datatable-json').DataTable({
                     return data[2];
                 }
                 else{
-                    return '<button><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></button>';
+                    return '<div><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></div>';
                 }
             },
             "targets": 2
@@ -56,7 +56,7 @@ tablaClientes = $('#datatable-json').DataTable({
                     return data[4];
                 }
                 else{
-                    return '<button><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></button>';
+                    return '<div><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></div>';
                 }
             },
             "targets": 4

@@ -114,24 +114,34 @@ $("#autoComplete").autocomplete({
                 document_type: tipoDocumento.value
             },
             success: function (data) {
-                response(data);
+                if (!data.length) {
+                    var result = { value:"0",label:"No se han encontrado resultados" };
+                    data.push(result);
+                }
+                response(data)
             }
         });
     },
+    delay: 500,
+    minLength: 4,
     select: function (event, ui) {
-        $('#autoComplete').val(ui.item.label);
-        idHidden.value = ui.item.id;
-        nombreCliente.value = ui.item.name;
+        var value = ui.item.value;
+        if (value == 0) {
+            event.preventDefault();
+        }
+        else{
+            $('#autoComplete').val(ui.item.label);
+            idHidden.value = ui.item.id;
+            nombreCliente.value = ui.item.name;
 
-        Toastify({
-            text: "Visitante seleccionado",
-            duration: 3000,
-            style: {
-                background: '#10B981'
-            }
-        }).showToast();
-
-        return false;
+            Toastify({
+                text: "Visitante seleccionado",
+                duration: 3000,
+                style: {
+                    background: '#10B981'
+                }
+            }).showToast();
+        }
     }
 
 });
@@ -319,7 +329,9 @@ function triggerChange(element){
 let categoriaEvento = [];
 let selectorEvento;
 
-let inputCantidadHoras;
+let selectAreaEvento;
+let inputHoraInicial;
+let inputHoraFinal;
 let inputFechaInicial;
 let inputFechaFinal;
 let inputPrecioEvento;
@@ -366,42 +378,54 @@ const TIPO_TABLAS = {
 
         modal_content.classList.add('max-h-96','overflow-auto');
 
+        console.log(id_servicio);
+        console.log(events);
         categoriaEvento = events.filter(x => x.category_id === id_servicio);
 
-        modal_content.innerHTML = `<main class="grid grid-cols-1 gap-5 justify-items-center">
-                    <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
-                            <div class="w-full flex justify-center items-center gap-2">
-                                <span class="text-gray-800 font-medium">Seleccione un evento</span>
-                                <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
-                                </select>
-                                <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
-                            </div>
-                            <span id="feedbackevento" class="w-full text-xs text-red-600 text-center feed"></span>
-                    </label>
-                        
-                    <div class="grid grid-cols-2 gap-5 hidden">
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Fecha inicial</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled>
-                    </label>
-
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Fecha final</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled>
-                    </label>
-
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Precio</span>
-
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled>
-                    </label>
-
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Cantidad de horas</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" placeholder="Cantidad de horas del evento" name="cantidad_horas" min="1" value="" disabled>
-                    </label>
+        modal_content.innerHTML = `
+        <main class="grid grid-cols-1 gap-5 justify-items-center">
+            <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
+                    <div class="w-full flex justify-center items-center gap-2">
+                        <span class="text-gray-800 font-medium">Seleccione un evento</span>
+                        <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
+                        </select>
+                        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
                     </div>
-                    </main>`;
+                    <span id="feedbackevento" class="w-full text-xs text-red-600 text-center feed"></span>
+            </label>
+                        
+            <div class="w-full grid grid-cols-2 gap-5 hidden">
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Área</span>
+                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" required name="area" disabled></select>
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Precio</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled="">
+                </label>
+        
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha inicial</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled="">
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha final</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled="">
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora inicial</span>
+                    <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora final</span>
+                    <input type="time" name="hora_final" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+            </div>
+        </main>`;
 
         selectorEvento = document.querySelector('select[name="evento_disponible"]');
 
@@ -414,18 +438,24 @@ const TIPO_TABLAS = {
 <option value="${value.event_id}" ${respuesta ? servicios_ag[indice].detalles.event_id == value.event_id ? 'selected' : '' : ''} >${value.name}</option>`;
             } );
 
+            console.log(categoriaEvento);
+
             respuestaEvento = categoriaEvento.find(x => x.event_id == selectorEvento.value);
 
-                    inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
-                    inputCantidadHoras = document.querySelector('input[name="cantidad_horas"]'),
-                    inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
-                    inputFechaFinal = document.querySelector('input[name="fecha_final"]');
-
+            inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
+            selectAreaEvento = document.querySelector('select[name="area"]'),
+            inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
+            inputHoraFinal = document.querySelector('input[name="hora_final"]'),
+            inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
+            inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+            console.log(respuestaEvento);
             if(respuestaEvento){
-                inputCantidadHoras.value = respuestaEvento.number_hours;
-                inputPrecioEvento.value = respuestaEvento.price;
+                selectAreaEvento.innerHTML += `<option>${respuestaEvento.area_id}</option>`;
+                inputHoraInicial.value = respuestaEvento.start_time;
+                inputHoraFinal.value = respuestaEvento.end_time;
                 inputFechaInicial.value = respuestaEvento.initial_date;
                 inputFechaFinal.value = respuestaEvento.final_date;
+                inputPrecioEvento.value = respuestaEvento.price;
             }
 
         }
@@ -504,7 +534,7 @@ const TIPO_TABLAS = {
 
         if(areaConsumibles.length){
             areaConsumibles.forEach( (value) =>{
-                selectorConsumible.innerHTML += `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].detalles.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
+                selectorConsumible.innerHTML = `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].detalles.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
             } )
 
             if(respuesta){
@@ -522,27 +552,18 @@ const TIPO_TABLAS = {
             inputPrecioUnitario.value = '0.00';
         }
 
-    },
-    "alquiler": (categoria,id_servicio,numeroItem_id,unidad)=>{
-        modal_content.innerHTML = `<main class="grid grid-cols-1 gap-1 justify-items-center">
-                    <label class="w-full text-sm flex justify-center items-center gap-2">
-                            <span class="text-gray-800 self-center font-medium">Cantidad de horas</span>
-
-                            <input class="w-1/2 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de horas del alquiler" name="cantidad_horas" min="1" value="${respuesta ? servicios_ag[indice].detalles.cantidad_horas : ''}">
-                    </label>
-                    <span id="feedbackcantidad" class="text-xs text-center text-red-600 feed"></span>
-                    </main>
-               `;
     }
 };
 
 function cambiarEvento(e){
     respuestaEvento = categoriaEvento.find(x => x.event_id == e.value);
 
-    inputPrecioEvento.value = respuestaEvento.price;
-    inputCantidadHoras.value = respuestaEvento.number_hours;
+    selectAreaEvento.innerHTML = `<option>${respuestaEvento.area_id}</option>`;
+    inputHoraInicial.value = respuestaEvento.start_time;
+    inputHoraFinal.value = respuestaEvento.end_time;
     inputFechaInicial.value = respuestaEvento.initial_date;
     inputFechaFinal.value = respuestaEvento.final_date;
+    inputPrecioEvento.value = respuestaEvento.price;
 
     document.querySelector('#feedbackevento').textContent = '';
 
@@ -763,29 +784,7 @@ const TIPO_ACTUALIZAR = {
 
             return false;
         }
-    },
-    "alquiler": (numeroItem)=>{
-        let errores = {};
-
-        if(document.querySelector('input[name="cantidad_horas"]').value.trim().length == 0 || document.querySelector('input[name="cantidad_horas"]').value == 0){
-            errores.cantidadhoras = "Por favor, ingrese la cantidad de horas.";
-            document.querySelector('#feedbackcantidad').textContent = errores.cantidadhoras;
-        }
-
-        if(Object.keys(errores).length > 0){
-            document.querySelector('#modal-content input').addEventListener('change', evt =>{
-                document.querySelector('#feedbackcantidad').textContent = '';
-            });
-            return true;
-        }
-        else{
-            servicios_ag[indice].detalles = {
-                cantidad_horas: document.querySelector('input[name="cantidad_horas"]').value
-            }
-            return false;
-        }
-
-    },
+    }
 }
 
 function cambiarValue(elm,columna_total){

@@ -38,4 +38,33 @@
             SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
         );
     }
+    else if($_POST['solicitud'] == 'up_receipt'){
+        $invoice = new Invoice();
+        $invoice->setInvoiceId($_POST['invoice_id']);
+        $invoice->setReceipt($_POST['receipt']);
+        $invoice->update();
+        echo json_encode('true');
+    }
+    else if($_POST['solicitud'] == 'get_details'){
+        //Invoice::getDetails($_POST['invoice_id'])
 
+        $type = match($_POST['service']){
+
+            'membresias', => function ($id){
+                $membership_invoices = new MembershipInvoices();
+                return $membership_invoices->get($id);
+            },
+            'eventos' => function ($id){
+                $events = new Events();
+                return $events->get($id);
+            },
+            'areas' => function ($id){
+                $use_machine = new UseMachines();
+                return $use_machine->get($id);
+            }
+
+        };
+
+        echo json_encode($type($_POST['id']));
+
+    }

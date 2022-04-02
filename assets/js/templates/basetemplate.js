@@ -1,6 +1,3 @@
-/*Toggle dropdown list*/
-/*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
-
 var gestMenuDiv = document.getElementById("dropdown");
 var gestMenu = document.getElementById("gestButton");
 

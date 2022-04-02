@@ -254,24 +254,34 @@ function editarVisita(e){
                                     document_type: tipoDocumento.value
                                 },
                                 success: function (data) {
-                                    response(data);
+                                    if (!data.length) {
+                                        var result = { value:"0",label:"No se han encontrado resultados" };
+                                        data.push(result);
+                                    }
+                                    response(data)
                                 }
                             });
                         },
+                        delay: 500,
+                        minLength: 4,
                         select: function (event, ui) {
-                            $('#autoComplete').val(ui.item.label);
-                            idHidden.value = ui.item.id;
-                            nombreCliente.value = ui.item.name;
-
-                            Toastify({
-                                text: "Visitante seleccionado",
-                                duration: 3000,
-                                style: {
-                                    background: '#10B981'
-                                }
-                            }).showToast();
-
-                            return false;
+                            var value = ui.item.value;
+                            if (value == 0) {
+                                event.preventDefault();
+                            }
+                            else{
+                                $('#autoComplete').val(ui.item.label);
+                                idHidden.value = ui.item.id;
+                                nombreCliente.value = ui.item.name;
+    
+                                Toastify({
+                                    text: "Visitante seleccionado",
+                                    duration: 3000,
+                                    style: {
+                                        background: '#10B981'
+                                    }
+                                }).showToast();
+                            }
                         }
 
                     });

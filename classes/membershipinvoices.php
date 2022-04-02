@@ -31,9 +31,23 @@ class MembershipInvoices extends Model implements IModel
         // TODO: Implement getAll() method.
     }
 
-    public function get($id)
+    public function get($id){
+        $query = $this->prepare('SELECT mp.name, mi.initial_date, mi.final_date, mi.price FROM membership_invoices mi
+        INNER JOIN membership_plans mp ON mp.membership_id = mi.membership_id
+        WHERE mi.id = :id');
+
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $details = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $details;
+    }
+
+    public function getToInvoice($id)
     {
-        $query = $this->prepare("SELECT mp.name,mi.price FROM membership_invoices mi
+        $query = $this->prepare("SELECT mi.id, mp.name,mi.price,'membresias' AS service FROM membership_invoices mi
         INNER JOIN membership_plans mp ON mp.membership_id = mi.membership_id
         WHERE invoice_id = :invoice_id");
 
@@ -41,9 +55,9 @@ class MembershipInvoices extends Model implements IModel
             'invoice_id'=> $id,
         ]);
 
-        $detalles = $query->fetchAll(PDO::FETCH_ASSOC);
+        $details = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        return $detalles;
+        return $details;
     }
 
     public function delete($id)

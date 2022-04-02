@@ -17,12 +17,10 @@ if ($contentType === "application/json") {
         if($decoded['datos']['solicitud'] == 's'){
             $eventCategory = new EventCategory();
             $membershipPlans = new MembershipPlans();
-            $rentalCategory = new RentalCategory();
             $area = new Area();
 
             $datos['eventos']= $eventCategory->getAjax();
             $datos['membresias']= $membershipPlans->getAjax();
-            $datos['alquiler']= $rentalCategory->getAjax();
             $datos['areas']= $area->getAjax();
             echo json_encode($datos);
         }

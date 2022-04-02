@@ -18,22 +18,19 @@
     else if(isset($_GET['draw'])){
         $table = <<<EOT
         ( 
-            SELECT v.visit_id , va.area_id, c.name AS nombre_cliente,a.name AS nombre_area,va.departure_time FROM visits v 
-            INNER JOIN visits_areas va ON v.visit_id = va.visit_id 
-            INNER JOIN customers c ON v.customer_id = c.customer_id 
-            INNER JOIN areas a ON va.area_id = a.area_id 
-            WHERE (va.departure_time IS NULL ) AND (v.status = 1)
+            SELECT LPAD(i.invoice_id,7,'0') AS invoice_id, receipt, c.name AS customer_id, CONCAT(u.name,' ',u.lastname) AS user_id, date, total FROM invoices i
+            INNER JOIN customers c ON c.customer_id = i.customer_id
+            INNER JOIN users u ON u.user_id = i.user_id
         ) temp
         EOT;
 
-        $primaryKey = 'visit_id';
+        $primaryKey = 'invoice_id';
 
         $columns = array(
-            array( 'db' => 'visit_id',          'dt' => 0 ),
-            array( 'db' => 'area_id',        'dt' => 1 ),
-            array( 'db' => 'nombre_cliente',    'dt' => 2 ),
-            array( 'db' => 'nombre_area',    'dt' => 3 ),
-            array( 'db' => 'departure_time',    'dt' => 4 )
+            array( 'db' => 'invoice_id',          'dt' => 0 ),
+            array( 'db' => 'user_id',    'dt' => 1 ),
+            array( 'db' => 'date',    'dt' => 2 ),
+            array( 'db' => 'total',    'dt' => 3 )
         );
 
         // SQL server connection information
@@ -47,9 +44,8 @@
         require( '../ssp.class.php' );
 
         echo json_encode(
-    	    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+            SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
         );
-
     }
     else if($_POST['solicitud'] == 'u'){
 

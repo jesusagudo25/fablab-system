@@ -31,6 +31,8 @@ class Customer extends Model implements IModel
             'tipo'=>$tipo
         ]);
 
+        $datos = array();
+
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "code" => $row['code'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'],"age_range" => $row['range_id'],"sex" => $row['sex'],"province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
         }

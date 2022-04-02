@@ -63,17 +63,7 @@ class Invoice extends Model implements IModel
                     $use_machine->setTotalPrice($valor['detalles']['costo_total']);
 
                     $use_machine->save();
-                },
-                'alquiler' => function ($valor){
-                    $rental_invoices = new RentalInvoices();
-
-                    $rental_invoices->setInvoiceId($this->invoice_id);
-                    $rental_invoices->setCategoryId($valor['servicio']);
-                    $rental_invoices->setNumberHours($valor['detalles']['cantidad_horas']);
-                    $rental_invoices->setPrice($valor['precio']);
-
-                    $rental_invoices->save();
-                },
+                }
             };
 
             $type($valor);
@@ -143,7 +133,11 @@ class Invoice extends Model implements IModel
 
     public function update()
     {
-        // TODO: Implement update() method.
+        $actualizarDatos = $this->prepare("UPDATE invoices SET receipt = :receipt WHERE invoice_id = :invoice_id;");
+        $actualizarDatos->execute([
+            'receipt' => $this->receipt,
+            'invoice_id' => $this->invoice_id
+        ]);
     }
 
     /**
@@ -208,6 +202,22 @@ class Invoice extends Model implements IModel
     public function setInvoice($invoice): void
     {
         $this->invoice = $invoice;
+    }
+
+    /**
+     * @param mixed $invoice_id
+     */
+    public function setInvoiceId($invoice_id): void
+    {
+        $this->invoice_id = $invoice_id;
+    }
+
+    /**
+     * @param mixed $receipt
+     */
+    public function setReceipt($receipt): void
+    {
+        $this->receipt = $receipt;
     }
 
 

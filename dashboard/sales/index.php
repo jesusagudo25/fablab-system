@@ -21,12 +21,7 @@
 ?>
 
 
-<!-- 
-
-Actualmente a traves del uso de maquinas, se encuentra el de diseño en computadora (Es una area) que prácticamente es el computadora + software (servicio alquiler). Es importante tomarte en cuenta, que está tabla se debe eliminar. Y realizar todo mejor desde el uso de maquinas; pero debemos tomar en cuenta los consumibles de cada area. Ya que sus caracteristicas son diferentes. Lo mismo para los de detalles de cada venta de uso de maquinas, sus caracteristicas son diferentes.
-
- 
--->
+<!--  #Feature Para Maquinas/Alquiler -->
 
 
 <!DOCTYPE html>
@@ -154,7 +149,6 @@ Actualmente a traves del uso de maquinas, se encuentra el de diseño en computad
                                     <option value="membresias">Membresías</option>
                                     <option value="eventos">Eventos</option>
                                     <option value="areas" selected>Maquinas</option>
-                                    <option value="alquiler">Alquiler</option>
                                 </select>
                             </label>
 

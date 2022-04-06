@@ -92,21 +92,6 @@ $pagina[] = "gestionar";
                                 </div>
                             </div>
                         </a>
-
-                        <a href="../rentals/" class="w-3/4">
-                            <div class="bg-gray-100 border rounded shadow p-2">
-                                <div class="flex flex-row items-center">
-                                    <div class="flex-shrink pr-4">
-                                        <div class="rounded p-3 bg-blue-600"><i class="fas fa-clock fa-2x fa-fw fa-inverse"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 text-right md:text-center">
-                                        <h3 class="font-semibold text-2xl">Alquiler</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
                     </div>
                 </div>
                 <!--/Graph Card-->

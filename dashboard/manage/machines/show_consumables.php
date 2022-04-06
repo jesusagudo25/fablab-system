@@ -28,7 +28,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/tables/machines/fetchareas.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/tables/machines/fetchconsumables.js" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -93,7 +93,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Unidad</th>
+                                        <th>Precio unitario</th>
+                                        <th>Precio impresión</th>
                                         <th>Estado</th>
                                         <th>Acción</th>
                                     </tr>

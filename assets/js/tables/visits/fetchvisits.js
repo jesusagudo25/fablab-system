@@ -179,7 +179,7 @@ function editarVisita(e){
             
         <div class="text-sm mt-5 hidden" id="containerarea">
         <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
-        <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas" value="${e.value}" onclick="editarAreas(this)">Editar</button>
+        <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas" value="${e.value}" onclick="editarAreas(this)">Agregar</button>
         <span id="feedbackbuttonareas" class="text-xs text-red-600 feed"></span>
     </div>                                
             

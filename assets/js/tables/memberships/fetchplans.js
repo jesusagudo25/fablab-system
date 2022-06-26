@@ -5,7 +5,7 @@ tablaPlanes = $('#datatable-json').DataTable({
     "ajax": "./functions.php",
     "dom": 'Brtip',
     "initComplete":function( settings, json){
-        document.querySelector('.dt-buttons').innerHTML += `                            <button id="plan" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nuevo plan<i class="fas fa-archive ml-3"></i></button>`;
+        document.querySelector('.dt-buttons').innerHTML += `                            <button id="plan" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Agregar plan<i class="fas fa-archive ml-3"></i></button>`;
         const newPlan = document.querySelector('#plan');
 
         inputs.forEach( x =>{

@@ -7,6 +7,9 @@
     }
 
     require_once '../../../app.php';
+    
+    $area = new Area();
+    $area = $area->get($_GET['area']);
 
     $pagina[] = "gestionar";
 ?>
@@ -18,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Maquinas - Fablab System</title>
+    <title>Insumos de <?= $area['name'] ?> - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
     <link rel="icon" href="<?= constant('URL') ?>assets/img/fab.ico" type="image/x-icon">
@@ -85,7 +88,7 @@
                     <!--Graph Card-->
                     <div class="bg-white border rounded shadow">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Áreas de maquinas</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Insumos de <?= $area['name'] ?></h5>
                         </div>
                         <div class="flex justify-center items-center flex-col w-full overflow-auto">
                             <table id="datatable-json" class="min-w-full divide-y divide-white">

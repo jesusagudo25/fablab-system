@@ -471,7 +471,7 @@ const TIPO_TABLAS = {
 
         modal_content.innerHTML = `<main class="grid grid-cols-2 gap-5">
                     <label class="col-span-full text-sm block">
-                        <span class="text-gray-800 font-medium">Tipo de consumible</span>
+                        <span class="text-gray-800 font-medium">Tipo de insumo</span>
                         <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible" onchange="cambiarPrecioUnitario()"></select>
                         <span id="feedbackconsumible" class="text-xs text-red-600 feed"></span>
                     </label>

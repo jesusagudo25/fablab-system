@@ -49,7 +49,7 @@ $pagina[] = "gestionar";
                     </div>
                     <div class="inline-block align-center bg-white rounded text-left overflow-hidden border shadow transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                         <div class="border-b p-3 flex justify-between items-center">
-                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Nuevo evento</h5>
+                            <h5 class="font-bold uppercase text-gray-600" id="titulo-modal">Agregar evento</h5>
                             <button class="border border-transparent focus:border-blue trans-all-linear close" type="button">
                                 <svg
                                         class="w-8 h-8 text-grey hover:text-grey-dark"
@@ -135,7 +135,7 @@ $pagina[] = "gestionar";
                     </div>
                     <div class="flex justify-center items-center flex-col w-full">
                         <div class="w-full flex pl-2 pt-2 pr-2">
-                            <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nuevo evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
+                            <button id="evento" class="w-1/5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Agregar evento<i class="fas fa-calendar-alt fa-fw ml-3"></i></button>
 
                             <a href="./categories.php" class="w-1/4 ml-2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none">Gestionar categorias<i class="fas fa-cogs fa-fw ml-3"></i></a>
                         </div>

@@ -5,7 +5,7 @@ tablaObservaciones = $('#datatable-json').DataTable({
     "ajax": "./functions.php",
     "dom": 'Bfrtip',
     "initComplete":function( settings, json){
-        document.querySelector('.dt-buttons').innerHTML += `<button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Nueva observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
+        document.querySelector('.dt-buttons').innerHTML += `<button id="observacion" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Agregar observación<i class="fas fa-sticky-note fa-fw ml-3"></i></button>`;
         const newObs = document.querySelector('#observacion');
 
         newObs.addEventListener('click', evt => {

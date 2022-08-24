@@ -25,9 +25,9 @@ if ($contentType === "application/json") {
             echo json_encode($datos);
         }
         else if($decoded['datos']['solicitud'] == 'cons'){
-            $consumable = new Consumable();
+/*             $consumable = new Consumable();
             $consumables = $consumable->getAll();
-            echo json_encode($consumables);
+            echo json_encode($consumables); */
         }
         else if($decoded['datos']['solicitud'] == 'evt'){
             $event = new Events();

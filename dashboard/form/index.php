@@ -51,6 +51,7 @@ $pagina[] = "form";
 
     <?php require_once '../templates/header.php'; ?>
 
+    <!-- Booking -->
     <div class="fixed bottom-2 right-2">
         <button id="booking" class="animate-bounce flex items-center gap-3 py-3 px-4 bg-blue-500 active:bg-blue-600 hover:bg-blue-700 focus:outline-none text-white rounded-lg font-medium transition-colors duration-150 border border-transparent">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,28 +98,23 @@ $pagina[] = "form";
 
                             <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
                                 <label class="text-sm w-1/2 mt-5">
-                                    <span class="text-gray-800 font-medium">Codigo de cliente CIDETE</span>
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="1" required autocomplete="off">
-                                    <span id="feedbackcodigo" class="text-xs text-red-600 "></span>
-                                </label>
-                                <label class="text-sm w-5/12 mt-5">
                                     <span class="text-gray-800 font-medium">Nombre</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
                                     <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
                                 </label>
 
-                                <label class="text-sm w-1/2 mt-5">
+                                <label class="text-sm w-5/12 mt-5">
                                     <span class="text-gray-800 font-medium">Correo</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
                                     <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
                                 </label>
 
-                                <label class="text-sm w-5/12 mt-5">
+                                <label class="text-sm w-1/2 mt-5">
                                     <span class="text-gray-800 font-medium">Telefono</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
                                     <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
                                 </label>
-                                <div class="mt-5 text-sm w-1/2">
+                                <div class="mt-5 text-sm w-5/12">
                                     <span class="text-gray-700 font-medium">
                                         Selecciona la edad
                                     </span>
@@ -133,7 +129,7 @@ $pagina[] = "form";
                                     <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
                                 </div>
 
-                                <div class="mt-5 text-sm w-5/12">
+                                <div class="mt-5 text-sm w-1/2">
                                     <span class="text-gray-700 font-medium">
                                         Selecciona el sexo
                                     </span>
@@ -150,7 +146,7 @@ $pagina[] = "form";
                                     <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
                                 </div>
 
-                                <label class="text-sm w-1/2 mt-5">
+                                <label class="text-sm w-5/12 mt-5">
                                     <span class="text-gray-800 font-medium">Selecciona la provincia</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
                                         <?php foreach ($provinceAll as $datos => $valor) : ?>
@@ -159,13 +155,13 @@ $pagina[] = "form";
                                     </select>
                                 </label>
 
-                                <label class="text-sm w-5/12 mt-5">
+                                <label class="text-sm w-1/2 mt-5">
                                     <span class="text-gray-800 font-medium">Selecciona el distrito</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
                                     </select>
                                 </label>
 
-                                <label class="text-sm w-1/2 mt-5 font-medium">
+                                <label class="text-sm w-5/12 mt-5 font-medium">
                                     <span class="text-gray-800">Selecciona el corregimiento</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
                                     </select>
@@ -188,7 +184,7 @@ $pagina[] = "form";
                                 <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
                                 <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                     <?php foreach ($reasonAll as $datos => $valor) : ?>
-                                        <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?>"><?= $valor['name'] ?></option>
+                                        <option value="<?= $valor['reason_id'] ?>"><?= $valor['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -214,17 +210,6 @@ $pagina[] = "form";
                                 <?php endforeach; ?>
                                 <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                             </div>
-
-                            <label class="block text-sm mt-5 hidden" id="containertiempo">Hora de visita:
-                                <input type="time" name="tiempo" class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="13:30">
-                                <span id="feedbacktiempo" class="text-xs text-red-600 feed"></span>
-                            </label>
-
-                            <label class="block text-sm mt-5">
-                                <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
-                                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha" required>
-                                <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
-                            </label>
 
                             <label class="block text-sm mt-5">
                                 <span class="text-gray-800 font-medium">Observación complementaria</span>

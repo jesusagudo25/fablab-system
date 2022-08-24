@@ -298,7 +298,7 @@ function editarVisita(e){
 
                     reasonVisits.forEach( value => {
                         razonVisita.innerHTML += `
-                        <option value="${value.reason_id}" class="${value.time == 1  ? 'notfree' : 'free' }" ${value.reason_id == data['visits']['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
+                        <option value="${value.reason_id}" ${value.reason_id == data['visits']['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
                     });
 
                     if(razonVisita.options[razonVisita.selectedIndex].classList.contains('notfree')){

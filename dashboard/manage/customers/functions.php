@@ -11,7 +11,7 @@
 
         $table = <<<EOT
         ( 
-            SELECT c.customer_id, c.document, c.code, c.name AS customer_name, c.email, c.status FROM customers c
+            SELECT c.customer_id, c.document, c.name AS customer_name, c.email, c.status FROM customers c
         ) temp
         EOT;
 
@@ -20,10 +20,9 @@
         $columns = array(
             array( 'db' => 'customer_id',          'dt' => 0 ),
             array( 'db' => 'document',        'dt' => 1 ),
-            array( 'db' => 'code',    'dt' => 2 ),
-            array( 'db' => 'customer_name',    'dt' => 3 ),
-            array( 'db' => 'email',    'dt' => 4 ),
-            array( 'db' => 'status',    'dt' => 5 )
+            array( 'db' => 'customer_name',    'dt' => 2 ),
+            array( 'db' => 'email',    'dt' => 3 ),
+            array( 'db' => 'status',    'dt' => 4 )
         );
 
         // SQL server connection information

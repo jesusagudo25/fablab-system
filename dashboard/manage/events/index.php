@@ -76,7 +76,8 @@ $pagina[] = "gestionar";
 
                             <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Área</span>
-                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="area"></select>
+                                <select class="mt-1 text-sm w-full rounded-md border-gray-3
+                                00 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="area"></select>
                             </label>
 
                             <label class="text-sm block">

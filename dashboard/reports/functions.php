@@ -12,7 +12,7 @@
 
         $table = <<<EOT
         ( 
-            SELECT r.report_id, r.month, CONCAT(u.name," ",u.lastname) AS autor ,r.start_date ,r.end_date 
+            SELECT r.report_id, r.month, u.name AS autor ,r.start_date ,r.end_date 
             FROM reports r
             INNER JOIN users u ON r.user_id = u.user_id
         ) temp

@@ -25,7 +25,7 @@ class EventCategory extends Model implements IModel
 
     public function getAjax()
     {
-        $query = $this->query('SELECT category_id AS id, name,price, status FROM event_category WHERE status = 1');
+        $query = $this->query('SELECT category_id AS id, name, status FROM event_category WHERE status = 1');
         $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $categories;

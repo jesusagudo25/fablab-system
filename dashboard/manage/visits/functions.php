@@ -10,7 +10,7 @@
     if(isset($_GET['draw'])){
         $table = <<<EOT
         ( 
-            SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, v.status FROM visits v
+            SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id ,v.date, v.status FROM visits v
             INNER JOIN customers c ON c.customer_id = v.customer_id
             INNER JOIN reason_visits r ON r.reason_id = v.reason_id
         ) temp
@@ -22,9 +22,8 @@
             array( 'db' => 'visit_id',          'dt' => 0 ),
             array( 'db' => 'customer_id',        'dt' => 1 ),
             array( 'db' => 'reason_id',    'dt' => 2 ),
-            array( 'db' => 'time',    'dt' => 3 ),
-            array( 'db' => 'date',    'dt' => 4 ),
-            array( 'db' => 'status',    'dt' => 5 )
+            array( 'db' => 'date',    'dt' => 3 ),
+            array( 'db' => 'status',    'dt' => 4 )
         );
 
         // SQL server connection information

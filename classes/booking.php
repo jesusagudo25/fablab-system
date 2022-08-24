@@ -92,8 +92,7 @@ class Booking extends Model implements IModel
     public function getAllRange($start,$end){
         $query = $this->prepare("SELECT b.booking_id, b.date, rv.name FROM bookings b 
         INNER JOIN reason_visits rv ON rv.reason_id = b.reason_id
-        WHERE b.date BETWEEN :start AND :end
-        AND rv.time = 0");
+        WHERE b.date BETWEEN :start AND :end");
 
         $query->execute([
             'start' => $start,
@@ -106,7 +105,7 @@ class Booking extends Model implements IModel
     }
 
     public function getBookingVisit(){
-        $query = $this->prepare("SELECT b.booking_id, b.document_type, b.document, b.name, b.reason_id, rv.time, b.date, b.observation 
+        $query = $this->prepare("SELECT b.booking_id, b.document_type, b.document, b.name, b.reason_id, b.date, b.observation 
         FROM bookings b
         INNER JOIN reason_visits rv ON rv.reason_id = b.reason_id
         WHERE b.date = CURDATE()

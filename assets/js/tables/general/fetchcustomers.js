@@ -38,34 +38,20 @@ tablaClientes = $('#datatable-json').DataTable({
             render:function(data, type, row)
             {
 
-                if(data[2]){
-                    return data[2];
+                if(data[3]){
+                    return data[3];
                 }
                 else{
                     return '<div><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></div>';
                 }
             },
-            "targets": 2
+            "targets": 3
         },
         {
             "data": null,
             render:function(data, type, row)
             {
-
                 if(data[4]){
-                    return data[4];
-                }
-                else{
-                    return '<div><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></div>';
-                }
-            },
-            "targets": 4
-        },
-        {
-            "data": null,
-            render:function(data, type, row)
-            {
-                if(data[5]){
                     return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
@@ -80,7 +66,7 @@ tablaClientes = $('#datatable-json').DataTable({
             {
                 return '<button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
             },
-            "targets": 6
+            "targets": 5
         },
         { "visible": false,  "targets": [ 0 ] }
     ],
@@ -186,7 +172,6 @@ function editar(e){
             telefono.addEventListener('change', validarTelefono);
 
             getDocumento = data['document'];
-            getCodigo = data['code'];
             getCorreo = data['email'];
             getTelefono = data['telephone'];
 

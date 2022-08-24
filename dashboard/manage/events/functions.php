@@ -8,7 +8,7 @@
     $category = new EventCategory();
     $area = new Area();
 
-    if($_GET['solicitud'] == 'e'){
+    if(isset($_GET['solicitud']) && $_GET['solicitud'] == 'e'){
 
         $table = <<<EOT
         ( 
@@ -43,7 +43,7 @@
         );
 
     }
-    else if ($_GET['solicitud'] == 'c') {
+    else if (isset($_GET['solicitud']) && $_GET['solicitud'] == 'c') {
 
         if($_GET['status']){
             $categories = $category->getAjax();

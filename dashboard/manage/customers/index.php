@@ -84,11 +84,6 @@ $rangeAll = $range->getAll();
                                 <span id="feedbackdocumento" class="text-xs text-red-600 feed"></span>
                             </label>
                             <label class="text-sm block">
-                                <span class="text-gray-800 font-medium">Codigo de cliente CIDETE</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el codigo de cliente CIDETE" type="number" name="codigo" min="0" required="" autocomplete="off">
-                                <span id="feedbackcodigo" class="text-xs text-red-600 feed"></span>
-                            </label>
-                            <label class="text-sm block">
                                 <span class="text-gray-800 font-medium">Nombre</span>
                                 <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required="" autocomplete="off">
                                 <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
@@ -176,7 +171,6 @@ $rangeAll = $range->getAll();
                             <tr>
                                 <th>ID</th>
                                 <th>Documento</th>
-                                <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>Correo</th>
                                 <th>Estado</th>

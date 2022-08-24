@@ -53,20 +53,6 @@ var calendar = new FullCalendar.Calendar(calendarEl, { //Timezone local en pc de
             feedbackdocumento.textContent = '';
         });
 
-        optionSelected = reasonVisit.options[reasonVisit.selectedIndex];
-
-        reasonVisit.addEventListener('change', evt => {
-            optionSelected = evt.target.options[evt.target.selectedIndex];
-            if (optionSelected.classList.contains('free')) {
-                containerArea.classList.add('hidden');
-                containerTiempo.classList.remove('hidden');
-            }
-            else {
-                containerArea.classList.remove('hidden');
-                containerTiempo.classList.add('hidden');
-            }
-        });
-
         buttonEditAreas.addEventListener('click', seleccionarAreas);
 
         footer_modal.classList.remove('hidden');
@@ -153,18 +139,6 @@ var calendar = new FullCalendar.Calendar(calendarEl, { //Timezone local en pc de
                     reasonVisit.value = data['booking']['reason_id'];
 
                     optionSelected = reasonVisit.options[reasonVisit.selectedIndex];
-
-                    reasonVisit.addEventListener('change', evt => {
-                        optionSelected = evt.target.options[evt.target.selectedIndex];
-                        if (optionSelected.classList.contains('free')) {
-                            containerArea.classList.add('hidden');
-                            containerTiempo.classList.remove('hidden');
-                        }
-                        else {
-                            containerArea.classList.remove('hidden');
-                            containerTiempo.classList.add('hidden');
-                        }
-                    });
 
                     triggerChange(reasonVisit);
 
@@ -260,11 +234,6 @@ const TIPO_TABLAS = {
                 <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas">Agregar</button>
                 <span id="feedbackbuttonareas" class="text-xs text-red-600 feed"></span>
             </div>
-            
-            <label class="block text-sm mt-5 hidden" id="containertiempo">Hora de visita:
-                <input type="time" name="" class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
-                <span id="" class="text-xs text-red-600 feed"></span>
-            </label>
 
             <label class="block text-sm mt-5">
                 <span class="text-gray-800 font-medium">Fecha de reservación</span>

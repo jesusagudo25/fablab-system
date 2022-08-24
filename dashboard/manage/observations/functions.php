@@ -11,7 +11,7 @@
     if(isset($_GET['draw'])){
         $table = <<<EOT
         ( 
-            SELECT o.observation_id, CONCAT(u.name," ",u.lastname) AS autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS descripcion, o.date AS fecha FROM observations o
+            SELECT o.observation_id, u.name AS autor, CONCAT(SUBSTRING(o.description,1,40),"...") AS descripcion, o.date AS fecha FROM observations o
             INNER JOIN users u ON o.user_id = u.user_id
         ) temp
         EOT;

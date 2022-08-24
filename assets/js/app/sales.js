@@ -65,7 +65,7 @@ fetch('./functions.php',{
 })
 .then(res => res.json())
 .then(data =>{
-    consumibles = data;
+/*     consumibles = data; */
 });
 
 //Cambio de categoria servicio
@@ -159,10 +159,6 @@ inputDocumento.addEventListener('keyup', evt => {
         feedbackdocumento.textContent = '';
     }
 
-});
-
-fecha.addEventListener('change', evt =>{
-    feedbackfecha.textContent = '';
 });
 
 agregar.addEventListener('click',evt => {
@@ -855,7 +851,7 @@ function calcular() {
         total += importe;
     });
 
-    filas = document.querySelectorAll("#detalle_totales tr td");
+    filas = document.querySelectorAll("#detalle_totales #total td");
     filas[2].textContent = total.toFixed(2);
 
 }

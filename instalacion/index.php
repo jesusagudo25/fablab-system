@@ -71,6 +71,7 @@
     $model->query("CREATE TABLE reason_visits(
             reason_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
+            time BOOLEAN NOT NULL DEFAULT FALSE,
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
 
@@ -171,7 +172,6 @@
             
         );");
 
-        /// AQUI LLEGUE ///////////////////////////////////////////////////////////////
     $model->query("CREATE TABLE supplies(
             supply_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             area_id INT UNSIGNED NOT NULL,
@@ -264,9 +264,9 @@
 
     $model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
 
-    $model->query("INSERT INTO reason_visits(name) VALUES('Emprendimiento'),('Proyecto académico'),('Eventos'),('Visita general/Tour');");
+    $model->query("INSERT INTO reason_visits(name,time) VALUES('Emprendimiento',0),('Proyecto académico',0),('Eventos',0),('Visita general/Tour',1);");
 
-    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Minutos'),('Mini Fresadora CNC','Minutos'),('Láser CNC','Minutos'),('Corte vinyl','Pulgadas'),('Impresión 3D en filamento','Gramos'),('Impresión 3D en resina','Gramos'), ('Software de diseño','Minutos'),('Bordadora CNC','Minutos');");
+    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Minutos'),('Mini Fresadora CNC','Minutos'),('Láser CNC','Minutos'),('Cortadora de Vinilo','Pulgadas'),('Impresión 3D en filamento','Gramos'),('Impresión 3D en resina','Gramos'), ('Software de diseño','Minutos'),('Bordadora CNC','Minutos');");
 
 $model->query("INSERT INTO provinces (name) 
     VALUES ('Bocas del Toro'),

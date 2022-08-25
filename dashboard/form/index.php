@@ -191,90 +191,92 @@ $pagina[] = "form";
                             </div>
 
                             <div class="flex justify-between items-center w-full hidden" id="container_grupal">
-                            <label class="text-sm w-1/3">
+                                <label class="text-sm w-1/3">
                                     <span class="text-gray-800 font-medium">Descarga la plantilla de excel</span>
-                                    <a href="" class="mt-2 w-full px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-md active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                                    <a href="<?= constant('URL') ?>assets/template/visit.xlsx" class="mt-2 w-full px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-md active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
                                         <span class="ml-2">Descargar</span>
                                     </a>
                                 </label>
                                 <div class="text-blue-500 self-center mt-4 p-3 rounded-full bg-blue-100 mx-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                        </svg>
-                                    </div>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
                                 <label class="text-sm w-1/3">
                                     <span class="text-gray-800 font-medium" id="tituloDocumento">Subir la lista de visitantes</span>
                                     <input type="file" class="mt-2 block w-full text-base rounded-md shadow-sm focus:border-blue-300 border border-gray-300
-        file:mr-4 file:py-2 file:px-4
-        file:uppercase file:border-0
-        file:text-base file:font-semibold
-        file:bg-blue-500 file:text-white
-      "/>
-                                    </div>
-                                    <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
-                                </label>
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:uppercase file:border-0
+                                        file:text-base file:font-semibold
+                                        file:bg-blue-500 file:text-white
+                                    "
+                                    id="fileupload"
+                                    name="fileupload"/>
                             </div>
+                            <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
+                            </label>
                         </div>
                     </div>
-                    <!--/Graph Card-->
                 </div>
-
-                <div class="w-full p-3">
-                    <!--Graph Card-->
-                    <div class="bg-white border rounded shadow">
-                        <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Datos de la visita</h5>
-                        </div>
-                        <form class="p-5" method="post">
-                            <label class="block text-sm">
-                                <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
-                                <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    <?php foreach ($reasonAll as $datos => $valor) : ?>
-                                        <option value="<?= $valor['reason_id'] ?>"><?= $valor['name'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </label>
-
-                            <div class="text-sm mt-5" id="containerarea">
-                                <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
-                                <?php foreach ($areaAll as $datos => $valor) : ?>
-                                    <label class="flex items-center mt-4">
-                                        <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?= $valor['id'] ?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
-                                        <span class="ml-2"> <?= $valor['name'] ?></span>
-                                    </label>
-                                    <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
-                                        <label for="arrival_time" class="mr-6">Hora de llegada:
-                                            <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
-                                        </label>
-                                        <label for="departure_time">Hora de salida:
-                                            <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
-                                        </label>
-
-                                        <br />
-                                        <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
-                                    </div>
-                                <?php endforeach; ?>
-                                <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
-                            </div>
-
-                            <label class="block text-sm mt-5">
-                                <span class="text-gray-800 font-medium">Observación complementaria</span>
-                                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observation"></textarea>
-                            </label>
-
-                            <hr class="my-8">
-                            <div class="flex justify-center items-center">
-                                <button type="submit" value="Submit" class="w-1/2 px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Registrar</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!--/Graph Card-->
-                </div>
-
+                <!--/Graph Card-->
             </div>
 
-            <!--/ Console Content-->
+            <div class="w-full p-3">
+                <!--Graph Card-->
+                <div class="bg-white border rounded shadow">
+                    <div class="border-b p-3">
+                        <h5 class="font-bold uppercase text-gray-600">Datos de la visita</h5>
+                    </div>
+                    <form class="p-5" method="post">
+                        <label class="block text-sm">
+                            <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
+                            <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                <?php foreach ($reasonAll as $datos => $valor) : ?>
+                                    <option value="<?= $valor['reason_id'] ?>"><?= $valor['name'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
+
+                        <div class="text-sm mt-5" id="containerarea">
+                            <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
+                            <?php foreach ($areaAll as $datos => $valor) : ?>
+                                <label class="flex items-center mt-4">
+                                    <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?= $valor['id'] ?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
+                                    <span class="ml-2"> <?= $valor['name'] ?></span>
+                                </label>
+                                <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
+                                    <label for="arrival_time" class="mr-6">Hora de llegada:
+                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                    </label>
+                                    <label for="departure_time">Hora de salida:
+                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                    </label>
+
+                                    <br />
+                                    <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
+                                </div>
+                            <?php endforeach; ?>
+                            <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
+                        </div>
+
+                        <label class="block text-sm mt-5">
+                            <span class="text-gray-800 font-medium">Observación complementaria</span>
+                            <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observation"></textarea>
+                        </label>
+
+                        <hr class="my-8">
+                        <div class="flex justify-center items-center">
+                            <button type="submit" value="Submit" class="w-1/2 px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+                <!--/Graph Card-->
+            </div>
 
         </div>
+
+        <!--/ Console Content-->
+
+    </div>
 
 
     </div>

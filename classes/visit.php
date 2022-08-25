@@ -1,5 +1,7 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Visit extends Model implements IModel
 {
     private $visit_id;
@@ -14,32 +16,57 @@ class Visit extends Model implements IModel
         parent::__construct();
     }
 
-    public function saveAll($decoded){
+    public function saveAll($decoded)
+    {
+        $filename = $_FILES['file']['name'];
         $newCustomer = isset($decoded['newCustomer']) ? $decoded['newCustomer'] : '';
 
-        if (!empty($newCustomer)) {
-            $customer = new Customer();
+        //Visitante captura
+        if (!empty($filename)) {
 
-            $customer->setDocumentType($newCustomer['tipo_documento']);
-            $customer->setDocument($newCustomer['documento']);
-            $customer->setCode(empty($newCustomer['codigo']) ? NULL : $newCustomer['codigo']);
-            $customer->setName($newCustomer['nombre']);
-            $customer->setEmail(empty($newCustomer['email']) ? NULL : $newCustomer['email']);
-            $customer->setTelephone(empty($newCustomer['telefono']) ? NULL : $newCustomer['telefono']);
-            $customer->setAgeRange($newCustomer['edad']);
-            $customer->setSexo($newCustomer['sexo']);
-            $customer->setProvince($newCustomer['provincia']);
-            $customer->setCity($newCustomer['distrito']);
-            $customer->setTownship($newCustomer['corregimiento']);
-            $customer->save();
-            $this->customer_id = $customer->getLastID();
+            $allowedExts = array("xls", "xlsx");
+            $temp = explode(".", $_FILES["file"]["name"]);
+            $extension = end($temp);
+            if(in_array($extension, $allowedExts)) {
+                $reader = IOFactory::createReader('Xlsx');
+                $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
+                $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, false);
+                if(count($sheetData) > 1) {
+                    return [
+                        'status' => 'error',
+                        'message' => 'El archivo no puede tener más de una hoja'
+                    ];
+                }
+                else{
+                    return $sheetData;
+                }
 
+            } else {
+                $filename = '';
+            }
+        } else {
+            if (!empty($newCustomer)) {
+                $customer = new Customer();
+
+                $customer->setDocumentType($newCustomer['tipo_documento']);
+                $customer->setDocument($newCustomer['documento']);
+                $customer->setCode(empty($newCustomer['codigo']) ? NULL : $newCustomer['codigo']);
+                $customer->setName($newCustomer['nombre']);
+                $customer->setEmail(empty($newCustomer['email']) ? NULL : $newCustomer['email']);
+                $customer->setTelephone(empty($newCustomer['telefono']) ? NULL : $newCustomer['telefono']);
+                $customer->setAgeRange($newCustomer['edad']);
+                $customer->setSexo($newCustomer['sexo']);
+                $customer->setProvince($newCustomer['provincia']);
+                $customer->setCity($newCustomer['distrito']);
+                $customer->setTownship($newCustomer['corregimiento']);
+                $customer->save();
+                $this->customer_id = $customer->getLastID();
+            } else {
+                $this->customer_id = isset($decoded['id_cliente']) ? $decoded['id_cliente'] : '';
+            }
         }
-        else{
-            $this->customer_id = isset($decoded['id_cliente']) ? $decoded['id_cliente'] : '';
-        }
 
-        $this->reason_id = isset($decoded['id_razonvisita']) ? $decoded['id_razonvisita'] : '';
+/*         $this->reason_id = isset($decoded['id_razonvisita']) ? $decoded['id_razonvisita'] : '';
         $areasChecked = isset($decoded['areasChecked']) ? $decoded['areasChecked'] : '';
         $this->date = isset($decoded['fecha']) ? $decoded['fecha'] : '';
         $this->observation = empty($decoded['observacion']) ? NULL : $decoded['observacion'];
@@ -47,18 +74,17 @@ class Visit extends Model implements IModel
         $this->save();
         $this->getLastID();
 
-        if(!empty($decoded['booking_id'])){
+        if (!empty($decoded['booking_id'])) {
 
             //Se borran las areas de la reserva
             if (!empty($areasChecked)) {
                 $booking_areas = new BookingArea();
                 $booking_areas->delete($decoded['booking_id']);
             }
-            
+
             //Se borra la reserva <- se puede evitar con cascade
             $booking = new Booking();
             $booking->delete($decoded['booking_id']);
-
         }
 
         if (!empty($areasChecked)) {
@@ -68,7 +94,7 @@ class Visit extends Model implements IModel
 
         //Se deben delegar responsabilidades a las clases implicadas -> crear metodos para accion
 
-        return $this->customer_id;
+        return $this->customer_id; */
     }
 
     public function save(...$args) //Save solo table_visit
@@ -83,7 +109,8 @@ class Visit extends Model implements IModel
         ]);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         $query = $this->query('SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id,r.time ,v.date, CONCAT(SUBSTRING(v.observation ,1,20),"...") as observation, v.status FROM visits v
         INNER JOIN customers c ON c.customer_id = v.customer_id
         INNER JOIN reason_visits r ON r.reason_id = v.reason_id');
@@ -93,15 +120,16 @@ class Visit extends Model implements IModel
         return $visits;
     }
 
-    public function getVisitsNotFree($start_date,$end_date){
+    public function getVisitsNotFree($start_date, $end_date)
+    {
 
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
         INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
         WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1) AND (v.status = 1)");
 
         $query->execute([
-            'start_date'=> $start_date,
-            'end_date'=> $end_date,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
 
         $visits = $query->fetch();
@@ -109,15 +137,16 @@ class Visit extends Model implements IModel
         return $visits;
     }
 
-    public function getVisitsFree($start_date,$end_date){
+    public function getVisitsFree($start_date, $end_date)
+    {
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
         INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
         WHERE (v.date BETWEEN :start_date AND :end_date)                                       
         AND (r.time = 0) AND (v.status = 1)");
 
         $query->execute([
-            'start_date'=> $start_date,
-            'end_date'=> $end_date,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
 
         $visitasFree = $query->fetch();
@@ -125,7 +154,8 @@ class Visit extends Model implements IModel
         return $visitasFree['total'];
     }
 
-    public function getTimeDifAreas($start_date,$end_date){
+    public function getTimeDifAreas($start_date, $end_date)
+    {
 
         $query = $this->prepare("SELECT a.name, COALESCE(x.diferencia,0) AS diferencia FROM
         (
@@ -140,8 +170,8 @@ class Visit extends Model implements IModel
         GROUP BY a.area_id;");
 
         $query->execute([
-            'start_date'=> $start_date,
-            'end_date'=> $end_date,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
 
         $areastime = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -149,7 +179,8 @@ class Visit extends Model implements IModel
         return $areastime;
     }
 
-    public function getTimeDifRazones($start_date,$end_date){
+    public function getTimeDifRazones($start_date, $end_date)
+    {
 
         $query = $this->prepare("SELECT r.name, COALESCE(x.diferencia,0) AS diferencia, r.time FROM
         (
@@ -164,8 +195,8 @@ class Visit extends Model implements IModel
         GROUP BY r.reason_id;");
 
         $query->execute([
-            'start_date'=> $start_date,
-            'end_date'=> $end_date,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
 
         $razonestime = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -173,15 +204,16 @@ class Visit extends Model implements IModel
         return $razonestime;
     }
 
-    public function getTimeDifTotal($start_date,$end_date){
+    public function getTimeDifTotal($start_date, $end_date)
+    {
         $query = $this->prepare("SELECT COALESCE(SUM(HOUR(TIMEDIFF(v.departure_time,v.arrival_time))),0) AS total FROM visits_areas v 
         INNER JOIN visits s ON v.visit_id = s.visit_id
         WHERE (s.date BETWEEN :start_date AND :end_date)
         AND (s.status = 1)");
 
         $query->execute([
-            'start_date'=> $start_date,
-            'end_date'=> $end_date
+            'start_date' => $start_date,
+            'end_date' => $end_date
         ]);
 
         $areastimeTotal = $query->fetch();
@@ -190,7 +222,8 @@ class Visit extends Model implements IModel
     }
 
 
-    public function getLastID(){
+    public function getLastID()
+    {
         $consultarIDVisita = $this->query('SELECT visit_id FROM visits ORDER BY visit_id DESC LIMIT 1');
         $visitaResultado = $consultarIDVisita->fetch();
         $this->visit_id = $visitaResultado['visit_id'];
@@ -216,7 +249,7 @@ class Visit extends Model implements IModel
         $actualizarDatos = $this->prepare("UPDATE visits SET status = :status WHERE visit_id = :id;");
         $actualizarDatos->execute([
             'status' => $this->status,
-            'id'=>$id
+            'id' => $id
         ]);
     }
 
@@ -226,10 +259,10 @@ class Visit extends Model implements IModel
 
         $query->execute([
             'customer_id' => $this->customer_id,
-            'reason_id'=> $this->reason_id,
-            'date'=> $this->date,
-            'observation'=> $this->observation,
-            'visit_id'=> $this->visit_id
+            'reason_id' => $this->reason_id,
+            'date' => $this->date,
+            'observation' => $this->observation,
+            'visit_id' => $this->visit_id
         ]);
     }
 
@@ -280,6 +313,4 @@ class Visit extends Model implements IModel
     {
         $this->status = $status;
     }
-
-
 }

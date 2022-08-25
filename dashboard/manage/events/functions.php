@@ -52,7 +52,7 @@
         else{
             $table = <<<EOT
             ( 
-                SELECT category_id AS id, name,price, status FROM event_category
+                SELECT category_id AS id, name, status FROM event_category
             ) temp
             EOT;
 
@@ -61,8 +61,7 @@
             $columns = array(
                 array( 'db' => 'id',          'dt' => 0 ),
                 array( 'db' => 'name',        'dt' => 1 ),
-                array( 'db' => 'price',    'dt' => 2 ),
-                array( 'db' => 'status',    'dt' => 3 )
+                array( 'db' => 'status',    'dt' => 2 )
             );
     
             // SQL server connection information

@@ -50,7 +50,7 @@ $pagina[] = "gestionar";
                         </div>
                         <div class="p-5 flex gap-5 justify-between overflow-auto">
                             <a href="../memberships/" class="w-3/4">
-                                <div class="bg-gray-100 border rounded shadow p-3">
+                                <div class="border-gray-100 border rounded shadow p-3">
                                     <div class="flex flex-col items-center gap-3">
                                         <div class="flex-shrink">
                                             <div class="rounded p-3 bg-green-600">
@@ -65,7 +65,7 @@ $pagina[] = "gestionar";
                             </a>
 
                             <a href="../events/" class="w-3/4">
-                                <div class="bg-gray-100 border rounded shadow p-3">
+                                <div class="border-gray-300 border rounded shadow p-3">
                                     <div class="flex flex-col items-center gap-3">
                                         <div class="flex-shrink">
                                             <div class="rounded p-3 bg-pink-600">
@@ -80,7 +80,7 @@ $pagina[] = "gestionar";
                             </a>
 
                             <a href="../machines/" class="w-3/4">
-                                <div class="bg-gray-100 border rounded shadow p-3">
+                                <div class="border-gray-300 border rounded shadow p-3">
                                     <div class="flex flex-col items-center gap-3">
                                         <div class="flex-shrink">
                                             <div class="rounded p-3 bg-yellow-600">
@@ -98,6 +98,34 @@ $pagina[] = "gestionar";
                 </div>
             </div>
 
+            <div class="flex flex-row flex-wrap flex-grow mt-2">
+
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Gráfico - Ventas por mes</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="line"></canvas>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Gráfico - Áreas con más horas</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="doughnut"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

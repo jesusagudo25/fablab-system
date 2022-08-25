@@ -91,14 +91,14 @@ tablaCategorias = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                if(data[3]){
+                if(data[2]){
                     return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
                     return '<button value="'+data[0]+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
-            "targets": 3
+            "targets": 2
         },
         {
             "data": null,
@@ -106,7 +106,7 @@ tablaCategorias = $('#datatable-json').DataTable({
             {
                 return '<button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editar(this)"><i class="fas fa-edit"></i></i></button>';
             },
-            "targets": 4
+            "targets": 3
         },
         { 'visible': false, 'targets': [0] }
     ]

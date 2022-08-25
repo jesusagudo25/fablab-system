@@ -93,7 +93,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Precio</th>
                                     <th>Estado</th>
                                     <th>Acción</th>
                                 </tr>

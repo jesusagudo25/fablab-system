@@ -7,10 +7,12 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
     razonVisita = document.querySelector('select[name="razonvisita"]'),
     containerArea = document.querySelector('#containerarea'),
-    containerTiempo = document.querySelector('#containertiempo'),
+    containerIndividual = document.querySelector('#container_individual'),
+    containerGrupal = document.querySelector('#container_grupal'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     booking = document.querySelector('#booking'),
+    btnTypeVisit = document.querySelectorAll('input[name="typevisit"]'),
     containerRegister = document.querySelector('#containerregister'),
     observacion = document.querySelector('textarea[name="observation"]'),
     fecha = document.querySelector('input[name="fecha"]'),
@@ -109,6 +111,23 @@ distrito.addEventListener('change', evt => {
         corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
     });
 });
+
+//Seleccione el tipo de visita
+
+btnTypeVisit.forEach(e => {
+    e.addEventListener('click', evt => {
+        if(e.value == 'I'){
+            console.log('Ingreso');
+            containerIndividual.classList.remove('hidden');
+            containerGrupal.classList.add('hidden');
+        }
+        else{
+            console.log('Salida');
+            containerIndividual.classList.add('hidden');
+            containerGrupal.classList.remove('hidden');
+        }
+    } );
+} );
 
 //Tipo de documento -> RUC/CEDULA/PASAPORTE
 const TIPOS_DOCUMENTOS = {
@@ -950,5 +969,3 @@ function unpackData(data) {
     fecha.value = data.booking['date'];
     observacion.value = data.booking['observation'];
 }
-
-//Tomar en cuenta los campos que uno llena involutnariamente y que pasa con ellos cuando se carga info. Por ejemplo las areas->

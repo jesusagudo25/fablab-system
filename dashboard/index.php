@@ -166,7 +166,7 @@
                     <!--Graph Card-->
                     <div class="bg-white border rounded shadow">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Gráfico - Áreas con mas horas</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Gráfico - Áreas con más horas</h5>
                         </div>
                         <div class="p-5">
                             <canvas id="doughnut"></canvas>

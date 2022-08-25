@@ -76,15 +76,23 @@
 
     $model->query("CREATE TABLE visits(
             visit_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            customer_id INT UNSIGNED NOT NULL,
             reason_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL DEFAULT (CURRENT_DATE),
             observation TEXT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
     
-            FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id) ON DELETE CASCADE
         );");
+
+
+    $model->query("CREATE TABLE customer_visit(
+        customer_id INT UNSIGNED NOT NULL,
+        visit_id INT UNSIGNED NOT NULL,
+        status BOOLEAN NOT NULL DEFAULT TRUE,
+
+        FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+        FOREIGN KEY (visit_id) REFERENCES visits(visit_id) ON DELETE CASCADE
+    );");
 
     $model->query("CREATE TABLE bookings(
             booking_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -92,6 +100,7 @@
             document VARCHAR(60) NOT NULL,
             name VARCHAR(90) NOT NULL,
             reason_id INT UNSIGNED NOT NULL,
+            isGroup BOOLEAN NOT NULL DEFAULT FALSE,
             date DATE NOT NULL,
             observation TEXT NULL,
     
@@ -201,7 +210,6 @@
 
     $model->query("CREATE TABLE events(
             event_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            area_id INT UNSIGNED NOT NULL,
             category_id INT UNSIGNED NOT NULL,
             name TEXT NOT NULL,
             initial_date DATE NOT NULL,
@@ -213,8 +221,15 @@
             description_expenses TEXT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
 
-            FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
             FOREIGN KEY (category_id) REFERENCES event_category(category_id) ON DELETE CASCADE
+        );");
+
+    $model->query("CREATE TABLE area_event(
+            area_id INT UNSIGNED NOT NULL,
+            event_id INT UNSIGNED NOT NULL,
+            PRIMARY KEY (area_id, event_id),
+            FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
+            FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
         );");
 
     $model->query("CREATE TABLE membership_invoices(
@@ -251,7 +266,7 @@
 
     $model->query("INSERT INTO reason_visits(name) VALUES('Emprendimiento'),('Proyecto académico'),('Eventos'),('Visita general/Tour');");
 
-    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Minutos'),('Mini Fresadora CNC','Minutos'),('Láser CNC','Minutos'),('Corte vinyl','Pulgadas'),('Impresión 3D - Filamento','Gramos'),('Impresión 3D - Resina','Gramos'), ('Software de diseño','Minutos'),('Bordadora CNC','Minutos');");
+    $model->query("INSERT INTO areas(name,measure) VALUES('Electrónica','Minutos'),('Mini Fresadora CNC','Minutos'),('Láser CNC','Minutos'),('Corte vinyl','Pulgadas'),('Impresión 3D en filamento','Gramos'),('Impresión 3D en resina','Gramos'), ('Software de diseño','Minutos'),('Bordadora CNC','Minutos');");
 
 $model->query("INSERT INTO provinces (name) 
     VALUES ('Bocas del Toro'),

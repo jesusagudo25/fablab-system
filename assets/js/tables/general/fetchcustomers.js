@@ -31,6 +31,21 @@ tablaClientes = $('#datatable-json').DataTable({
     "processing": true,
     "serverSide": true,
     "ajax": "./functions.php",
+    "dom": 'Brtip',
+    "initComplete":function( settings, json){
+        document.querySelector('.dt-buttons').innerHTML += `                            <button id="cliente" class="w-1/2 px-4 py-2 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-lg active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none">Agregar cliente<i class="fas fa-archive ml-3"></i></button>`;
+        const newCustomer = document.querySelector('#cliente');
+
+        inputs.forEach( x =>{
+            x.addEventListener('change', evt =>{
+                evt.target.nextElementSibling.textContent = '';
+            })
+        });
+
+        newCustomer.addEventListener('click', evt => {
+
+        });
+    },
     "columnDefs": 
     [
         {
@@ -90,6 +105,7 @@ const closeModal = document.querySelectorAll('.close'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
+    inputs = document.querySelectorAll('#modal input'),
     feeds = document.querySelectorAll('.feed');
 
 

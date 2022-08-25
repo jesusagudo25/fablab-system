@@ -136,10 +136,27 @@ if (isset($_GET['id'])) {
                         <div class="p-5">
 
                             <div class="flex justify-between flex-wrap items-center mb-5">
-                                <label class="w-full text-sm">
+                                <label class="w-2/5 text-sm">
                                     <span class="text-gray-800 font-medium">Número de recibo</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el número de recibo" required="" min="1" name="numero_recibo">
                                 </label>
+                                
+                                <div class="mt-5 text-sm w-1/2">
+                                    <span class="text-gray-700 font-medium">
+                                        Selecciona el tipo de cliente
+                                    </span>
+                                    <div class="mt-2">
+                                        <label class="inline-flex items-center text-gray-600">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
+                                            <span class="ml-2">Maker</span>
+                                        </label>
+                                        <label class="inline-flex items-center ml-6 text-gray-600">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="S">
+                                            <span class="ml-2">Servicio</span>
+                                        </label>
+                                    </div>
+                                    <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
+                                </div>
                             </div>
                             <hr class="my-6">
                             <div class="flex justify-between flex-wrap items-center mb-5">

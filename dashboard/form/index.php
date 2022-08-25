@@ -75,98 +75,143 @@ $pagina[] = "form";
                             <h5 class="font-bold uppercase text-gray-600">Datos del visitante</h5>
                         </div>
                         <div class="p-5 flex justify-between flex-wrap items-start">
-                            <label class="text-sm w-1/2">
-                                <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
-                                <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
-                                    <option value="R">RUC</option>
-                                    <option value="C">Cédula</option>
-                                    <option value="P">Pasaporte</option>
-                                </select>
-                            </label>
 
-                            <label class="text-sm w-5/12">
-                                <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
-                                <div class="relative">
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
-                                    <input type="hidden" name="id_customer">
-                                    <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-r-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-purple">
-                                        <i class="fas fa-user-plus"></i>
-                                    </button>
+                            <div class="mb-5 text-sm w-full">
+                                <span class="text-gray-700 font-medium">
+                                    Selecciona el tipo de visita
+                                </span>
+                                <div class="mt-2">
+                                    <label class="inline-flex items-center text-gray-600">
+                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="typevisit" value="I" checked>
+                                        <span class="ml-2">Individual</span>
+                                    </label>
+                                    <label class="inline-flex items-center ml-6 text-gray-600">
+                                        <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="typevisit" value="G">
+                                        <span class="ml-2">Grupal</span>
+                                    </label>
                                 </div>
-                                <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
-                            </label>
+                                <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
+                            </div>
 
-                            <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
-                                <label class="text-sm w-1/2 mt-5">
-                                    <span class="text-gray-800 font-medium">Nombre</span>
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
-                                    <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
+                            <div class="flex justify-between flex-wrap items-start w-full" id="container_individual">
+
+                                <label class="text-sm w-1/2">
+                                    <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
+                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
+                                        <option value="R">RUC</option>
+                                        <option value="C">Cédula</option>
+                                        <option value="P">Pasaporte</option>
+                                    </select>
                                 </label>
 
-                                <label class="text-sm w-5/12 mt-5">
-                                    <span class="text-gray-800 font-medium">Correo</span>
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
-                                    <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
+                                <label class="text-sm w-5/12">
+                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
+                                    <div class="relative">
+                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
+                                        <input type="hidden" name="id_customer">
+                                        <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-r-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-purple">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    </div>
+                                    <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                                 </label>
 
-                                <label class="text-sm w-1/2 mt-5">
-                                    <span class="text-gray-800 font-medium">Telefono</span>
-                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
-                                    <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
-                                </label>
-                                <div class="mt-5 text-sm w-5/12">
-                                    <span class="text-gray-700 font-medium">
-                                        Selecciona la edad
-                                    </span>
-                                    <div class="mt-2 flex flex-wrap justify-between items-center">
-                                        <?php foreach ($rangeAll as $datos => $valor) : ?>
+                                <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
+                                    <label class="text-sm w-1/2 mt-5">
+                                        <span class="text-gray-800 font-medium">Nombre</span>
+                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
+                                        <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
+                                    </label>
+
+                                    <label class="text-sm w-5/12 mt-5">
+                                        <span class="text-gray-800 font-medium">Correo</span>
+                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
+                                        <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
+                                    </label>
+
+                                    <label class="text-sm w-1/2 mt-5">
+                                        <span class="text-gray-800 font-medium">Telefono</span>
+                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
+                                        <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
+                                    </label>
+                                    <div class="mt-5 text-sm w-5/12">
+                                        <span class="text-gray-700 font-medium">
+                                            Selecciona la edad
+                                        </span>
+                                        <div class="mt-2 flex flex-wrap justify-between items-center">
+                                            <?php foreach ($rangeAll as $datos => $valor) : ?>
+                                                <label class="inline-flex items-center text-gray-600">
+                                                    <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="<?= $valor['range_id'] ?>">
+                                                    <span class="ml-2"><?= $valor['name'] ?></span>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
+                                    </div>
+
+                                    <div class="mt-5 text-sm w-1/2">
+                                        <span class="text-gray-700 font-medium">
+                                            Selecciona el sexo
+                                        </span>
+                                        <div class="mt-2">
                                             <label class="inline-flex items-center text-gray-600">
-                                                <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="<?= $valor['range_id'] ?>">
-                                                <span class="ml-2"><?= $valor['name'] ?></span>
+                                                <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="F">
+                                                <span class="ml-2">F</span>
                                             </label>
-                                        <?php endforeach; ?>
+                                            <label class="inline-flex items-center ml-6 text-gray-600">
+                                                <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
+                                                <span class="ml-2">M</span>
+                                            </label>
+                                        </div>
+                                        <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
                                     </div>
-                                    <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
-                                </div>
 
-                                <div class="mt-5 text-sm w-1/2">
-                                    <span class="text-gray-700 font-medium">
-                                        Selecciona el sexo
-                                    </span>
-                                    <div class="mt-2">
-                                        <label class="inline-flex items-center text-gray-600">
-                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="F">
-                                            <span class="ml-2">F</span>
-                                        </label>
-                                        <label class="inline-flex items-center ml-6 text-gray-600">
-                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
-                                            <span class="ml-2">M</span>
-                                        </label>
+                                    <label class="text-sm w-5/12 mt-5">
+                                        <span class="text-gray-800 font-medium">Selecciona la provincia</span>
+                                        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
+                                            <?php foreach ($provinceAll as $datos => $valor) : ?>
+                                                <option value="<?= $valor['province_id'] ?>" <?= $valor['name'] == 'Veraguas'  ? 'selected' : '' ?>><?= $valor['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </label>
+
+                                    <label class="text-sm w-1/2 mt-5">
+                                        <span class="text-gray-800 font-medium">Selecciona el distrito</span>
+                                        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
+                                        </select>
+                                    </label>
+
+                                    <label class="text-sm w-5/12 mt-5 font-medium">
+                                        <span class="text-gray-800">Selecciona el corregimiento</span>
+                                        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
+                                        </select>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center w-full hidden" id="container_grupal">
+                            <label class="text-sm w-1/3">
+                                    <span class="text-gray-800 font-medium">Descarga la plantilla de excel</span>
+                                    <a href="" class="mt-2 w-full px-4 py-2 text-base font-bold leading-5 uppercase flex justify-center items-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-md active:bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                                        <span class="ml-2">Descargar</span>
+                                    </a>
+                                </label>
+                                <div class="text-blue-500 self-center mt-4 p-3 rounded-full bg-blue-100 mx-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
                                     </div>
-                                    <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
-                                </div>
-
-                                <label class="text-sm w-5/12 mt-5">
-                                    <span class="text-gray-800 font-medium">Selecciona la provincia</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
-                                        <?php foreach ($provinceAll as $datos => $valor) : ?>
-                                            <option value="<?= $valor['province_id'] ?>" <?= $valor['name'] == 'Veraguas'  ? 'selected' : '' ?>><?= $valor['name'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <label class="text-sm w-1/3">
+                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Subir la lista de visitantes</span>
+                                    <input type="file" class="mt-2 block w-full text-base rounded-md shadow-sm focus:border-blue-300 border border-gray-300
+        file:mr-4 file:py-2 file:px-4
+        file:uppercase file:border-0
+        file:text-base file:font-semibold
+        file:bg-blue-500 file:text-white
+      "/>
+                                    </div>
+                                    <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                                 </label>
-
-                                <label class="text-sm w-1/2 mt-5">
-                                    <span class="text-gray-800 font-medium">Selecciona el distrito</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
-                                    </select>
-                                </label>
-
-                                <label class="text-sm w-5/12 mt-5 font-medium">
-                                    <span class="text-gray-800">Selecciona el corregimiento</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
-                                    </select>
-                                </label>
-
                             </div>
                         </div>
                     </div>

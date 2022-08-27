@@ -48,5 +48,23 @@ class District extends Model implements IModel
         $this->province_id = $province_id;
     }
 
+    public function getDistrictForName($name)
+    {
+        $query = $this->prepare('SELECT * FROM districts WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $district = $query->fetch(PDO::FETCH_ASSOC);
+        return $district;
+    }
 
+    public function verifyDistrict($name)
+    {
+        $query = $this->prepare('SELECT * FROM districts WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $district = $query->fetch(PDO::FETCH_ASSOC);
+        if($district) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

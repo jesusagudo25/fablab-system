@@ -34,24 +34,23 @@ class Customer extends Model implements IModel
         $datos = array();
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "code" => $row['code'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'],"age_range" => $row['range_id'],"sex" => $row['sex'],"province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
+            $datos[] = array("label" => $row['document'], "id" => $row['customer_id'], "name" => $row['name'], "email" => $row['email'], "telephone" => $row['telephone'],"age_range" => $row['range_id'],"sex" => $row['sex'],"province" => $row['province_id'], "district" => $row['district_id'], "township" => $row['township_id']);
         }
 
         return $datos;
     }
 
     public function save(...$args){
-        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document,code, name,email,telephone,range_id,sex,province_id,district_id,township_id) VALUES (:document_type, :document ,:code ,:name, :email, :telephone,:range_id, :sex,:province, :city, :township)');
+        $nuevoCliente = $this->prepare('INSERT INTO customers(document_type, document, name,email,telephone,range_id,sex,province_id,district_id,township_id) VALUES (:document_type, :document ,:name, :email, :telephone,:range_id, :sex,:province, :city, :township)');
 
         $nuevoCliente->execute([
-            'document_type'=>$this->document_type,
+            'document_type'=>strtoupper($this->document_type),
             'document'=> $this->document,
-            'code'=> $this->code,
             'name'=>$this->name,
-            'email'=>$this->email,
+            'email'=>strtolower($this->email),
             'telephone'=> $this->telephone,
             'range_id'=> $this->age_range,
-            'sex'=> $this->sexo,
+            'sex'=> strtoupper($this->sexo),
             'province'=> $this->province,
             'city'=>$this->city,
             'township'=>$this->township
@@ -207,18 +206,6 @@ class Customer extends Model implements IModel
         return $resultado;
     }
 
-    public function checkCode($code){
-        $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE code = :code;');
-
-        $miConsulta->execute([
-            'code' => $code
-        ]);
-
-        $resultado = $miConsulta->fetch();
-
-        return $resultado;
-    }
-
     public function checkEmail($email){
         $miConsulta = $this->prepare('SELECT COUNT(*) as length FROM customers WHERE email = :email;');
 
@@ -254,6 +241,22 @@ class Customer extends Model implements IModel
         $resultado = $miConsulta->fetch(PDO::FETCH_ASSOC);
 
         return $resultado;
+    }
+
+    public function verifyCustomer($document){
+        $miConsulta = $this->prepare('SELECT * FROM customers WHERE document = :document');
+
+        $miConsulta->execute([
+            'document' => $document
+        ]);
+
+        $resultado = $miConsulta->fetch(PDO::FETCH_ASSOC);
+
+        if($resultado){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -448,4 +451,13 @@ class Customer extends Model implements IModel
         return $this->document_type;
     }
 
+    public function getCustomerID($document){
+        $miConsulta = $this->prepare('SELECT customer_id FROM customers WHERE document = :document');
+        $miConsulta->execute([
+            'document' => $document
+        ]);
+        $resultado = $miConsulta->fetch();
+        return $resultado['customer_id'];
+        
+    }
 }

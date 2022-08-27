@@ -4,11 +4,12 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     tituloDocumento = document.querySelector('#tituloDocumento'),
     inputDocumento = document.querySelector('input[name="documento"]'),
     nombreUsuario = document.querySelector('input[name="name"]'),
-    areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
+    areasTrabajo = document.querySelectorAll('#container-areas input[type="checkbox"]'),
     razonVisita = document.querySelector('select[name="razonvisita"]'),
-    containerArea = document.querySelector('#containerarea'),
     containerIndividual = document.querySelector('#container_individual'),
     containerGrupal = document.querySelector('#container_grupal'),
+    containerCheckAll = document.querySelector('#container-check-all'),
+    checkboxAll = document.querySelector('#container-check-all input[type="checkbox"]'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     booking = document.querySelector('#booking'),
@@ -25,12 +26,12 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
     formulario = document.querySelector('form');
-
+    console.log(areasTrabajo);
 //Informacion inicial
 let distritos = [];
 let corregimientos = [];
 let errores = {};
-let typeVisitValue = '';
+let typeVisitValue = 'I';
 
 let formDataDistricts = new FormData();
 formDataDistricts.append('solicitud', 'd');
@@ -285,8 +286,7 @@ let optionSelected = razonVisita.options[razonVisita.selectedIndex];
 razonVisita.addEventListener('change', evt => {
     optionSelected = evt.target.options[evt.target.selectedIndex];
     if (optionSelected.classList.contains('free')) {
-        containerArea.classList.add('hidden');
-        containerTiempo.classList.remove('hidden');
+        containerCheckAll.classList.remove('hidden');
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area' + x.value);
@@ -303,8 +303,21 @@ razonVisita.addEventListener('change', evt => {
         });
     }
     else {
-        containerArea.classList.remove('hidden');
-        containerTiempo.classList.add('hidden');
+        containerCheckAll.classList.add('hidden');
+        areasTrabajo.forEach(x => {
+            x.checked = false;
+            const areaCheck = document.querySelector('#area' + x.value);
+            if (areaCheck.nextElementSibling.classList.contains('feed')) {
+                areaCheck.parentElement.nextElementSibling.classList.add('mt-5');
+            }
+            else {
+                areaCheck.nextElementSibling.classList.add('mt-4');
+            }
+            document.querySelector('#area' + x.value).classList.add('hidden');
+            document.querySelector('input[name="arrival_time_area' + x.value + '"]').value = '';
+            document.querySelector('input[name="departure_time_area' + x.value + '"]').value = '';
+
+        });
     }
 
 });
@@ -331,6 +344,11 @@ areasTrabajo.forEach(evt => {
 function triggerBlur(element) {
     let blurEvent = new Event('blur');
     element.dispatchEvent(blurEvent);
+}
+
+function triggerClick(element) {
+    let clickEvent = new Event('click');
+    element.dispatchEvent(clickEvent);
 }
 
 //Button action
@@ -475,6 +493,7 @@ function validarEmail(e) {
 }
 
 function validarTelefono(e) {
+    let formData = new FormData();
     formData.append('solicitud', 'tel');
     formData.append('telefono', e.target.value);
 
@@ -640,6 +659,31 @@ function triggerChange(element) {
     element.dispatchEvent(changeEvent);
 }
 
+//CheckAll
+var DateTime = luxon.DateTime;
+
+
+
+checkboxAll.addEventListener('change', evt => {
+    var today = DateTime.local();
+
+    if (evt.target.checked) {
+        areasTrabajo.forEach(x => {
+            x.checked = true;
+            triggerClick(x);
+            document.querySelector('input[name="arrival_time_area' + x.value + '"]').value = today.toFormat('HH:mm');
+            document.querySelector('input[name="departure_time_area' + x.value + '"]').value = today.plus({ minutes: 60 }).toFormat('HH:mm');
+        }
+        );
+    } else {
+        areasTrabajo.forEach(x => {
+            x.checked = false;
+            triggerClick(x);
+        }
+        );
+    }
+}
+);
 
 //Booking
 

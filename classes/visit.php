@@ -18,39 +18,124 @@ class Visit extends Model implements IModel
 
     public function saveAll($decoded)
     {
-        $filename = $_FILES['file']['name'];
-        $newCustomer = isset($decoded['newCustomer']) ? $decoded['newCustomer'] : '';
+        $filename = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : null;
+        $newCustomer = isset($decoded['newCustomer']) ? json_decode($decoded['newCustomer'], true) : '';
+        $customer_id = isset($decoded['id_cliente']) ? $decoded['id_cliente'] : '';
+
+        $customerVisit = new CustomerVisit();
+        $customer = new Customer();
+        $customers = [];
 
         //Visitante captura
         if (!empty($filename)) {
 
+            $province = new Province();
+            $district = new District();
+            $township = new Township();
+
             $allowedExts = array("xls", "xlsx");
             $temp = explode(".", $_FILES["file"]["name"]);
             $extension = end($temp);
-            if(in_array($extension, $allowedExts)) {
+            if (in_array($extension, $allowedExts)) {
                 $reader = IOFactory::createReader('Xlsx');
                 $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
                 $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, false);
-                if(count($sheetData) > 1) {
-                    return [
-                        'status' => 'error',
-                        'message' => 'El archivo no puede tener más de una hoja'
-                    ];
-                }
-                else{
-                    return $sheetData;
-                }
 
+                if (count($sheetData) > 1) {
+                    for ($i = 1; $i < count($sheetData); $i++) {
+
+                        //Validar si el cliente existe en la base de datos
+                        if (!$customer->verifyCustomer($sheetData[$i][1])) {
+                            //Validar los campos obligatorios
+                            $errors = [];
+                            if (empty($sheetData[$i][0])) {
+                                $errors['documentType'] = 'El tipo de documento es obligatorio';
+                            }
+
+                            if (empty($sheetData[$i][1])) {
+                                $errors['document'] = 'El documento es obligatorio';
+                            }
+
+                            if (empty($sheetData[$i][2])) {
+                                $errors['name'] = 'El nombre es obligatorio';
+                            }
+
+                            if (empty($sheetData[$i][3])) {
+                                $errors['sexo'] = 'El sexo es obligatorio';
+                            }
+
+                            if (empty($sheetData[$i][4])) {
+                                $errors['ageRange'] = 'La edad es obligatoria';
+                            }
+
+                            if (empty($sheetData[$i][7])) {
+                                $errors['province'] = 'La provincia es obligatoria';
+                            }
+                            else if(!$province->verifyProvince($sheetData[$i][7])){
+                                $errors['province'] = 'La provincia no existe';
+                            }
+
+                            if (empty($sheetData[$i][8])) {
+                                $errors['city'] = 'La ciudad es obligatorio';
+                            }
+                            elseif(!$district->verifyDistrict($sheetData[$i][8])){
+                                $errors['city'] = 'La ciudad no existe';
+                            }
+
+                            if (empty($sheetData[$i][9])) {
+                                $errors['township'] = 'El barrio es obligatorio';
+                            }
+                            elseif(!$township->verifyTownship($sheetData[$i][9])){
+                                $errors['township'] = 'El barrio no existe';
+                            }
+
+                            if (empty($errors)) {
+                                //Crear el cliente si no existe
+                                $customer->setDocumentType($sheetData[$i][0]); //C
+                                $customer->setDocument($sheetData[$i][1]); //Document
+                                $customer->setName($sheetData[$i][2]); //Name
+                                $customer->setSexo($sheetData[$i][3]); //F O M
+                                if ($sheetData[$i][4] <= 18) {
+                                    $customer->setAgeRange('1'); //1 - 18
+                                } else if ($sheetData[$i][4] > 18 && $sheetData[$i][4] <= 26) {
+                                    $customer->setAgeRange('2'); //19 - 26
+                                } else if ($sheetData[$i][4] > 26 && $sheetData[$i][4] <= 35) {
+                                    $customer->setAgeRange('3'); //26 - 35
+                                } else {
+                                    $customer->setAgeRange('4'); //36 +
+                                }
+                                $customer->setTelephone($sheetData[$i][5]);
+                                $customer->setEmail($sheetData[$i][6]);
+
+                                $resul = $province->getProvinceForName($sheetData[$i][7]);
+                                $customer->setProvince(9);
+
+                                $resul = $district->getDistrictForName($sheetData[$i][8]);
+                                $customer->setCity($resul['district_id']);
+
+                                $resul = $township->getTownshipForName($sheetData[$i][9]);
+                                $customer->setTownship($resul['township_id']);
+
+                                $customer->save();
+                                $customers[] = $customer->getLastID();
+                            }
+                        }
+                        else{
+                            $customers[] = $customer->getCustomerID($sheetData[$i][1]);
+                        }
+
+                        //Asignar el cliente al visitante
+                    }
+                }
             } else {
                 $filename = '';
             }
         } else {
             if (!empty($newCustomer)) {
-                $customer = new Customer();
+
 
                 $customer->setDocumentType($newCustomer['tipo_documento']);
                 $customer->setDocument($newCustomer['documento']);
-                $customer->setCode(empty($newCustomer['codigo']) ? NULL : $newCustomer['codigo']);
                 $customer->setName($newCustomer['nombre']);
                 $customer->setEmail(empty($newCustomer['email']) ? NULL : $newCustomer['email']);
                 $customer->setTelephone(empty($newCustomer['telefono']) ? NULL : $newCustomer['telefono']);
@@ -60,21 +145,23 @@ class Visit extends Model implements IModel
                 $customer->setCity($newCustomer['distrito']);
                 $customer->setTownship($newCustomer['corregimiento']);
                 $customer->save();
-                $this->customer_id = $customer->getLastID();
+                $customers[] = $customer->getLastID();
             } else {
-                $this->customer_id = isset($decoded['id_cliente']) ? $decoded['id_cliente'] : '';
+                $customers[] = $customer_id;
             }
         }
 
-/*         $this->reason_id = isset($decoded['id_razonvisita']) ? $decoded['id_razonvisita'] : '';
-        $areasChecked = isset($decoded['areasChecked']) ? $decoded['areasChecked'] : '';
-        $this->date = isset($decoded['fecha']) ? $decoded['fecha'] : '';
+        $this->reason_id = empty($decoded['id_razonVisita']) ? '' : $decoded['id_razonVisita'];
+        $areasChecked = empty(json_decode($decoded['areas'], true)) ? NULL : json_decode($decoded['areas'], true);
         $this->observation = empty($decoded['observacion']) ? NULL : $decoded['observacion'];
 
         $this->save();
         $this->getLastID();
 
-        if (!empty($decoded['booking_id'])) {
+        $customerVisit->setVisitId($this->getLastID());
+        $customerVisit->save($customers);
+
+         if (!empty($decoded['booking_id'])) {
 
             //Se borran las areas de la reserva
             if (!empty($areasChecked)) {
@@ -89,22 +176,18 @@ class Visit extends Model implements IModel
 
         if (!empty($areasChecked)) {
             $visits_areas = new VisitArea();
-            $visits_areas->save($this->visit_id, $areasChecked);
+            return $visits_areas->save($this->getLastID(), $areasChecked);
         }
 
         //Se deben delegar responsabilidades a las clases implicadas -> crear metodos para accion
-
-        return $this->customer_id; */
     }
 
     public function save(...$args) //Save solo table_visit
     {
-        $nuevaVisita = $this->prepare('INSERT INTO visits(customer_id, reason_id,date, observation) VALUES (:id_cliente, :razonvisita,:fecha ,:observacion)');
+        $nuevaVisita = $this->prepare('INSERT INTO visits(reason_id, observation) VALUES (:razonvisita ,:observacion)');
 
         $nuevaVisita->execute([
-            'id_cliente' => $this->customer_id,
             'razonvisita' => $this->reason_id,
-            'fecha' => $this->date,
             'observacion' => $this->observation
         ]);
     }
@@ -224,15 +307,14 @@ class Visit extends Model implements IModel
 
     public function getLastID()
     {
-        $consultarIDVisita = $this->query('SELECT visit_id FROM visits ORDER BY visit_id DESC LIMIT 1');
-        $visitaResultado = $consultarIDVisita->fetch();
-        $this->visit_id = $visitaResultado['visit_id'];
+        $query = $this->query('SELECT MAX(visit_id) AS last_id FROM visits');
+        $last_id = $query->fetch();
+        return $last_id['last_id'];
     }
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT v.visit_id, c.customer_id, c.document_type, c.document, c.name, rv.reason_id, rv.time, v.date, v.observation, v.status FROM visits v 
-        INNER JOIN customers c ON c.customer_id = v.customer_id
+        $query = $this->prepare('SELECT v.visit_id, rv.reason_id, rv.time, v.date, v.observation, v.status FROM visits v 
         INNER JOIN reason_visits rv ON rv.reason_id = v.reason_id
         WHERE visit_id = :id');
         $query->execute([

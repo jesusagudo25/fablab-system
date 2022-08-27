@@ -36,7 +36,7 @@ $pagina[] = "form";
     <link href="<?= constant('URL') ?>assets/css/tailwind.output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.2.0/build/global/luxon.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
@@ -90,7 +90,6 @@ $pagina[] = "form";
                                         <span class="ml-2">Grupal</span>
                                     </label>
                                 </div>
-                                <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
                             </div>
 
                             <div class="flex justify-between flex-wrap items-start w-full" id="container_individual">
@@ -208,11 +207,8 @@ $pagina[] = "form";
                                         file:uppercase file:border-0
                                         file:text-base file:font-semibold
                                         file:bg-blue-500 file:text-white
-                                    "
-                                    id="fileupload"
-                                    name="fileupload"/>
+                                    " id="fileupload" name="fileupload" />
                             </div>
-                            <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                             </label>
                         </div>
                     </div>
@@ -231,30 +227,37 @@ $pagina[] = "form";
                             <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
                             <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <?php foreach ($reasonAll as $datos => $valor) : ?>
-                                    <option value="<?= $valor['reason_id'] ?>"><?= $valor['name'] ?></option>
+                                    <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?>"><?= $valor['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </label>
 
-                        <div class="text-sm mt-5" id="containerarea">
+                        <div class="text-sm mt-5">
                             <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
-                            <?php foreach ($areaAll as $datos => $valor) : ?>
-                                <label class="flex items-center mt-4">
-                                    <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?= $valor['id'] ?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
-                                    <span class="ml-2"> <?= $valor['name'] ?></span>
-                                </label>
-                                <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
-                                    <label for="arrival_time" class="mr-6">Hora de llegada:
-                                        <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                            <div id="container-areas">
+                                <?php foreach ($areaAll as $datos => $valor) : ?>
+                                    <label class="flex items-center mt-4">
+                                        <input type="checkbox" value="<?= $valor['id'] ?>" name="areacheck<?= $valor['id'] ?>" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
+                                        <span class="ml-2"> <?= $valor['name'] ?></span>
                                     </label>
-                                    <label for="departure_time">Hora de salida:
-                                        <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
-                                    </label>
+                                    <div class="p-3 hidden" id="area<?= $valor['id'] ?>">
+                                        <label for="arrival_time" class="mr-6">Hora de llegada:
+                                            <input type="time" name="arrival_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                        </label>
+                                        <label for="departure_time">Hora de salida:
+                                            <input type="time" name="departure_time_area<?= $valor['id'] ?>" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                        </label>
 
-                                    <br />
-                                    <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
-                                </div>
-                            <?php endforeach; ?>
+                                        <br />
+                                        <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <label class="flex items-center mt-4 <?= $reasonAll[0]['time'] == 1 ? 'hidden' : '' ?>" id="container-check-all">
+                                <i class="fas fa-arrow-right fa-fw mr-3"></i>
+                                <input type="checkbox" value="" name="" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
+                                <span class="ml-2">Marcar todo</span>
+                            </label>
                             <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                         </div>
 

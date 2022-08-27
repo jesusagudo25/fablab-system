@@ -47,5 +47,23 @@ class Township extends Model implements IModel
         $this->district_id = $district_id;
     }
 
+    public function getTownshipForName($name)
+    {
+        $query = $this->prepare('SELECT * FROM townships WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $township = $query->fetch(PDO::FETCH_ASSOC);
+        return $township;
+    }
 
+    public function verifyTownship($name)
+    {
+        $query = $this->prepare('SELECT * FROM townships WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $township = $query->fetch(PDO::FETCH_ASSOC);
+        if($township) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

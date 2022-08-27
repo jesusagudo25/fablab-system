@@ -38,4 +38,24 @@ class Province extends Model implements IModel
     {
         // TODO: Implement update() method.
     }
+
+    public function getProvinceForName($name)
+    {
+        $query = $this->prepare('SELECT * FROM provinces WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $province = $query->fetch(PDO::FETCH_ASSOC);
+        return $province;
+    }
+
+    public function verifyProvince($name)
+    {
+        $query = $this->prepare('SELECT * FROM provinces WHERE name = :name');
+        $query->execute([':name' => $name]);
+        $province = $query->fetch(PDO::FETCH_ASSOC);
+        if ($province) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

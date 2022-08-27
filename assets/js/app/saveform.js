@@ -1,5 +1,12 @@
 //###########Form validation##########
-const feeds = document.querySelectorAll('.feed');
+const feeds = document.querySelectorAll('.feed'),
+    feedbackdocumento = document.querySelector('#feedbackdocumento'),
+    feedbacknombre = document.querySelector('#feedbacknombre'),
+    feedbackcorreo = document.querySelector('#feedbackcorreo'),
+    feedbacktelefono = document.querySelector('#feedbacktelefono'),
+    feedbackedad = document.querySelector('#feedbackedad'),
+    feedbackareas = document.querySelector('#feedbackareas'),
+    feedbacksexo = document.querySelector('#feedbacksexo');
 
 formulario.addEventListener('submit', guardarEntrada);
 
@@ -39,6 +46,7 @@ function guardarEntrada(evt) {
         }
 
         if (evt.checked) {
+            console.log(evt.value);
             let area = {
                 id: evt.value,
                 arrival_time: document.querySelector('input[name="arrival_time_area' + evt.value + '"]').value,
@@ -64,8 +72,10 @@ function guardarEntrada(evt) {
         errores.areas = "Por favor, seleccione las areas deseadas";
         feedbackareas.textContent = errores.areas;
     }
+    else {
+        formData.append('areas', JSON.stringify(areas));
+    }
 
-    formData.append('areas', JSON.stringify(areas));
 
     if (typeVisitValue == 'I') {
         if ('documento' in errores) {
@@ -97,7 +107,6 @@ function guardarEntrada(evt) {
             }
 
             newCustomer = {
-                codigo: codigo.value,
                 tipo_documento: tipoDocumento.value,
                 documento: inputDocumento.value,
                 email: email.value.toLowerCase(),
@@ -167,7 +176,6 @@ function guardarEntrada(evt) {
                 feedbackdocumento.textContent = errores.id;
             }
             else if (idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0) {
-                datos['id_cliente'] = idHidden.value;
                 formData.append('id_cliente', idHidden.value);
             }
         }

@@ -11,16 +11,18 @@
         $table = <<<EOT
         ( 
             SELECT v.visit_id, c.name AS customer_id, r.name AS reason_id ,v.date, v.status FROM visits v
-            INNER JOIN customers c ON c.customer_id = v.customer_id
+            INNER JOIN customer_visit cv ON cv.visit_id = v.visit_id
+            INNER JOIN customers c ON c.customer_id = cv.customer_id
             INNER JOIN reason_visits r ON r.reason_id = v.reason_id
+            group by v.visit_id, c.name, r.name, v.date, v.status
         ) temp
         EOT;
 
         $primaryKey = 'visit_id';
 
         $columns = array(
+            array( 'db' => 'customer_id',       'dt' => 1 ),
             array( 'db' => 'visit_id',          'dt' => 0 ),
-            array( 'db' => 'customer_id',        'dt' => 1 ),
             array( 'db' => 'reason_id',    'dt' => 2 ),
             array( 'db' => 'date',    'dt' => 3 ),
             array( 'db' => 'status',    'dt' => 4 )

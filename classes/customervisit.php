@@ -28,7 +28,16 @@ class CustomerVisit extends Model implements IModel
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $query = $this->prepare('SELECT cv.customer_id, cv.visit_id, c.name FROM customer_visit cv
+        INNER JOIN customers c ON cv.customer_id = c.customer_id
+        WHERE cv.visit_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $visit_area = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $visit_area;
     }
 
     public function delete($id)

@@ -17,13 +17,6 @@ tablaVisitas = $('#datatable-json').DataTable({
         {
             "data": null,
             render: function (data, type, row) {
-                return '<button value="' + data[0] + '" onclick="verAreas(this)"><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-blue-700 bg-blue-100">Ver areas</span></button>';
-            },
-            "targets": 3
-        },
-        {
-            "data": null,
-            render: function (data, type, row) {
                 return data[3];
             },
             "targets": 4
@@ -43,7 +36,7 @@ tablaVisitas = $('#datatable-json').DataTable({
         {
             "data": null,
             render: function (data, type, row) {
-                return '<button value="' + data[0] + '" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editarVisita(this)"><i class="fas fa-edit"></i></i></button>';
+                return '<div class="flex gap-2"><button value="' + data[0] + '" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editarVisita(this)"><i class="fas fa-users"></i></button> <div class="flex gap-2"><button value="' + data[0] + '" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editarVisita(this)"><i class="fas fa-clipboard-check"></i></button> <button value="' + data[0] + '" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray btn-editar" onclick="editarVisita(this)"><i class="fas fa-edit"></i></button></div>';
             },
             "targets": 6
         },
@@ -53,14 +46,18 @@ tablaVisitas = $('#datatable-json').DataTable({
 });
 
 const modal_content = document.querySelector('#modal-content'),
+    modal_content_areas = document.querySelector('#modal-areas-content'),
     closeModal = document.querySelectorAll('.close'),
     guardar = document.querySelector('button[name="guardar"]'),
     modal = document.querySelector('#modal'),
     modalAreas = document.querySelector('#modal-areas'),
+    areasContent = document.querySelector('#areas-content'),
+    customersContent = document.querySelector('#customers-content'),
     closeAreas = document.querySelectorAll('.cancelar-areas'),
     guardarAreas = document.querySelector('button[name="guardar-areas"]'),
     areasTrabajo = document.querySelectorAll('input[type="checkbox"]'),
     titulo_modal = document.querySelector('#titulo-modal'),
+    titulo_modal_areas = document.querySelector('#titulo-modal-areas'),
     footer_modal = document.querySelector('#footer-modal'),
     feedsareas = document.querySelectorAll('#modal-areas-content .feed');
 
@@ -81,7 +78,7 @@ areasTrabajo.forEach(evt => {
     });
 });
 
-//Consultar areas -> Modal separado
+//Consultar solamente las areas en el modal principal
 function verAreas(e) {
 
     modal_content.innerHTML = `
@@ -134,7 +131,7 @@ function verAreas(e) {
     });
 }
 
-//Editar visita -> Modal separado
+//Editar visita -> Modal principal
 function editarVisita(e) {
 
     titulo_modal.textContent = 'Editar visita';
@@ -148,123 +145,45 @@ function editarVisita(e) {
         },
         success: function (data) {
             areasActualizar = data['areas'];
+            visitantesActualizar = data['customers'];
             modal_content.innerHTML = `
-            <label class="block text-sm">
+        <label class="block text-sm">
             <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
             <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="razonvisita">
-    </select>
+            </select>
         </label>
 
         <div class="text-sm mt-5" id="container-clientes">
             <span class="text-gray-800 font-medium">Visitante</span>
-            <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium  focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas" value="${e.value}" onclick="editarAreas(this)">Editar</button>
+            <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium  focus:outline-none px-3 py-1 rounded-md text-sm text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editarvisitantes" value="${e.value}" onclick="editarVisitantes(this)">Editar</button>
             <span id="feedbackbuttonareas" class="text-xs text-red-600 feed"></span>
         </div> 
 
         <label class="block text-sm mt-5">
-        <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
-        <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
-        <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
-    </label>
+            <span class="text-gray-800 font-medium">Seleccione la fecha de la visita</span>
+            <input class="text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha">
+            <span id="feedbackfecha" class="text-xs text-red-600 feed"></span>
+        </label>
             
-        <div class="text-sm mt-5" id="containerarea">
+        <div class="text-sm mt-5">
             <span class="text-gray-800 font-medium">Áreas de trabajo visitadas</span>
             <button class="mt-1 align-bottom flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-3 py-1 rounded-md text-sm  text-white bg-blue-500 border border-transparent active:bg-blue-600 hover:bg-blue-700" name="editareas" value="${e.value}" onclick="editarAreas(this)">Editar</button>
             <span id="feedbackbuttonareas" class="text-xs text-red-600 feed"></span>
-        </div>                                
-            
+        </div>
 
+        <label class="block text-sm mt-5">
+            <span class="text-gray-800 font-medium">Observación complementaria</span>
+            <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observacion"></textarea>
+        </label>`;
 
-            <label class="block text-sm mt-5">
-                <span class="text-gray-800 font-medium">Observación complementaria</span>
-                <textarea class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese una observación complementaria" name="observacion"></textarea>
-            </label>`;
-
-            const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
-                tituloDocumento = document.querySelector('#tituloDocumento'),
-                containerArea = document.querySelector('#containerarea'),
-                inputDocumento = document.querySelector('input[name="documento"]'),
-                nombreCliente = document.querySelector('input[name="name"]'),
-                fechaVisita = document.querySelector('input[name="fecha"]'),
+            const fechaVisita = document.querySelector('input[name="fecha"]'),
                 razonVisita = document.querySelector('select[name="razonvisita"]'),
                 observacion = document.querySelector('textarea[name="observacion"]'),
-                idHidden = document.querySelector('input[type="hidden"]');
-
-            buttonEditAreas = document.querySelector('button[name="editareas"]');
-
-            $("#autoComplete").autocomplete({
-
-                source: function (request, response) {
-                    $.ajax({
-                        url: "../../ajax.php",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            customers: request.term,
-                            document_type: tipoDocumento.value
-                        },
-                        success: function (data) {
-                            if (!data.length) {
-                                var result = { value: "0", label: "No se han encontrado resultados" };
-                                data.push(result);
-                            }
-                            response(data)
-                        }
-                    });
-                },
-                delay: 500,
-                minLength: 4,
-                select: function (event, ui) {
-                    var value = ui.item.value;
-                    if (value == 0) {
-                        event.preventDefault();
-                    }
-                    else {
-                        $('#autoComplete').val(ui.item.label);
-                        idHidden.value = ui.item.id;
-                        nombreCliente.value = ui.item.name;
-
-                        Toastify({
-                            text: "Visitante seleccionado",
-                            duration: 3000,
-                            style: {
-                                background: '#10B981'
-                            }
-                        }).showToast();
-                    }
-                }
-
-            });
-
-            function triggerKeyup(element) {
-                let keyupEvent = new Event('keyup');
-                element.dispatchEvent(keyupEvent);
-            }
-
-            function triggerChange(element) {
-                let changeEvent = new Event('change');
-                element.dispatchEvent(changeEvent);
-            }
+                buttonEditAreas = document.querySelector('button[name="editareas"]');
 
             reasonVisits.forEach(value => {
                 razonVisita.innerHTML += `
-                        <option value="${value.reason_id}" ${value.reason_id == data['visits']['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
-            });
-
-            if (razonVisita.options[razonVisita.selectedIndex].classList.contains('notfree')) {
-                containerArea.classList.remove('hidden')
-            }
-
-            optionSelected = razonVisita.options[razonVisita.selectedIndex];
-
-            razonVisita.addEventListener('change', evt => {
-                optionSelected = evt.target.options[evt.target.selectedIndex];
-                if (optionSelected.classList.contains('free')) {
-
-                }
-                else {
-
-                }
+                        <option class="${value.time == 1 ? 'notfree' : 'free'}" value="${value.reason_id}" ${value.reason_id == data['visits']['reason_id'] ? 'selected' : ''} >${value.name}</option>`;
             });
 
             fechaVisita.value = data['visits']['date'];
@@ -299,26 +218,7 @@ function editarVisita(e) {
                     observation: observacion.value
                 };
 
-                if (inputDocumento.value.trim().length == 0) {
-                    if (tipoDocumento.value == 'R') {
-                        errores.documento = "Por favor, proporcione un RUC";
-                    }
-                    else if (tipoDocumento.value == 'C') {
-                        errores.documento = "Por favor, proporcione una cédula";
-                    }
-                    else {
-                        errores.documento = "Por favor, proporcione un pasaporte";
-                    }
-                    feedbackdocumento.textContent = errores.documento;
-                    inputDocumento.addEventListener('change', cambioValor);
-                }
-                else if (idHidden.value.trim().length == 0) {
-                    errores.id = "Por favor, seleccione o agregue un cliente";
-                    feedbackdocumento.textContent = errores.id;
-                }
-                else {
-                    datos["customer_id"] = idHidden.value;
-                }
+
 
                 if (fechaVisita.value.trim().length == 0) {
                     errores.fecha = "Por favor, seleccione una fecha";
@@ -375,6 +275,176 @@ function editarVisita(e) {
     });
 }
 
+//Metodo de evento para editar las visitas
+let visitantesActualizar = [];
+
+function editarVisitantes(e) {
+
+    const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
+        razonVisita = document.querySelector('select[name="razonvisita"]'),
+        inputDocumento = document.querySelector('input[name="documento"]'),
+        listaVisitantes = document.querySelector('#lista-visitantes');
+
+    feedsareas.forEach(x => {
+        x.textContent = '';
+    });
+
+    //Cargar información inicial
+    if (visitantesActualizar.length) {
+        visitantesActualizar.forEach(x => {
+            html =
+            `
+        <tr class="bg-white border-b">
+            <td class="p-2">
+                <div class="flex items-center text-sm">
+                    <p class="font-medium">${x.name}</p>
+                </div>
+            </td>
+            <td class="p-2">
+                <button class="flex items-center justify-between px-2 py-2 text-medium font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" value='${x.customer_id}'>
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+        `;
+
+        listaVisitantes.innerHTML += html;
+        });
+
+    }
+    modalAreas.classList.toggle('hidden');
+    areasContent.classList.add('hidden');
+    customersContent.classList.remove('hidden');
+
+    inputDocumento.addEventListener('focus', evt => {
+        inputDocumento.value = '';
+        feedbackdocumento.textContent = '';
+    });
+
+    tipoDocumento.addEventListener('change', evt => {
+        inputDocumento.value = '';
+        triggerKeyup(inputDocumento);
+    });
+
+    optionSelected = razonVisita.options[razonVisita.selectedIndex];
+
+    razonVisita.addEventListener('change', evt => {
+        //Mostrar checkbox All
+        optionSelected = evt.target.options[evt.target.selectedIndex];
+        if (optionSelected.classList.contains('free')) {
+        }
+        else {
+
+        }
+    });
+
+    $("#autoComplete").autocomplete({
+
+        source: function (request, response) {
+            $.ajax({
+                url: "../../ajax.php",
+                type: 'post',
+                dataType: "json",
+                data: {
+                    customers: request.term,
+                    document_type: tipoDocumento.value
+                },
+                success: function (data) {
+                    if (!data.length) {
+                        var result = { value: "0", label: "No se han encontrado resultados" };
+                        data.push(result);
+                    }
+                    response(data)
+                }
+            });
+        },
+        delay: 500,
+        minLength: 4,
+        select: function (event, ui) {
+            var value = ui.item.value;
+            if (value == 0) {
+                event.preventDefault();
+            }
+            else {
+                $('#autoComplete').val(''); // display the selected text
+                html =
+                    `
+                <tr class="bg-white border-b">
+                    <td class="p-2">
+                        <div class="flex items-center text-sm">
+                            <p class="font-medium">${ui.item.name}</p>
+                        </div>
+                    </td>
+                    <td class="p-2">
+                        <button class="flex items-center justify-between px-2 py-2 text-medium font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" value='${ui.item.id}'>
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                `;
+
+                listaVisitantes.innerHTML += html;
+            }
+            tipoDocumento.value = 'R';
+            inputDocumento.value = '';
+        }
+
+    });
+
+
+    closeAreas.forEach(e => {
+        e.addEventListener('click', cerrarEditarVisitantes);
+    });
+
+    function cerrarEditarVisitantes(e) {
+        modalAreas.classList.toggle('hidden');
+        areasContent.classList.add('hidden');
+        customersContent.classList.add('hidden');
+        guardarAreas.removeEventListener('click', actualizarVisitantes);
+        closeAreas.forEach(evt => {
+            evt.removeEventListener('click', cerrarEditarVisitantes);
+        });
+    }
+
+    guardarAreas.addEventListener('click', actualizarVisitantes);
+
+    function actualizarVisitantes(evt) {
+        let errores = {};
+
+        let areasTempo = [];
+
+        
+
+        if (areasTempo.length == 0) {
+            errores.areas = "Por favor, seleccione las áreas deseadas";
+            feedbackareas.textContent = errores.areas;
+        }
+
+        if (Object.keys(errores).length == 0) {
+
+            areasActualizar = Array.from(areasTempo);
+            modalAreas.classList.toggle('hidden');
+            guardarAreas.removeEventListener('click', actualizarAreas);
+            closeAreas.forEach(e => {
+                e.removeEventListener('click', cerrarEditarAreas);
+            });
+            buttonEditAreas.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+            buttonEditAreas.classList.add('bg-blue-500', 'active:bg-blue-600', 'hover:bg-blue-700');
+            feedbackbuttonareas.textContent = '';
+            Toastify({
+                text: "Areas Actualizadas!",
+                duration: 3000,
+                style: {
+                    background: '#10B981'
+                }
+            }).showToast();
+        }
+
+    }
+
+}
+
+//Metodo de evento para editar las areas visitadas
 let areasActualizar = [];
 
 function editarAreas(e) {
@@ -418,6 +488,8 @@ function editarAreas(e) {
 
     }
     modalAreas.classList.toggle('hidden');
+    areasContent.classList.remove('hidden');
+    customersContent.classList.add('hidden');
 
     closeAreas.forEach(e => {
         e.addEventListener('click', cerrarEditarAreas);
@@ -522,6 +594,7 @@ function editarAreas(e) {
     }
 }
 
+
 function interruptor(e) {
 
     let estado = 0;
@@ -570,50 +643,12 @@ function cambioValor(e) {
     e.target.removeEventListener('change', cambioValor);
 }
 
-/* 
-            <label class="block text-sm">
-                <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
-        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
-            <option value="R">RUC</option>
-            <option value="C">Cédula</option>
-            <option value="P">Pasaporte</option>
-        </select>
-            </label>
-            
-            <label class="block text-sm mt-5">
-                <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de documento</span>
-                <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="text" required="" placeholder="Ingrese el número de RUC con guiones" name="documento" id="autoComplete" autocomplete="false">
-                <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
-                <input type="hidden" name="id_customer">
-            </label>
-            
-            <label class="block text-sm mt-5">
-                <span class="text-gray-800 font-medium">Nombre de visitante</span>
-                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin visitante seleccionado" type="text" name="name" disabled>
-            </label>
+function triggerKeyup(element) {
+    let keyupEvent = new Event('keyup');
+    element.dispatchEvent(keyupEvent);
+}
 
-//--------------------------------
-
-                    inputDocumento.addEventListener('keyup', evt => {
-                        if(evt.key != "Enter"){
-                            idHidden.value = '';
-                            nombreCliente.value = '';
-                        }
-                        feedbackdocumento.textContent = '';
-                    });
-
-                    tipoDocumento.addEventListener('change', evt => {
-                        TIPOS_DOCUMENTOS[evt.target.value]();
-                        inputDocumento.value = '';
-                        triggerKeyup(inputDocumento);
-                    });
-
-                    tipoDocumento.value = data['visits']['document_type'];
-                    triggerChange(tipoDocumento);
-
-                    inputDocumento.value = data['visits']['document'];
-                    nombreCliente.value = data['visits']['name'];
-
-                    idHidden.value = data['visits']['customer_id'];
-
-                    */
+function triggerChange(element) {
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+}

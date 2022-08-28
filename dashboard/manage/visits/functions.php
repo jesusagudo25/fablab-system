@@ -6,6 +6,7 @@
 
     $visit = new Visit();
     $visit_area = new VisitArea();
+    $customer_visit = new CustomerVisit();
 
     if(isset($_GET['draw'])){
         $table = <<<EOT
@@ -53,6 +54,7 @@
 
         $data['visits']= $visit->get($_POST['id']);
         $data['areas']= $visit_area->get($_POST['id']);
+        $data['customers']= $customer_visit->get($_POST['id']);
 
         echo json_encode($data);
 

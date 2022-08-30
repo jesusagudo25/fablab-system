@@ -104,7 +104,7 @@ $pagina[] = "form";
                                 </label>
 
                                 <label class="text-sm w-5/12">
-                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
+                                    <span class="text-gray-800 font-medium" id="tituloDocumento">Número de documento</span>
                                     <div class="relative">
                                         <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                         <input type="hidden" name="id_customer">
@@ -133,6 +133,7 @@ $pagina[] = "form";
                                         <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
                                         <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
                                     </label>
+
                                     <div class="mt-5 text-sm w-5/12">
                                         <span class="text-gray-700 font-medium">
                                             Selecciona la edad
@@ -209,6 +210,7 @@ $pagina[] = "form";
                                         file:bg-blue-500 file:text-white
                                     " id="fileupload" name="fileupload" />
                             </div>
+                            
                             </label>
                         </div>
                     </div>
@@ -258,6 +260,18 @@ $pagina[] = "form";
                                 <input type="checkbox" value="" name="" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50">
                                 <span class="ml-2">Marcar todo</span>
                             </label>
+                            <div class="p-3 hidden" id="area-all">
+                                <label for="arrival_time" class="mr-6">Hora de llegada:
+                                    <input type="time" name="arrival_time_area-all" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                </label>
+                                <label for="departure_time">Hora de salida:
+                                    <input type="time" name="departure_time_area-all" class="text-sm p-1.5 m-1 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" min="08:00" max="16:00">
+                                </label>
+
+                                <br />
+                                <span id="feedbackarea<?= $valor['id'] ?>" class="text-xs text-red-600 feed"></span>
+                            </div>
+
                             <span id="feedbackareas" class="inline-block mt-2 text-xs text-red-600 feed"></span>
                         </div>
 

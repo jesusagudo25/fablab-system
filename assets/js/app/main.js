@@ -26,7 +26,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
     formulario = document.querySelector('form');
-    console.log(areasTrabajo);
+
 //Informacion inicial
 let distritos = [];
 let corregimientos = [];
@@ -120,24 +120,7 @@ btnTypeVisit.forEach(e => {
     });
 });
 
-//Tipo de documento -> RUC/CEDULA/PASAPORTE
-const TIPOS_DOCUMENTOS = {
-    C: (tituloDocumento, inputDocumento) => {
-        tituloDocumento.textContent = 'Número de cédula';
-        inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
-    },
-    R: (tituloDocumento, inputDocumento) => {
-        tituloDocumento.textContent = 'Número de RUC';
-        inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
-    },
-    P: (tituloDocumento, inputDocumento) => {
-        tituloDocumento.textContent = 'Número de Pasaporte';
-        inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
-    }
-}
-
 tipoDocumento.addEventListener('change', evt => {
-    TIPOS_DOCUMENTOS[evt.target.value](tituloDocumento, inputDocumento);
     inputDocumento.value = '';
     feedbackdocumento.textContent = '';
     triggerKeyup(inputDocumento)
@@ -662,23 +645,17 @@ function triggerChange(element) {
 //CheckAll
 var DateTime = luxon.DateTime;
 
-
-
 checkboxAll.addEventListener('change', evt => {
-    var today = DateTime.local();
+    document.querySelector('#area-all').classList.toggle('hidden');
 
     if (evt.target.checked) {
         areasTrabajo.forEach(x => {
             x.checked = true;
-            triggerClick(x);
-            document.querySelector('input[name="arrival_time_area' + x.value + '"]').value = today.toFormat('HH:mm');
-            document.querySelector('input[name="departure_time_area' + x.value + '"]').value = today.plus({ minutes: 60 }).toFormat('HH:mm');
         }
         );
     } else {
         areasTrabajo.forEach(x => {
             x.checked = false;
-            triggerClick(x);
         }
         );
     }

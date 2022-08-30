@@ -18,6 +18,12 @@ if (isset($_GET['id'])) {
     $customer = $customer->get($_GET['id']);
 }
 
+$province = new Province();
+$provinceAll = $province->getAll();
+
+$range = new AgeRange();
+$rangeAll = $range->getAll();
+
 ?>
 
 
@@ -74,7 +80,7 @@ if (isset($_GET['id'])) {
                             <h5 class="font-bold uppercase text-gray-600">Datos del cliente</h5>
                         </div>
                         <div class="p-5 flex justify-between flex-wrap items-start">
-                            <label class="text-sm w-1/4">
+                            <label class="text-sm w-1/2">
                                 <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
                                     <option value="R" <?= isset($customer['document_type']) ? ($customer['document_type'] == 'R' ? 'selected' : '') : '' ?>>RUC</option>
@@ -85,17 +91,92 @@ if (isset($_GET['id'])) {
                                 </select>
                             </label>
 
-                            <label class="text-sm w-1/3">
-                                <span class="text-gray-800 font-medium" id="tituloDocumento">Numero de RUC</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false" value="<?= isset($customer['document']) ? $customer['document'] : '' ?>">
-                                <input type="hidden" name="id_customer" value="<?= isset($customer['customer_id']) ? $customer['customer_id'] : '' ?>">
+                            <label class="text-sm w-5/12">
+                                <span class="text-gray-800 font-medium" id="tituloDocumento">Número de documento</span>
+                                <div class="relative">
+                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de documento" name="documento" required type="text" id="autoComplete" autocomplete="false" value="<?= isset($customer['document']) ? $customer['document'] : '' ?>">
+                                    <input type="hidden" name="id_customer" value="<?= isset($customer['customer_id']) ? $customer['customer_id'] : '' ?>">
+                                    <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-r-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-purple">
+                                        <i class="fas fa-user-plus"></i>
+                                    </button>
+                                </div>
                                 <span id="feedbackdocumento" class="text-xs text-red-600 "></span>
                             </label>
 
-                            <label class="text-sm w-1/4">
-                                <span class="text-gray-800 font-medium">Nombre de visitante</span>
-                                <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" placeholder="Sin cliente seleccionado" type="text" name="name" value="<?= isset($customer['name']) ? $customer['name'] : '' ?>" disabled>
-                            </label>
+                            <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
+                                <label class="text-sm w-1/2 mt-5">
+                                    <span class="text-gray-800 font-medium">Nombre</span>
+                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
+                                    <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
+                                </label>
+
+                                <label class="text-sm w-5/12 mt-5">
+                                    <span class="text-gray-800 font-medium">Correo</span>
+                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
+                                    <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
+                                </label>
+
+                                <label class="text-sm w-1/2 mt-5">
+                                    <span class="text-gray-800 font-medium">Telefono</span>
+                                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
+                                    <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
+                                </label>
+
+                                <div class="mt-5 text-sm w-5/12">
+                                    <span class="text-gray-700 font-medium">
+                                        Selecciona la edad
+                                    </span>
+                                    <div class="mt-2 flex flex-wrap justify-between items-center">
+                                        <?php foreach ($rangeAll as $datos => $valor) : ?>
+                                            <label class="inline-flex items-center text-gray-600">
+                                                <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="edad" value="<?= $valor['range_id'] ?>">
+                                                <span class="ml-2"><?= $valor['name'] ?></span>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
+                                </div>
+
+                                <div class="mt-5 text-sm w-1/2">
+                                    <span class="text-gray-700 font-medium">
+                                        Selecciona el sexo
+                                    </span>
+                                    <div class="mt-2">
+                                        <label class="inline-flex items-center text-gray-600">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="F">
+                                            <span class="ml-2">F</span>
+                                        </label>
+                                        <label class="inline-flex items-center ml-6 text-gray-600">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
+                                            <span class="ml-2">M</span>
+                                        </label>
+                                    </div>
+                                    <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
+                                </div>
+
+                                <label class="text-sm w-5/12 mt-5">
+                                    <span class="text-gray-800 font-medium">Selecciona la provincia</span>
+                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
+                                        <?php foreach ($provinceAll as $datos => $valor) : ?>
+                                            <option value="<?= $valor['province_id'] ?>" <?= $valor['name'] == 'Veraguas'  ? 'selected' : '' ?>><?= $valor['name'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </label>
+
+                                <label class="text-sm w-1/2 mt-5">
+                                    <span class="text-gray-800 font-medium">Selecciona el distrito</span>
+                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
+                                    </select>
+                                </label>
+
+                                <label class="text-sm w-5/12 mt-5 font-medium">
+                                    <span class="text-gray-800">Selecciona el corregimiento</span>
+                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
+                                    </select>
+                                </label>
+
+                            </div>
+
                         </div>
                     </div>
 
@@ -140,14 +221,14 @@ if (isset($_GET['id'])) {
                                     <span class="text-gray-800 font-medium">Número de recibo</span>
                                     <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el número de recibo" required="" min="1" name="numero_recibo">
                                 </label>
-                                
-                                <div class="mt-5 text-sm w-1/2">
+
+                                <div class="mt-5 text-sm w-7/11 ">
                                     <span class="text-gray-700 font-medium">
                                         Selecciona el tipo de cliente
                                     </span>
                                     <div class="mt-2">
                                         <label class="inline-flex items-center text-gray-600">
-                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M" checked>
                                             <span class="ml-2">Maker</span>
                                         </label>
                                         <label class="inline-flex items-center ml-6 text-gray-600">

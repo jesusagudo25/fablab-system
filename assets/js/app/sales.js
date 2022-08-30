@@ -1,106 +1,159 @@
 const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
-    tituloDocumento=  document.querySelector('#tituloDocumento'),
+    tituloDocumento = document.querySelector('#tituloDocumento'),
     inputDocumento = document.querySelector('input[name="documento"]'),
+    nombreUsuario = document.querySelector('input[name="name"]'),
     idHidden = document.querySelector('input[type="hidden"]'),
+    accion = document.querySelector('#action'),
     agregar = document.querySelector('#agregar'),
-    fecha = document.querySelector('input[name="fecha"]'),
     categoria_servicio = document.querySelector('select[name="categoria_servicio"]'),
     servicio = document.querySelector('select[name="servicio"]'),
     nombreCliente = document.querySelector('input[name="name"]'),
     closeModal = document.querySelectorAll('.close'),
     modal = document.querySelector('#modal'),
     guardar = document.querySelector('button[name="guardar"]'),
-    modal_content = document.querySelector('#modal-content');
+    modal_content = document.querySelector('#modal-content'),
+    observacion = document.querySelector('textarea[name="observation"]'),
+    registrar = document.querySelector('button[type="submit"]'),
+    email = document.querySelector('input[name="email"]'),
+    telefono = document.querySelector('input[name="telefono"]'),
+    edad = document.querySelectorAll('input[name="edad"]'),
+    sexo = document.querySelectorAll('input[name="sexo"]'),
+    provincia = document.querySelector('select[name="provincia"]'),
+    distrito = document.querySelector('select[name="distrito"]'),
+    corregimiento = document.querySelector('select[name="corregimiento"]'),
+    formulario = document.querySelector('form');
 
 //Informacion inicial
-
+let distritos = [];
+let corregimientos = [];
 let events = [];
+let typeSaleValue = 'M';
 
-fetch('./functions.php',{
+//Obtener los eventos
+fetch('./functions.php', {
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({datos: {
+    body: JSON.stringify({
+        datos: {
             solicitud: "evt",
-        }})
+        }
+    })
 })
-.then(res => res.json())
-.then(data =>{
-    events = data;
+    .then(res => res.json())
+    .then(data => {
+        events = data;
+    });
+
+//Provincias-Distritos-Corregimientos
+let formDataDistricts = new FormData();
+formDataDistricts.append('solicitud', 'd');
+fetch('./functions.php', {
+    method: "POST",
+    body: formDataDistricts
+})
+    .then(res => res.json())
+    .then(data => {
+        distritos = data;
+
+        const resul = distritos.filter(x => x.province_id == provincia.value);
+        resul.forEach(e => {
+            if (e.name == 'Santiago') {
+                distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
+            }
+            else {
+                distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
+            }
+        });
+
+        let formDataTownships = new FormData();
+        formDataTownships.append('solicitud', 'c');
+
+        fetch('./functions.php', {
+            method: "POST",
+            body: formDataTownships
+        })
+            .then(res => res.json())
+            .then(data => {
+                corregimientos = data;
+
+                const resul = corregimientos.filter(x => x.district_id == distrito.value);
+                resul.forEach(e => {
+                    if (e.name == 'Santiago') {
+                        corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
+                    }
+                    else {
+                        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+                    }
+                });
+            });
+    });
+
+//Algoritmo Provincia-Distrito-Corregimiento
+provincia.addEventListener('change', evt => {
+
+    distrito.innerHTML = '';
+    let resul = distritos.filter(x => x.province_id == provincia.value);
+    resul.forEach(e => {
+        distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
+    });
+
+    corregimiento.innerHTML = '';
+    resul = corregimientos.filter(x => x.district_id == distrito.value);
+    resul.forEach(e => {
+        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+    });
+
 });
 
+
+distrito.addEventListener('change', evt => {
+    corregimiento.innerHTML = '';
+    const resul = corregimientos.filter(x => x.district_id == distrito.value);
+    resul.forEach(e => {
+        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+    });
+});
+
+//Obtener los servicios
 let servicios = [];
 
-fetch('./functions.php',{
+fetch('./functions.php', {
     method: "POST",
     mode: "same-origin",
     credentials: "same-origin",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({datos: {
+    body: JSON.stringify({
+        datos: {
             solicitud: "s",
-        }})
+        }
+    })
 })
-.then(res => res.json())
-.then(data =>{
-    servicios = data;
-});
-
-let consumibles = [];
-
-fetch('./functions.php',{
-    method: "POST",
-    mode: "same-origin",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({datos: {
-            solicitud: "cons",
-        }})
-})
-.then(res => res.json())
-.then(data =>{
-/*     consumibles = data; */
-});
+    .then(res => res.json())
+    .then(data => {
+        servicios = data;
+    });
 
 //Cambio de categoria servicio
 categoria_servicio.addEventListener('change', evt => {
 
     servicio.innerHTML = '';
-    servicios[categoria_servicio.value].forEach( (e) =>{
+    servicios[categoria_servicio.value].forEach((e) => {
         servicio.innerHTML += `<option value="${e.id}" >${e.name}</option>`;
     });
 
 });
 
-//Tipo de documento -> RUC/CEDULA/PASAPORTE
-const TIPOS_DOCUMENTOS = {
-    C: () => {
-        tituloDocumento.textContent = 'Número de cédula';
-        inputDocumento.placeholder = "Ingrese el número de cédula con guiones";
-    },
-    R: () => {
-        tituloDocumento.textContent = 'Número de RUC';
-        inputDocumento.placeholder = "Ingrese el número de RUC con guiones";
-    },
-    P: () => {
-        tituloDocumento.textContent = 'Número de Pasaporte';
-        inputDocumento.placeholder = "Ingrese el número de pasaporte con guiones";
-    }
-}
-
 tipoDocumento.addEventListener('change', evt => {
-    TIPOS_DOCUMENTOS[evt.target.value]();
     inputDocumento.value = '';
     triggerKeyup(inputDocumento)
 
 });
-
 
 $("#autoComplete").autocomplete({
 
@@ -115,7 +168,7 @@ $("#autoComplete").autocomplete({
             },
             success: function (data) {
                 if (!data.length) {
-                    var result = { value:"0",label:"No se han encontrado resultados" };
+                    var result = { value: "0", label: "No se han encontrado resultados" };
                     data.push(result);
                 }
                 response(data)
@@ -129,10 +182,89 @@ $("#autoComplete").autocomplete({
         if (value == 0) {
             event.preventDefault();
         }
-        else{
-            $('#autoComplete').val(ui.item.label);
-            idHidden.value = ui.item.id;
-            nombreCliente.value = ui.item.name;
+        else {
+            nombreUsuario.value = ui.item.name;
+            nombreUsuario.disabled = true;
+            nombreUsuario.classList.add('bg-gray-300');
+            nombreUsuario.classList.add('cursor-not-allowed');
+
+            if (ui.item.email) {
+                email.value = ui.item.email;
+            }
+            else {
+                email.placeholder = 'Sin correo electrónico asignado';
+            }
+
+            email.disabled = true;
+            email.classList.add('bg-gray-300');
+            email.classList.add('cursor-not-allowed');
+
+            if (ui.item.telephone) {
+                telefono.value = ui.item.telephone;
+            }
+            else {
+                telefono.placeholder = 'Sin teléfono asignado';
+            }
+
+            telefono.disabled = true;
+            telefono.classList.add('bg-gray-300');
+            telefono.classList.add('cursor-not-allowed');
+            //edad
+            let edadChecked = Array.from(edad).find(x => x.value == ui.item.age_range);
+            edadChecked.checked = true;
+            edad.forEach(e => {
+                e.disabled = true;
+                e.classList.remove('text-blue-600')
+                e.classList.add('cursor-not-allowed', 'text-gray-500');
+            })
+            //sexo
+            let sexoChecked = Array.from(sexo).find(x => x.value == ui.item.sex);
+            sexoChecked.checked = true;
+            sexo.forEach(e => {
+                e.disabled = true;
+                e.classList.remove('text-blue-600')
+                e.classList.add('cursor-not-allowed', 'text-gray-500');
+            })
+
+            //provincia
+            let provinceSelect = Array.from(provincia.options).find(opt => opt.value == ui.item.province);
+            provinceSelect.selected = true;
+
+            provincia.disabled = true;
+            provincia.classList.add('bg-gray-300');
+            provincia.classList.add('cursor-not-allowed');
+            //distrito
+
+            distrito.innerHTML = '';
+            let items = distritos.filter(x => x.province_id == provincia.value);
+            items.forEach(e => {
+                if (e.district_id == ui.item.district) {
+                    distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
+                }
+                else {
+                    distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
+                }
+            });
+
+            //corregim
+            corregimiento.innerHTML = '';
+            items = corregimientos.filter(x => x.district_id == distrito.value);
+            items.forEach(e => {
+                if (e.township_id == ui.item.township) {
+                    corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+                }
+                else {
+                    corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
+                }
+            });
+
+            distrito.disabled = true;
+            distrito.classList.add('bg-gray-300');
+            distrito.classList.add('cursor-not-allowed');
+
+            corregimiento.disabled = true;
+            corregimiento.classList.add('bg-gray-300');
+            corregimiento.classList.add('cursor-not-allowed');
 
             Toastify({
                 text: "Visitante seleccionado",
@@ -141,19 +273,23 @@ $("#autoComplete").autocomplete({
                     background: '#10B981'
                 }
             }).showToast();
+
+            accion.innerHTML = '<i class="fas fa-eye"></i>';
+            accion.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
+            accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
         }
     }
 
 });
 
-function triggerKeyup(element){
+function triggerKeyup(element) {
     let changeEvent = new Event('keyup');
     element.dispatchEvent(changeEvent);
 }
 
 inputDocumento.addEventListener('keyup', evt => {
 
-    if(evt.key != "Enter"){
+    if (evt.key != "Enter") {
         idHidden.value = '';
         nombreCliente.value = '';
         feedbackdocumento.textContent = '';
@@ -161,9 +297,9 @@ inputDocumento.addEventListener('keyup', evt => {
 
 });
 
-agregar.addEventListener('click',evt => {
+agregar.addEventListener('click', evt => {
     let servicioAdd = servicios[categoria_servicio.value].find((value) => value.id == servicio.value);
-    registrarServicio(categoria_servicio.value,servicioAdd.id,servicioAdd.name,servicioAdd.price,servicioAdd.measure);
+    registrarServicio(categoria_servicio.value, servicioAdd.id, servicioAdd.name, servicioAdd.price, servicioAdd.measure);
 });
 
 let servicios_ag = [];
@@ -171,11 +307,11 @@ let servicios_ag = [];
 let contandorF = 0;
 let html = '';
 
-function registrarServicio(categoria_servicio,id_servicio, descripcion, precio = '0.00',measure = 'S/U') {
+function registrarServicio(categoria_servicio, id_servicio, descripcion, precio = '0.00', measure = 'S/U') {
 
     contandorF++;
 
-    let numeroItem = 'item'+contandorF;
+    let numeroItem = 'item' + contandorF;
 
     let validar = (categoria_servicio == 'areas') || (categoria_servicio == 'eventos');
 
@@ -187,7 +323,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
         }
     }).showToast();
 
-    html =`
+    html = `
         <tr id="${numeroItem}">
             <td class="px-4 py-4">
               <div class="flex items-center text-sm">
@@ -203,7 +339,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
             </td>
             
             <td class="px-4 py-4 w-1/6">
-                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 precio ${ validar ? 'bg-gray-300 cursor-not-allowed' : ''}" value="${validar ? '0.00' :precio}" placeholder="Precio" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" ${ validar ? 'disabled' : ''} >
+                <input type="number" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 precio ${validar ? 'bg-gray-300 cursor-not-allowed' : ''}" value="${validar ? '0.00' : precio}" placeholder="Precio" min="0.00" step="0.01" onchange="cambiarValue(this,total_item${contandorF})" ${validar ? 'disabled' : ''} >
             </td>
             
             <td class="px-4 py-4 text-sm font-semibold" id="total_item${contandorF}">
@@ -223,12 +359,12 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
           </tr>
         `;
 
-    if(servicios_ag.length == 0){
+    if (servicios_ag.length == 0) {
         document.querySelector("#detalle_venta").innerHTML = html;
         document.querySelector("#detalle_totales").classList.remove('hidden');
         document.querySelector("#acciones").classList.remove('hidden');
     }
-    else{
+    else {
         document.querySelector("#detalle_venta").innerHTML += html;
     }
 
@@ -237,7 +373,7 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
         servicio: id_servicio,
         numeroItem: numeroItem
     });
-        
+
 
     calcular();
 
@@ -245,20 +381,20 @@ function registrarServicio(categoria_servicio,id_servicio, descripcion, precio =
 
 let respuesta;
 
-function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
+function editarItem(categoria_servicio, id_servicio, numeroItem, unidad) {
     indice = servicios_ag.findIndex((value) => value.numeroItem == numeroItem.id);
 
     respuesta = servicios_ag[indice].hasOwnProperty('detalles');
 
-    TIPO_TABLAS[categoria_servicio](categoria_servicio,id_servicio,numeroItem.id,unidad);
+    TIPO_TABLAS[categoria_servicio](categoria_servicio, id_servicio, numeroItem.id, unidad);
 
     modal.classList.toggle('hidden');
     guardar.addEventListener('click', actualizar);
-    closeModal.forEach( e =>{
+    closeModal.forEach(e => {
         e.addEventListener('click', cerrarActualizar);
     });
 
-    function cerrarActualizar(e){
+    function cerrarActualizar(e) {
         modal.classList.toggle('hidden');
         Swal.fire({
             title: 'Advertencia',
@@ -273,13 +409,13 @@ function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
         }).then((result) => {
             if (result.isConfirmed) {
                 guardar.removeEventListener('click', actualizar);
-                closeModal.forEach( e =>{
+                closeModal.forEach(e => {
                     e.removeEventListener('click', cerrarActualizar);
                 });
-                modal_content.classList.remove('max-h-96','overflow-auto')
+                modal_content.classList.remove('max-h-96', 'overflow-auto')
 
             }
-            else{
+            else {
                 modal.classList.toggle('hidden');
             }
 
@@ -290,14 +426,14 @@ function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
 
         const resultado = TIPO_ACTUALIZAR[categoria_servicio](numeroItem.id);
 
-        if(!resultado){
+        if (!resultado) {
             modal.classList.toggle('hidden');
 
             guardar.removeEventListener('click', actualizar);
-            closeModal.forEach( e =>{
+            closeModal.forEach(e => {
                 e.removeEventListener('click', cerrarActualizar);
             });
-    
+
             Toastify({
                 text: "Servicio actualizado!",
                 duration: 3000,
@@ -305,18 +441,18 @@ function editarItem(categoria_servicio,id_servicio,numeroItem,unidad){
                     background: '#10B981'
                 }
             }).showToast();
-    
-            const btnDetails = document.querySelector('#'+numeroItem.id+' '+'button')
-            btnDetails.classList.remove('bg-red-500','active:bg-red-600','hover:bg-red-700');
-            btnDetails.classList.add('bg-blue-500','active:bg-blue-600','hover:bg-blue-700');
-    
-            modal_content.classList.remove('max-h-96','overflow-auto')
+
+            const btnDetails = document.querySelector('#' + numeroItem.id + ' ' + 'button')
+            btnDetails.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
+            btnDetails.classList.add('bg-blue-500', 'active:bg-blue-600', 'hover:bg-blue-700');
+
+            modal_content.classList.remove('max-h-96', 'overflow-auto')
         }
 
     }
 }
 
-function triggerChange(element){
+function triggerChange(element) {
     let changeEvent = new Event('change');
     element.dispatchEvent(changeEvent);
 }
@@ -352,7 +488,7 @@ let inputCostoTotal;
 let costoBase; //Calculo en linea
 
 const TIPO_TABLAS = {
-    "membresias" : (categoria,id_servicio,numeroItem_id,unidad) =>{
+    "membresias": (categoria, id_servicio, numeroItem_id, unidad) => {
         modal_content.innerHTML = `
                     <main class="grid grid-cols-2 gap-5">
                     <label class="text-sm block">
@@ -370,9 +506,9 @@ const TIPO_TABLAS = {
 
         inputFechaFinal = document.querySelector('input[name="fecha_final"]');
     },
-    "eventos": (categoria,id_servicio,numeroItem_id,unidad)=>{
+    "eventos": (categoria, id_servicio, numeroItem_id, unidad) => {
 
-        modal_content.classList.add('max-h-96','overflow-auto');
+        modal_content.classList.add('max-h-96', 'overflow-auto');
 
         console.log(id_servicio);
         console.log(events);
@@ -427,25 +563,25 @@ const TIPO_TABLAS = {
 
         selectorEvento.innerHTML = '';
 
-        if(categoriaEvento.length){
+        if (categoriaEvento.length) {
             selectorEvento.innerHTML = '<option disabled selected value hidden> -- Eventos disponibles -- </option>';
-            categoriaEvento.forEach( (value) =>{
+            categoriaEvento.forEach((value) => {
                 selectorEvento.innerHTML += `
 <option value="${value.event_id}" ${respuesta ? servicios_ag[indice].detalles.event_id == value.event_id ? 'selected' : '' : ''} >${value.name}</option>`;
-            } );
+            });
 
             console.log(categoriaEvento);
 
             respuestaEvento = categoriaEvento.find(x => x.event_id == selectorEvento.value);
 
             inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
-            selectAreaEvento = document.querySelector('select[name="area"]'),
-            inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
-            inputHoraFinal = document.querySelector('input[name="hora_final"]'),
-            inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
-            inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+                selectAreaEvento = document.querySelector('select[name="area"]'),
+                inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
+                inputHoraFinal = document.querySelector('input[name="hora_final"]'),
+                inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
+                inputFechaFinal = document.querySelector('input[name="fecha_final"]');
             console.log(respuestaEvento);
-            if(respuestaEvento){
+            if (respuestaEvento) {
                 selectAreaEvento.innerHTML += `<option>${respuestaEvento.area_id}</option>`;
                 inputHoraInicial.value = respuestaEvento.start_time;
                 inputHoraFinal.value = respuestaEvento.end_time;
@@ -455,14 +591,14 @@ const TIPO_TABLAS = {
             }
 
         }
-        else{
+        else {
             selectorEvento.innerHTML = `<option value selected hidden>No existen eventos</option>`;
 
         }
     },
-    "areas": (categoria,id_servicio,numeroItem_id,unidad)=>{
+    "areas": (categoria, id_servicio, numeroItem_id, unidad) => {
 
-        modal_content.classList.add('max-h-96','overflow-auto');
+        modal_content.classList.add('max-h-96', 'overflow-auto');
         areaConsumibles = consumibles.filter(value => value.area_id == id_servicio);
 
         modal_content.innerHTML = `<main class="grid grid-cols-2 gap-5">
@@ -518,24 +654,24 @@ const TIPO_TABLAS = {
                     </main>`;
 
         selectorConsumible = document.querySelector('select[name="tipo_consumible"]'),
-        selectorGanancia = document.querySelector('select[name="tipo_ganancia"]'),
-        inputPrecioUnitario = document.querySelector('input[name="precio_unitario"]'),
-        inputPrecioImpresion = document.querySelector('input[name="precio_impresion"]'),
-        inputCantidadUnidad = document.querySelector('input[name="cantidad_unidad"]'),
-        inputCantidadTiempo = document.querySelector('input[name="cantidad_tiempo"]'),
+            selectorGanancia = document.querySelector('select[name="tipo_ganancia"]'),
+            inputPrecioUnitario = document.querySelector('input[name="precio_unitario"]'),
+            inputPrecioImpresion = document.querySelector('input[name="precio_impresion"]'),
+            inputCantidadUnidad = document.querySelector('input[name="cantidad_unidad"]'),
+            inputCantidadTiempo = document.querySelector('input[name="cantidad_tiempo"]'),
             inputCostoBase = document.querySelector('input[name="costo_base"]'),
             inputCostoTotal = document.querySelector('input[name="costo_total"]');
 
         selectorConsumible.innerHTML = '';
 
-        if(areaConsumibles.length){
-            areaConsumibles.forEach( (value) =>{
+        if (areaConsumibles.length) {
+            areaConsumibles.forEach((value) => {
                 selectorConsumible.innerHTML = `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].detalles.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
-            } )
+            })
 
-            if(respuesta){
-                Array.from(selectorGanancia.options).forEach( (opt) =>{
-                    if(opt.value == servicios_ag[indice].detalles.porcentaje_ganancia){
+            if (respuesta) {
+                Array.from(selectorGanancia.options).forEach((opt) => {
+                    if (opt.value == servicios_ag[indice].detalles.porcentaje_ganancia) {
                         opt.selected = true;
                     }
                 });
@@ -543,7 +679,7 @@ const TIPO_TABLAS = {
 
             cambiarPrecioUnitario();
         }
-        else{
+        else {
             selectorConsumible.innerHTML = `<option value selected hidden>No existen consumibles</option>`;
             inputPrecioUnitario.value = '0.00';
         }
@@ -551,7 +687,7 @@ const TIPO_TABLAS = {
     }
 };
 
-function cambiarEvento(e){
+function cambiarEvento(e) {
     respuestaEvento = categoriaEvento.find(x => x.event_id == e.value);
 
     selectAreaEvento.innerHTML = `<option>${respuestaEvento.area_id}</option>`;
@@ -567,14 +703,14 @@ function cambiarEvento(e){
 
 function verTablaDetalles(e) {
 
-    if(selectorEvento.value){
-        if(e.children[0].classList.contains('fa-eye')){
+    if (selectorEvento.value) {
+        if (e.children[0].classList.contains('fa-eye')) {
             e.innerHTML = '<i class="fas fa-eye-slash"></i>';
             e.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
             e.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
             e.parentElement.parentElement.nextElementSibling.classList.remove('hidden');
         }
-        else{
+        else {
             e.innerHTML = '<i class="fas fa-eye"></i>';
             e.classList.remove('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
             e.classList.add('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
@@ -585,35 +721,35 @@ function verTablaDetalles(e) {
 
 }
 
-function cambiarFechaFinal(e,id_servicio) {
+function cambiarFechaFinal(e, id_servicio) {
 
     var DateTime = luxon.DateTime;
 
     const dt = DateTime.fromISO(e.value);
 
-    if(id_servicio == 1){
+    if (id_servicio == 1) {
         inputFechaFinal.value = e.value;
     }
-    else{
+    else {
         let res;
-        if(id_servicio == 2){res = dt.plus({ days: 14 });}
-        else{res = dt.plus({ months: 1 });}
+        if (id_servicio == 2) { res = dt.plus({ days: 14 }); }
+        else { res = dt.plus({ months: 1 }); }
 
-        if(res.weekday == 6){
+        if (res.weekday == 6) {
             res = res.plus({ days: 2 });
             inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
         }
-        else if(res.weekday == 7){
+        else if (res.weekday == 7) {
             res = res.plus({ days: 1 });
             inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
         }
-        else{
+        else {
             inputFechaFinal.value = res.toFormat('yyyy-MM-dd');
         }
     }
 }
 
-function cambiarPrecioUnitario(){
+function cambiarPrecioUnitario() {
     let consumibleSeleccionado = areaConsumibles.find(value => value.consumable_id == selectorConsumible.value);
 
     inputPrecioUnitario.value = consumibleSeleccionado.unit_price;
@@ -621,139 +757,139 @@ function cambiarPrecioUnitario(){
     cambiarTotales();
 }
 
-function cambiarTotales(e = null){
+function cambiarTotales(e = null) {
 
-    if(e){
+    if (e) {
         e.nextElementSibling = '';
     }
 
-    if(inputCantidadUnidad.value != 0 && inputCantidadTiempo.value != 0 && inputPrecioUnitario.value != '' && inputPrecioImpresion.value != ''){
+    if (inputCantidadUnidad.value != 0 && inputCantidadTiempo.value != 0 && inputPrecioUnitario.value != '' && inputPrecioImpresion.value != '') {
 
         costoBase = (inputCantidadUnidad.value * inputPrecioUnitario.value) + (inputCantidadTiempo.value * inputPrecioImpresion.value);
         inputCostoBase.value = costoBase.toFixed(2);
 
-        inputCostoTotal.value = (costoBase * (1+parseFloat(selectorGanancia.value))).toFixed(2);
+        inputCostoTotal.value = (costoBase * (1 + parseFloat(selectorGanancia.value))).toFixed(2);
 
     }
 }
 
-function cambiarCostoTotal(){
+function cambiarCostoTotal() {
 
-    if(inputCostoTotal.value != 0){
+    if (inputCostoTotal.value != 0) {
 
-        inputCostoTotal.value = (costoBase* (1+parseFloat(selectorGanancia.value))).toFixed(2);
+        inputCostoTotal.value = (costoBase * (1 + parseFloat(selectorGanancia.value))).toFixed(2);
     }
 }
 
 const TIPO_ACTUALIZAR = {
-    "membresias": (numeroItem)=>{
+    "membresias": (numeroItem) => {
         let errores = {};
-        
-        if(document.querySelector('input[name="fecha_inicial"]').value.trim().length == 0){
+
+        if (document.querySelector('input[name="fecha_inicial"]').value.trim().length == 0) {
             errores.fecha_inicial = "Por favor, seleccione una fecha inicial";
             document.querySelector('#feedbackfechai').textContent = errores.fecha_inicial;
         }
 
-        if(document.querySelector('input[name="fecha_final"]').value.trim().length == 0){
+        if (document.querySelector('input[name="fecha_final"]').value.trim().length == 0) {
             errores.fecha_final = "Por favor, seleccione una fecha final";
             document.querySelector('#feedbackfechaf').textContent = errores.fecha_final;
         }
 
-        if(Object.keys(errores).length > 0){
+        if (Object.keys(errores).length > 0) {
             const inputs = document.querySelectorAll('#modal-content input');
-            inputs.forEach( x =>{
-                x.addEventListener('change', evt =>{
-                    if(evt.target.name == 'fecha_inicial'){
-                        document.querySelectorAll('.feed').forEach(x =>{
+            inputs.forEach(x => {
+                x.addEventListener('change', evt => {
+                    if (evt.target.name == 'fecha_inicial') {
+                        document.querySelectorAll('.feed').forEach(x => {
                             x.textContent = '';
                         });
                     }
-                    else{
+                    else {
                         evt.target.nextElementSibling.textContent = '';
                     }
                 })
             });
-            
+
             return true;
 
         }
-        else{
+        else {
             servicios_ag[indice].detalles = {
                 fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
                 fecha_final: document.querySelector('input[name="fecha_final"]').value
             }
-            
+
             return false;
         }
     },
-    "eventos": (numeroItem)=>{
+    "eventos": (numeroItem) => {
         let errores = {};
 
-        if(selectorEvento.value.trim().length == 0){
-            if(selectorEvento.options.length == 1 && selectorEvento.options[0].hidden){
+        if (selectorEvento.value.trim().length == 0) {
+            if (selectorEvento.options.length == 1 && selectorEvento.options[0].hidden) {
                 errores.evento = "En la categoría actual, no existen eventos disponibles.";
             }
-            else{
+            else {
                 errores.evento = "Por favor, seleccione un evento";
             }
             document.querySelector('#feedbackevento').textContent = errores.evento;
         }
 
-        if(Object.keys(errores).length > 0){
+        if (Object.keys(errores).length > 0) {
             return true;
         }
-        else{
+        else {
             servicios_ag[indice].detalles = {
                 event_id: selectorEvento.value
             }
-            const precio = document.querySelector('#'+numeroItem+' .precio');
+            const precio = document.querySelector('#' + numeroItem + ' .precio');
             precio.value = inputPrecioEvento.value;
 
             triggerChange(precio);
-            
+
             return false;
         }
     },
-    "areas": (numeroItem)=>{
+    "areas": (numeroItem) => {
 
         let errores = {};
 
 
-        if(selectorConsumible.options.length == 1 && selectorConsumible.options[0].hidden){
+        if (selectorConsumible.options.length == 1 && selectorConsumible.options[0].hidden) {
             errores.consumible = "En el área actual, no existen consumibles disponibles.";
             document.querySelector('#feedbackconsumible').textContent = errores.consumible;
         }
-        
-        if(inputCantidadUnidad.value.trim().length == 0 || inputCantidadUnidad.value == 0){
+
+        if (inputCantidadUnidad.value.trim().length == 0 || inputCantidadUnidad.value == 0) {
             errores.cantidadunidad = "Por favor, ingrese la cantidad de unidad.";
             document.querySelector('#feedbackcantidadu').textContent = errores.cantidadunidad;
         }
-        
-        if(inputCantidadTiempo.value.trim().length == 0 || inputCantidadUnidad.value == 0){
+
+        if (inputCantidadTiempo.value.trim().length == 0 || inputCantidadUnidad.value == 0) {
             errores.cantidadtiempo = "Por favor, ingrese la cantidad de tiempo.";
             document.querySelector('#feedbackcantidadt').textContent = errores.cantidadtiempo;
         }
-        
-        if(inputPrecioUnitario.value.trim().length == 0){
+
+        if (inputPrecioUnitario.value.trim().length == 0) {
             errores.preciounitario = "Por favor, ingrese el precio unitario.";
             document.querySelector('#feedbackpreciou').textContent = errores.preciounitario;
         }
-        
-        if(inputPrecioImpresion.value.trim().length == 0){
+
+        if (inputPrecioImpresion.value.trim().length == 0) {
             errores.precioimpresion = "Por favor, ingrese el precio de impresión.";
             document.querySelector('#feedbackprecioi').textContent = errores.precioimpresion;
         }
 
-        if(Object.keys(errores).length > 0){
+        if (Object.keys(errores).length > 0) {
             const inputs = document.querySelectorAll('#modal-content input');
-            inputs.forEach( x =>{
-                x.addEventListener('change', evt =>{
-                    if(evt.target.name == 'fecha_inicial'){
-                        document.querySelectorAll('.feed').forEach(x =>{
+            inputs.forEach(x => {
+                x.addEventListener('change', evt => {
+                    if (evt.target.name == 'fecha_inicial') {
+                        document.querySelectorAll('.feed').forEach(x => {
                             x.textContent = '';
                         });
                     }
-                    else{
+                    else {
                         evt.target.nextElementSibling.textContent = '';
                     }
                 })
@@ -761,7 +897,7 @@ const TIPO_ACTUALIZAR = {
 
             return true;
         }
-        else{
+        else {
             servicios_ag[indice].detalles = {
                 tipo_consumible: selectorConsumible.value,
                 cantidad_unidad: inputCantidadUnidad.value,
@@ -772,10 +908,10 @@ const TIPO_ACTUALIZAR = {
                 porcentaje_ganancia: selectorGanancia.value,
                 costo_total: inputCostoTotal.value
             }
-    
-            const precio = document.querySelector('#'+numeroItem+' .precio');
+
+            const precio = document.querySelector('#' + numeroItem + ' .precio');
             precio.value = inputCostoTotal.value;
-    
+
             triggerChange(precio);
 
             return false;
@@ -783,18 +919,18 @@ const TIPO_ACTUALIZAR = {
     }
 }
 
-function cambiarValue(elm,columna_total){
+function cambiarValue(elm, columna_total) {
 
-    if(elm.value.trim().length != 0){
-        elm.classList.remove('border-red-300','focus:border-red-300','focus:ring-red-200');
-        elm.classList.add('border-gray-300','focus:border-blue-300','focus:ring-blue-200');
+    if (elm.value.trim().length != 0) {
+        elm.classList.remove('border-red-300', 'focus:border-red-300', 'focus:ring-red-200');
+        elm.classList.add('border-gray-300', 'focus:border-blue-300', 'focus:ring-blue-200');
     }
     elm.defaultValue = elm.value;
     columna_total.textContent = (elm.value * 1).toFixed(2);
     calcular();
 }
 
-function deleteServicio(id_tr){
+function deleteServicio(id_tr) {
 
     Toastify({
         text: "Servicio eliminado!",
@@ -808,9 +944,9 @@ function deleteServicio(id_tr){
     servicios_ag.splice(indice, 1); // 1 es la cantidad de elemento a eliminar
     id_tr.remove();
 
-    html= document.querySelector("#detalle_venta").innerHTML;
+    html = document.querySelector("#detalle_venta").innerHTML;
 
-    if(html.trim() == ''){
+    if (html.trim() == '') {
         document.querySelector("#detalle_venta").innerHTML = `
         <tr>
             <td class="p-3 text-center" colspan="6">
@@ -826,7 +962,7 @@ function deleteServicio(id_tr){
         document.querySelector("#acciones").classList.add('hidden');
         contandorF = 0;
     }
-    else{
+    else {
         calcular();
     }
 }
@@ -858,6 +994,6 @@ function calcular() {
 
 let btn_anular = document.querySelector('#anular');
 
-btn_anular.addEventListener('click',e =>{
+btn_anular.addEventListener('click', e => {
     location.reload();
 });

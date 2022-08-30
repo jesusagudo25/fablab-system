@@ -1,8 +1,8 @@
 <?php
-define('URL','http://fablab-system.test:8080/');
+define('URL','http://localhost/fablabSystem/');
 
 define('HOST','localhost');
 define('DB','fablab_system');
-define('USER','root');
-define('PASSWORD','');
+define('USER','jagudo');
+define('PASSWORD','panama09');
 define('CHARSET','utf8mb4');

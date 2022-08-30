@@ -41,8 +41,8 @@ $pagina[] = "form";
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/main.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/saveform.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/form/main.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/form/saveform.js" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
 
 </head>

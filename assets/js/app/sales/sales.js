@@ -21,281 +21,50 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     provincia = document.querySelector('select[name="provincia"]'),
     distrito = document.querySelector('select[name="distrito"]'),
     corregimiento = document.querySelector('select[name="corregimiento"]'),
+    containerRegister = document.querySelector('#containerregister'),
+    feeds = document.querySelectorAll('.feed'),
+    btnTypeSale = document.querySelectorAll('input[name="typesale"]'),
     formulario = document.querySelector('form');
 
+
+
+btnTypeSale.forEach(e => {
+    e.addEventListener('click', evt => {
+        if (e.value == 'M') {
+
+        }
+        else {
+
+        }
+        console.log(e.value);
+    });
+});
+
 //Informacion inicial
-let distritos = [];
-let corregimientos = [];
-let events = [];
 let typeSaleValue = 'M';
 
 //Obtener los eventos
+let formDataEvents = new FormData();
+formDataEvents.append('solicitud', 'evt');
 fetch('./functions.php', {
-    method: "POST",
-    mode: "same-origin",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        datos: {
-            solicitud: "evt",
-        }
-    })
-})
-    .then(res => res.json())
-    .then(data => {
-        events = data;
-    });
+    method: 'POST',
+    body: formDataEvents
+}).then(res => res.json()).then(data => {
+    events = data;
+}).catch(err => console.log(err));
 
-//Provincias-Distritos-Corregimientos
-let formDataDistricts = new FormData();
-formDataDistricts.append('solicitud', 'd');
-fetch('./functions.php', {
-    method: "POST",
-    body: formDataDistricts
-})
-    .then(res => res.json())
-    .then(data => {
-        distritos = data;
-
-        const resul = distritos.filter(x => x.province_id == provincia.value);
-        resul.forEach(e => {
-            if (e.name == 'Santiago') {
-                distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
-            }
-            else {
-                distrito.innerHTML += `<option value="${e.district_id}" >${e.name}</option>`;
-            }
-        });
-
-        let formDataTownships = new FormData();
-        formDataTownships.append('solicitud', 'c');
-
-        fetch('./functions.php', {
-            method: "POST",
-            body: formDataTownships
-        })
-            .then(res => res.json())
-            .then(data => {
-                corregimientos = data;
-
-                const resul = corregimientos.filter(x => x.district_id == distrito.value);
-                resul.forEach(e => {
-                    if (e.name == 'Santiago') {
-                        corregimiento.innerHTML += `<option value="${e.township_id}" selected>${e.name}</option>`;
-                    }
-                    else {
-                        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-                    }
-                });
-            });
-    });
-
-//Algoritmo Provincia-Distrito-Corregimiento
-provincia.addEventListener('change', evt => {
-
-    distrito.innerHTML = '';
-    let resul = distritos.filter(x => x.province_id == provincia.value);
-    resul.forEach(e => {
-        distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
-    });
-
-    corregimiento.innerHTML = '';
-    resul = corregimientos.filter(x => x.district_id == distrito.value);
-    resul.forEach(e => {
-        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-    });
-
-});
-
-
-distrito.addEventListener('change', evt => {
-    corregimiento.innerHTML = '';
-    const resul = corregimientos.filter(x => x.district_id == distrito.value);
-    resul.forEach(e => {
-        corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-    });
-});
 
 //Obtener los servicios
 let servicios = [];
 
+let formDataServicios = new FormData();
+formDataServicios.append('solicitud', 's');
 fetch('./functions.php', {
-    method: "POST",
-    mode: "same-origin",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        datos: {
-            solicitud: "s",
-        }
-    })
-})
-    .then(res => res.json())
-    .then(data => {
-        servicios = data;
-    });
-
-//Cambio de categoria servicio
-categoria_servicio.addEventListener('change', evt => {
-
-    servicio.innerHTML = '';
-    servicios[categoria_servicio.value].forEach((e) => {
-        servicio.innerHTML += `<option value="${e.id}" >${e.name}</option>`;
-    });
-
-});
-
-tipoDocumento.addEventListener('change', evt => {
-    inputDocumento.value = '';
-    triggerKeyup(inputDocumento)
-
-});
-
-$("#autoComplete").autocomplete({
-
-    source: function (request, response) {
-        $.ajax({
-            url: "../ajax.php",
-            type: 'post',
-            dataType: "json",
-            data: {
-                customers: request.term,
-                document_type: tipoDocumento.value
-            },
-            success: function (data) {
-                if (!data.length) {
-                    var result = { value: "0", label: "No se han encontrado resultados" };
-                    data.push(result);
-                }
-                response(data)
-            }
-        });
-    },
-    delay: 500,
-    minLength: 4,
-    select: function (event, ui) {
-        var value = ui.item.value;
-        if (value == 0) {
-            event.preventDefault();
-        }
-        else {
-            nombreUsuario.value = ui.item.name;
-            nombreUsuario.disabled = true;
-            nombreUsuario.classList.add('bg-gray-300');
-            nombreUsuario.classList.add('cursor-not-allowed');
-
-            if (ui.item.email) {
-                email.value = ui.item.email;
-            }
-            else {
-                email.placeholder = 'Sin correo electrónico asignado';
-            }
-
-            email.disabled = true;
-            email.classList.add('bg-gray-300');
-            email.classList.add('cursor-not-allowed');
-
-            if (ui.item.telephone) {
-                telefono.value = ui.item.telephone;
-            }
-            else {
-                telefono.placeholder = 'Sin teléfono asignado';
-            }
-
-            telefono.disabled = true;
-            telefono.classList.add('bg-gray-300');
-            telefono.classList.add('cursor-not-allowed');
-            //edad
-            let edadChecked = Array.from(edad).find(x => x.value == ui.item.age_range);
-            edadChecked.checked = true;
-            edad.forEach(e => {
-                e.disabled = true;
-                e.classList.remove('text-blue-600')
-                e.classList.add('cursor-not-allowed', 'text-gray-500');
-            })
-            //sexo
-            let sexoChecked = Array.from(sexo).find(x => x.value == ui.item.sex);
-            sexoChecked.checked = true;
-            sexo.forEach(e => {
-                e.disabled = true;
-                e.classList.remove('text-blue-600')
-                e.classList.add('cursor-not-allowed', 'text-gray-500');
-            })
-
-            //provincia
-            let provinceSelect = Array.from(provincia.options).find(opt => opt.value == ui.item.province);
-            provinceSelect.selected = true;
-
-            provincia.disabled = true;
-            provincia.classList.add('bg-gray-300');
-            provincia.classList.add('cursor-not-allowed');
-            //distrito
-
-            distrito.innerHTML = '';
-            let items = distritos.filter(x => x.province_id == provincia.value);
-            items.forEach(e => {
-                if (e.district_id == ui.item.district) {
-                    distrito.innerHTML += `<option value="${e.district_id}" selected>${e.name}</option>`;
-                }
-                else {
-                    distrito.innerHTML += `<option value="${e.district_id}">${e.name}</option>`;
-                }
-            });
-
-            //corregim
-            corregimiento.innerHTML = '';
-            items = corregimientos.filter(x => x.district_id == distrito.value);
-            items.forEach(e => {
-                if (e.township_id == ui.item.township) {
-                    corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-                }
-                else {
-                    corregimiento.innerHTML += `<option value="${e.township_id}">${e.name}</option>`;
-                }
-            });
-
-            distrito.disabled = true;
-            distrito.classList.add('bg-gray-300');
-            distrito.classList.add('cursor-not-allowed');
-
-            corregimiento.disabled = true;
-            corregimiento.classList.add('bg-gray-300');
-            corregimiento.classList.add('cursor-not-allowed');
-
-            Toastify({
-                text: "Visitante seleccionado",
-                duration: 3000,
-                style: {
-                    background: '#10B981'
-                }
-            }).showToast();
-
-            accion.innerHTML = '<i class="fas fa-eye"></i>';
-            accion.classList.remove('bg-emerald-500', 'active:bg-emerald-600', 'hover:bg-emerald-700');
-            accion.classList.add('bg-yellow-500', 'active:bg-yellow-600', 'hover:bg-yellow-700');
-        }
-    }
-
-});
-
-function triggerKeyup(element) {
-    let changeEvent = new Event('keyup');
-    element.dispatchEvent(changeEvent);
-}
-
-inputDocumento.addEventListener('keyup', evt => {
-
-    if (evt.key != "Enter") {
-        idHidden.value = '';
-        nombreCliente.value = '';
-        feedbackdocumento.textContent = '';
-    }
-
-});
+    method: 'POST',
+    body: formDataServicios
+}).then(res => res.json()).then(data => {
+    servicios = data;
+}).catch(err => console.log(err));
 
 agregar.addEventListener('click', evt => {
     let servicioAdd = servicios[categoria_servicio.value].find((value) => value.id == servicio.value);
@@ -309,6 +78,7 @@ let html = '';
 
 function registrarServicio(categoria_servicio, id_servicio, descripcion, precio = '0.00', measure = 'S/U') {
 
+    console.log(categoria_servicio, id_servicio, descripcion, precio, measure);
     contandorF++;
 
     let numeroItem = 'item' + contandorF;
@@ -487,115 +257,7 @@ let inputCostoTotal;
 
 let costoBase; //Calculo en linea
 
-const TIPO_TABLAS = {
-    "membresias": (categoria, id_servicio, numeroItem_id, unidad) => {
-        modal_content.innerHTML = `
-                    <main class="grid grid-cols-2 gap-5">
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Fecha inicial</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})">
-                        <span id="feedbackfechai" class="text-xs text-red-600 feed"></span>
-                    </label>
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Fecha final</span>
-                        <input class="mt-1 text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}">
-                        <span id="feedbackfechaf" class="text-xs text-red-600 feed"></span>
-                    </label>
-                    </main>
-               `;
-
-        inputFechaFinal = document.querySelector('input[name="fecha_final"]');
-    },
-    "eventos": (categoria, id_servicio, numeroItem_id, unidad) => {
-
-        modal_content.classList.add('max-h-96', 'overflow-auto');
-
-        console.log(id_servicio);
-        console.log(events);
-        categoriaEvento = events.filter(x => x.category_id === id_servicio);
-
-        modal_content.innerHTML = `
-        <main class="grid grid-cols-1 gap-5 justify-items-center">
-            <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
-                    <div class="w-full flex justify-center items-center gap-2">
-                        <span class="text-gray-800 font-medium">Seleccione un evento</span>
-                        <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
-                        </select>
-                        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <span id="feedbackevento" class="w-full text-xs text-red-600 text-center feed"></span>
-            </label>
-                        
-            <div class="w-full grid grid-cols-2 gap-5 hidden">
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Área</span>
-                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" required name="area" disabled></select>
-                </label>
-
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Precio</span>
-                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled="">
-                </label>
-        
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Fecha inicial</span>
-                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled="">
-                </label>
-
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Fecha final</span>
-                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled="">
-                </label>
-
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Hora inicial</span>
-                    <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
-                </label>
-
-                <label class="text-sm block">
-                    <span class="text-gray-800 font-medium">Hora final</span>
-                    <input type="time" name="hora_final" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
-                </label>
-            </div>
-        </main>`;
-
-        selectorEvento = document.querySelector('select[name="evento_disponible"]');
-
-        selectorEvento.innerHTML = '';
-
-        if (categoriaEvento.length) {
-            selectorEvento.innerHTML = '<option disabled selected value hidden> -- Eventos disponibles -- </option>';
-            categoriaEvento.forEach((value) => {
-                selectorEvento.innerHTML += `
-<option value="${value.event_id}" ${respuesta ? servicios_ag[indice].detalles.event_id == value.event_id ? 'selected' : '' : ''} >${value.name}</option>`;
-            });
-
-            console.log(categoriaEvento);
-
-            respuestaEvento = categoriaEvento.find(x => x.event_id == selectorEvento.value);
-
-            inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
-                selectAreaEvento = document.querySelector('select[name="area"]'),
-                inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
-                inputHoraFinal = document.querySelector('input[name="hora_final"]'),
-                inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
-                inputFechaFinal = document.querySelector('input[name="fecha_final"]');
-            console.log(respuestaEvento);
-            if (respuestaEvento) {
-                selectAreaEvento.innerHTML += `<option>${respuestaEvento.area_id}</option>`;
-                inputHoraInicial.value = respuestaEvento.start_time;
-                inputHoraFinal.value = respuestaEvento.end_time;
-                inputFechaInicial.value = respuestaEvento.initial_date;
-                inputFechaFinal.value = respuestaEvento.final_date;
-                inputPrecioEvento.value = respuestaEvento.price;
-            }
-
-        }
-        else {
-            selectorEvento.innerHTML = `<option value selected hidden>No existen eventos</option>`;
-
-        }
-    },
+const TIPO_TABLAS_AREAS = {
     "areas": (categoria, id_servicio, numeroItem_id, unidad) => {
 
         modal_content.classList.add('max-h-96', 'overflow-auto');
@@ -684,6 +346,116 @@ const TIPO_TABLAS = {
             inputPrecioUnitario.value = '0.00';
         }
 
+    }
+}
+
+const TIPO_TABLAS_BASICOS = {
+    // "membresias": (categoria, id_servicio, numeroItem_id, unidad) => {
+    //     modal_content.innerHTML = `
+    //                 <main class="grid grid-cols-2 gap-5">
+    //                 <label class="text-sm block">
+    //                     <span class="text-gray-800 font-medium">Fecha inicial</span>
+    //                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})">
+    //                     <span id="feedbackfechai" class="text-xs text-red-600 feed"></span>
+    //                 </label>
+    //                 <label class="text-sm block">
+    //                     <span class="text-gray-800 font-medium">Fecha final</span>
+    //                     <input class="mt-1 text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}">
+    //                     <span id="feedbackfechaf" class="text-xs text-red-600 feed"></span>
+    //                 </label>
+    //                 </main>
+    //            `;
+
+    //     inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+    // },
+    "eventos": (categoria, id_servicio, numeroItem_id, unidad) => {
+        modal_content.classList.add('max-h-96', 'overflow-auto');
+
+        console.log(id_servicio);
+        console.log(events);
+        categoriaEvento = events.filter(x => x.category_id === id_servicio);
+
+        modal_content.innerHTML = `
+        <main class="grid grid-cols-1 gap-5 justify-items-center">
+            <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
+                    <div class="w-full flex justify-center items-center gap-2">
+                        <span class="text-gray-800 font-medium">Seleccione un evento</span>
+                        <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
+                        </select>
+                        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <span id="feedbackevento" class="w-full text-xs text-red-600 text-center feed"></span>
+            </label>
+                        
+            <div class="w-full grid grid-cols-2 gap-5 hidden">
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Área</span>
+                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" required name="area" disabled></select>
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Precio</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled="">
+                </label>
+        
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha inicial</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled="">
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha final</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled="">
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora inicial</span>
+                    <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora final</span>
+                    <input type="time" name="hora_final" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+            </div>
+        </main>`;
+
+        selectorEvento = document.querySelector('select[name="evento_disponible"]');
+
+        selectorEvento.innerHTML = '';
+
+        if (categoriaEvento.length) {
+            selectorEvento.innerHTML = '<option disabled selected value hidden> -- Eventos disponibles -- </option>';
+            categoriaEvento.forEach((value) => {
+                selectorEvento.innerHTML += `
+<option value="${value.event_id}" ${respuesta ? servicios_ag[indice].detalles.event_id == value.event_id ? 'selected' : '' : ''} >${value.name}</option>`;
+            });
+
+            console.log(categoriaEvento);
+
+            respuestaEvento = categoriaEvento.find(x => x.event_id == selectorEvento.value);
+
+            inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
+                selectAreaEvento = document.querySelector('select[name="area"]'),
+                inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
+                inputHoraFinal = document.querySelector('input[name="hora_final"]'),
+                inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
+                inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+            console.log(respuestaEvento);
+            if (respuestaEvento) {
+                selectAreaEvento.innerHTML += `<option>${respuestaEvento.area_id}</option>`;
+                inputHoraInicial.value = respuestaEvento.start_time;
+                inputHoraFinal.value = respuestaEvento.end_time;
+                inputFechaInicial.value = respuestaEvento.initial_date;
+                inputFechaFinal.value = respuestaEvento.final_date;
+                inputPrecioEvento.value = respuestaEvento.price;
+            }
+
+        }
+        else {
+            selectorEvento.innerHTML = `<option value selected hidden>No existen eventos</option>`;
+
+        }
     }
 };
 
@@ -997,3 +769,4 @@ let btn_anular = document.querySelector('#anular');
 btn_anular.addEventListener('click', e => {
     location.reload();
 });
+

@@ -56,8 +56,9 @@ $rangeAll = $range->getAll();
     <script src="https://cdn.jsdelivr.net/npm/luxon@2.2.0/build/global/luxon.min.js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/sales.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/savesales.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/sales.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/savesales.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/customer.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -88,7 +89,7 @@ $rangeAll = $range->getAll();
                             <h5 class="font-bold uppercase text-gray-600">Datos del cliente</h5>
                         </div>
                         <div class="p-5 flex justify-between flex-wrap items-start">
-                            <label class="text-sm w-1/2">
+                            <label class="text-sm w-2/5">
                                 <span class="text-gray-800 font-medium">Seleccione el tipo de documento</span>
                                 <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="tipodocumento">
                                     <option value="R" <?= isset($customer['document_type']) ? ($customer['document_type'] == 'R' ? 'selected' : '') : '' ?>>RUC</option>
@@ -99,7 +100,7 @@ $rangeAll = $range->getAll();
                                 </select>
                             </label>
 
-                            <label class="text-sm w-5/12">
+                            <label class="text-sm w-7/11">
                                 <span class="text-gray-800 font-medium" id="tituloDocumento">Número de documento</span>
                                 <div class="relative">
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de documento" name="documento" required type="text" id="autoComplete" autocomplete="false" value="<?= isset($customer['document']) ? $customer['document'] : '' ?>">
@@ -112,25 +113,25 @@ $rangeAll = $range->getAll();
                             </label>
 
                             <div class="w-full flex justify-between flex-wrap items-start hidden" id="containerregister">
-                                <label class="text-sm w-1/2 mt-5">
+                                <label class="text-sm w-2/5 mt-5">
                                     <span class="text-gray-800 font-medium">Nombre</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del cliente" type="text" name="name" required autocomplete="off">
                                     <span id="feedbacknombre" class="text-xs text-red-600 feed"></span>
                                 </label>
 
-                                <label class="text-sm w-5/12 mt-5">
+                                <label class="text-sm w-7/11 mt-5">
                                     <span class="text-gray-800 font-medium">Correo</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el correo electrónico del cliente" type="email" name="email" required autocomplete="off">
                                     <span id="feedbackcorreo" class="text-xs text-red-600 "></span>
                                 </label>
 
-                                <label class="text-sm w-1/2 mt-5">
+                                <label class="text-sm w-2/5 mt-5">
                                     <span class="text-gray-800 font-medium">Telefono</span>
                                     <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de telefono del cliente" type="tel" name="telefono" required autocomplete="off">
                                     <span id="feedbacktelefono" class="text-xs text-red-600 "></span>
                                 </label>
 
-                                <div class="mt-5 text-sm w-5/12">
+                                <div class="mt-5 text-sm w-7/11">
                                     <span class="text-gray-700 font-medium">
                                         Selecciona la edad
                                     </span>
@@ -145,7 +146,7 @@ $rangeAll = $range->getAll();
                                     <span id="feedbackedad" class="text-xs text-red-600 feed"></span>
                                 </div>
 
-                                <div class="mt-5 text-sm w-1/2">
+                                <div class="mt-5 text-sm w-2/5">
                                     <span class="text-gray-700 font-medium">
                                         Selecciona el sexo
                                     </span>
@@ -162,7 +163,7 @@ $rangeAll = $range->getAll();
                                     <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
                                 </div>
 
-                                <label class="text-sm w-5/12 mt-5">
+                                <label class="text-sm w-7/11 mt-5">
                                     <span class="text-gray-800 font-medium">Selecciona la provincia</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="provincia">
                                         <?php foreach ($provinceAll as $datos => $valor) : ?>
@@ -171,13 +172,13 @@ $rangeAll = $range->getAll();
                                     </select>
                                 </label>
 
-                                <label class="text-sm w-1/2 mt-5">
+                                <label class="text-sm w-2/5 mt-5">
                                     <span class="text-gray-800 font-medium">Selecciona el distrito</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="distrito">
                                     </select>
                                 </label>
 
-                                <label class="text-sm w-5/12 mt-5 font-medium">
+                                <label class="text-sm w-7/11 mt-5 font-medium">
                                     <span class="text-gray-800">Selecciona el corregimiento</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="corregimiento">
                                     </select>
@@ -236,15 +237,15 @@ $rangeAll = $range->getAll();
                                     </span>
                                     <div class="mt-2">
                                         <label class="inline-flex items-center text-gray-600">
-                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="M" checked>
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="typesale" value="M" checked>
                                             <span class="ml-2">Maker</span>
                                         </label>
                                         <label class="inline-flex items-center ml-6 text-gray-600">
-                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="sexo" value="S">
+                                            <input type="radio" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" name="typesale" value="S">
                                             <span class="ml-2">Servicio</span>
                                         </label>
                                     </div>
-                                    <span id="feedbacksexo" class="text-xs text-red-600 feed"></span>
+                                    <span id="" class="text-xs text-red-600 feed"></span>
                                 </div>
                             </div>
                             <hr class="my-6">

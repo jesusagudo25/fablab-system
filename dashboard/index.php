@@ -9,15 +9,6 @@
       die;
     }
 
-    /*Para validar el tipo de rol
-     *     $allowedRoles = ['Admin'];
-
-    if (!in_array($_SESSION['rol'], $allowedRoles)) {
-      header('Location: ./logout.php');
-      die;
-    }
-     */
-
     $pagina[] = "dashboard";
 
     ?>

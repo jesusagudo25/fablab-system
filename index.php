@@ -30,6 +30,7 @@
                     session_start();
                     $_SESSION['user_id'] = $resultEmail['user_id'];
                     $_SESSION['role_id'] = $resultEmail['role_id'];
+                    $_SESSION['rol'] = $resultEmail['role'];
 
                     header("Location: ./dashboard/");
                 }

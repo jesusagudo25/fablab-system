@@ -48,31 +48,48 @@
 
             <div class="w-full flex-grow xl:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white z-20" id="nav-content">
                 <ul class="list-reset xl:flex flex-1 items-center px-4 md:px-0">
+
+
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/" class="block py-1 md:py-3 pl-1 align-middle no-underline text-gray-500 hover:text-gray-900 border-b-2  <?= in_array('dashboard',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
                             <i class="fas fa-home fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Inicio</span>
                         </a>
                     </li>
+
+
+                    <?php if(in_array($_SESSION['rol'], ['Secretaria'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/form/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'form',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
                             <i class="fas fa-tasks fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Formulario de entrada</span>
                         </a>
                     </li>
+                    <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Operador'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/sales/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'sales',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
                             <i class="fas fa-shopping-cart fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Ventas</span>
                         </a>
                     </li>
+                    <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Administrador'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/reports/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 <?= in_array( 'reports',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?> ">
                             <i class="fas fa-chart-area fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Reportes</span>
                         </a>
                     </li>
+                    <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Administrador', 'Secretaria', 'Operador'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/schedule/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'schedule',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?> ">
                             <i class="fas fa-calendar-alt fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Agenda</span>
                         </a>
                     </li>
+                    <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Administrador','Operador', 'Secretaria'])){ ?>
                     <li class="mr-6 my-2 md:my-0 relative">
                         <button id="gestButton" class="w-full text-left py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'gestionar',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
                             <i class="fas fa-cogs fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Gestionar <svg class="pl-2 h-2 inline-block" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
@@ -93,6 +110,7 @@
                         </div>
 
                     </li>
+                    <?php } ?>
                 </ul>
 
                 <div class="relative pull-right pl-4 pr-4 md:pr-0 hidden xl:block">

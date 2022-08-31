@@ -30,7 +30,9 @@ class User extends Model implements IModel
 
     public function validateEmail(){
 
-        $consulta = $this->prepare("SELECT * FROM users WHERE email = :email");
+        $consulta = $this->prepare("SELECT u.password, u.status, u.user_id, ur.role_id, ur.name as role FROM users u
+                INNER JOIN user_role ur ON u.role_id = ur.role_id
+         WHERE email = :email");
         $consulta->execute(['email'=>$this->email]);
         $usuario = $consulta->fetch();
 

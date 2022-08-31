@@ -5,6 +5,14 @@ if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SE
     die;
 }
 
+/*Para validar el tipo de rol*/
+$allowedRoles = ['Secretaria'];
+
+if (!in_array($_SESSION['rol'], $allowedRoles)) {
+    header('Location: ../logout.php');
+    die;
+}
+
 require_once '../../app.php';
 
 $reason = new ReasonVisit();

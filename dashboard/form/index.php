@@ -114,7 +114,7 @@ $pagina[] = "form";
                                 <label class="text-sm w-5/12">
                                     <span class="text-gray-800 font-medium" id="tituloDocumento">Número de documento</span>
                                     <div class="relative">
-                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de RUC con guiones" name="documento" required type="text" id="autoComplete" autocomplete="false">
+                                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Ingrese el número de documento" name="documento" required type="text" id="autoComplete" autocomplete="false">
                                         <input type="hidden" name="id_customer">
                                         <button id="action" class="hidden absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-r-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:shadow-outline-purple">
                                             <i class="fas fa-user-plus"></i>
@@ -237,12 +237,12 @@ $pagina[] = "form";
                             <span class="text-gray-800 font-medium">Seleccione la razón de visita</span>
                             <select required name="razonvisita" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <?php foreach ($reasonAll as $datos => $valor) : ?>
-                                    <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?>"><?= $valor['name'] ?></option>
+                                    <option value="<?= $valor['reason_id'] ?>" class="<?= $valor['time'] == 1  ? 'notfree' : 'free' ?> <?= $valor['isGroup'] == 1  ? 'isgroup' : 'notgroup' ?>"><?= $valor['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </label>
 
-                        <div class="text-sm mt-5">
+                        <div class="text-sm mt-5" id="container-trabajo">
                             <span class="text-gray-800 font-medium">Seleccione las áreas de trabajo</span>
                             <div id="container-areas">
                                 <?php foreach ($areaAll as $datos => $valor) : ?>

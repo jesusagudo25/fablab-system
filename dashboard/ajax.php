@@ -6,15 +6,72 @@
 
     $datos = array();
 
-    $customer = new Customer();
-
+    
     if (isset($_POST['customers'])) {
-
+        $customer = new Customer();
+        
         $customerAjax = $customer->getAjax($_POST['customers'],$_POST['document_type']);
 
         echo json_encode($customerAjax);
 
     }
+    if(isset($_POST['components'])){
+
+        $component = new Component();
+        $componentAjax = $component->getAjax($_POST['components']);
+
+        echo json_encode($componentAjax);
+    }
+    if(isset($_POST['threads'])){
+
+        $thread = new Thread();
+        $threadAjax = $thread->getAjax($_POST['threads']);
+
+        echo json_encode($threadAjax);
+    }
+    if(isset($_POST['vinilos'])){
+
+        $vinilo = new Vinilo();
+        $viniloAjax = $vinilo->getAjax($_POST['vinilos']);
+
+        echo json_encode($viniloAjax);
+    }
+    if(isset($_POST['filaments'])){
+
+        $filament = new Filament();
+        $filamentAjax = $filament->getAjax($_POST['filaments']);
+
+        echo json_encode($filamentAjax);
+    }
+    if(isset($_POST['resins'])){
+
+        $resin = new Resin();
+        $resinAjax = $resin->getAjax($_POST['resins']);
+
+        echo json_encode($resinAjax);
+    }
+    if(isset($_POST['materials_laser'])){
+
+        $material_laser = new MaterialLaser();
+        $materialLaserAjax = $material_laser->getAjax($_POST['materials_laser']);
+
+        echo json_encode($materialLaserAjax);
+    }
+    if(isset($_POST['materials_milling'])){
+
+        $material_milling = new MaterialMilling();
+        $materialMillingAjax = $material_milling->getAjax($_POST['materials_milling']);
+
+        echo json_encode($materialMillingAjax);
+    }
+    if(isset($_POST['softwares'])){
+
+        $software = new Software();
+        $softwareAjax = $software->getAjax($_POST['softwares']);
+
+        echo json_encode($softwareAjax);
+    }
+
     else if(isset($_GET['draw'])){
         $table = <<<EOT
         ( 
@@ -46,15 +103,5 @@
         echo json_encode(
             SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
         );
-    }
-    else if($_POST['solicitud'] == 'u'){
-
-        $visit = new VisitArea();
-        $visit->setVisitId($_POST['visit_id']);
-        $visit->setAreaId($_POST['area_id']);
-        $visit->setDepartureTime($_POST['departure_time']);
-        $visit->setLabo();
-
-        echo json_encode('true');
     }
 

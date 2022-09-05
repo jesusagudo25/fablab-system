@@ -314,9 +314,11 @@ class Visit extends Model implements IModel
 
     public function get($id)
     {
-        $query = $this->prepare('SELECT v.visit_id, rv.reason_id, rv.time, v.date, v.observation, v.status FROM visits v 
+        $query = $this->prepare('SELECT v.visit_id, rv.reason_id, rv.time, rv.name AS reason, v.date, v.observation, v.status, c.name, c.customer_id, c.document, c.document_type FROM visits v 
         INNER JOIN reason_visits rv ON rv.reason_id = v.reason_id
-        WHERE visit_id = :id');
+        INNER JOIN customer_visit cv ON cv.visit_id = v.visit_id
+        INNER JOIN customers c ON c.customer_id = cv.customer_id
+        WHERE v.visit_id = :id');
         $query->execute([
             'id' => $id
         ]);

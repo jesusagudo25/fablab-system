@@ -86,7 +86,7 @@ $("#autoComplete").autocomplete({
 
     source: function (request, response) {
         $.ajax({
-            url: "../ajax.php",
+            url: "../../ajax.php",
             type: 'post',
             dataType: "json",
             data: {

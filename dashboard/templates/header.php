@@ -65,13 +65,21 @@
                     </li>
                     <?php } ?>
 
-                    <?php if(in_array($_SESSION['rol'], ['Operador'])){ ?>
+                    <?php if(in_array($_SESSION['rol'], ['Secretaria'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
-                        <a href="<?= constant('URL')?>dashboard/sales/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'sales',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
+                        <a href="<?= constant('URL')?>dashboard/sales/general" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'sales',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
                             <i class="fas fa-shopping-cart fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Ventas</span>
                         </a>
                     </li>
                     <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Operador'])){ ?>
+                        <li class="mr-6 my-2 md:my-0">
+                        <a href="<?= constant('URL')?>dashboard/attention" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'attention',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?>">
+                            <i class="fas fa-shopping-cart fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Atención al cliente</span>
+                        </a>
+                    </li>
+                    <?php } ?> 
 
                     <?php if(in_array($_SESSION['rol'], ['Administrador'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
@@ -81,13 +89,21 @@
                     </li>
                     <?php } ?>
 
-                    <?php if(in_array($_SESSION['rol'], ['Administrador', 'Secretaria', 'Operador'])){ ?>
+                    <?php if(in_array($_SESSION['rol'], ['Administrador', 'Secretaria'])){ ?>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="<?= constant('URL')?>dashboard/schedule/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'schedule',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?> ">
                             <i class="fas fa-calendar-alt fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Agenda</span>
                         </a>
                     </li>
                     <?php } ?>
+
+                    <?php if(in_array($_SESSION['rol'], ['Operador'])){ ?>
+                    <li class="mr-6 my-2 md:my-0">
+                        <a href="<?= constant('URL')?>dashboard/requests/" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2  <?= in_array( 'requests',$pagina) ? 'border-blue-500 text-gray-900' : 'border-white hover:border-blue-500' ?> ">
+                            <i class="fas fa-calendar-alt fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Pedidos</span>
+                        </a>
+                    </li>
+                    <?php } ?>                    
 
                     <?php if(in_array($_SESSION['rol'], ['Administrador','Operador', 'Secretaria'])){ ?>
                     <li class="mr-6 my-2 md:my-0 relative">

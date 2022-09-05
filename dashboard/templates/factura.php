@@ -152,8 +152,7 @@
 							<table>
 								<tr>
 									<td>
-										Cliente: '.$customer->getName().' <br />
-										Código CIDETE: '.$customer->getCode().' <br />';
+										Cliente: '.$customer->getName().' <br />';
 										if($customer->getDocumentType() == 'R'){
 											$html .= 'RUC';
 										}
@@ -170,7 +169,7 @@
 									</td>
 
 									<td>
-														Agente: ' . $user->getName() . ' ' . $user->getLastname() . '<br />
+														Operador: ' . $user->getName() . ' ' . $user->getLastname() . '<br />
 														Correo: ' . $user->getEmail() . '
 									</td>
 								</tr>

@@ -9,6 +9,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     containerIndividual = document.querySelector('#container_individual'),
     containerGrupal = document.querySelector('#container_grupal'),
     containerCheckAll = document.querySelector('#container-check-all'),
+    containerArea = document.querySelector('#container-trabajo'),
     checkboxAll = document.querySelector('#container-check-all input[type="checkbox"]'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
@@ -268,8 +269,14 @@ let optionSelected = razonVisita.options[razonVisita.selectedIndex];
 
 razonVisita.addEventListener('change', evt => {
     optionSelected = evt.target.options[evt.target.selectedIndex];
-    if (optionSelected.classList.contains('free')) {
+    
+    if (optionSelected.classList.contains('free') && optionSelected.classList.contains('notgroup')) {
+        containerCheckAll.classList.add('hidden');
+        containerArea.classList.add('hidden');
+    }
+    else if (optionSelected.classList.contains('free')) {
         containerCheckAll.classList.remove('hidden');
+        containerArea.classList.remove('hidden');
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area' + x.value);
@@ -285,8 +292,9 @@ razonVisita.addEventListener('change', evt => {
 
         });
     }
-    else {
+    else if (optionSelected.classList.contains('notfree')) {
         containerCheckAll.classList.add('hidden');
+        containerArea.classList.remove('hidden');
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area' + x.value);
@@ -310,8 +318,9 @@ razonVisita.addEventListener('change', evt => {
 areasTrabajo.forEach(evt => {
     evt.addEventListener('click', x => {
         const areaCheck = document.querySelector('#area' + x.target.value);
-        if (areaCheck.nextElementSibling.classList.contains('feed')) {
-            areaCheck.parentElement.nextElementSibling.classList.toggle('mt-5');
+        console.log(areaCheck.nextElementSibling);
+        if (!areaCheck.nextElementSibling) {
+            areaCheck.parentElement.parentElement.nextElementSibling.classList.toggle('mt-5');
         }
         else {
             areaCheck.nextElementSibling.classList.toggle('mt-4');

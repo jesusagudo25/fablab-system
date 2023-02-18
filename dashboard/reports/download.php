@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     #Total  de visitantes
     $visits = new Visit();
-    $visitasNoFree = $visits->getVisitsNotFree($report->getStartDate(), $report->getEndDate());
-    $visitasFree = $visits->getVisitsFree($report->getStartDate(), $report->getEndDate());
+    $visitasParaUsoEquipos = $visits->getVisitsForMachine($report->getStartDate(), $report->getEndDate());
+    $visitasParaServicio = $visits->getVisitsForService($report->getStartDate(), $report->getEndDate());
 
     #Total de horas entre todos los visitantes
     $timeTotal = $visits->getTimeDifTotal($report->getStartDate(), $report->getEndDate());
@@ -41,6 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $customer = new Customer();
     $cantidadPorRango= $customer->getAllAgeRange($report->getStartDate(), $report->getEndDate());
     $cantidadPorSexo= $customer->getAllTypeSex($report->getStartDate(), $report->getEndDate());
+
+    $invoice = new Invoice();
+    $totalSales = $invoice->getTotalSales($report->getStartDate(), $report->getEndDate());
+    $AmountSales = $invoice->getAmountSales($report->getStartDate(), $report->getEndDate());
+
+    $salesForUseMachine = $invoice->getSalesForUseMachine($report->getStartDate(), $report->getEndDate());
+    $salesForEvent = $invoice->getSalesForEvent($report->getStartDate(), $report->getEndDate());
+    $salesForMembership = $invoice->getSalesForMembership($report->getStartDate(), $report->getEndDate());
+
+    $salesForUseMachineGroupByArea = $invoice->getSalesForUseMachineGroupByArea($report->getStartDate(), $report->getEndDate());
+    $salesForUseSoftware = $invoice->getSalesForUseSoftware($report->getStartDate(), $report->getEndDate());
+    $amountForUseType = $invoice->getAmountForUseType($report->getStartDate(), $report->getEndDate());
 
     $options = new Options();
     $options->set('isRemoteEnabled', TRUE);
@@ -172,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <img src="https://explorando.xyz/FABLAB/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
                                             </td>
                 
-                                            <td>Informe mensual de ' . strtolower($report->getMonth()) . '</td>
+                                            <td>Informe mensual de ' . strtolower($report->getMonth()) . ' '. $report->getYear().'</td>
                                         </tr>
                                     </table>
                                 </td>
@@ -183,13 +195,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <table>
                                         <tr>
                                             <td>
-                                                Total de visitantes por razones sociales: ' . $visitasFree . '<br />
-                                                Total de visitantes por razones economicas: ' . $visitasNoFree['total'] . '<br />
-                                                Total de horas entre todos los visitantes por razones economicas: ' . $timeTotal['total'] . '
+                                                Total de visitas por uso de equipos: ' . $visitasParaUsoEquipos . '<br />
+                                                Total de visitas por servicio: ' . $visitasParaServicio . '<br />
+                                                Total de horas entre todos los visitantes por uso de equipos: ' . $timeTotal . '<br />
+                                                Total de reservaciones: 0 <br />
                                             </td>
                 
                                             <td>
-                                                ' . $user->getName() . ' ' . $user->getLastname() . '<br />
+                                                ' . $user->getName() . '<br />
                                                 ' . $user->getEmail() . '
                                             </td>
                                         </tr>
@@ -208,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     foreach ($areasTime as $datos => $valor) {
 
         try {
-            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0);
+            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal) * 100, 0);
         }catch(DivisionByZeroError $e){
             $porcentaje = 0;
         }
@@ -232,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     foreach ($razonesTime as $datos => $valor) {
 
         try {
-            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal['total']) * 100, 0);
+            $porcentaje = number_format(((int)$valor['diferencia'] / (int)$timeTotal) * 100, 0);
         }catch(DivisionByZeroError $e){
             $porcentaje = 0;
         }
@@ -300,11 +313,106 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $html .= '</ul></div>
-</div>
-<div class="page_break"></div>
-<h1>Sección para informe de ventas</h1>
-                        </body>
-                        </html>';
+    </div>
+
+    <div class="page_break"></div>
+        <div class="invoice-box">
+        <table>
+            <tr class="top">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="https://explorando.xyz/FABLAB/assets/img/fab.jpg" alt="Company logo" style="width: 100%; max-width: 300px;" />
+                            </td>
+
+                            <td>Informe mensual de ' . strtolower($report->getMonth()) . ' '. $report->getYear().'</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <td>
+                                Cantidad de ventas procesadas: ' . $AmountSales . '<br />
+                                Cantidad de cotizaciones generadas: 0 <br />
+                            </td>
+
+                            <td>
+                                ' . $user->getName() . '<br />
+                                ' . $user->getEmail() . '
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <table style="border: 1px solid rgb(141, 141, 141);">                 
+            <tr class="heading">
+                <td style="text-align: center; " width="70%">Servicios</td>
+                <td style="text-align: center;" width="30%">Ingresos</td>
+            </tr>
+            <tr class="item">
+                <td style="text-align: center;">Membresías</td>
+                <td style="text-align: center;">' . $salesForMembership. '</td>
+            </tr>
+            <tr class="item">
+                <td style="text-align: center;">Eventos</td>
+                <td style="text-align: center;">' . $salesForEvent. '</td>
+            </tr>
+            <tr class="item">
+                <td style="text-align: center;">Uso de equipos</td>
+                <td style="text-align: center;">' . $salesForUseMachine. '</td>
+            </tr>
+        </table>
+        
+        <table style="margin-top: 30px; border: 1px solid rgb(141, 141, 141);">
+            <tr class="heading">
+                <td style="text-align: center; " width="70%">Maquinas</td>
+                <td style="text-align: center;" width="30%">Ingresos</td>
+            </tr>';
+
+    foreach ($salesForUseMachineGroupByArea as $datos => $valor) {
+
+        $html .= '<tr class="item" >
+			<td style = "text-align: center;" > ' . $valor['name'] . ' </td >
+			<td style = "text-align: center;" > ' . $valor['total']. ' </td >
+		</tr >';
+
+        }
+        $html .= '
+        <tr class="item" >
+			<td style = "text-align: center;" > Software de diseño </td >
+			<td style = "text-align: center;" > ' . $salesForUseSoftware. ' </td >
+		</tr >
+        
+        </table>
+
+        <table style="margin-top: 30px; border: 1px solid rgb(141, 141, 141);">
+            <tr class="heading">
+                <td style="text-align: center; " width="70%">Tipo de ventas</td>
+                <td style="text-align: center;" width="30%">Cantidad</td>
+            </tr>
+            <tr class="item">
+                <td style="text-align: center;">Maker</td>
+                <td style="text-align: center;">' . $amountForUseType[0]['M']. '</td>
+            </tr>
+            <tr class="item">
+                <td style="text-align: center;">Servicios</td>
+                <td style="text-align: center;">' . $amountForUseType[0]['S']. '</td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 55px; font-style: italic; color: #777;">
+            <h1>                                Total de ingresos </h1>
+            <h1>' . $totalSales . '</h1>
+        </div>
+        </body>
+        </html>';
 
     $dompdf->loadHtml($html);
 
@@ -316,6 +424,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $filename = $fecha->getTimestamp().'_'.'reporte_'.$report->getMonth();
 
     // Output the generated PDF to Browser
-    $dompdf->stream($filename, array("Attachment" => 0));
-
+    $dompdf->stream($filename, array("Attachment" => 0)); 
 }

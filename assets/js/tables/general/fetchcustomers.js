@@ -52,20 +52,6 @@ tablaClientes = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-
-                if(data[3]){
-                    return data[3];
-                }
-                else{
-                    return '<div><span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">Sin asignar</span></div>';
-                }
-            },
-            "targets": 3
-        },
-        {
-            "data": null,
-            render:function(data, type, row)
-            {
                 if(data[4]){
                     return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
@@ -73,7 +59,7 @@ tablaClientes = $('#datatable-json').DataTable({
                     return '<button value="'+data[0]+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray .btn-borrar" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
-            "targets": 5
+            "targets": 4
         },
         {
             "data": null,
@@ -97,7 +83,6 @@ const closeModal = document.querySelectorAll('.close'),
     tituloDocumento=  document.querySelector('#tituloDocumento'),
     inputDocumento = document.querySelector('input[name="documento"]'),
     nombreUsuario = document.querySelector('input[name="name"]'),
-    codigo = document.querySelector('input[name="codigo"]'),
     email = document.querySelector('input[name="email"]'),
     telefono = document.querySelector('input[name="telefono"]'),
     edad = document.querySelectorAll('input[name="edad"]'),
@@ -162,7 +147,6 @@ function triggerChange(element){
 }
 
 let getDocumento;
-let getCodigo;
 let getCorreo;
 let getTelefono;
 
@@ -183,7 +167,6 @@ function editar(e){
         success: function(data) {
 
             inputDocumento.addEventListener('change', validarDocumento);
-            codigo.addEventListener('change', validarCodigo);
             email.addEventListener('change', validarEmail);
             telefono.addEventListener('change', validarTelefono);
 
@@ -196,7 +179,6 @@ function editar(e){
             triggerChange(tipoDocumento);
             
             inputDocumento.value = data['document'];
-            codigo.value = data['code'];
             nombreUsuario.value = data['name'];
             
             let edadCheck = Array.from(edad).find( opt => opt.value == data['range_id']);
@@ -232,7 +214,6 @@ function editar(e){
                     e.removeEventListener('click', cerrarActualizar);
                 });
                 inputDocumento.removeEventListener('change', validarDocumento);
-                codigo.removeEventListener('change', validarCodigo);
                 email.removeEventListener('change', validarEmail);
                 telefono.removeEventListener('change', validarTelefono);
             }
@@ -310,7 +291,6 @@ function editar(e){
                             solicitud: "u",
                             document_type: tipoDocumento.value,
                             document: inputDocumento.value,
-                            code: codigo.value,
                             name: nombreUsuario.value,
                             email: email.value,
                             telephone: telefono.value,
@@ -328,7 +308,6 @@ function editar(e){
                                 e.removeEventListener('click', cerrarActualizar);
                             });
                             inputDocumento.removeEventListener('change', validarDocumento);
-                            codigo.removeEventListener('change', validarCodigo);
                             email.removeEventListener('change', validarEmail);
                             telefono.removeEventListener('change', validarTelefono);
                             Toastify({
@@ -373,31 +352,6 @@ function validarDocumento(e){
     }
 }
 
-function validarCodigo(e){
-
-    if('codigo' in errores){
-        delete errores.codigo;
-    }
-    feedbackcodigo.textContent = '';
-
-    if(e.target.value != getCodigo){
-        $.ajax({
-            url: "./functions.php",
-            type: "POST",
-            datatype:"json",
-            data:  {
-                solicitud: "cod",
-                code: e.target.value,
-            },
-            success: function(data) {
-                if(data == true){
-                    errores.codigo = 'El codigo ya esta registrado';
-                    feedbackcodigo.textContent = errores.codigo;
-                }
-            }
-        });
-    }
-}
 
 function validarEmail(e){
 

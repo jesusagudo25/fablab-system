@@ -6,7 +6,6 @@ class Customer extends Model implements IModel
     private $customer_id;
     private $document_type;
     private $document;
-    private $code;
     private $telephone;
     private $age_range;
     private $sexo;
@@ -79,7 +78,8 @@ class Customer extends Model implements IModel
         $query = $this->prepare("SELECT ar.name, COALESCE(x.total,0) AS total FROM
         (
         SELECT COUNT(v.visit_id) AS total, ar.range_id FROM visits v
-        INNER JOIN customers c ON v.customer_id = c.customer_id
+        INNER JOIN customer_visit cv ON v.visit_id = cv.visit_id
+        INNER JOIN customers c ON cv.customer_id = c.customer_id
         RIGHT JOIN age_range ar ON c.range_id = ar.range_id
         WHERE (v.date BETWEEN :start_date AND :end_date)
         AND (v.status = 1)
@@ -103,7 +103,8 @@ class Customer extends Model implements IModel
         COUNT(CASE WHEN c.sex = 'M' THEN c.customer_id END) AS M,
         COUNT(CASE WHEN c.sex = 'F' THEN c.customer_id END) AS F 
         FROM visits v
-        INNER JOIN customers c ON c.customer_id = v.customer_id
+        INNER JOIN customer_visit cv ON v.visit_id = cv.visit_id
+        INNER JOIN customers c ON cv.customer_id = c.customer_id
         WHERE (v.date BETWEEN :start_date AND :end_date)
         AND (v.status = 1);");
 
@@ -118,7 +119,7 @@ class Customer extends Model implements IModel
     }
 
     public function getAll(){
-        $query = $this->query('SELECT c.customer_id, c.document_type, c.document, c.code, c.name AS customer_name, ar.name AS range_name, c.sex, c.email, c.telephone, p.name AS province_name, d.name AS district_name, t.name AS township_name, c.status FROM customers c
+        $query = $this->query('SELECT c.customer_id, c.document_type, c.document, c.name AS customer_name, ar.name AS range_name, c.sex, c.email, c.telephone, p.name AS province_name, d.name AS district_name, t.name AS township_name, c.status FROM customers c
         INNER JOIN age_range ar ON c.range_id = ar.range_id
         INNER JOIN provinces p ON c.province_id = p.province_id
         INNER JOIN districts d ON c.district_id = d.district_id
@@ -143,7 +144,7 @@ class Customer extends Model implements IModel
     }
 
     public function getDetails($id){
-        $query = $this->prepare("SELECT c.document_type, c.document,c.code, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
+        $query = $this->prepare("SELECT c.document_type, c.document, c.name, c.email, c.telephone, p.name AS province, d.name AS city, t.name AS township  FROM customers c 
         INNER JOIN provinces p ON p.province_id = c.province_id
         INNER JOIN districts d ON d.district_id = c.district_id
         INNER JOIN townships t ON t.township_id = c.township_id
@@ -157,7 +158,6 @@ class Customer extends Model implements IModel
 
         $this->document = $customer['document'];
         $this->document_type = $customer['document_type'];
-        $this->code = $customer['code'];
         $this->telephone = $customer['telephone'];
         $this->name = $customer['name'];
         $this->email = $customer['email'];
@@ -177,11 +177,10 @@ class Customer extends Model implements IModel
 
     public function update()
     {
-        $actualizarDatos = $this->prepare("UPDATE customers SET document_type = :document_type, document = :document, code = :code, name = :name, range_id = :range_id, sex = :sex, email = :email, telephone = :telephone, province_id = :province_id, district_id = :district_id, township_id = :township_id WHERE customer_id = :id;");
+        $actualizarDatos = $this->prepare("UPDATE customers SET document_type = :document_type, document = :document, name = :name, range_id = :range_id, sex = :sex, email = :email, telephone = :telephone, province_id = :province_id, district_id = :district_id, township_id = :township_id WHERE customer_id = :id;");
         $actualizarDatos->execute([
             'document_type' => $this->document_type,
             'document' => $this->document,
-            'code' => $this->code,
             'name' => $this->name,
             'range_id' => $this->age_range,
             'sex' => $this->sexo,
@@ -231,7 +230,7 @@ class Customer extends Model implements IModel
     }
 
     public function verifyRecord(){
-        $miConsulta = $this->prepare('SELECT customer_id, document_type, document, code, name, range_id, sex, email, telephone, province_id, district_id, township_id  FROM customers WHERE document_type = :type AND document = :document AND status = 1');
+        $miConsulta = $this->prepare('SELECT customer_id, document_type, document, name, range_id, sex, email, telephone, province_id, district_id, township_id  FROM customers WHERE document_type = :type AND document = :document AND status = 1');
 
         $miConsulta->execute([
             'type' => $this->document_type,
@@ -273,14 +272,6 @@ class Customer extends Model implements IModel
     public function setDocument($document): void
     {
         $this->document = $document;
-    }
-
-    /**
-     * @param mixed $code
-     */
-    public function setCode($code): void
-    {
-        $this->code = $code;
     }
 
     /**
@@ -435,13 +426,6 @@ class Customer extends Model implements IModel
         return $this->township;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
 
     /**
      * @return mixed
@@ -459,5 +443,12 @@ class Customer extends Model implements IModel
         $resultado = $miConsulta->fetch();
         return $resultado['customer_id'];
         
+    }
+
+    public function getLastCustomer(){
+        $miConsulta = $this->prepare('SELECT customer_id FROM customers ORDER BY customer_id DESC LIMIT 1');
+        $miConsulta->execute();
+        $resultado = $miConsulta->fetch();
+        return $resultado['customer_id'];
     }
 }

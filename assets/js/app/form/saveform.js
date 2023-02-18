@@ -39,41 +39,49 @@ function guardarEntrada(evt) {
         delete errores.areas;
     }
 
-    areasTrabajo.forEach(evt => {
+    if (!optionSelected.classList.contains('free') && !optionSelected.classList.contains('group')) {
+        areasTrabajo.forEach(evt => {
 
-        if ('area' + evt.value in errores) {
-            delete errores['area' + evt.value];
+            if ('area' + evt.value in errores) {
+                delete errores['area' + evt.value];
+            }
+    
+            if (evt.checked) {
+                let area = {
+                    id: evt.value,
+                };
+                if(checkboxAll.checked){
+                    area.arrival_time = document.querySelector('input[name="arrival_time_area-all"]').value,
+                    area.departure_time = document.querySelector('input[name="departure_time_area-all"]').value
+                }
+                else{
+                        area.arrival_time= document.querySelector('input[name="arrival_time_area' + evt.value + '"]').value,
+                        area.departure_time= document.querySelector('input[name="departure_time_area' + evt.value + '"]').value
+                }
+    
+                if (area.arrival_time.trim().length == 0) {
+                    errores['area' + evt.value] = "Por favor, proporcione una hora de llegada";
+                    document.querySelector('#feedbackarea' + evt.value).textContent = errores['area' + evt.value];
+    
+                    document.querySelector('input[name="arrival_time_area' + evt.value + '"]').addEventListener('change', x => {
+                        if (x.target.value.trim().length != 0) {
+                            document.querySelector('#feedbackarea' + evt.value).textContent = '';
+                        }
+                    });
+                }
+    
+                areas.push(area);
+            }
+        });
+
+        if (areas.length == 0) {
+            errores.areas = "Por favor, seleccione las areas deseadas";
+            feedbackareas.textContent = errores.areas;
+        }
+        else {
+            formData.append('areas', JSON.stringify(areas));
         }
 
-        if (evt.checked) {
-            console.log(evt.value);
-            let area = {
-                id: evt.value,
-                arrival_time: document.querySelector('input[name="arrival_time_area' + evt.value + '"]').value,
-                departure_time: document.querySelector('input[name="departure_time_area' + evt.value + '"]').value
-            }
-
-            if (area.arrival_time.trim().length == 0) {
-                errores['area' + evt.value] = "Por favor, proporcione una hora de llegada";
-                document.querySelector('#feedbackarea' + evt.value).textContent = errores['area' + evt.value];
-
-                document.querySelector('input[name="arrival_time_area' + evt.value + '"]').addEventListener('change', x => {
-                    if (x.target.value.trim().length != 0) {
-                        document.querySelector('#feedbackarea' + evt.value).textContent = '';
-                    }
-                });
-            }
-
-            areas.push(area);
-        }
-    });
-
-    if (areas.length == 0) {
-        errores.areas = "Por favor, seleccione las areas deseadas";
-        feedbackareas.textContent = errores.areas;
-    }
-    else {
-        formData.append('areas', JSON.stringify(areas));
     }
 
 

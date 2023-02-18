@@ -363,17 +363,7 @@ function crear(e) {
         datos["name"] = inputName.value;
     }
 
-    if (optionSelected.classList.contains('notfree')) {
-        if (areasActualizar.length == 0) {
-            buttonEditAreas.classList.remove('bg-blue-500', 'active:bg-blue-600', 'hover:bg-blue-700');
-            buttonEditAreas.classList.add('bg-red-500', 'active:bg-red-600', 'hover:bg-red-700');
-            errores.areas = "Por favor, seleccione las áreas a visitar";
-            feedbackbuttonareas.textContent = errores.areas;
-        }
-        else {
-            datos["areasChecked"] = areasActualizar;
-        }
-    }
+    datos["areasChecked"] = areasActualizar;
 
     if (Object.keys(errores).length == 0) {
 

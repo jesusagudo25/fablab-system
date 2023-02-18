@@ -34,3 +34,23 @@ tablaVisitas = $('#datatable-json').DataTable({
     ],
     "order": [[0, "desc"]]
 });
+
+function interruptor(e) {
+    let id = e.value;
+    let solicitud = 'interruptor';
+    let data = new FormData();
+    data.append('id', id);
+    data.append('solicitud', solicitud);
+    fetch('./functions.php', {
+        method: 'POST',
+        body: data
+    })
+        .then( () => {
+            tablaVisitas.ajax.reload();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Atendido!',
+                })
+        })
+}

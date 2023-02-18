@@ -54,7 +54,6 @@
 
         $customer->setDocumentType($_POST['document_type']);
         $customer->setDocument($_POST['document']);
-        $customer->setCode(empty($_POST['code']) ? NULL : $_POST['code']);
         $customer->setName($_POST['name']);
         $customer->setEmail(empty($_POST['email']) ? NULL : $_POST['email']);
         $customer->setTelephone(empty($_POST['telephone']) ? NULL : $_POST['telephone']);

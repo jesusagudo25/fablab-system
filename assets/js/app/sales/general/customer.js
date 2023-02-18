@@ -110,6 +110,9 @@ $("#autoComplete").autocomplete({
             event.preventDefault();
         }
         else {
+            $('#autoComplete').val(ui.item.label); // display the selected text
+            idHidden.value = ui.item.id;
+            
             nombreUsuario.value = ui.item.name;
             nombreUsuario.disabled = true;
             nombreUsuario.classList.add('bg-gray-300');

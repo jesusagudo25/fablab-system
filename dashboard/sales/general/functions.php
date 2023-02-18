@@ -2,28 +2,30 @@
 
 require_once '../../../app.php';
 
+session_start();
+
 $customer = new Customer();
 $error = false;
 
 if ($_POST['solicitud'] == 's') {
     $eventCategory = new EventCategory();
     $membershipPlans = new MembershipPlans();
-    $area = new Area();
 
     $datos['eventos'] = $eventCategory->getAjax();
     $datos['membresias'] = $membershipPlans->getAjax();
-    $datos['areas'] = $area->getAjax();
     
     echo json_encode($datos);
-} else if ($_POST['solicitud'] == 'cons') {
-    $consumable = new Consumable();
-    $consumables = $consumable->getAll();
-    echo json_encode($consumables);
 } else if ($_POST['solicitud'] == 'evt') {
-    // $event = new Events();
-    // $events = $event->getToInvoice();
-    // echo json_encode($events);
-} else if ($_POST['solicitud'] == 'd') {
+    $event = new Events();
+    $events = $event->getToInvoice();
+    echo json_encode($events);
+}else if ($_POST['solicitud'] == 'generar_venta') {
+     $invoice = new Invoice();
+    $invoice->saveAll($_POST['sale'],$_SESSION['user_id'], 'general');
+    //require_once './notificarcompra.php';
+    echo json_encode($invoice->getInvoiceId());
+}
+else if ($_POST['solicitud'] == 'd') {
     $district = new District();
     $districts = $district->getAll();
     echo json_encode($districts);

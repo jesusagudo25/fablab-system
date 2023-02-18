@@ -226,9 +226,13 @@ if (isset($_GET['visit_id'])) {
                                     <i class="fas fa-times mr-3"></i>
                                     <span>Anular</span>
                                 </button>
-                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none" id="generar">
+                                <button class="mt-3 flex items-center justify-between mr-5 px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-emerald-500 border border-transparent rounded-md active:bg-emerald-600 hover:bg-emerald-700 focus:outline-none" id="generar">
                                     <i class="fas fa-save mr-3"></i>
-                                    <span>Generar</span>
+                                    <span>Venta</span>
+                                </button>
+                                <button class="mt-3 flex items-center justify-between px-4 py-2 text-sm font-semibold uppercase leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-md active:bg-blue-600 hover:bg-blue-700 focus:outline-none" id="cotizacion">
+                                <i class="fas fa-file-invoice-dollar mr-3"></i>
+                                    <span>Cotización</span>
                                 </button>
                             </div>
 

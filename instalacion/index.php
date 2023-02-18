@@ -1,20 +1,20 @@
 <?php
 
-    require_once '../app.php';
+require_once '../app.php';
 
-    $model = new Model();
+$model = new Model();
 
-    $model->query("CREATE TABLE user_role(
+$model->query("CREATE TABLE user_role(
             role_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL
         );");
 
-    $model->query("CREATE TABLE provinces(
+$model->query("CREATE TABLE provinces(
             province_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL
         );");
 
-    $model->query("CREATE TABLE districts(
+$model->query("CREATE TABLE districts(
             district_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             province_id INT UNSIGNED NOT NULL,
             name VARCHAR(60) NOT NULL,
@@ -22,7 +22,7 @@
             FOREIGN KEY (province_id) REFERENCES provinces(province_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE townships(
+$model->query("CREATE TABLE townships(
             township_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             district_id INT UNSIGNED NOT NULL,
             name VARCHAR(60) NOT NULL,
@@ -30,7 +30,7 @@
             FOREIGN KEY (district_id) REFERENCES districts(district_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE users(
+$model->query("CREATE TABLE users(
             user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             role_id INT UNSIGNED NOT NULL DEFAULT 1,
             name VARCHAR(60) NOT NULL,
@@ -43,12 +43,12 @@
             FOREIGN KEY (role_id) REFERENCES user_role(role_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE age_range(
+$model->query("CREATE TABLE age_range(
                 range_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(30) NOT NULL
             );");
 
-    $model->query("CREATE TABLE customers(
+$model->query("CREATE TABLE customers(
             customer_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             document_type CHAR NOT NULL,
             document VARCHAR(60) UNIQUE NOT NULL,
@@ -68,7 +68,7 @@
             FOREIGN KEY (township_id) REFERENCES townships(township_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE reason_visits(
+$model->query("CREATE TABLE reason_visits(
             reason_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
             isGroup BOOLEAN NOT NULL DEFAULT FALSE,
@@ -76,7 +76,7 @@
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
 
-    $model->query("CREATE TABLE visits(
+$model->query("CREATE TABLE visits(
             visit_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             reason_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL DEFAULT (CURRENT_DATE),
@@ -88,7 +88,7 @@
         );");
 
 
-    $model->query("CREATE TABLE customer_visit(
+$model->query("CREATE TABLE customer_visit(
         customer_id INT UNSIGNED NOT NULL,
         visit_id INT UNSIGNED NOT NULL,
 
@@ -97,7 +97,7 @@
         FOREIGN KEY (visit_id) REFERENCES visits(visit_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE bookings(
+$model->query("CREATE TABLE bookings(
             booking_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             document_type CHAR NOT NULL,
             document VARCHAR(60) NOT NULL,
@@ -110,13 +110,13 @@
             FOREIGN KEY (reason_id) REFERENCES reason_visits(reason_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE areas(
+$model->query("CREATE TABLE areas(
                 area_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(60) NOT NULL,
                 status BOOLEAN NOT NULL DEFAULT TRUE
                 
             );");
-    $model->query("CREATE TABLE visits_areas(
+$model->query("CREATE TABLE visits_areas(
             visit_id INT UNSIGNED NOT NULL,
             area_id INT UNSIGNED NOT NULL,
             arrival_time TIME NOT NULL,
@@ -126,7 +126,7 @@
             FOREIGN KEY (visit_id) REFERENCES visits(visit_id) ON DELETE CASCADE,
             FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE
         );   ");
-    $model->query("CREATE TABLE booking_area(
+$model->query("CREATE TABLE booking_area(
         booking_id INT UNSIGNED NOT NULL,
         area_id INT UNSIGNED NOT NULL,
         arrival_time TIME NOT NULL,
@@ -135,8 +135,8 @@
         PRIMARY KEY (booking_id, area_id),
         FOREIGN KEY (booking_id) REFERENCES bookings(booking_id),
         FOREIGN KEY (area_id) REFERENCES areas(area_id)
-    );   ");        
-    $model->query("CREATE TABLE observations(
+    );   ");
+$model->query("CREATE TABLE observations(
             observation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             user_id INT UNSIGNED NOT NULL,
             description TEXT NOT NULL,
@@ -144,7 +144,7 @@
             
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );");
-    $model->query("CREATE TABLE reports(
+$model->query("CREATE TABLE reports(
             report_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             year INT UNSIGNED NOT NULL,
             month VARCHAR(40) NOT NULL,
@@ -155,18 +155,19 @@
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE invoices(
+$model->query("CREATE TABLE invoices(
             invoice_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             receipt INT UNIQUE NULL,
             customer_id INT UNSIGNED NOT NULL,
             user_id INT UNSIGNED NOT NULL,
             date DATE NOT NULL DEFAULT (CURRENT_DATE),
             total DECIMAL(6,2) NOT NULL,
+            use_type CHAR NULL,
             
             FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
         );");
-    $model->query("CREATE TABLE event_category(
+$model->query("CREATE TABLE event_category(
             category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
@@ -175,36 +176,17 @@
 
 
 
-    $model->query("CREATE TABLE membership_plans(
+$model->query("CREATE TABLE membership_plans(
             membership_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(60) NOT NULL,
             price DECIMAL(6,2) NOT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE
         );");
 
-    $model->query("CREATE TABLE use_machine_type(
-        type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(60) NOT NULL,
-        status BOOLEAN NOT NULL DEFAULT TRUE
-    );");
-    
-    $model->query("CREATE TABLE use_machines(
-            use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            invoice_id INT UNSIGNED NOT NULL,
-            area_id INT UNSIGNED NOT NULL,
-            use_type_id INT UNSIGNED NOT NULL,
-            manpower INT UNSIGNED NOT NULL,
-            date_delivery DATE NOT NULL,
-            total_price DECIMAL(6,2) NOT NULL,
-            
-            FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
-            FOREIGN KEY (use_type_id) REFERENCES use_machine_type(type_id) ON DELETE CASCADE,
-            FOREIGN KEY (invoice_id) REFERENCES invoices (invoice_id) ON DELETE CASCADE
-        );");
-
-    $model->query("CREATE TABLE events(
+$model->query("CREATE TABLE events(
             event_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             category_id INT UNSIGNED NOT NULL,
+            area_id INT UNSIGNED NOT NULL,
             name TEXT NOT NULL,
             initial_date DATE NOT NULL,
             final_date DATE NOT NULL,
@@ -215,18 +197,19 @@
             description_expenses TEXT NULL,
             status BOOLEAN NOT NULL DEFAULT TRUE,
 
+            FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
             FOREIGN KEY (category_id) REFERENCES event_category(category_id) ON DELETE CASCADE
         );");
 
-    $model->query("CREATE TABLE area_event(
+/*     $model->query("CREATE TABLE area_event(
             area_id INT UNSIGNED NOT NULL,
             event_id INT UNSIGNED NOT NULL,
             PRIMARY KEY (area_id, event_id),
             FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
             FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
-        );");
+        );"); */
 
-    $model->query("CREATE TABLE membership_invoices(
+$model->query("CREATE TABLE membership_invoices(
             id INT UNSIGNED AUTO_INCREMENT,
             invoice_id INT UNSIGNED NOT NULL,
             membership_id INT UNSIGNED NOT NULL,
@@ -239,7 +222,7 @@
  	        FOREIGN KEY (membership_id) REFERENCES membership_plans (membership_id) ON DELETE CASCADE     
         );     ");
 
-    $model->query("CREATE TABLE invoices_events(
+$model->query("CREATE TABLE invoices_events(
             invoice_id INT UNSIGNED NOT NULL,
             event_id INT UNSIGNED NOT NULL,
 
@@ -249,16 +232,24 @@
             
         );  ");
 
-    $model->query("CREATE TABLE categories_components(
+$model->query("CREATE TABLE categories_components(
         category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         status BOOLEAN NOT NULL DEFAULT TRUE
         
     );");
+$model->query("CREATE TABLE tasks(
+        task_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        customer_id INT UNSIGNED NOT NULL,
+        name VARCHAR(60) NOT NULL,
+        description TEXT NOT NULL,
+        date_delivery DATE NOT NULL,
+        status BOOLEAN NOT NULL DEFAULT FALSE,
+        FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
+    );");
+/* --------------------- Inventory ---------------------- */
 
-    /* --------------------- Inventory ---------------------- */
-
-    $model->query("CREATE TABLE components(
+$model->query("CREATE TABLE components(
         component_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
@@ -269,34 +260,36 @@
         FOREIGN KEY (category_id) REFERENCES categories_components(category_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE materials_mini_milling(
+$model->query("CREATE TABLE materials_mini_milling(
         material_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
         stock INT UNSIGNED NOT NULL,
         status BOOLEAN NOT NULL DEFAULT TRUE
-    );");   
+    );");
 
-    $model->query("CREATE TABLE materials_laser(
+$model->query("CREATE TABLE materials_laser(
         material_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
-        price DECIMAL(7,3) NOT NULL,
+        price DECIMAL(6,2) NOT NULL,
         width INT UNSIGNED NOT NULL,
         height INT UNSIGNED NOT NULL,
+        area INT UNSIGNED NOT NULL,
         status BOOLEAN NOT NULL DEFAULT TRUE
         
-    );");   
+    );");
 
-    $model->query("CREATE TABLE vinilos(
+$model->query("CREATE TABLE vinilos(
         vinilo_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(7,3) NOT NULL,
         width INT UNSIGNED NOT NULL,
         height INT UNSIGNED NOT NULL,
+        area INT UNSIGNED NOT NULL,
         status BOOLEAN NOT NULL DEFAULT TRUE
     );");
 
-    $model->query("CREATE TABLE threads(
+$model->query("CREATE TABLE threads(
         thread_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         purchased_amount INT UNSIGNED NOT NULL,
@@ -305,7 +298,7 @@
         
     );");
 
-    $model->query("CREATE TABLE filaments(
+$model->query("CREATE TABLE filaments(
         filament_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
@@ -314,7 +307,7 @@
         status BOOLEAN NOT NULL DEFAULT TRUE
     );");
 
-    $model->query("CREATE TABLE resins(
+$model->query("CREATE TABLE resins(
         resin_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
@@ -324,7 +317,7 @@
         
     );");
 
-    $model->query("CREATE TABLE softwares(
+$model->query("CREATE TABLE softwares(
         software_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(60) NOT NULL,
         price DECIMAL(6,2) NOT NULL,
@@ -333,120 +326,72 @@
         
     );");
 
-    /* ------------------- Use sales ----------------------- */
+/* ------------------- Use sales ----------------------- */
 
-    $model->query("CREATE TABLE use_sale_embroiderer(
+$model->query("CREATE TABLE use_sale_machine(
         use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
+        invoice_id INT UNSIGNED NOT NULL,
+        area_id INT UNSIGNED NOT NULL,
         number_minutes INT UNSIGNED NOT NULL,
         base_cost DECIMAL(6,2) NOT NULL,
 
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
+        FOREIGN KEY (area_id) REFERENCES areas(area_id) ON DELETE CASCADE,
+        FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id) ON DELETE CASCADE
         
     );");
 
-    $model->query("CREATE TABLE use_sale_threads(
+$model->query("CREATE TABLE use_sale_threads(
         use_id INT UNSIGNED NOT NULL,
         thread_id INT UNSIGNED NOT NULL,
         number_stitches INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, thread_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_embroiderer(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (thread_id) REFERENCES threads(thread_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE use_sale_plotter(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-    
-    );");
-
-    $model->query("CREATE TABLE use_sale_vinilos(
+$model->query("CREATE TABLE use_sale_vinilos(
         use_id INT UNSIGNED NOT NULL,
         vinilo_id INT UNSIGNED NOT NULL,
         width INT UNSIGNED NOT NULL CHECK (width >= 4 ),
         height INT UNSIGNED NOT NULL CHECK (height >= 4 ),
 
         PRIMARY KEY (use_id, vinilo_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_plotter(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (vinilo_id) REFERENCES vinilos(vinilo_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE use_sale_electronics(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-
-    );");
-
-    $model->query("CREATE TABLE use_sale_components(
+$model->query("CREATE TABLE use_sale_components(
         use_id INT UNSIGNED NOT NULL,
         component_id INT UNSIGNED NOT NULL,
         number_components INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, component_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_electronics(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (component_id) REFERENCES components(component_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE use_sale_printer_filament(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-
-    );");
-
-    $model->query("CREATE TABLE use_sale_filament(
+$model->query("CREATE TABLE use_sale_filament(
         use_id INT UNSIGNED NOT NULL,
         filament_id INT UNSIGNED NOT NULL,
         number_grams INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, filament_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_printer_filament(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (filament_id) REFERENCES filaments(filament_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE use_sale_printer_resin(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-
-    );");
-
-    $model->query("CREATE TABLE use_sale_resin(
+$model->query("CREATE TABLE use_sale_resin(
         use_id INT UNSIGNED NOT NULL,
         resin_id INT UNSIGNED NOT NULL,
         number_grams INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, resin_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_printer_resin(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (resin_id) REFERENCES resins(resin_id) ON DELETE CASCADE
     );");
 
-    $model->query("CREATE TABLE use_sale_laser(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-
-    );");
-
-    $model->query("CREATE TABLE use_sale_materials_laser(
+$model->query("CREATE TABLE use_sale_materials_laser(
         use_id INT UNSIGNED NOT NULL,
         material_id INT UNSIGNED NOT NULL,
         width INT UNSIGNED NOT NULL,
@@ -454,57 +399,47 @@
         amount INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, material_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_laser(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (material_id) REFERENCES materials_laser(material_id) ON DELETE CASCADE
-    );"); 
-
-    $model->query("CREATE TABLE use_sale_mini_milling(
-        use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
-        number_minutes INT UNSIGNED NOT NULL,
-        base_cost DECIMAL(6,2) NOT NULL,
-
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE
-
     );");
 
-    $model->query("CREATE TABLE use_sale_materials_mini_milling(
+$model->query("CREATE TABLE use_sale_materials_mini_milling(
         use_id INT UNSIGNED NOT NULL,
         material_id INT UNSIGNED NOT NULL,
         amount INT UNSIGNED NOT NULL,
 
         PRIMARY KEY (use_id, material_id),
-        FOREIGN KEY (use_id) REFERENCES use_sale_mini_milling(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (use_id) REFERENCES use_sale_machine(use_id) ON DELETE CASCADE,
         FOREIGN KEY (material_id) REFERENCES materials_mini_milling(material_id) ON DELETE CASCADE
-    );"); 
+    );");
 
-    $model->query("CREATE TABLE use_software_design(
+$model->query("CREATE TABLE use_software_design(
         use_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        use_machine_id INT UNSIGNED NOT NULL,
+        invoice_id INT UNSIGNED NOT NULL,
         software_id INT UNSIGNED NOT NULL,
         number_hours INT UNSIGNED NOT NULL,
         base_cost DECIMAL(6,2) NOT NULL,
 
-        FOREIGN KEY (use_machine_id) REFERENCES use_machines(use_id) ON DELETE CASCADE,
+        FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id) ON DELETE CASCADE,
         FOREIGN KEY (software_id) REFERENCES softwares(software_id) ON DELETE CASCADE
 
     );");
 
-    /*--------------------Inseccion de datos----------------  */
+/*--------------------Inseccion de datos----------------  */
 
-    $model->query("INSERT INTO user_role(name) VALUES('Secretaria'),('Operador'),('Administrador');");
+$model->query("INSERT INTO user_role(name) VALUES('Secretaria'),('Operador'),('Administrador');");
 
-    $model->query("INSERT INTO membership_plans(name,price) VALUES('Membresía: Pase de un día',5.00),('Membresía: 15 días',25.00),('Membresía: mensual',50.00);");
+$model->query("INSERT INTO membership_plans(name,price) VALUES('Membresía: Pase de un día',5.00),('Membresía: 15 días',25.00),('Membresía: mensual',50.00);");
 
-    $model->query("INSERT INTO event_category(name) VALUES('Capacitaciones'),('Workshop'),('Fab Lab Kids');");
+$model->query("INSERT INTO event_category(name) VALUES('Capacitaciones'),('Workshop'),('Fab Lab Kids');");
 
-    $model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
+$model->query("INSERT INTO age_range(name) VALUES('18 o menos'),('19 - 26'),('27 - 35'),('36 - más');");
 
-    $model->query("INSERT INTO reason_visits(name,isGroup, time) VALUES('Emprendimiento',0,1),('Proyecto académico',0,1),('Eventos',0,1),('Visita general/Tour',1,0), ('Servicios',0,0);");
+$model->query("INSERT INTO reason_visits(name,isGroup, time) VALUES('Emprendimiento',0,1),('Proyecto académico',0,1),('Eventos',0,1),('Visita general/Tour',1,1), ('Servicios',0,0);");
 
-    $model->query("INSERT INTO areas(name) VALUES('Electrónica'),('Mini Fresadora CNC'),('Láser CNC'),('Cortadora de Vinilo'),('Impresión 3D en filamento'),('Impresión 3D en resina'), ('Software de diseño'),('Bordadora CNC');");
+$model->query("INSERT INTO areas(name) VALUES('Electrónica'),('Mini Fresadora CNC'),('Láser CNC'),('Cortadora de Vinilo'),('Impresión 3D en filamento'),('Impresión 3D en resina'), ('Software de diseño'),('Bordadora CNC');");
 
-    $model->query("INSERT INTO provinces (name) 
+$model->query("INSERT INTO provinces (name) 
         VALUES ('Bocas del Toro'),
         ('Coclé'),
         ('Colón'),
@@ -516,7 +451,7 @@
         ('Veraguas'),
         ('Panamá Oeste');");
 
-    $model->query("INSERT INTO districts (province_id,name) 
+$model->query("INSERT INTO districts (province_id,name) 
         VALUES (1,'Bocas del Toro'),
         (1,'Almirante'),
         (1,'Changuinola'),
@@ -588,7 +523,7 @@
         (10,'La Chorrera'),
         (10,'San Carlos');");
 
-    $model->query("INSERT INTO townships (district_id,name) 
+$model->query("INSERT INTO townships (district_id,name) 
         VALUES (1,'Bocas del Toro'),
         (1,'Cauchero'),
         (1,'Punta Laurel'),
@@ -1162,12 +1097,12 @@
         (70,'Los Llanitos'),
         (70,'San José');");
 
-    $passwordAdmin = password_hash('abc123', PASSWORD_BCRYPT);
+$passwordAdmin = password_hash('abc123', PASSWORD_BCRYPT);
 
-    $insertarDatos = $model->prepare("INSERT INTO users(role_id,name,email,password) VALUES(3,'Rol Admin','admin@fablabsystem.com',:passwordOne), (1,'Rol Secretaria','secretaria@fablabsystem.com',:passwordTwo), (2,'Rol Operador','operador@fablabsystem.com',:passwordThree)");
+$insertarDatos = $model->prepare("INSERT INTO users(role_id,name,email,password) VALUES(3,'Rol Admin','admin@fablabsystem.com',:passwordOne), (1,'Rol Secretaria','secretaria@fablabsystem.com',:passwordTwo), (2,'Rol Operador','operador@fablabsystem.com',:passwordThree)");
 
-    $insertarDatos->execute([
-        ':passwordOne' => $passwordAdmin,
-        ':passwordTwo' => $passwordAdmin,
-        ':passwordThree' => $passwordAdmin,
-    ]);
+$insertarDatos->execute([
+    ':passwordOne' => $passwordAdmin,
+    ':passwordTwo' => $passwordAdmin,
+    ':passwordThree' => $passwordAdmin,
+]);

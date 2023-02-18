@@ -1,3 +1,14 @@
+const TIPO_INSUMOS = {
+    'Electrónica': './components.php',
+    'Mini Fresadora CNC': './milling.php',
+    'Láser CNC': './laser.php',
+    'Cortadora de Vinilo': './vinyls.php',
+    'Impresión 3D en filamento': './filaments.php',
+    'Impresión 3D en resina': './resins.php',
+    'Software de diseño': './software.php',
+    'Bordadora CNC': './threads.php',
+}
+
 tablaAreas = $('#datatable-json').DataTable({
     language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
     "processing": true,
@@ -16,7 +27,6 @@ tablaAreas = $('#datatable-json').DataTable({
         newArea.addEventListener('click', evt =>{
             feedbackname.textContent = ''
             nombreArea.value = '';
-            unidadArea.options[0].selected = true;
 
             modal.classList.toggle('hidden');
             guardar.addEventListener('click', crear);
@@ -77,22 +87,22 @@ tablaAreas = $('#datatable-json').DataTable({
             "data": null,
             render:function(data, type, row)
             {
-                if(data[3]){
+                if(data[2] == 1){
                     return '<button value="'+data[0]+'" type="button" name="desactivar" class="flex items-center justify-between text-2xl px-1 font-medium leading-5 text-emerald-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="interruptor(this)"><i class="fas fa-toggle-on"></i></button>';
                 }
                 else{
                     return '<button value="'+data[0]+'" type="button" name="activar" class="flex items-center justify-between text-2xl font-medium px-1 leading-5 text-red-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="interruptor(this)"><i class="fas fa-toggle-off"></i></button>';
                 }
             },
-            "targets": 3
+            "targets": 2
         },
         {
             "data": null,
             render:function(data, type, row)
             {
-                return '<div class="flex items-center space-x-4"><a href="./show_consumables.php?area='+data[0]+'" class="flex items-center px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-boxes"></i></a> <button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="editar(this)"><i class="fas fa-edit"></i></button></div>';
+                return '<div class="flex items-center space-x-4"><a href="'+TIPO_INSUMOS[data[1]]+'" class="flex items-center px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray"><i class="fas fa-boxes"></i></a> <button value="'+data[0]+'" type="button" class="flex items-center justify-between px-2 py-2 text-lg font-medium leading-5 text-blue-500 rounded-lg focus:outline-none focus:shadow-outline-gray" onclick="editar(this)"><i class="fas fa-edit"></i></button></div>';
             },
-            "targets": 4
+            "targets": 3
         },
         { 'visible': false, 'targets': [0] }
     ]
@@ -103,7 +113,6 @@ const closeModal = document.querySelectorAll('.close'),
     titulo_modal = document.querySelector('#titulo-modal'),
     guardar = document.querySelector('button[name="guardar"]'),
     nombreArea = document.querySelector('input[name="name"]'),
-    unidadArea= document.querySelector('select[name="measure"]'),
     feeds = document.querySelectorAll('.feed');
 
 function cambioValor(e) {
@@ -126,8 +135,8 @@ function editar(e){
             id: e.value,
         },
         success: function(data) {
+            console.log(data);
             nombreArea.value = data['name'];
-            unidadArea.value = data['measure'];
 
             modal.classList.toggle('hidden');
             guardar.addEventListener('click', actualizar);
@@ -164,7 +173,6 @@ function editar(e){
                         data:  {
                             solicitud: "u",
                             name: nombreArea.value,
-                            measure: unidadArea.value,
                             id: e.value
                         },
                         success: function(data) {

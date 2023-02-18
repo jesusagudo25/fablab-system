@@ -26,8 +26,15 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     btnTypeSale = document.querySelectorAll('input[name="typesale"]'),
     formulario = document.querySelector('form');
 
-//Informacion inicial
-let typeSaleValue = 'M';
+//Cambio de categoria servicio
+categoria_servicio.addEventListener('change', evt => {
+
+    servicio.innerHTML = '';
+    servicios[categoria_servicio.value].forEach( (e) =>{
+        servicio.innerHTML += `<option value="${e.id}" >${e.name}</option>`;
+    });
+
+});
 
 //Obtener los eventos
 let formDataEvents = new FormData();
@@ -244,96 +251,112 @@ let inputCostoTotal;
 let costoBase; //Calculo en linea
 
 const TIPO_TABLAS = {
-    "areas": (categoria, id_servicio, numeroItem_id, unidad) => {
-
-        modal_content.classList.add('max-h-96', 'overflow-auto');
-        areaConsumibles = consumibles.filter(value => value.area_id == id_servicio);
-
-        modal_content.innerHTML = `<main class="grid grid-cols-2 gap-5">
-                    <label class="col-span-full text-sm block">
-                        <span class="text-gray-800 font-medium">Tipo de insumo</span>
-                        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="tipo_consumible" onchange="cambiarPrecioUnitario()"></select>
-                        <span id="feedbackconsumible" class="text-xs text-red-600 feed"></span>
-                    </label>
-
+    "membresias" : (categoria,id_servicio,numeroItem_id,unidad) =>{
+        modal_content.innerHTML = `
+                    <main class="grid grid-cols-2 gap-5">
                     <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">${unidad}</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de ${unidad.toLowerCase()}" name="cantidad_unidad" value="${respuesta ? servicios_ag[indice].detalles.cantidad_unidad : ''}" min="0" onchange="cambiarTotales(this)">
-                        <span id="feedbackcantidadu" class="text-xs text-red-600 feed"></span>
+                        <span class="text-gray-800 font-medium">Fecha inicial</span>
+                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="date" name="fecha_inicial" value="${respuesta ? servicios_ag[indice].detalles.fecha_inicial : ''}" onchange="cambiarFechaFinal(this,${id_servicio})">
+                        <span id="feedbackfechai" class="text-xs text-red-600 feed"></span>
                     </label>
-
                     <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Precio unitario</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_unitario" placeholder="Ingrese el precio unitario" min="0.00" step="0.01" onchange="cambiarTotales(this)">
-                        <span id="feedbackpreciou" class="text-xs text-red-600 feed"></span>
+                        <span class="text-gray-800 font-medium">Fecha final</span>
+                        <input class="mt-1 text-sm  w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="date" name="fecha_final" value="${respuesta ? servicios_ag[indice].detalles.fecha_final : ''}">
+                        <span id="feedbackfechaf" class="text-xs text-red-600 feed"></span>
                     </label>
+                    </main>
+               `;
 
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Tiempo impresión (minutos)</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese la cantidad de minutos" name="cantidad_tiempo" value="${respuesta ? servicios_ag[indice].detalles.cantidad_tiempo : ''}" min="0" onchange="cambiarTotales(this)">
-                        <span id="feedbackcantidadt" class="text-xs text-red-600 feed"></span>
-                    </label>
+        inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+    },
+    "eventos": (categoria,id_servicio,numeroItem_id,unidad)=>{
 
-                    <label class="text-sm block">
-                        <span class="text-gray-800 font-medium">Precio impresión</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300" type="number" name="precio_impresion" 
-                        placeholder="Ingrese el precio de impresión"
-                        value="0.05" min="0.00" step="0.01" onchange="cambiarTotales(this)">
-                        <span id="feedbackprecioi" class="text-xs text-red-600 feed"></span>
-                    </label>
+        modal_content.classList.add('max-h-96','overflow-auto');
 
-                    <label class="col-span-full text-sm block">
-                        <span class="text-gray-800 font-medium">Costo base</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_base" value="${respuesta ? servicios_ag[indice].detalles.costo_base : '0.00'}" disabled>
-                    </label>
-                    <label class="col-span-full text-sm block">
-                        <span class="text-gray-800 font-medium">Porcentaje ganancia</span>
-                        <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" name="tipo_ganancia" onchange="cambiarCostoTotal()">
-                        <option value="0.15" >Estudiante - 15%</option>
-                        <option value="0.2">Docente - 20%</option>
-                        <option value="0.3" selected>Público - 30%</option>
+        console.log(id_servicio);
+        console.log(events);
+        categoriaEvento = events.filter(x => x.category_id === id_servicio);
+
+        modal_content.innerHTML = `
+        <main class="grid grid-cols-1 gap-5 justify-items-center">
+            <label class="text-sm w-full flex flex-col justify-center items-center gap-1">
+                    <div class="w-full flex justify-center items-center gap-2">
+                        <span class="text-gray-800 font-medium">Seleccione un evento</span>
+                        <select class="text-sm w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="evento_disponible" onchange="cambiarEvento(this)">
                         </select>
-                    </label>
+                        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-transparent rounded-md focus:outline-none focus:shadow-outline-purple bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-700" onclick="verTablaDetalles(this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <span id="feedbackevento" class="w-full text-xs text-red-600 text-center feed"></span>
+            </label>
+                        
+            <div class="w-full grid grid-cols-2 gap-5 hidden">
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Área</span>
+                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" required name="area" disabled></select>
+                </label>
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Precio</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="number" placeholder="Precio de evento" name="precio_evento" min="0.00" step="0.01" value="" disabled="">
+                </label>
+        
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha inicial</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_inicial" value="" disabled="">
+                </label>
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Fecha final</span>
+                    <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" type="date" name="fecha_final" value="" disabled="">
+                </label>
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora inicial</span>
+                    <input type="time" name="hora_inicial" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+                <label class="text-sm block">
+                    <span class="text-gray-800 font-medium">Hora final</span>
+                    <input type="time" name="hora_final" class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm bg-gray-300 cursor-not-allowed" disabled>
+                </label>
+            </div>
+        </main>`;
 
-                    <label class="col-span-full text-sm block">
-                        <span class="text-gray-800 font-medium">Costo total</span>
-                        <input class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-300 cursor-not-allowed" type="number" name="costo_total" value="${respuesta ? servicios_ag[indice].detalles.costo_total : '0.00'}" disabled>
-                    </label>           
-                    </main>`;
+        selectorEvento = document.querySelector('select[name="evento_disponible"]');
 
-        selectorConsumible = document.querySelector('select[name="tipo_consumible"]'),
-            selectorGanancia = document.querySelector('select[name="tipo_ganancia"]'),
-            inputPrecioUnitario = document.querySelector('input[name="precio_unitario"]'),
-            inputPrecioImpresion = document.querySelector('input[name="precio_impresion"]'),
-            inputCantidadUnidad = document.querySelector('input[name="cantidad_unidad"]'),
-            inputCantidadTiempo = document.querySelector('input[name="cantidad_tiempo"]'),
-            inputCostoBase = document.querySelector('input[name="costo_base"]'),
-            inputCostoTotal = document.querySelector('input[name="costo_total"]');
+        selectorEvento.innerHTML = '';
 
-        selectorConsumible.innerHTML = '';
+        if(categoriaEvento.length){
+            selectorEvento.innerHTML = '<option disabled selected value hidden> -- Eventos disponibles -- </option>';
+            categoriaEvento.forEach( (value) =>{
+                selectorEvento.innerHTML += `
+<option value="${value.event_id}" ${respuesta ? servicios_ag[indice].detalles.event_id == value.event_id ? 'selected' : '' : ''} >${value.name}</option>`;
+            } );
 
-        if (areaConsumibles.length) {
-            areaConsumibles.forEach((value) => {
-                selectorConsumible.innerHTML = `<option value="${value.consumable_id}" ${respuesta ? servicios_ag[indice].detalles.tipo_consumible == value.consumable_id ? 'selected' : '' : ''} >${value.name}</option>`;
-            })
+            console.log(categoriaEvento);
 
-            if (respuesta) {
-                Array.from(selectorGanancia.options).forEach((opt) => {
-                    if (opt.value == servicios_ag[indice].detalles.porcentaje_ganancia) {
-                        opt.selected = true;
-                    }
-                });
+            respuestaEvento = categoriaEvento.find(x => x.event_id == selectorEvento.value);
+
+            inputPrecioEvento = document.querySelector('input[name="precio_evento"]'),
+            selectAreaEvento = document.querySelector('select[name="area"]'),
+            inputHoraInicial = document.querySelector('input[name="hora_inicial"]'),
+            inputHoraFinal = document.querySelector('input[name="hora_final"]'),
+            inputFechaInicial = document.querySelector('input[name="fecha_inicial"]'),
+            inputFechaFinal = document.querySelector('input[name="fecha_final"]');
+            console.log(respuestaEvento);
+            if(respuestaEvento){
+                selectAreaEvento.innerHTML += `<option>${respuestaEvento.area_id}</option>`;
+                inputHoraInicial.value = respuestaEvento.start_time;
+                inputHoraFinal.value = respuestaEvento.end_time;
+                inputFechaInicial.value = respuestaEvento.initial_date;
+                inputFechaFinal.value = respuestaEvento.final_date;
+                inputPrecioEvento.value = respuestaEvento.price;
             }
 
-            cambiarPrecioUnitario();
         }
-        else {
-            selectorConsumible.innerHTML = `<option value selected hidden>No existen consumibles</option>`;
-            inputPrecioUnitario.value = '0.00';
-        }
+        else{
+            selectorEvento.innerHTML = `<option value selected hidden>No existen eventos</option>`;
 
-    }
-}
+        }
+    },
+};
+
 
 function cambiarEvento(e) {
     respuestaEvento = categoriaEvento.find(x => x.event_id == e.value);
@@ -430,117 +453,74 @@ function cambiarCostoTotal() {
 }
 
 const TIPO_ACTUALIZAR = {
-    "membresias": (numeroItem) => {
+    "membresias": (numeroItem)=>{
         let errores = {};
-
-        if (document.querySelector('input[name="fecha_inicial"]').value.trim().length == 0) {
+        
+        if(document.querySelector('input[name="fecha_inicial"]').value.trim().length == 0){
             errores.fecha_inicial = "Por favor, seleccione una fecha inicial";
             document.querySelector('#feedbackfechai').textContent = errores.fecha_inicial;
         }
 
-        if (document.querySelector('input[name="fecha_final"]').value.trim().length == 0) {
+        if(document.querySelector('input[name="fecha_final"]').value.trim().length == 0){
             errores.fecha_final = "Por favor, seleccione una fecha final";
             document.querySelector('#feedbackfechaf').textContent = errores.fecha_final;
         }
 
-        if (Object.keys(errores).length > 0) {
+        if(Object.keys(errores).length > 0){
             const inputs = document.querySelectorAll('#modal-content input');
-            inputs.forEach(x => {
-                x.addEventListener('change', evt => {
-                    if (evt.target.name == 'fecha_inicial') {
-                        document.querySelectorAll('.feed').forEach(x => {
+            inputs.forEach( x =>{
+                x.addEventListener('change', evt =>{
+                    if(evt.target.name == 'fecha_inicial'){
+                        document.querySelectorAll('.feed').forEach(x =>{
                             x.textContent = '';
                         });
                     }
-                    else {
+                    else{
                         evt.target.nextElementSibling.textContent = '';
                     }
                 })
             });
-
+            
             return true;
 
         }
-        else {
+        else{
             servicios_ag[indice].detalles = {
                 fecha_inicial: document.querySelector('input[name="fecha_inicial"]').value,
                 fecha_final: document.querySelector('input[name="fecha_final"]').value
             }
-
+            
             return false;
         }
     },
-    "eventos": (numeroItem) => {
+    "eventos": (numeroItem)=>{
         let errores = {};
 
-        if (selectorEvento.value.trim().length == 0) {
-            if (selectorEvento.options.length == 1 && selectorEvento.options[0].hidden) {
+        if(selectorEvento.value.trim().length == 0){
+            if(selectorEvento.options.length == 1 && selectorEvento.options[0].hidden){
                 errores.evento = "En la categoría actual, no existen eventos disponibles.";
             }
-            else {
+            else{
                 errores.evento = "Por favor, seleccione un evento";
             }
             document.querySelector('#feedbackevento').textContent = errores.evento;
         }
 
-        if (Object.keys(errores).length > 0) {
+        if(Object.keys(errores).length > 0){
             return true;
         }
-        else {
+        else{
             servicios_ag[indice].detalles = {
                 event_id: selectorEvento.value
             }
-            const precio = document.querySelector('#' + numeroItem + ' .precio');
+            const precio = document.querySelector('#'+numeroItem+' .precio');
             precio.value = inputPrecioEvento.value;
 
             triggerChange(precio);
-
+            
             return false;
         }
     },
-    "areas": (numeroItem) => {
-
-        let errores = {};
-
-        // Validaciones
-
-        if (Object.keys(errores).length > 0) {
-            const inputs = document.querySelectorAll('#modal-content input');
-            inputs.forEach(x => {
-                x.addEventListener('change', evt => {
-                    if (evt.target.name == 'fecha_inicial') {
-                        document.querySelectorAll('.feed').forEach(x => {
-                            x.textContent = '';
-                        });
-                    }
-                    else {
-                        evt.target.nextElementSibling.textContent = '';
-                    }
-                })
-            });
-
-            return true;
-        }
-        else {
-            servicios_ag[indice].detalles = {
-                tipo_consumible: selectorConsumible.value,
-                cantidad_unidad: inputCantidadUnidad.value,
-                precio_unitario: inputPrecioUnitario.value,
-                cantidad_tiempo: inputCantidadTiempo.value,
-                precio_impresion: inputPrecioImpresion.value,
-                costo_base: inputCostoBase.value,
-                porcentaje_ganancia: selectorGanancia.value,
-                costo_total: inputCostoTotal.value
-            }
-
-            const precio = document.querySelector('#' + numeroItem + ' .precio');
-            precio.value = inputCostoTotal.value;
-
-            triggerChange(precio);
-
-            return false;
-        }
-    }
 }
 
 function cambiarValue(elm, columna_total) {

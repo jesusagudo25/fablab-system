@@ -51,7 +51,12 @@
 
         #Mes del reporte o fecha
         setlocale(LC_TIME, "spanish");
-        $report->setMonth(ucfirst(strftime("%B",strtotime($report->getStartDate()))));
+        
+        $month = date('M', strtotime($report->getStartDate()));
+        $year = date('Y', strtotime($report->getStartDate()));
+
+        $report->setYear($year);
+        $report->setMonth($month);
 
         $report->save();
 

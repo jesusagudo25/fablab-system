@@ -71,12 +71,11 @@ if ($_POST['solicitud'] == 'v') {
         } else {
             $data['customer'] = $customerSelect;
         }
-        if ($bookingSelect['time']) {
+
             $bookingArea = new BookingArea();
             $bookingArea->setBookingId($bookingSelect['booking_id']);
             $bookingsAreas = $bookingArea->getBookingsAreasVisit();
             $data['areas'] = $bookingsAreas;
-        }
 
         echo json_encode($data);
     }

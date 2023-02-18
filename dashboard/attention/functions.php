@@ -11,6 +11,8 @@
             INNER JOIN customer_visit cv ON cv.visit_id = v.visit_id
             INNER JOIN customers c ON c.customer_id = cv.customer_id
             INNER JOIN reason_visits r ON r.reason_id = v.reason_id
+            WHERE r.name != 'Eventos'
+            AND v.isAttended != TRUE
             group by v.visit_id, c.name, r.name, v.date, v.status
         ) temp
         EOT;
@@ -38,5 +40,9 @@
         echo json_encode(
             SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
         );
+
+    }else if($_POST['solicitud'] == 'interruptor'){
+        $visit = new Visit();
+        $visit->setAttended(true, $_POST['id']);
 
     }

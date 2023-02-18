@@ -5,7 +5,6 @@ class Area extends Model implements IModel
 {
     private $area_id;
     private $name;
-    private $measure;
     private $status;
 
     /**
@@ -48,22 +47,6 @@ class Area extends Model implements IModel
         $this->name = $name;
     }
 
-        /**
-     * @return mixed
-     */
-    public function getMeasure()
-    {
-        return $this->measure;
-    }
-
-    /**
-     * @param mixed $measure
-     */
-    public function setMeasure($measure): void
-    {
-        $this->measure = $measure;
-    }
-
     /**
      * @return mixed
      */
@@ -82,7 +65,7 @@ class Area extends Model implements IModel
 
     public function getAll(){
 
-        $query = $this->query('SELECT area_id AS id, name, measure,status FROM areas');
+        $query = $this->query('SELECT area_id AS id, name,status FROM areas');
 
         $areas = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -100,11 +83,10 @@ class Area extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevaArea = $this->prepare('INSERT INTO areas(name,measure) VALUES (:name,:measure)');
+        $nuevaArea = $this->prepare('INSERT INTO areas(name) VALUES (:name)');
 
         $nuevaArea->execute([
             'name' => $this->name,
-            'measure' => $this->measure
         ]);
     }
 
@@ -131,10 +113,9 @@ class Area extends Model implements IModel
 
     public function update()
     {
-        $actualizarDatos = $this->prepare("UPDATE areas SET name = :name, measure = :measure WHERE area_id = :id;");
+        $actualizarDatos = $this->prepare("UPDATE areas SET name = :name WHERE area_id = :id;");
         $actualizarDatos->execute([
             'name' => $this->name,
-            'measure' => $this->measure,
             'id'=>$this->area_id
         ]);
     }

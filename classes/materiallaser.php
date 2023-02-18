@@ -40,7 +40,7 @@ class MaterialLaser extends Model implements IModel
         $datos = array();
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $datos[] = array("label" => $row['name'], "id" => $row['material_id'], "price" => $row['price'],"width" => $row['width'],"height" => $row['height']);
+            $datos[] = array("label" => $row['name'], "id" => $row['material_id'], "price" => $row['price'],"width" => $row['width'],"height" => $row['height'],"area" => $row['area']);
         }
 
         return $datos;
@@ -58,5 +58,26 @@ class MaterialLaser extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
+    }
+
+    public function getStock($material_id)
+    {
+        $query = $this->prepare('SELECT area FROM materials_laser WHERE material_id = :material_id');
+        $query->execute([
+            'material_id' => $material_id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['area'];
+    }
+
+    public function updateStock($material_id, $area)
+    {
+        $query = $this->prepare('UPDATE materials_laser SET area = :area WHERE material_id = :material_id');
+        $query->execute([
+            'area' => $area,
+            'material_id' => $material_id
+        ]);
     }
 }

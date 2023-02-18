@@ -59,4 +59,25 @@ class MaterialMilling extends Model implements IModel
     {
         // TODO: Implement update() method.
     }
+
+    public function getStock($material_id)
+    {
+        $query = $this->prepare('SELECT stock FROM materials_mini_milling WHERE material_id = :material_id');
+        $query->execute([
+            'material_id' => $material_id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['stock'];
+    }
+
+    public function updateStock($material_id, $amount)
+    {
+        $query = $this->prepare('UPDATE materials_mini_milling SET stock = :stock WHERE material_id = :material_id');
+        $query->execute([
+            'stock' => $amount,
+            'material_id' => $material_id
+        ]);
+    }
 }

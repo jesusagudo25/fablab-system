@@ -172,7 +172,8 @@ function registrarServicio(id_servicio, descripcion, precio = '0.00') {
 
     servicios_ag.push({
         servicio: id_servicio,
-        numeroItem: numeroItem
+        numeroItem: numeroItem,
+        descripcion: descripcion,
     });
 
     calcular();
@@ -236,7 +237,6 @@ function editarItem(descripcion, id_servicio, numeroItem) {
     }
 
     function actualizar(evt) {
-
         const resultado = TIPO_ACTUALIZAR[descripcion](numeroItem);
         if (!resultado) {
             components_ag = [];
@@ -843,7 +843,7 @@ function TablaLaserCNC(reason, id_servicio, numeroItem) {
             <tr>
                 <th class="p-3  font-medium uppercase tracking-wider w-1/2">Nombre</th>
                 <th class="p-3  font-medium uppercase tracking-wider w-1/4">Precio x ft^2</th>
-                <th class="p-3  font-medium uppercase tracking-wider w-1/4">W x H ft</th>
+                <th class="p-3  font-medium uppercase tracking-wider w-1/4">Área ft^2</th>
                 <th class="p-3 font-medium uppercase tracking-wider w-1/4">Acción</th>
             </tr>
         </thead>
@@ -884,7 +884,7 @@ function TablaLaserCNC(reason, id_servicio, numeroItem) {
                     <tr>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/2">Nombre</th>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/4">Precio x ft^2</th>
-                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">W x H ft</th>
+                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">Área ft</th>
                         <th class="p-3 font-medium uppercase tracking-wider w-1/4">Acción</th>
                     </tr>
                 </thead>
@@ -961,7 +961,7 @@ function TablaLaserCNC(reason, id_servicio, numeroItem) {
                                 ${ui.item.price}
                             </td>
                             <td class="py-4 px-6">
-                                ${ui.item.width} x ${ui.item.height}
+                                ${ui.item.area}
                             </td>
                             <td class="py-4 px-6">
                                 <button
@@ -1000,7 +1000,7 @@ function TablaLaserCNC(reason, id_servicio, numeroItem) {
                                 ${ui.item.price}
                             </td>
                             <td class="py-4 px-6">
-                                ${ui.item.width} x ${ui.item.height}
+                                ${ui.item.area}
                             </td>
                             <td class="py-4 px-6">
                                 <button
@@ -1133,7 +1133,7 @@ function TablaCortadoraVinilo(reason, id_servicio, numeroItem) {
                     <tr>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/2">Nombre</th>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/4">Precio x pulg^2</th>
-                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">w" x H ft</th>
+                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">Área in^2</th>
                         <th class="p-3 font-medium uppercase tracking-wider w-1/4">Acción</th>
                     </tr>
                 </thead>
@@ -1172,7 +1172,7 @@ function TablaCortadoraVinilo(reason, id_servicio, numeroItem) {
                     <tr>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/2">Nombre</th>
                         <th class="p-3  font-medium uppercase tracking-wider w-1/4">Precio x pulg^2</th>
-                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">W" x H ft</th>
+                        <th class="p-3  font-medium uppercase tracking-wider w-1/4">Área in^2</th>
                         <th class="p-3 font-medium uppercase tracking-wider w-1/4">Acción</th>
                     </tr>
                 </thead>
@@ -1247,7 +1247,7 @@ function TablaCortadoraVinilo(reason, id_servicio, numeroItem) {
                         ${ui.item.price}
                         </td>
                         <td class="py-4 px-6">
-                        ${ui.item.width} x ${ui.item.height}
+                        ${ui.item.area}
                         </td>
                         <td class="py-4 px-6">
                             <button
@@ -2216,7 +2216,7 @@ function saveMiniFresadoraCNC(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 materials:materials_milling_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2265,7 +2265,7 @@ function saveLaserCNC(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 materials: materials_laser_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2311,7 +2311,7 @@ function saveCortadoraVinilo(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 vinilos: vinyls_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2357,7 +2357,7 @@ function saveImpresion3DEnFilamento(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 filaments: filaments_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2377,7 +2377,7 @@ function saveImpresion3DEnFilamento(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                minutos_area: (document.querySelector('input[name="horas"]').value * 60) + document.querySelector('input[name="minutos"]').value,
+                minutos_area: Number(document.querySelector('input[name="horas"]').value * 60) + Number(document.querySelector('input[name="minutos"]').value),
                 filaments: filaments_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2403,7 +2403,7 @@ function saveImpresion3DEnResina(numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 resins: resins_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }
@@ -2478,7 +2478,7 @@ function saveBordadoraCNC (numeroItem){
         }
         else {
             servicios_ag[indice].detalles = {
-                horas_area: document.querySelector('input[name="horas_area"]').value * 60,
+                minutos_area: document.querySelector('input[name="horas_area"]').value * 60,
                 threads: threads_ag,
                 costo_base: document.querySelector('input[name="costo_base"]').value,
             }

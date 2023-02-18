@@ -29,6 +29,9 @@ $provinceAll = $province->getAll();
 $range = new AgeRange();
 $rangeAll = $range->getAll();
 
+$membershipPlans = new MembershipPlans();
+$membershipPlansAll = $membershipPlans->getAll();
+
 ?>
 
 
@@ -53,9 +56,9 @@ $rangeAll = $range->getAll();
     <script src="https://cdn.jsdelivr.net/npm/luxon@2.2.0/build/global/luxon.min.js" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/sales/sales.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/sales/savesales.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/app/sales/customer.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/general/sales.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/general/savesales.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/app/sales/general/customer.js" defer></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -213,16 +216,8 @@ $rangeAll = $range->getAll();
                         <div class="p-5">
 
                             <div class="flex justify-between flex-wrap items-center mb-5">
-                                <label class="w-2/5 text-sm">
-                                    <span class="text-gray-800 font-medium">Número de recibo</span>
-                                    <input class="text-sm mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="number" placeholder="Ingrese el número de recibo" required="" min="1" name="numero_recibo">
-                                </label>
-
-                            </div>
-                            <hr class="my-6">
-                            <div class="flex justify-between flex-wrap items-center mb-5">
                                 <label class="text-sm w-2/5">
-                                    <span class="text-gray-800 font-medium">Seleccione la categoría del evento</span>
+                                    <span class="text-gray-800 font-medium">Seleccione la categoría del servicio</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="categoria_servicio">
                                         <option value="membresias">Membresías</option>
                                         <option value="eventos">Eventos</option>
@@ -230,9 +225,9 @@ $rangeAll = $range->getAll();
                                 </label>
 
                                 <label class="text-sm w-2/5">
-                                    <span class="text-gray-800 font-medium">Seleccione el evento</span>
+                                    <span class="text-gray-800 font-medium">Seleccione el servicio</span>
                                     <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required name="servicio">
-                                        <?php foreach ($areaAll as $datos => $valor) : ?>
+                                        <?php foreach ($membershipPlansAll as $datos => $valor) : ?>
                                             <option value="<?= $valor['id'] ?>"><?= $valor['name'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -267,19 +262,6 @@ $rangeAll = $range->getAll();
                                         </tr>
                                     </tbody>
                                     <tfoot class="hidden bg-gray-100 divide-y divide-gray-200" id="detalle_totales">
-                                        <tr>
-                                            <td class="px-4 py-3 text-sm font-semibold"></td>
-                                            <td colspan="2" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">
-                                                <select name="" id="" class="mt-1 text-sm  rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                                    <option value="0">% Descuento</option>
-                                                    <option value="0.05">5%</option>
-                                                    <option value="0.10">10%</option>
-                                                    <option value="0.15">15%</option>
-                                                </select>
-                                            </td>
-                                            <td class="px-4 py-3 text-sm font-semibold"></td>
-                                            <td class="px-4 py-3 text-sm font-semibold"></td>
-                                        </tr>
                                         <tr id='total'>
                                             <td class="px-4 py-3 text-sm font-semibold"></td>
                                             <td colspan="2" class="px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider">TOTAL</td>

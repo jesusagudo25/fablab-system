@@ -24,7 +24,7 @@ class Vinilo extends Model implements IModel
             'id' => $id
         ]);
 
-        $component = $query->fetchAll(PDO::FETCH_ASSOC);
+        $component = $query->fetch(PDO::FETCH_ASSOC);
 
         return $component;
     }
@@ -40,7 +40,7 @@ class Vinilo extends Model implements IModel
         $datos = array();
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $datos[] = array("label" => $row['name'], "id" => $row['vinilo_id'], "price" => $row['price'],"width" => $row['width'],"height" => $row['height']);
+            $datos[] = array("label" => $row['name'], "id" => $row['vinilo_id'], "price" => $row['price'],"width" => $row['width'],"height" => $row['height'], "area" => $row['area']);
         }
 
         return $datos;
@@ -58,5 +58,26 @@ class Vinilo extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
+    }
+
+    public function getStock($vinilo_id)
+    {
+        $query = $this->prepare('SELECT area FROM vinilos WHERE vinilo_id = :vinilo_id');
+        $query->execute([
+            'vinilo_id' => $vinilo_id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['area'];
+    }
+
+    public function updateStock($material_id, $area)
+    {
+        $query = $this->prepare('UPDATE vinilos SET area = :area WHERE vinilo_id = :vinilo_id');
+        $query->execute([
+            'area' => $area,
+            'vinilo_id' => $material_id
+        ]);
     }
 }

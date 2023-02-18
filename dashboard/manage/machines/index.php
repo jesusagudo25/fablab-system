@@ -72,14 +72,6 @@ $pagina[] = "gestionar";
                                     <span id="feedbackname" class="text-xs text-red-600"></span>
                                 </label>
 
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Unidad</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="measure">
-                                        <option value="Horas">Horas</option>
-                                        <option value="Gramos">Gramos</option>
-                                        <option value="Pulgadas">Pulgadas</option>
-                                    </select>
-                                </label>
                             </div>
                             <footer class="flex justify-end align-center border-t p-3">
                                 <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar">Cancelar</button>
@@ -101,7 +93,6 @@ $pagina[] = "gestionar";
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Unidad</th>
                                         <th>Estado</th>
                                         <th>Acción</th>
                                     </tr>

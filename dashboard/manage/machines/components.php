@@ -1,17 +1,22 @@
 <?php
-    session_start();
+session_start();
 
-    if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
-        header('Location: ../../index.php');
-        die;
-    }
+if (!array_key_exists('user_id', $_SESSION) || !array_key_exists('role_id', $_SESSION)) {
+    header('Location: ../../index.php');
+    die;
+}
 
-    require_once '../../../app.php';
-    
-    $area = new Area();
-    $area = $area->get($_GET['area']);
+/*Para validar el tipo de rol     */
+$allowedRoles = ['Operador', 'Administrador', 'Secretaria'];
 
-    $pagina[] = "gestionar";
+if (!in_array($_SESSION['rol'], $allowedRoles)) {
+    header('Location: ../../logout.php');
+    die;
+}
+
+require_once '../../../app.php';
+
+$pagina[] = "gestionar";
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +26,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Insumos de <?= $area['name'] ?> - Fablab System</title>
+    <title>Maquinas - Fablab System</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
     <link rel="icon" href="<?= constant('URL') ?>assets/img/fab.ico" type="image/x-icon">
@@ -31,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/tables/machines/fetchconsumables.js" defer></script>
+    <script type="text/javascript" src="<?= constant('URL') ?>assets/js/tables/inventory/fetchcomponents.js" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -67,14 +72,6 @@
                                     <span id="feedbackname" class="text-xs text-red-600"></span>
                                 </label>
 
-                                <label class="block text-sm mt-5">
-                                    <span class="text-gray-800 font-medium">Unidad</span>
-                                    <select class="mt-1 text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required="" name="measure">
-                                        <option value="Horas">Horas</option>
-                                        <option value="Gramos">Gramos</option>
-                                        <option value="Pulgadas">Pulgadas</option>
-                                    </select>
-                                </label>
                             </div>
                             <footer class="flex justify-end align-center border-t p-3">
                                 <button class="mr-3 p-3 text-sm font-semibold uppercase leading-5 text-center text-white transition-colors duration-150 bg-gray-500 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray close" type="button" name="cancelar">Cancelar</button>
@@ -88,7 +85,7 @@
                     <!--Graph Card-->
                     <div class="bg-white border rounded shadow">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Insumos de <?= $area['name'] ?></h5>
+                            <h5 class="font-bold uppercase text-gray-600">Inventario de componentes</h5>
                         </div>
                         <div class="flex justify-center items-center flex-col w-full overflow-auto">
                             <table id="datatable-json" class="min-w-full divide-y divide-white">
@@ -96,8 +93,9 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Precio unitario</th>
-                                        <th>Precio impresión</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Categoría</th>
                                         <th>Estado</th>
                                         <th>Acción</th>
                                     </tr>

@@ -24,9 +24,9 @@ class Thread extends Model implements IModel
             'id' => $id
         ]);
 
-        $component = $query->fetchAll(PDO::FETCH_ASSOC);
+        $thread = $query->fetch(PDO::FETCH_ASSOC);
 
-        return $component;
+        return $thread;
     }
 
     public function getAjax($thread){
@@ -58,5 +58,24 @@ class Thread extends Model implements IModel
     public function update()
     {
         // TODO: Implement update() method.
+    }
+
+    public function getStock($id){
+        $query = $this->prepare('SELECT current_amount FROM threads WHERE thread_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['current_amount'];
+    }
+
+    public function updateStock($id, $current_amount){
+        $query = $this->prepare('UPDATE threads SET current_amount = :current_amount WHERE thread_id = :id');
+        $query->execute([
+            'id' => $id,
+            'current_amount' => $current_amount
+        ]);
     }
 }

@@ -19,7 +19,7 @@
         $columns = array(
             array( 'db' => 'invoice_id',          'dt' => 0 ),
             array( 'db' => 'receipt',          'dt' => 1 ),
-            array( 'db' => 'user_id',    'dt' => 2 ),
+            array( 'db' => 'customer_id',    'dt' => 2 ),
             array( 'db' => 'date',    'dt' => 3 ),
             array( 'db' => 'total',    'dt' => 4 )
         );

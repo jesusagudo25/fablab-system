@@ -8,34 +8,111 @@ function generarVenta(e){
 
     btn_generar.removeEventListener('click',generarVenta);
 
-    if(inputDocumento.value.trim().length == 0){
-        if(tipoDocumento.value == 'R'){
+    //Validación de usuario
+
+    if ('documento' in errores) {
+        delete errores.documento;
+    }
+
+    if (inputDocumento.value.trim().length == 0) {
+        if (tipoDocumento.value == 'R') {
             errores.documento = "Por favor, proporcione un RUC";
         }
-        else if(tipoDocumento.value == 'C'){
+        else if (tipoDocumento.value == 'C') {
             errores.documento = "Por favor, proporcione una cédula";
         }
-        else{
+        else {
             errores.documento = "Por favor, proporcione un pasaporte";
         }
         feedbackdocumento.textContent = errores.documento;
     }
 
-    if(idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0){
-        errores.id = "Por favor, seleccione un cliente";
-        feedbackdocumento.textContent = errores.id;
+    //Se verifica si se está creando un nuevo cliente o no.
+    if (accion.children[0].classList.contains('fa-user-times')) {
+
+        if ('id' in errores) {
+            delete errores.id;
+        }
+
+        if ('nombre' in errores) {
+            delete errores.nombre;
+        }
+
+        newCustomer = {
+            tipo_documento: tipoDocumento.value,
+            documento: inputDocumento.value,
+            email: email.value.toLowerCase(),
+            telefono: telefono.value,
+            provincia: provincia.value,
+            distrito: distrito.value,
+            corregimiento: corregimiento.value
+        };
+
+        if (nombreUsuario.value.trim().length == 0) {
+            errores.nombre = "Por favor, proporcione un nombre";
+            feedbacknombre.textContent = errores.nombre;
+            nombreUsuario.addEventListener('change', evt => {
+                feedbacknombre.textContent = '';
+            });
+        }
+        else {
+            newCustomer.nombre = nombreUsuario.value;
+        }
+
+        const edadChecked = Array.from(edad).find(x => x.checked);
+        const sexoChecked = Array.from(sexo).find(x => x.checked);
+
+        if ('edad' in errores) {
+            delete errores.edad;
+        }
+
+        if (edadChecked) {
+            newCustomer.edad = edadChecked.value;
+        }
+        else {
+            errores.edad = "Por favor, seleccione un rango de edad";
+            feedbackedad.textContent = errores.edad;
+            edad.forEach(x => {
+                x.addEventListener('click', evt => {
+                    feedbackedad.textContent = '';
+                });
+            })
+        }
+
+        if ('sexo' in errores) {
+            delete errores.sexo;
+        }
+
+        if (sexoChecked) {
+            newCustomer.sexo = sexoChecked.value;
+        }
+        else {
+            errores.sexo = "Por favor, seleccione un tipo de sexo";
+            feedbacksexo.textContent = errores.sexo;
+            sexo.forEach(x => {
+                x.addEventListener('click', evt => {
+                    feedbacksexo.textContent = '';
+                });
+            })
+        }
+
+        datos['newCustomer'] = newCustomer;
     }
-    else if(idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0){
-        datos['id_cliente'] = idHidden.value;
+    else {
+        if ('id' in errores) {
+            delete errores.id;
+        }
+
+        if (idHidden.value.trim().length == 0 && inputDocumento.value.trim().length != 0) {
+            errores.id = "Por favor, seleccione o agregue un cliente";
+            feedbackdocumento.textContent = errores.id;
+        }
+        else if (idHidden.value.trim().length != 0 && inputDocumento.value.trim().length != 0) {
+            datos['id_cliente'] = idHidden.value;
+        }
     }
 
-    if(fecha.value.trim().length == 0){
-        errores.fecha = "Por favor, seleccione una fecha";
-        feedbackfecha.textContent = errores.fecha;
-    }
-    else{
-        datos.fecha = fecha.value
-    }
+    //----------------------VALIDACIONES DE LOS PRODUCTOS----------------------//
 
     let filas = document.querySelectorAll("#detalle_venta tr");
 
@@ -74,7 +151,6 @@ function generarVenta(e){
     else{
         datos["servicios_ag"] = servicios_ag;
         datos.total = total;
-        datos.receipt = document.querySelector('input[name="numero_recibo"]').value;
 
         Swal.fire({
             title: 'Cargando...',
@@ -86,34 +162,32 @@ function generarVenta(e){
             }
         });
 
-        fetch('./savesale.php',{
-            method: "POST",
-            mode: "same-origin",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
+        $.ajax({
+            url: "./functions.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                solicitud: "generar_venta",
+                sale: datos,
             },
-            body: JSON.stringify({datos: datos})
-        })
-        .then(res => res.json())
-        .then(data => {
-            Swal.close();
-            Swal.fire({
-                title: 'La venta se ha generado!',
-                allowOutsideClick: false,
-                icon: 'success',
-                confirmButtonColor: '#3b82f6',
-                footer: `<a class="flex items-center justify-between swal2-deny swal2-styled" target="_blank" href="./download.php?factura=${data}" id="pdf">
-    </svg>
-    <i class="fas fa-file-pdf mr-3"></i>
-            <span>Descargar PDF</span>
-            </a>`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                }
-            });
+            success: function (response) {
+                Swal.close();
+                Swal.fire({
+                    title: 'La venta se ha generado!',
+                    allowOutsideClick: false,
+                    icon: 'success',
+                    confirmButtonColor: '#3b82f6',
+                    footer: `<a class="flex items-center justify-between swal2-deny swal2-styled" target="_blank" href="../download.php?factura=${response}" id="pdf">
+        </svg>
+        <i class="fas fa-file-pdf mr-3"></i>
+                <span>Descargar PDF</span>
+                </a>`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            }
         });
-
     }
 }

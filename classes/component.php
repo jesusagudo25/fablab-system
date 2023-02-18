@@ -59,4 +59,23 @@ class Component extends Model implements IModel
     {
         // TODO: Implement update() method.
     }
+
+    public function getStock($id){
+        $query = $this->prepare('SELECT stock FROM components WHERE component_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $component = $query->fetch();
+
+        return $component['stock'];
+    }
+
+    public function updateStock($id,$stock){
+        $query = $this->prepare('UPDATE components SET stock = :stock WHERE component_id = :id');
+        $query->execute([
+            'id' => $id,
+            'stock' => $stock
+        ]);
+    }
 }

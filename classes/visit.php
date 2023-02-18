@@ -10,6 +10,7 @@ class Visit extends Model implements IModel
     private $date;
     private $observation;
     private $status;
+    private $isAttended;
 
     public function __construct()
     {
@@ -132,8 +133,6 @@ class Visit extends Model implements IModel
             }
         } else {
             if (!empty($newCustomer)) {
-
-
                 $customer->setDocumentType($newCustomer['tipo_documento']);
                 $customer->setDocument($newCustomer['documento']);
                 $customer->setName($newCustomer['nombre']);
@@ -203,24 +202,25 @@ class Visit extends Model implements IModel
         return $visits;
     }
 
-    public function getVisitsNotFree($start_date, $end_date)
+    public function getVisitsForMachine($start_date, $end_date)
     {
 
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
         INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
-        WHERE (v.date BETWEEN :start_date AND :end_date)                                         AND (r.time = 1) AND (v.status = 1)");
+        WHERE (v.date BETWEEN :start_date AND :end_date)
+        AND (r.time = 1) AND (v.status = 1)");
 
         $query->execute([
             'start_date' => $start_date,
             'end_date' => $end_date,
         ]);
 
-        $visits = $query->fetch();
+        $visits = $query->fetch(PDO::FETCH_ASSOC);
 
-        return $visits;
+        return $visits['total'];
     }
 
-    public function getVisitsFree($start_date, $end_date)
+    public function getVisitsForService($start_date, $end_date)
     {
         $query = $this->prepare("SELECT COUNT(*) AS total FROM visits v 
         INNER JOIN reason_visits r ON v.reason_id = r.reason_id 
@@ -232,7 +232,7 @@ class Visit extends Model implements IModel
             'end_date' => $end_date,
         ]);
 
-        $visitasFree = $query->fetch();
+        $visitasFree = $query->fetch(PDO::FETCH_ASSOC);
 
         return $visitasFree['total'];
     }
@@ -272,6 +272,7 @@ class Visit extends Model implements IModel
             RIGHT JOIN reason_visits r ON v.reason_id = r.reason_id
             WHERE (v.date BETWEEN :start_date AND :end_date)
             AND (v.status = 1)
+            AND (r.name != 'Servicio')
             GROUP BY r.reason_id
         ) as x
         RIGHT JOIN reason_visits r ON x.reason_id = r.reason_id
@@ -299,9 +300,9 @@ class Visit extends Model implements IModel
             'end_date' => $end_date
         ]);
 
-        $areastimeTotal = $query->fetch();
+        $areastimeTotal = $query->fetch(PDO::FETCH_ASSOC);
 
-        return $areastimeTotal;
+        return $areastimeTotal['total'];
     }
 
 
@@ -347,6 +348,15 @@ class Visit extends Model implements IModel
             'date' => $this->date,
             'observation' => $this->observation,
             'visit_id' => $this->visit_id
+        ]);
+    }
+
+    public function setAttended($isAttended, $id){
+        $query = $this->prepare('UPDATE visits SET isAttended = :isAttended WHERE (visit_id = :visit_id)');
+
+        $query->execute([
+            'isAttended' => $isAttended,
+            'visit_id' => $id
         ]);
     }
 

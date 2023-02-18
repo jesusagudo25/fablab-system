@@ -33,9 +33,9 @@
 
 	empty($invoice_events->getToInvoice($invoice->getInvoiceId())) ? '' : array_push($detalles,$invoice_events->getToInvoice($invoice->getInvoiceId()));
 
-	$use_machines = new UseMachines();
+	//$use_machines = new UseMachines();
 
-	empty($use_machines->getToInvoice($invoice->getInvoiceId())) ? '' : array_push($detalles,($use_machines->getToInvoice($invoice->getInvoiceId())));
+	//empty($use_machines->getToInvoice($invoice->getInvoiceId())) ? '' : array_push($detalles,($use_machines->getToInvoice($invoice->getInvoiceId())));
     
     $pagina[] = "gestionar";
 
@@ -134,7 +134,6 @@
                                 <div class="w-3/5">
                                     <span class="font-semibold">Información del Cliente: </span>
                                     <p>Nombre del cliente: <?= $customer->getName() ?></p>
-                                    <p>Código CIDETE: <?= $customer->getCode() ?></p>
                                     <p>
                                         <?php if ($customer->getDocumentType() == 'R'): ?>
                                             RUC:

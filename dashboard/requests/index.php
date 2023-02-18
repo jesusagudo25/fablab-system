@@ -33,9 +33,12 @@ $pagina[] = "requests";
     <link rel="icon" href="<?= constant('URL') ?>assets/img/fab.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link href="<?= constant('URL') ?>assets/css/tailwind.output.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/r-2.2.9/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js" defer></script>
-    <script src="<?= constant('URL') ?>assets/js/tables/sales/fetchsales.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.3/b-2.1.0/b-colvis-2.1.0/r-2.2.9/datatables.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+    <script src="<?= constant('URL') ?>assets/js/tables/general/fetchtasks.js" defer></script>
     <script src="<?= constant('URL') ?>assets/js/templates/basetemplate.js" defer></script>
 </head>
 
@@ -60,8 +63,9 @@ $pagina[] = "requests";
                                     <tr>
                                         <th>ID</th>
                                         <th>Cliente</th>
-                                        <th>Fecha de solicitud</th>
+                                        <th>Nombre</th>
                                         <th>Fecha de entrega</th>
+                                        <th>Estado</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>

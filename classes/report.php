@@ -4,6 +4,7 @@ class Report extends Model implements IModel
 {
 
      private $report_id;
+    private $year;
      private $month;
      private $user_id;
      private $start_date;
@@ -17,9 +18,10 @@ class Report extends Model implements IModel
     public function save(...$args)
     {
 
-        $nuevoReporte = $this->prepare("INSERT INTO reports(month, user_id,start_date,end_date) VALUES (:month, :user_id,:start_date,:end_date)");
+        $nuevoReporte = $this->prepare("INSERT INTO reports(year, month, user_id,start_date,end_date) VALUES (:year, :month, :user_id,:start_date,:end_date)");
 
         $nuevoReporte->execute([
+            'year' => $this->year,
             'month'=> $this->month,
             'user_id'=> $this->user_id,
             'start_date'=> $this->start_date,
@@ -29,7 +31,7 @@ class Report extends Model implements IModel
 
     public function getAll()
     {
-        $query = $this->query('SELECT r.report_id, r.month, CONCAT(u.name," ",u.lastname) AS autor ,r.start_date ,r.end_date FROM reports r
+        $query = $this->query('SELECT r.report_id,r.year,  r.month, CONCAT(u.name," ",u.lastname) AS autor ,r.start_date ,r.end_date FROM reports r
 INNER JOIN users u ON r.user_id = u.user_id ');
         $reports = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -46,6 +48,7 @@ INNER JOIN users u ON r.user_id = u.user_id ');
 
         $report = $query->fetch();
 
+        $this->year = $report['year'];
         $this->month = $report['month'];
         $this->user_id = $report['user_id'];
         $this->start_date = $report['start_date'];
@@ -72,6 +75,16 @@ INNER JOIN users u ON r.user_id = u.user_id ');
         $reporte = $query->fetch();
 
         $this->report_id = $reporte['report_id'];
+    }
+
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    public function getYear()
+    {
+        return $this->year;
     }
 
     /**

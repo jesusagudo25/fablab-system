@@ -3,6 +3,12 @@
 class Filament extends Model implements IModel
 {
 
+    private $filament_id;
+    private $name;
+    private $price;
+    private $purchase_weight;
+    private $current_weight;
+
     public function save(...$args)
     {
         
@@ -59,4 +65,74 @@ class Filament extends Model implements IModel
     {
         // TODO: Implement update() method.
     }
+
+    public function getFilamentId()
+    {
+        return $this->filament_id;
+    }
+
+    public function setFilamentId($filament_id)
+    {
+        $this->filament_id = $filament_id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    public function getPurchaseWeight()
+    {
+        return $this->purchase_weight;
+    }
+
+    public function setPurchaseWeight($purchase_weight)
+    {
+        $this->purchase_weight = $purchase_weight;
+    }
+
+    public function getCurrentWeight()
+    {
+        return $this->current_weight;
+    }
+
+    public function setCurrentWeight($current_weight)
+    {
+        $this->current_weight = $current_weight;
+    }
+
+    public function getStock($id){
+        $query = $this->prepare('SELECT current_weight FROM filaments WHERE filament_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['current_weight'];
+    }
+
+    public function updateStock($id, $current_weight){
+        $query = $this->prepare('UPDATE filaments SET current_weight = :current_weight WHERE filament_id = :id');
+        $query->execute([
+            'id' => $id,
+            'current_weight' => $current_weight
+        ]);
+    }
+    
 }

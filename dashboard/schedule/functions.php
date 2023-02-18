@@ -51,21 +51,6 @@
                 'startEditable'=>true
             );
         }
-
-        $booking = new Booking();
-        $bookings = $booking->getAllRange($start_new_format,$end_new_format);
-
-        foreach($bookings as $row)
-        {
-            $data[] = array( //Deberia ir id? si
-                'id' => $row['booking_id'],
-                'title'   => $row["name"],
-                'start'   => $row["date"],
-                'allDay'   => true,
-                'className' => 'booking',
-                'startEditable'=>true
-            );
-        }
         
         echo json_encode($data);
     }

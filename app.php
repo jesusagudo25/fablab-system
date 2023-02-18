@@ -29,11 +29,22 @@ require_once __DIR__.'/classes/vinilo.php';
 require_once __DIR__.'/classes/materiallaser.php';
 require_once __DIR__.'/classes/materialmilling.php';
 require_once __DIR__.'/classes/software.php';
+
+require_once __DIR__.'/classes/usesalemachine.php';
+require_once __DIR__.'/classes/usesalecomponent.php';
+require_once __DIR__.'/classes/usesalefilament.php';
+require_once __DIR__.'/classes/usesaleresin.php';
+require_once __DIR__.'/classes/usesalevinilo.php';
+require_once __DIR__.'/classes/usesalemateriallaser.php';
+require_once __DIR__.'/classes/usesalematerialminimilling.php';
+require_once __DIR__.'/classes/usesoftwaredesign.php';
+require_once __DIR__.'/classes/usesalethread.php';
+
+require_once __DIR__.'/classes/task.php';
 require_once __DIR__.'/classes/invoice.php';
 require_once __DIR__.'/classes/membershipinvoices.php';
 require_once __DIR__.'/classes/invoicesevents.php';
 require_once __DIR__.'/classes/events.php';
-require_once __DIR__.'/classes/usemachines.php';
 require_once __DIR__.'/vendor/autoload.php';
 
 $pagina = [];

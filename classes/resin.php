@@ -59,4 +59,23 @@ class Resin extends Model implements IModel
     {
         // TODO: Implement update() method.
     }
+
+    public function getStock($id){
+        $query = $this->prepare('SELECT current_weight FROM resins WHERE resin_id = :id');
+        $query->execute([
+            'id' => $id
+        ]);
+
+        $stock = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $stock['current_weight'];
+    }
+
+    public function updateStock($id, $current_weight){
+        $query = $this->prepare('UPDATE resins SET current_weight = :current_weight WHERE resin_id = :id');
+        $query->execute([
+            'id' => $id,
+            'current_weight' => $current_weight
+        ]);
+    }
 }

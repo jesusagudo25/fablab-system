@@ -274,13 +274,13 @@ razonVisita.addEventListener('change', evt => {
         containerCheckAll.classList.add('hidden');
         containerArea.classList.add('hidden');
     }
-    else if (optionSelected.classList.contains('free')) {
+    else if (optionSelected.classList.contains('isgroup')) {
         containerCheckAll.classList.remove('hidden');
         containerArea.classList.remove('hidden');
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area' + x.value);
-            if (areaCheck.nextElementSibling.classList.contains('feed')) {
+            if (!areaCheck.nextElementSibling) {
                 areaCheck.parentElement.nextElementSibling.classList.add('mt-5');
             }
             else {
@@ -298,7 +298,7 @@ razonVisita.addEventListener('change', evt => {
         areasTrabajo.forEach(x => {
             x.checked = false;
             const areaCheck = document.querySelector('#area' + x.value);
-            if (areaCheck.nextElementSibling.classList.contains('feed')) {
+            if (!areaCheck.nextElementSibling) {
                 areaCheck.parentElement.nextElementSibling.classList.add('mt-5');
             }
             else {
@@ -318,7 +318,6 @@ razonVisita.addEventListener('change', evt => {
 areasTrabajo.forEach(evt => {
     evt.addEventListener('click', x => {
         const areaCheck = document.querySelector('#area' + x.target.value);
-        console.log(areaCheck.nextElementSibling);
         if (!areaCheck.nextElementSibling) {
             areaCheck.parentElement.parentElement.nextElementSibling.classList.toggle('mt-5');
         }
@@ -660,11 +659,13 @@ checkboxAll.addEventListener('change', evt => {
     if (evt.target.checked) {
         areasTrabajo.forEach(x => {
             x.checked = true;
+            x.disabled = true;
         }
         );
     } else {
         areasTrabajo.forEach(x => {
             x.checked = false;
+            x.disabled = false;
         }
         );
     }
@@ -693,13 +694,13 @@ function searchBooking(e) {
             html: `
             <main class="grid justify-items-center gap-5">
                 <label for="document-type" class="mt-2">Seleccione el tipo de documento</label>
-                <select class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="document-type" onchange="changeTypeDocument(this)">
+                <select class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" id="document-type" >
                     <option value="R">RUC</option>
                     <option value="C">Cédula</option>
                     <option value="P">Pasaporte</option>
                 </select>
-                <label for="document" id="titledocument">Numero de RUC</label>
-                <input type="text" id="document" class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 mb-2" placeholder="Ingrese el número de RUC con guiones">
+                <label for="document" id="titledocument">Número de documento</label>
+                <input type="text" id="document" class="w-3/4 text-xl rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 mb-2" placeholder="Ingrese el número de documento">
             </main>`,
             showCancelButton: true,
             confirmButtonText: 'Buscar',
@@ -905,7 +906,5 @@ function unpackData(data) {
             document.querySelector('input[name="departure_time_area' + x.area_id + '"]').value = x.departure_time;
         });
     }
-
-    fecha.value = data.booking['date'];
     observacion.value = data.booking['observation'];
 }

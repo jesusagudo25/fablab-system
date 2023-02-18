@@ -1,6 +1,6 @@
 <?php
 
-    require_once '../../../app.php';
+    require_once '../../app.php';
 
     header('Content-Type: application/json; charset=utf-8');
 
@@ -8,20 +8,21 @@
 
         $table = <<<EOT
         ( 
-            SELECT LPAD(i.invoice_id,7,'0') AS invoice_id, receipt, c.name AS customer_id, u.name AS user_id, date, total FROM invoices i
-            INNER JOIN customers c ON c.customer_id = i.customer_id
-            INNER JOIN users u ON u.user_id = i.user_id
+            SELECT t.task_id, c.name AS customer_id, t.name, t.date_delivery, t.status 
+            FROM tasks t
+            INNER JOIN customers c ON c.customer_id = t.customer_id
+            WHERE t.status != TRUE
         ) temp
         EOT;
 
-        $primaryKey = 'invoice_id';
+        $primaryKey = 'task_id';
 
         $columns = array(
-            array( 'db' => 'invoice_id',          'dt' => 0 ),
-            array( 'db' => 'receipt',          'dt' => 1 ),
-            array( 'db' => 'user_id',    'dt' => 2 ),
-            array( 'db' => 'date',    'dt' => 3 ),
-            array( 'db' => 'total',    'dt' => 4 )
+            array( 'db' => 'task_id',          'dt' => 0 ),
+            array( 'db' => 'customer_id',          'dt' => 1 ),
+            array( 'db' => 'name',    'dt' => 2 ),
+            array( 'db' => 'date_delivery',    'dt' => 3 ),
+            array( 'db' => 'status',    'dt' => 4 )
         );
 
         // SQL server connection information
@@ -32,39 +33,13 @@
             'host' => constant('HOST')
         );
 
-        require( '../../../ssp.class.php' );
+        require( '../../ssp.class.php' );
 
         echo json_encode(
             SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
         );
     }
-    else if($_POST['solicitud'] == 'up_receipt'){
-        $invoice = new Invoice();
-        $invoice->setInvoiceId($_POST['invoice_id']);
-        $invoice->setReceipt($_POST['receipt']);
-        $invoice->update();
-        echo json_encode('true');
-    }
-    else if($_POST['solicitud'] == 'get_details'){
-        //Invoice::getDetails($_POST['invoice_id'])
-
-        $type = match($_POST['service']){
-
-            'membresias', => function ($id){
-                $membership_invoices = new MembershipInvoices();
-                return $membership_invoices->get($id);
-            },
-            'eventos' => function ($id){
-                $events = new Events();
-                return $events->get($id);
-            },
-            'areas' => function ($id){
-                $use_machine = new UseMachines();
-                return $use_machine->get($id);
-            }
-
-        };
-
-        echo json_encode($type($_POST['id']));
-
+    else if($_POST['solicitud'] == 'interruptor'){
+        $task = new Task();
+        $task->interruptor(true, $_POST['id']);
     }

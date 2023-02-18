@@ -5,7 +5,6 @@ class User extends Model implements IModel
     private $user_id;
     private $role_id;
     private $name;
-    private $lastname;
     private $email;
     private $password;
     private $status;
@@ -24,7 +23,6 @@ class User extends Model implements IModel
         $usuario = $consulta->fetch();
 
         $this->name = $usuario['name'];
-        $this->lastname = $usuario['lastname'];
         $this->email = $usuario['email'];
     }
 
@@ -41,12 +39,11 @@ class User extends Model implements IModel
 
     public function save(...$args)
     {
-        $nuevoUsuario = $this->prepare('INSERT INTO users(role_id, name, lastname, email,password) VALUES (:role_id, :name,:lastname ,:email, :password)');
+        $nuevoUsuario = $this->prepare('INSERT INTO users(role_id, name, email,password) VALUES (:role_id, :name ,:email, :password)');
 
         $nuevoUsuario->execute([
             'role_id' => $this->role_id,
             'name' => $this->name,
-            'lastname' => $this->lastname,
             'email' => $this->email,
             'password' => password_hash($this->password, PASSWORD_BCRYPT)
         ]);

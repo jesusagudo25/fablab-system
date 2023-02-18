@@ -5,6 +5,7 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
     idHidden = document.querySelector('input[type="hidden"]'),
     accion = document.querySelector('#action'),
     agregar = document.querySelector('#agregar'),
+    cotizacion = document.querySelector('#cotizacion'),
     categoria_servicio = document.querySelector('select[name="categoria_servicio"]'),
     servicio = document.querySelector('select[name="servicio"]'),
     nombreCliente = document.querySelector('input[name="name"]'),
@@ -20,12 +21,14 @@ const tipoDocumento = document.querySelector('select[name="tipodocumento"]'),
 
 let reason = document.querySelector('#container-typevisit input[type="radio"]:checked').value;
 if(reason == 'M'){
+    cotizacion.classList.add('hidden');
     manoObra.parentElement.classList.add('invisible');
     fecha_entrega.parentElement.classList.add('invisible');
 }
 else{
     manoObra.parentElement.classList.remove('invisible');
     fecha_entrega.parentElement.classList.remove('invisible');
+    cotizacion.classList.remove('hidden');
 }
 
 manoObra.addEventListener('change', e => {
@@ -42,10 +45,12 @@ visitType.forEach(e => {
         if(reason == 'M'){
             manoObra.parentElement.classList.toggle('invisible');
             fecha_entrega.parentElement.classList.toggle('invisible');
+            cotizacion.classList.toggle('hidden');
         }
         else{
             manoObra.parentElement.classList.toggle('invisible');
             fecha_entrega.parentElement.classList.toggle('invisible');
+            cotizacion.classList.toggle('hidden');
         }
     });
 }
